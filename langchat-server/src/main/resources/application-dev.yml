@@ -1,0 +1,39 @@
+server:
+  port: 8100
+
+spring:
+  # 数据库配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/langchat?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      keep-alive: true
+
+  # Redis配置
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    database: 1
+    jedis:
+      pool:
+        max-wait: 2000
+        time-between-eviction-runs: 1000
+
+langchat:
+  auth:
+    admin-name: administrator
+    admin-pass: 123456
+  api-key: <ApiKey>
+  model-name: gpt4
+  chat-model: openai
+  embedding:
+    pinecone:
+      api-key: <Apikey>
+      environment:
+      index:
+      name-space:
+      project-id:
+

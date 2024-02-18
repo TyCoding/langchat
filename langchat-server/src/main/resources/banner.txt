@@ -1,0 +1,12 @@
+    __                         ________          __
+   / /   ____ _____  ____ _   / ____/ /_  ____ _/ /_
+  / /   / __ `/ __ \/ __ `/  / /   / __ \/ __ `/ __/
+ / /___/ /_/ / / / / /_/ /  / /___/ / / / /_/ / /_
+/_____/\__,_/_/ /_/\__, /   \____/_/ /_/\__,_/\__/
+                  /____/
+
+    Author: TyCoding
+    Home: https://langchat.cn
+    Blog: https://tycoding.cn
+    Github: https://github.com/tycoding
+    Email: langchat@outlook.com

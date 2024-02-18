@@ -1,0 +1,27 @@
+html,
+body,
+#app {
+	height: 100%;
+}
+
+body {
+	padding-bottom: constant(safe-area-inset-bottom);
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+.n-scrollbar-content {
+	height: 100%;
+}
+
+.custom-popover {
+	&:focus {
+		outline: none !important;
+		border: none !important;
+	}
+	background: #27272a !important;
+	color: #ffffff !important;
+	padding: 3px 8px !important;
+	.n-popover-arrow {
+		background: #27272a !important;
+	}
+}
