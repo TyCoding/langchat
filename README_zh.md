@@ -1,8 +1,10 @@
-# Lang4j - LangChain4j Web UI
+# LangChat - LangChain4j Web UI
 
 > Best Practices for the LangChain4j Project
 
 Basic Library： [LangChain4j](https://github.com/langchain4j/langchain4j)
+
+[English](./README.md)
 
 ## Features
 
