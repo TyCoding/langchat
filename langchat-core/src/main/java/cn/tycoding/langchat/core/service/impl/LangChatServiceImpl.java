@@ -40,14 +40,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LangChatServiceImpl implements LangChatService {
 
-    private final LangChatProps langChatProps;
+    private final LangChatProps props;
     private final OssProps ossProps;
 
     @Override
     public void chat(ChatReq req) {
         long startTime = System.currentTimeMillis();
         StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
-                .apiKey(langChatProps.getApiKey())
+                .apiKey(props.getApiKey())
                 .modelName("gpt-4")
                 .proxy(new Proxy(HTTP, new InetSocketAddress("127.0.0.1", 7890)))
                 .build();
@@ -100,6 +100,7 @@ public class LangChatServiceImpl implements LangChatService {
 
                     @Override
                     public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
                         req.getEmitter().complete();
                     }
 
@@ -115,7 +116,7 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public String text(ChatReq req) {
         ChatLanguageModel model = OpenAiChatModel.builder()
-                .apiKey(langChatProps.getApiKey())
+                .apiKey(props.getApiKey())
                 .modelName("gpt-4")
                 .proxy(new Proxy(HTTP, new InetSocketAddress("127.0.0.1", 7890)))
                 .build();
@@ -129,7 +130,7 @@ public class LangChatServiceImpl implements LangChatService {
         OpenAiImageModel model = OpenAiImageModel
                 .builder()
                 .proxy(new Proxy(HTTP, new InetSocketAddress("127.0.0.1", 7890)))
-                .apiKey(langChatProps.getApiKey())
+                .apiKey(props.getApiKey())
                 .quality(DALL_E_QUALITY_HD)
                 .logRequests(true)
                 .logResponses(true)

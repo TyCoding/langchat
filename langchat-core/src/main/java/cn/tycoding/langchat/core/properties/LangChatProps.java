@@ -37,4 +37,6 @@ public class LangChatProps {
     private EmbedProps embedding;
 
     private OllamaProps ollama;
+
+    private GeminiProps gemini;
 }

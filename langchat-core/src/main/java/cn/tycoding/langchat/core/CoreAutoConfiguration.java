@@ -1,11 +1,6 @@
 package cn.tycoding.langchat.core;
 
-import cn.tycoding.langchat.core.properties.EmbedProps;
-import cn.tycoding.langchat.core.properties.LangChatProps;
-import cn.tycoding.langchat.core.properties.OllamaProps;
-import cn.tycoding.langchat.core.properties.OssProps;
-import cn.tycoding.langchat.core.properties.PgVectorProps;
-import cn.tycoding.langchat.core.properties.PineconeProps;
+import cn.tycoding.langchat.core.properties.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties({OssProps.class, LangChatProps.class, EmbedProps.class,
         OllamaProps.class,
+        GeminiProps.class,
         PgVectorProps.class, PineconeProps.class})
 public class CoreAutoConfiguration {
 
