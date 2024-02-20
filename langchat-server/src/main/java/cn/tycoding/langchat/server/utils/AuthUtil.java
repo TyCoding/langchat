@@ -1,9 +1,9 @@
-package cn.tycoding.langchat.server.common.utils;
+package cn.tycoding.langchat.server.utils;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.tycoding.langchat.server.common.constant.CacheConst;
-import cn.tycoding.langchat.server.common.dto.LcUserInfo;
+import cn.tycoding.langchat.server.dto.LcUserInfo;
+import cn.tycoding.langchat.common.constant.CacheConst;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -77,7 +77,7 @@ public class AuthUtil {
     /**
      * get user id
      */
-    public static Long getUserId() {
+    public static String getUserId() {
         LcUserInfo userInfo = getUserInfo();
         if (userInfo == null) {
             return null;

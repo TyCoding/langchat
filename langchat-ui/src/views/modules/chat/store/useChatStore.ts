@@ -9,11 +9,13 @@ import {
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
 import { Conversation, Message } from '@/typings/chat';
-import { getBotPage as getAppInfo } from '@/api/prompt';
+import { router } from '@/router';
+import { toRaw } from 'vue';
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
+      model: 'gpt-3',
       active: '',
       isEdit: '',
       siderCollapsed: true,
@@ -22,7 +24,6 @@ export const useChatStore = defineStore('chat-store', {
       conversations: [],
       curConversation: undefined,
       messages: [],
-      apps: [],
     },
 
   getters: {},
@@ -50,23 +51,25 @@ export const useChatStore = defineStore('chat-store', {
             this.active = data[0].id;
             this.curConversation = data[0];
             await this.selectConversation(data[0]);
+            await this.selectPath(data[0].id);
           }
           this.conversations = data;
         } else {
           this.conversations = [];
-          // 设置一个默认的App应用
-          if (this.apps.length > 0) {
-            const app = this.apps[0];
-            if (app.id != undefined) {
-              const appInfo = await getAppInfo(app.id);
-              this.setConversation(<Conversation>appInfo);
-            }
-          }
+          await this.selectPath(undefined);
         }
       } finally {
         this.sideIsLoading = false;
         this.chatIsLoading = false;
       }
+    },
+
+    async selectPath(id: string | undefined) {
+      const chatPath = '/' + router.currentRoute.value.path.split('/')[1];
+      if (id) {
+        return router.replace(chatPath + '/' + id);
+      }
+      return router.replace(chatPath);
     },
 
     /**
@@ -101,7 +104,7 @@ export const useChatStore = defineStore('chat-store', {
      * 更新会话信息
      */
     async updateConversation(params: Partial<Conversation>) {
-      await updateConversations(params);
+      await updateConversations(toRaw(params));
       await this.setEdit('');
       await this.loadData();
     },
@@ -122,39 +125,27 @@ export const useChatStore = defineStore('chat-store', {
     async addMessage(
       message: string,
       role: 'user' | 'assistant' | 'system',
-      promptId: string,
-      parentRefId: string
-    ): Promise<boolean> {
-      const conversation = this.curConversation;
-      if (conversation != null) {
-        this.messages.push({
-          promptId: promptId,
-          parentRefId: parentRefId,
-          conversationId: conversation.id,
-          appId: conversation.appId,
-          chatModel: conversation.chatModel,
-          role: role,
-          content: message,
-          createTime: formatToDateTime(new Date()),
-        });
-
-        // 判断如果当前conversation没有在会话列表中，就加载一次会话列表（对于初次会话）
-        if (this.conversations.length == 0) {
-          await this.loadData();
-        } else if (role == 'user') {
-          // await this.selectConversation(conversation);
-        }
-        return true;
-      }
-      return false;
+      chatId: string,
+      parentChatId: string
+    ) {
+      const data = {
+        chatId,
+        parentRefId: parentChatId,
+        conversationId: this.curConversation?.id,
+        chatModel: '',
+        role: role,
+        content: message,
+        createTime: formatToDateTime(new Date()),
+      };
+      this.messages.push(data);
+      return data;
     },
 
     /**
      * 更新消息
-     * promptId 仅仅用于更新流式消息内容
      */
-    async updateMessage(promptId: string, content: string, isError?: boolean) {
-      const promptIndex = this.messages.findIndex((item) => item?.promptId == promptId);
+    async updateMessage(chatId: string | undefined, content: string, isError?: boolean) {
+      const promptIndex = this.messages.findIndex((item) => item?.chatId == chatId);
       if (promptIndex !== -1) {
         this.messages[promptIndex].content = content;
         this.messages[promptIndex].isError = isError;
@@ -165,7 +156,7 @@ export const useChatStore = defineStore('chat-store', {
      * 删除消息
      */
     async delMessage(item: Message) {
-      this.messages = this.messages.filter((i) => i.promptId !== item.promptId);
+      this.messages = this.messages.filter((i) => i.chatId !== item.chatId);
     },
   },
 });

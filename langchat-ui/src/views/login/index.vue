@@ -26,15 +26,15 @@
       <div class="account-form">
         <div class="account-top">
           <template v-if="isLogin">
-            <div class="lcUser-account">登录你的账户</div>
-            <div class="lcUser-register">
+            <div class="user-account">登录你的账户</div>
+            <div class="user-register">
               <span>没有账户？</span>
               <n-button @click="isLogin = false" type="success" text>去注册</n-button>
             </div>
           </template>
           <template v-else>
-            <div class="lcUser-account">注册你的账户</div>
-            <div class="lcUser-register">
+            <div class="user-account">注册你的账户</div>
+            <div class="user-register">
               <span>已经有账户？</span>
               <n-button @click="isLogin = true" type="success" text>去登录</n-button>
             </div>

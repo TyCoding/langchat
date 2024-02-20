@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.server.controller;
 
 import cn.tycoding.langchat.core.utils.StreamEmitter;
-import cn.tycoding.langchat.server.common.constant.PromptConst;
-import cn.tycoding.langchat.server.common.utils.ChatR;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.common.constant.PromptConst;
+import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcOss;
 import cn.tycoding.langchat.server.service.ClientFileService;
 import cn.tycoding.langchat.server.service.OssService;

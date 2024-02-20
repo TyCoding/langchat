@@ -3,6 +3,7 @@ package cn.tycoding.langchat.server.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,29 +24,19 @@ public class LcConversation implements Serializable {
     private String id;
 
     /**
+     * 用户ID
+     */
+    private String userId;
+
+    /**
      * 会话标题
      */
     private String title;
 
     /**
-     * 模型ID
-     */
-    private String modelId;
-
-    /**
-     * 模型名称
-     */
-    private String model;
-
-    /**
-     * 对话模型
-     */
-    private String chatModel;
-
-    /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
 
 }
 

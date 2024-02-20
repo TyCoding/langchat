@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.event;
+package cn.tycoding.langchat.common.event;
 
 import org.springframework.context.ApplicationEvent;
 

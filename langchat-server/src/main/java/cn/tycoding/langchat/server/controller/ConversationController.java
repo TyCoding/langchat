@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.server.controller;
 
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcConversation;
 import cn.tycoding.langchat.server.entity.LcMessage;
 import cn.tycoding.langchat.server.service.MessageService;
@@ -89,5 +89,11 @@ public class ConversationController {
 
         //TODO 处理会话
         return R.ok(list);
+    }
+
+    @PostMapping("/message")
+    public R addMessage(@RequestBody LcMessage message) {
+        messageService.addMessage(message);
+        return R.ok();
     }
 }

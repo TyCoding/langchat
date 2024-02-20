@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.constant;
+package cn.tycoding.langchat.common.constant;
 
 import lombok.Getter;
 

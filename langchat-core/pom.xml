@@ -15,6 +15,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-common</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
             <version>${langchain4j.version}</version>
@@ -63,11 +68,6 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-chatglm</artifactId>
             <version>${langchain4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
         </dependency>
     </dependencies>
 

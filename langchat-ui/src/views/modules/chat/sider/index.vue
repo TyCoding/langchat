@@ -14,16 +14,6 @@
     return chatStore.sideIsLoading;
   });
 
-  const appList = computed(() => {
-    return chatStore.apps;
-  });
-
-  function handleSelect(key: string | number, option: any) {
-    console.log(option);
-    chatStore.addConversation({ title: 'New Chat', appId: option.id });
-    if (isMobile.value) chatStore.setSiderCollapsed(true);
-  }
-
   const collapsed = computed(() => chatStore.siderCollapsed);
   function handleUpdateCollapsed() {
     chatStore.setSiderCollapsed(!collapsed.value);

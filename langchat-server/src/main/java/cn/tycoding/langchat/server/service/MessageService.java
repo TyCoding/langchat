@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.server.service;
 
-import cn.tycoding.langchat.server.common.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.QueryPage;
 import cn.tycoding.langchat.server.entity.LcConversation;
 import cn.tycoding.langchat.server.entity.LcMessage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -37,5 +37,7 @@ public interface MessageService extends IService<LcMessage> {
      * 删除会话
      */
     void delConversation(Long id);
+
+    void addMessage(LcMessage message);
 }
 

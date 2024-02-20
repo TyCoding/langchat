@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.server.controller;
 
 import cn.hutool.core.lang.Dict;
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcLog;
 import cn.tycoding.langchat.server.service.LogService;
 import lombok.RequiredArgsConstructor;

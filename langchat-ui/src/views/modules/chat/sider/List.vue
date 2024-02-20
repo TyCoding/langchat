@@ -47,7 +47,7 @@
     <div class="flex flex-col gap-2 text-sm">
       <template v-if="!dataSources.length">
         <div
-          class="flex flex-col items-center mt-4 text-center text-neutral-100 dark:border-neutral-800"
+          class="flex flex-col items-center mt-4 text-center text-neutral-300 dark:border-neutral-800"
         >
           <SvgIcon icon="ri:inbox-line" class="mb-2 text-3xl" />
           <span>No Conversations！</span>

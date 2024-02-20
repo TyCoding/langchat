@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.component;
+package cn.tycoding.langchat.common.component;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

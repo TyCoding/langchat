@@ -42,7 +42,6 @@ function axios<T = any>({
       return Promise.reject(res.data);
     }
 
-    console.log(res);
     if (isTransformResponse) {
       return res.data;
     }

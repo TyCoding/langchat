@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.utils;
+package cn.tycoding.langchat.server.utils;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

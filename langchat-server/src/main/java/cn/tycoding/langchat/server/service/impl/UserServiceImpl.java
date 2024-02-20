@@ -1,13 +1,13 @@
 package cn.tycoding.langchat.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.tycoding.langchat.server.common.constant.CacheConst;
-import cn.tycoding.langchat.server.common.constant.CommonConst;
-import cn.tycoding.langchat.server.common.dto.LcUserInfo;
-import cn.tycoding.langchat.server.common.exception.ServiceException;
-import cn.tycoding.langchat.server.common.utils.AuthUtil;
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
+import cn.tycoding.langchat.common.constant.CacheConst;
+import cn.tycoding.langchat.common.constant.CommonConst;
+import cn.tycoding.langchat.server.dto.LcUserInfo;
+import cn.tycoding.langchat.server.exception.ServiceException;
+import cn.tycoding.langchat.server.utils.AuthUtil;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
 import cn.tycoding.langchat.server.entity.LcUser;
 import cn.tycoding.langchat.server.mapper.UserMapper;
 import cn.tycoding.langchat.server.properties.AuthProps;
@@ -34,19 +34,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements
-        UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements UserService {
 
     private final AuthProps authProps;
 
     @Override
-    public LcUserInfo findById(Long userId) {
-        LcUser lcUser = baseMapper.selectById(userId);
-        if (lcUser == null) {
+    public LcUserInfo findById(String userId) {
+        LcUser user = baseMapper.selectById(userId);
+        if (user == null) {
             return null;
         }
 
-        LcUserInfo info = BeanUtil.copyProperties(lcUser, LcUserInfo.class);
+        LcUserInfo info = BeanUtil.copyProperties(user, LcUserInfo.class);
         info.setPassword(null);
 
         return info;
@@ -55,10 +54,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements
     @Override
     @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public LcUserInfo info(String username) {
-        LcUser lcUser = baseMapper.selectOne(
+        LcUser user = baseMapper.selectOne(
                 Wrappers.<LcUser>lambdaQuery().eq(LcUser::getUsername, username));
         LcUserInfo info = new LcUserInfo();
-        BeanUtils.copyProperties(lcUser, info);
+        BeanUtils.copyProperties(user, info);
 
         return this.build(info);
     }
@@ -95,82 +94,82 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements
     }
 
     @Override
-    public List<LcUser> list(LcUser lcUser) {
+    public List<LcUser> list(LcUser user) {
         List<LcUser> list = baseMapper.selectList(
                 new LambdaQueryWrapper<LcUser>().ne(LcUser::getUsername, authProps.getAdminName())
-                        .like(StringUtils.isNotEmpty(lcUser.getUsername()),
-                                LcUser::getUsername, lcUser.getUsername()));
+                        .like(StringUtils.isNotEmpty(user.getUsername()), LcUser::getUsername,
+                                user.getUsername()));
         list.forEach(i -> i.setPassword(null));
         return list;
     }
 
     @Override
-    public IPage<LcUser> page(LcUser lcUser, QueryPage queryPage) {
-        return baseMapper.selectPage(MybatisUtil.wrap(lcUser, queryPage),
+    public IPage<LcUser> page(LcUser user, QueryPage queryPage) {
+        return baseMapper.selectPage(MybatisUtil.wrap(user, queryPage),
                 Wrappers.<LcUser>lambdaQuery());
     }
 
     @Override
-    public boolean checkName(LcUser lcUser) {
-        if (authProps.getAdminName().equals(lcUser.getUsername())) {
+    public boolean checkName(LcUser user) {
+        if (authProps.getAdminName().equals(user.getUsername())) {
             return false;
         }
         LambdaQueryWrapper<LcUser> queryWrapper = new LambdaQueryWrapper<LcUser>().eq(
-                LcUser::getUsername, lcUser.getUsername());
-        if (lcUser.getId() != null && lcUser.getId() != 0) {
-            queryWrapper.ne(LcUser::getId, lcUser.getId());
+                LcUser::getUsername, user.getUsername());
+        if (user.getId() != null) {
+            queryWrapper.ne(LcUser::getId, user.getId());
         }
-        return baseMapper.selectList(queryWrapper).size() <= 0;
+        return baseMapper.selectList(queryWrapper).isEmpty();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void add(LcUser lcUser) {
-        if (!checkName(lcUser)) {
+    public void add(LcUser user) {
+        if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
         }
 
-        lcUser.setCreateTime(new Date());
-        lcUser.setPassword(AuthUtil.encode(authProps.getSaltKey(), lcUser.getPassword()));
+        user.setCreateTime(new Date());
+        user.setPassword(AuthUtil.encode(authProps.getSaltKey(), user.getPassword()));
 
         // default avatar
-        if (StringUtils.isEmpty(lcUser.getAvatar())) {
-            lcUser.setAvatar(CommonConst.DEFAULT_AVATAR);
+        if (StringUtils.isEmpty(user.getAvatar())) {
+            user.setAvatar(CommonConst.DEFAULT_AVATAR);
         }
 
-        baseMapper.insert(lcUser);
+        baseMapper.insert(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#lcUser.username")
-    public void update(LcUser lcUser) {
-        if (!checkName(lcUser)) {
+    @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#user.username")
+    public void update(LcUser user) {
+        if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
         }
 
         // default avatar
-        if (StringUtils.isEmpty(lcUser.getAvatar())) {
-            lcUser.setAvatar(CommonConst.DEFAULT_AVATAR);
+        if (StringUtils.isEmpty(user.getAvatar())) {
+            user.setAvatar(CommonConst.DEFAULT_AVATAR);
         }
-        lcUser.setPassword(null);
-        baseMapper.updateById(lcUser);
+        user.setPassword(null);
+        baseMapper.updateById(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
-    public void delete(Long id, String username) {
+    public void delete(String id, String username) {
         baseMapper.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
-    public void reset(Long id, String password, String username) {
-        LcUser lcUser = new LcUser();
-        lcUser.setId(id);
-        lcUser.setPassword(AuthUtil.encode(authProps.getSaltKey(), password));
-        baseMapper.updateById(lcUser);
+    public void reset(String id, String password, String username) {
+        LcUser user = new LcUser();
+        user.setId(id);
+        user.setPassword(AuthUtil.encode(authProps.getSaltKey(), password));
+        baseMapper.updateById(user);
     }
 }

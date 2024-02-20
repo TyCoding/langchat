@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.server.service;
 
 import cn.tycoding.langchat.server.entity.LcLog;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.QueryPage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 

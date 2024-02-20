@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.server.service;
 
-import cn.tycoding.langchat.server.common.constant.PromptConst;
-import cn.tycoding.langchat.server.common.utils.ChatR;
-import cn.tycoding.langchat.server.common.utils.ImageR;
+import cn.tycoding.langchat.common.constant.PromptConst;
+import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.ImageR;
 import cn.tycoding.langchat.server.entity.LcOss;
 
 /**

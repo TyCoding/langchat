@@ -8,7 +8,6 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     const token = useUserStore().token;
-    console.log('请求之前，写入token', token);
     if (token) config.headers.Authorization = `${token}`;
     return config;
   },

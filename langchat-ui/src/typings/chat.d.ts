@@ -68,11 +68,10 @@ export type Conversation = {
 
 export type Message = {
   id?: string;
-  promptId: string;
-  parentRefId: string;
+  chatId?: string;
+  parentChatId?: string;
   conversationId?: string;
-  appId?: string;
-  chatModel?: string;
+  promptId?: string;
   role?: 'user' | 'assistant' | 'system';
   content?: string;
   isError?: boolean;

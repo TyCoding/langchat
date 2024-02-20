@@ -1,18 +1,17 @@
-package cn.tycoding.langchat.server.common.utils;
+package cn.tycoding.langchat.server.utils;
 
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
-import cn.tycoding.langchat.server.common.event.LogEvent;
-import cn.tycoding.langchat.server.component.SpringContextHolder;
+import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.common.event.LogEvent;
 import cn.tycoding.langchat.server.entity.LcLog;
+import java.util.Date;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author tycoding

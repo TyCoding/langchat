@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.utils;
+package cn.tycoding.langchat.server.utils;
 
 import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.metadata.IPage;

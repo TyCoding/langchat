@@ -2,7 +2,7 @@ package cn.tycoding.langchat.server.component;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
-import cn.tycoding.langchat.server.common.constant.PromptConst;
+import cn.tycoding.langchat.common.constant.PromptConst;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.dto;
+package cn.tycoding.langchat.server.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

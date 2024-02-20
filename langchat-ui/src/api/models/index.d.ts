@@ -33,12 +33,17 @@ export type Bot = {
 };
 
 export interface ChatR {
+  chatId?: string;
+  parentChatId?: string;
+  conversationId?: string;
   content?: string;
-  role?: string;
-  type?: string;
-  language?: string;
-  tone?: string;
-  length?: string;
+  promptId?: string;
+  role?: 'user' | 'assistant' | 'system';
+  createTime?: string;
+  // type?: string;
+  // language?: string;
+  // tone?: string;
+  // length?: string;
 }
 
 export interface Oss {

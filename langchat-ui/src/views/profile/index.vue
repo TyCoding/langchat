@@ -19,7 +19,7 @@
       <div class="pt-3 pb-3 text-lg">个人中心</div>
       <n-tabs type="line" animated v-if="form">
         <n-tab-pane name="1">
-          <template #tab> <SvgIcon icon="solar:lcUser-id-broken" class="mr-1" />个人信息 </template>
+          <template #tab> <SvgIcon icon="solar:user-id-broken" class="mr-1" />个人信息 </template>
           <Account :form="form" />
         </n-tab-pane>
         <n-tab-pane name="2">

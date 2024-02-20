@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.server.common.utils;
+package cn.tycoding.langchat.server.utils;
 
 import cn.tycoding.langchat.core.utils.StreamEmitter;
 import lombok.Data;

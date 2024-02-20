@@ -1,11 +1,11 @@
 package cn.tycoding.langchat.server.controller;
 
 import cn.hutool.core.lang.Dict;
-import cn.tycoding.langchat.server.common.dto.LcUserInfo;
-import cn.tycoding.langchat.server.common.utils.AuthUtil;
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.server.dto.LcUserInfo;
+import cn.tycoding.langchat.server.utils.AuthUtil;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcUser;
 import cn.tycoding.langchat.server.service.UserService;
 import java.util.List;
@@ -39,55 +39,55 @@ public class UserController {
     }
 
     @GetMapping("/checkName")
-    public R<Boolean> checkName(LcUser lcUser) {
-        return R.ok(userService.checkName(lcUser));
+    public R<Boolean> checkName(LcUser user) {
+        return R.ok(userService.checkName(user));
     }
 
     @GetMapping("/list")
-    public R<List<LcUser>> list(LcUser lcUser) {
-        return R.ok(userService.list(lcUser));
+    public R<List<LcUser>> list(LcUser user) {
+        return R.ok(userService.list(user));
     }
 
     @GetMapping("/page")
-    public R<Dict> page(LcUser lcUser, QueryPage queryPage) {
-        return R.ok(MybatisUtil.getData(userService.page(lcUser, queryPage)));
+    public R<Dict> page(LcUser user, QueryPage queryPage) {
+        return R.ok(MybatisUtil.getData(userService.page(user, queryPage)));
     }
 
     @GetMapping("/{id}")
-    public R<LcUser> findById(@PathVariable Long id) {
+    public R<LcUser> findById(@PathVariable String id) {
         return R.ok(userService.findById(id));
     }
 
     @PostMapping
 //    @PreAuthorize("@auth.hasAuth('upms:user:add')")
-    public R<LcUser> add(@RequestBody LcUser lcUser) {
-        userService.add(lcUser);
+    public R<LcUser> add(@RequestBody LcUser user) {
+        userService.add(user);
         return R.ok();
     }
 
     @PutMapping
 //    @PreAuthorize("@auth.hasAuth('upms:user:update')")
-    public R update(@RequestBody LcUser lcUser) {
-        userService.update(lcUser);
+    public R update(@RequestBody LcUser user) {
+        userService.update(user);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
 //    @PreAuthorize("@auth.hasAuth('upms:user:delete')")
-    public R delete(@PathVariable Long id) {
-        LcUser lcUser = userService.getById(id);
-        if (lcUser != null) {
-            userService.delete(id, lcUser.getUsername());
+    public R delete(@PathVariable String id) {
+        LcUser user = userService.getById(id);
+        if (user != null) {
+            userService.delete(id, user.getUsername());
         }
         return R.ok();
     }
 
     @GetMapping("/reset")
 //    @PreAuthorize("@auth.hasAuth('upms:user:reset')")
-    public R reset(@RequestParam Long id, String password) {
-        LcUser lcUser = userService.getById(id);
-        if (lcUser != null) {
-            userService.reset(id, password, lcUser.getUsername());
+    public R reset(@RequestParam String id, String password) {
+        LcUser user = userService.getById(id);
+        if (user != null) {
+            userService.reset(id, password, user.getUsername());
         }
         return R.ok();
     }

@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ChatReq {
 
+    private String conversationId;
     private String botId;
 
     private String content;

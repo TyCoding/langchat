@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.core.utils;
 
-
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**

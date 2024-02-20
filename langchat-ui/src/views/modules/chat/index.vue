@@ -11,6 +11,8 @@
   import { useScroll } from './store/useScroll';
   import { useChatStore } from './store/useChatStore';
   import { useRouter } from 'vue-router';
+  import Header from './Header.vue';
+  import { addMessage } from '@/api/conversation';
 
   const router = useRouter();
   const dialog = useDialog();
@@ -22,8 +24,8 @@
 
   const loading = ref<boolean>(false);
   const prompt = ref<string>('');
-  const promptId = ref<string>('');
-  const parentRefId = ref<string>('');
+  const chatId = ref<string>('');
+  const parentChatId = ref<string>('');
   const inputRef = ref<Ref | null>(null);
 
   // 初始化加载数据
@@ -44,40 +46,46 @@
     }
     controller = new AbortController();
 
-    // 用户输入的聊天
-    promptId.value = uuidv4();
-    parentRefId.value = uuidv4();
-    const isSend = await chatStore.addMessage(message, 'user', promptId.value, parentRefId.value);
-    if (!isSend) {
-      ms.warning('请先创建App会话应用');
-      return;
-    }
+    // user
+    chatId.value = uuidv4();
+    parentChatId.value = uuidv4();
+    const messageData = await chatStore.addMessage(
+      message,
+      'user',
+      chatId.value,
+      parentChatId.value
+    );
+    await addMessage(messageData);
 
     loading.value = true;
     prompt.value = '';
 
-    // AI回答，注意：AI消息和用户消息的promptId和parentRefId是反转设置的
-    await chatStore.addMessage('', 'assistant', parentRefId.value, promptId.value);
-    await scrollToBottom();
+    if (chatStore.conversations.length == 0) {
+      await chatStore.loadData();
+    }
 
-    await onConversation(message, false, promptId.value, parentRefId.value);
+    // ai
+    await chatStore.addMessage('', 'assistant', parentChatId.value, chatId.value);
+    await scrollToBottom();
+    await onConversation(message, false, chatId.value, parentChatId.value);
   }
 
   async function onConversation(
     message: string,
     isRegenerate: boolean,
-    promptId: string,
-    parentRefId: string
+    chatId?: string,
+    parentChatId?: string
   ) {
     try {
       // 定义接口
       const fetchChatAPIOnce = async () => {
         await chat(
           {
-            // promptId: promptId,
-            // parentRefId: parentRefId,
+            chatId,
+            parentChatId,
             content: message,
-            // conversationId: chatStore.curConversation?.id,
+            role: 'user',
+            conversationId: chatStore.curConversation?.id,
           },
           ({ event }) => {
             const list = event.target.responseText.split('\n\n');
@@ -95,7 +103,7 @@
               text += content;
             });
             // 只更新AI回答，promptId要反转
-            chatStore.updateMessage(parentRefId, text);
+            chatStore.updateMessage(parentChatId, text);
             scrollToBottomIfAtBottom();
           }
         ).catch(() => {});
@@ -113,17 +121,17 @@
     if (loading.value) {
       return;
     }
-    const index = chatStore.messages.findIndex((i) => i.promptId == item.parentRefId);
+    const index = chatStore.messages.findIndex((i) => i.chatId == item.parentChatId);
     if (index === -1) {
       ms.warning('数据异常，无法重新生成');
       return;
     }
     loading.value = true;
-    await chatStore.updateMessage(item.promptId, '');
+    await chatStore.updateMessage(item.chatId, '');
 
     const message = String(chatStore.messages[index].content);
     // 对于AI的回答重新生成，promptId要反转设置
-    await onConversation(message, true, item.parentRefId, item.promptId);
+    await onConversation(message, true, item.parentChatId, item.chatId);
   }
 
   // 删除
@@ -141,7 +149,7 @@
         chatStore.delMessage(item);
       },
     });
-    promptId.value = '';
+    chatId.value = '';
   }
 
   // 清除
@@ -158,7 +166,7 @@
         console.log('清除聊天');
       },
     });
-    promptId.value = '';
+    chatId.value = '';
   }
 
   function handleEnter(event: KeyboardEvent) {
@@ -226,40 +234,7 @@
       <!-- Main -->
       <n-layout-content class="h-full">
         <div class="flex flex-col w-full h-full">
-          <header
-            v-if="isMobile"
-            @click="chatStore.setSiderCollapsed(false)"
-            class="sticky pl-2 pr-2 z-30 border-b dark:border-neutral-800 bg-white/80 dark:bg-black/20 backdrop-blur"
-          >
-            <div class="relative flex items-center justify-between min-w-0 overflow-hidden h-14">
-              <div class="flex items-center">
-                <n-button text>
-                  <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
-                </n-button>
-              </div>
-              <h1
-                class="flex-1 px-4 pr-6 overflow-hidden cursor-pointer select-none text-ellipsis whitespace-nowrap"
-                v-if="chatStore.curConversation"
-              >
-                {{ chatStore.curConversation!.title }}
-              </h1>
-              <div class="flex items-center space-x-2">
-                <n-button text>
-                  <SvgIcon icon="ri:stop-circle-line" />
-                </n-button>
-              </div>
-            </div>
-          </header>
-
-          <div
-            v-else
-            class="w-full p-3 pl-6 pr-8 border-b border-b-[#e5e7eb] dark:border-b-[#1e1e20] flex justify-between items-center"
-          >
-            <div v-if="chatStore.curConversation">{{ chatStore.curConversation!.title }}</div>
-            <div class="flex justify-center items-center">
-              <n-button text><SvgIcon class="text-lg" icon="material-symbols:download" /></n-button>
-            </div>
-          </div>
+          <Header />
 
           <!-- 聊天记录窗口 -->
           <main class="flex-1 overflow-hidden">
@@ -305,9 +280,26 @@
                 >
                   <template #suffix>
                     <div
-                      class="flex justify-between align-center absolute w-full bottom-0 left-0 p-2"
+                      class="flex justify-end align-center absolute w-full bottom-0 left-0 p-2 gap-2"
                     >
-                      <div></div>
+                      <n-popover trigger="hover">
+                        <template #trigger>
+                          <n-button
+                            type="info"
+                            size="small"
+                            :disabled="buttonDisabled"
+                            @click="handleSubmit"
+                            secondary
+                            class="z-10"
+                          >
+                            <template #icon>
+                              <SvgIcon icon="ic:round-plus" />
+                            </template>
+                          </n-button>
+                        </template>
+                        <span>上传图片或者文件信息</span>
+                      </n-popover>
+
                       <n-button
                         type="primary"
                         size="small"

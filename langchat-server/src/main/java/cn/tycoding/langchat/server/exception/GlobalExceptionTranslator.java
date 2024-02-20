@@ -1,7 +1,8 @@
-package cn.tycoding.langchat.server.common.exception;
+package cn.tycoding.langchat.server.exception;
 
 import cn.dev33.satoken.exception.SaTokenException;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.server.utils.R;
+import java.nio.file.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import java.nio.file.AccessDeniedException;
 
 /**
  * @author tycoding

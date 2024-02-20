@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.server.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
-import cn.tycoding.langchat.server.common.utils.R;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcPrompt;
 import cn.tycoding.langchat.server.service.PromptService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.server.service.impl;
 
-import cn.tycoding.langchat.server.common.utils.MybatisUtil;
-import cn.tycoding.langchat.server.common.utils.QueryPage;
+import cn.tycoding.langchat.server.utils.MybatisUtil;
+import cn.tycoding.langchat.server.utils.QueryPage;
 import cn.tycoding.langchat.server.entity.LcLog;
 import cn.tycoding.langchat.server.mapper.LogMapper;
 import cn.tycoding.langchat.server.service.LogService;

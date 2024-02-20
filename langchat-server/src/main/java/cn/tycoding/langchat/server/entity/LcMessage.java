@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class LcMessage implements Serializable {
+
     private static final long serialVersionUID = -19545329638997333L;
 
     /**
@@ -23,14 +24,14 @@ public class LcMessage implements Serializable {
     private String id;
 
     /**
-     * 消息的ID，此ID应该由前端生成并传递给后端
+     * 消息ID
      */
-    private String promptId;
+    private String chatId;
 
     /**
-     * 要回复消息的promptId
+     * 上级消息ID
      */
-    private String parentRefId;
+    private String parentChatId;
 
     /**
      * 会话ID
@@ -40,7 +41,7 @@ public class LcMessage implements Serializable {
     /**
      * 应用ID
      */
-    private String appId;
+    private String promptId;
 
     /**
      * 角色，user、assistant、system

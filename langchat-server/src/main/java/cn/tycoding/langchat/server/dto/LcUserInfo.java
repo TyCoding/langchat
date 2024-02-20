@@ -1,10 +1,9 @@
-package cn.tycoding.langchat.server.common.dto;
+package cn.tycoding.langchat.server.dto;
 
 import cn.tycoding.langchat.server.entity.LcUser;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
 
 /**
  * @author tycoding

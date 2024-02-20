@@ -73,3 +73,16 @@ export function genImage(data: ImageR): Promise<Oss> {
     data: data,
   });
 }
+
+export const ModelList = [
+  {
+    label: 'GPT-4',
+    value: 'gpt-4',
+    des: 'ChatGPT 4',
+  },
+  {
+    label: 'GPT-3',
+    value: 'gpt-3',
+    des: 'ChatGPT 3',
+  },
+];
