@@ -26,7 +26,7 @@ public interface MessageService extends IService<LcMessage> {
     /**
      * 新增会话
      */
-    void addConversation(LcConversation conversation);
+    LcConversation addConversation(LcConversation conversation);
 
     /**
      * 修改会话

@@ -4,16 +4,22 @@
   import { Bot } from '@/api/models';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
+  import { useChatStore } from '@/views/modules/chat/store/useChatStore';
+  import { add as addConversation } from '@/api/conversation';
+  import { Conversation } from '@/typings/chat';
 
   interface Props {
     list: Array<Bot>;
   }
-
-  const router = useRouter();
   const props = defineProps<Props>();
+  const chatStore = useChatStore();
+  const router = useRouter();
 
-  async function onUse(id: number) {
-    await router.push({ name: 'Chat', query: { botId: id } });
+  async function onUse(id: string) {
+    const data = (await addConversation({})) as Conversation;
+    chatStore.curConversation = data;
+    await router.push({ name: 'Chat', query: { conversationId: data.id, promptId: id } });
+    chatStore.active = '';
   }
 </script>
 
@@ -49,9 +55,9 @@
                 <div class="flex gap-1">
                   <n-tag v-for="tag in item.tags" :key="tag" size="small">{{ tag }}</n-tag>
                 </div>
-                <n-button @click="onUse(item.id)" size="small" type="success" secondary round>{{
-                  t('home.use')
-                }}</n-button>
+                <n-button @click="onUse(item.id)" size="small" type="success" secondary round>
+                  {{ t('home.use') }}
+                </n-button>
               </div>
             </template>
           </n-thing>

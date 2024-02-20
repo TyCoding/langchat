@@ -46,11 +46,16 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
     }
 
     @Override
-    public void addConversation(LcConversation conversation) {
+    public LcConversation addConversation(LcConversation conversation) {
         String title = conversation.getTitle();
-        conversation.setTitle(StrUtil.isBlank(title) ? "New Chat" : title)
+        if (StrUtil.isBlank(title)) {
+            Long count = conversationMapper.selectCount(Wrappers.lambdaQuery());
+            title = "New Chat" + (count + 1);
+        }
+        conversation.setTitle(title)
                 .setUserId(AuthUtil.getUserId()).setCreateTime(new Date());
         conversationMapper.insert(conversation);
+        return conversation;
     }
 
     @Override

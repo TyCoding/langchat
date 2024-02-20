@@ -40,23 +40,20 @@ export const useChatStore = defineStore('chat-store', {
     },
 
     /**
-     * 加载会话窗口和聊天信息
+     * init conversation list and messages
      */
     async loadData() {
       try {
-        // 加载conversation列表
         const data = await getConversations({});
+        const conversationId = router.currentRoute.value.query.conversationId as string;
+        if (conversationId !== undefined && conversationId !== null) {
+          this.active = conversationId;
+          this.messages = await getMessages(conversationId);
+        }
         if (data && data.length > 0) {
-          if (!this.active) {
-            this.active = data[0].id;
-            this.curConversation = data[0];
-            await this.selectConversation(data[0]);
-            await this.selectPath(data[0].id);
-          }
           this.conversations = data;
         } else {
           this.conversations = [];
-          await this.selectPath(undefined);
         }
       } finally {
         this.sideIsLoading = false;
@@ -64,12 +61,20 @@ export const useChatStore = defineStore('chat-store', {
       }
     },
 
-    async selectPath(id: string | undefined) {
-      const chatPath = '/' + router.currentRoute.value.path.split('/')[1];
-      if (id) {
-        return router.replace(chatPath + '/' + id);
+    async selectPath(conversationId: string | undefined, promptId: string | undefined) {
+      const query: any = {};
+      const cur = router.currentRoute.value;
+      if (conversationId !== undefined) {
+        query.conversationId = conversationId;
       }
-      return router.replace(chatPath);
+      if (promptId !== undefined) {
+        query.promptId = promptId;
+      }
+      if (cur.query.promptId !== undefined) {
+        query.promptId = cur.query.promptId;
+      }
+
+      await router.replace({ path: router.currentRoute.value.path, query });
     },
 
     /**
@@ -90,7 +95,7 @@ export const useChatStore = defineStore('chat-store', {
       await this.setEdit('');
       this.curConversation = params;
       this.messages = await getMessages(params.id);
-      await this.selectPath(params.id);
+      await this.selectPath(params.id, undefined);
     },
 
     /**

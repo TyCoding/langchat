@@ -4,7 +4,7 @@
   import Typed from 'typed.js';
   import CardList from './components/CardList.vue';
   import { Bot } from '@/api/models';
-  import { getBotPage, getTagsList } from '@/api/prompt';
+  import { getBotPage } from '@/api/prompt';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
 

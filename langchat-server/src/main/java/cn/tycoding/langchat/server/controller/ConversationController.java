@@ -52,8 +52,7 @@ public class ConversationController {
      */
     @PostMapping
     public R addConversation(@RequestBody LcConversation conversation) {
-        messageService.addConversation(conversation);
-        return R.ok();
+        return R.ok(messageService.addConversation(conversation));
     }
 
     /**

@@ -29,8 +29,6 @@
   const aiChatId = ref<string>('');
   const inputRef = ref<Ref | null>(null);
 
-  // 初始化加载数据
-  chatStore.loadData();
   const dataSources = computed(() => {
     // 获取当前聊天窗口的数据
     scrollToBottom();
@@ -77,7 +75,7 @@
             role: 'user',
             conversationId: chatStore.curConversation?.id,
           },
-          ({ event }) => {
+          async ({ event }) => {
             const list = event.target.responseText.split('\n\n');
 
             let text = '';
@@ -92,13 +90,10 @@
               }
               text += content;
             });
-            chatStore.updateMessage(aiChatId.value, text, false);
-            scrollToBottomIfAtBottom();
+            await chatStore.updateMessage(aiChatId.value, text, false);
+            await scrollToBottomIfAtBottom();
           }
-        ).catch((err: any) => {
-          console.error(err);
-          chatStore.updateMessage(aiChatId.value, err, true);
-        });
+        ).catch(() => {});
       };
 
       // 调用接口
@@ -170,6 +165,7 @@
   });
 
   onMounted(() => {
+    chatStore.loadData();
     if (inputRef.value && !isMobile.value) {
       inputRef.value?.focus();
     }
