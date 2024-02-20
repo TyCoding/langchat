@@ -6,6 +6,7 @@
   import hljs from 'highlight.js';
   import { useBasicLayout } from '../store/useBasicLayout';
   import { copyToClip } from '@/utils/copy';
+  import { t } from '@/locales';
 
   interface Props {
     inversion?: boolean;
@@ -71,9 +72,9 @@
           const code = btn.parentElement?.nextElementSibling?.textContent;
           if (code) {
             copyToClip(code).then(() => {
-              btn.textContent = '复制成功';
+              btn.textContent = t('chat.copied');
               setTimeout(() => {
-                btn.textContent = '复制代码';
+                btn.textContent = t('chat.copyCode');
               }, 1000);
             });
           }

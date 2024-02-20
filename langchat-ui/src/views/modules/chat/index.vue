@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { computed, onMounted, onUnmounted, Ref, ref } from 'vue';
+  import { computed, onMounted, onUnmounted, onUpdated, Ref, ref } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { v4 as uuidv4 } from 'uuid';
   import { chat } from '@/api/chat';
@@ -13,6 +13,7 @@
   import { useRouter } from 'vue-router';
   import Header from './Header.vue';
   import { addMessage } from '@/api/conversation';
+  import { t } from '@/locales';
 
   const router = useRouter();
   const dialog = useDialog();
@@ -25,7 +26,7 @@
   const loading = ref<boolean>(false);
   const prompt = ref<string>('');
   const chatId = ref<string>('');
-  const parentChatId = ref<string>('');
+  const aiChatId = ref<string>('');
   const inputRef = ref<Ref | null>(null);
 
   // 初始化加载数据
@@ -48,13 +49,7 @@
 
     // user
     chatId.value = uuidv4();
-    parentChatId.value = uuidv4();
-    const messageData = await chatStore.addMessage(
-      message,
-      'user',
-      chatId.value,
-      parentChatId.value
-    );
+    const messageData = await chatStore.addMessage(message, 'user', chatId.value);
     await addMessage(messageData);
 
     loading.value = true;
@@ -65,24 +60,19 @@
     }
 
     // ai
-    await chatStore.addMessage('', 'assistant', parentChatId.value, chatId.value);
+    aiChatId.value = uuidv4();
+    await chatStore.addMessage('', 'assistant', aiChatId.value);
     await scrollToBottom();
-    await onConversation(message, false, chatId.value, parentChatId.value);
+    await onChat(message);
   }
 
-  async function onConversation(
-    message: string,
-    isRegenerate: boolean,
-    chatId?: string,
-    parentChatId?: string
-  ) {
+  async function onChat(message: string) {
     try {
       // 定义接口
       const fetchChatAPIOnce = async () => {
         await chat(
           {
-            chatId,
-            parentChatId,
+            chatId: chatId.value,
             content: message,
             role: 'user',
             conversationId: chatStore.curConversation?.id,
@@ -102,11 +92,13 @@
               }
               text += content;
             });
-            // 只更新AI回答，promptId要反转
-            chatStore.updateMessage(parentChatId, text);
+            chatStore.updateMessage(aiChatId.value, text, false);
             scrollToBottomIfAtBottom();
           }
-        ).catch(() => {});
+        ).catch((err: any) => {
+          console.error(err);
+          chatStore.updateMessage(aiChatId.value, err, true);
+        });
       };
 
       // 调用接口
@@ -116,24 +108,6 @@
     }
   }
 
-  // 重新生成
-  async function onRegenerate(item: AiMessage) {
-    if (loading.value) {
-      return;
-    }
-    const index = chatStore.messages.findIndex((i) => i.chatId == item.parentChatId);
-    if (index === -1) {
-      ms.warning('数据异常，无法重新生成');
-      return;
-    }
-    loading.value = true;
-    await chatStore.updateMessage(item.chatId, '');
-
-    const message = String(chatStore.messages[index].content);
-    // 对于AI的回答重新生成，promptId要反转设置
-    await onConversation(message, true, item.parentChatId, item.chatId);
-  }
-
   // 删除
   function handleDelete(item: AiMessage) {
     if (loading.value) {
@@ -141,29 +115,12 @@
     }
 
     dialog.warning({
-      title: '删除消息',
-      content: '确认删除消息',
-      positiveText: '是',
-      negativeText: '否',
+      title: t('chat.deleteMessage'),
+      content: t('chat.deleteMessageConfirm'),
+      positiveText: t('common.yes'),
+      negativeText: t('common.no'),
       onPositiveClick: () => {
         chatStore.delMessage(item);
-      },
-    });
-    chatId.value = '';
-  }
-
-  // 清除
-  function handleClear() {
-    if (loading.value) {
-      return;
-    }
-    dialog.warning({
-      title: '清除聊天',
-      content: '确认清除聊天',
-      positiveText: '是',
-      negativeText: '否',
-      onPositiveClick: async () => {
-        console.log('清除聊天');
       },
     });
     chatId.value = '';
@@ -195,7 +152,7 @@
   });
 
   const footerClass = computed(() => {
-    let classes = ['p-4 pt-0'];
+    let classes = ['p-8 pt-0'];
     if (isMobile.value) {
       classes = ['sticky', 'left-0', 'bottom-0', 'right-0', 'p-2', 'pr-3', 'overflow-hidden'];
     }
@@ -223,6 +180,10 @@
       controller.abort();
     }
   });
+
+  onUpdated(() => {
+    scrollToBottomIfAtBottom();
+  });
 </script>
 
 <template>
@@ -236,13 +197,13 @@
         <div class="flex flex-col w-full h-full">
           <Header />
 
-          <!-- 聊天记录窗口 -->
+          <!-- chat -->
           <main class="flex-1 overflow-hidden">
-            <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto">
+            <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto" id="image-wrapper">
               <div v-if="chatIsLoading" class="w-full h-full flex items-center justify-center">
                 <n-spin :show="chatIsLoading" size="large" />
               </div>
-              <div v-else ref="scrollRef" class="w-full m-auto" :class="[isMobile ? 'p-2' : 'p-5']">
+              <div v-else ref="scrollRef" class="w-full m-auto" :class="[isMobile ? 'p-2' : 'p-8']">
                 <Message
                   v-for="(item, index) of dataSources"
                   :key="index"
@@ -251,7 +212,6 @@
                   :inversion="item.role !== 'assistant'"
                   :error="item.isError"
                   :loading="loading"
-                  @regenerate="onRegenerate(item)"
                   @delete="handleDelete(item)"
                 />
                 <div class="sticky bottom-0 left-0 flex justify-center">
@@ -266,7 +226,6 @@
             </div>
           </main>
 
-          <!-- 底部 -->
           <footer :class="footerClass">
             <div class="w-full m-auto">
               <div class="flex items-center justify-between space-x-2 w-full">
@@ -276,7 +235,7 @@
                   type="textarea"
                   :autosize="{ minRows: 3, maxRows: isMobile ? 4 : 8 }"
                   @keypress="handleEnter"
-                  placeholder="请输入您的问题...（Shift + Enter 换行，按下 Enter 发送）"
+                  :placeholder="t('chat.placeholder')"
                 >
                   <template #suffix>
                     <div
@@ -297,7 +256,7 @@
                             </template>
                           </n-button>
                         </template>
-                        <span>上传图片或者文件信息</span>
+                        <span>{{ t('chat.filePlaceholder') }}</span>
                       </n-popover>
 
                       <n-button

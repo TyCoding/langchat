@@ -1,7 +1,10 @@
 package cn.tycoding.langchat.core.service;
 
+import cn.tycoding.langchat.common.dto.ChatData;
 import cn.tycoding.langchat.core.utils.ChatReq;
 import cn.tycoding.langchat.core.utils.OssR;
+import cn.tycoding.langchat.core.utils.StreamEmitter;
+import dev.langchain4j.model.input.Prompt;
 
 /**
  * @author tycoding
@@ -9,7 +12,7 @@ import cn.tycoding.langchat.core.utils.OssR;
  */
 public interface LangChatService {
 
-    void chat(ChatReq req);
+    void chat(StreamEmitter emitter, Prompt prompt, ChatData data);
 
     void stream(ChatReq req);
 

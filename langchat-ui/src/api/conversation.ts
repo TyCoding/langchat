@@ -29,9 +29,15 @@ export function update(params: Partial<Conversation>) {
   });
 }
 
-export function del(id: string) {
+export function del(conversationId: string) {
   return http.delete({
-    url: `/langchat/conversation/${id}`,
+    url: `/langchat/conversation/${conversationId}`,
+  });
+}
+
+export function clearMessage(conversationId: string | undefined) {
+  return http.delete({
+    url: `/langchat/conversation/message/${conversationId}`,
   });
 }
 

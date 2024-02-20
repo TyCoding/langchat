@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.server.service;
 
 import cn.tycoding.langchat.common.constant.PromptConst;
-import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.TextR;
 import cn.tycoding.langchat.server.entity.LcOss;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +14,7 @@ public interface ClientFileService {
     /**
      * 流式响应
      */
-    void chat(ChatR req, PromptConst promptConst);
+    void chat(TextR req, PromptConst promptConst);
 
     /**
      * 上传文件

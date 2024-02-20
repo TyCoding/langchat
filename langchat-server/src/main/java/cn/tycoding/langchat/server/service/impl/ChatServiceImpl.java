@@ -1,12 +1,14 @@
 package cn.tycoding.langchat.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.tycoding.langchat.common.dto.ChatData;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.core.utils.ChatReq;
 import cn.tycoding.langchat.core.utils.FileEnum;
 import cn.tycoding.langchat.core.utils.OssR;
 import cn.tycoding.langchat.common.constant.PromptConst;
 import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.TextR;
 import cn.tycoding.langchat.server.utils.ImageR;
 import cn.tycoding.langchat.server.component.PromptStore;
 import cn.tycoding.langchat.server.entity.LcOss;
@@ -32,14 +34,23 @@ public class ChatServiceImpl implements ChatService {
     private final OssMapper ossMapper;
 
     @Override
-    public void stream(ChatR req, PromptConst promptConst) {
+    public void chat(ChatR req) {
+        PromptTemplate promptTemplate = PromptTemplate.from(PromptStore.get(PromptConst.CHAT));
+        Prompt prompt = promptTemplate.apply(BeanUtil.beanToMap(req, false, true));
+        ChatData data = new ChatData();
+        BeanUtils.copyProperties(req, data);
+        langChatService.chat(req.getEmitter(), prompt, data);
+    }
+
+    @Override
+    public void stream(TextR req, PromptConst promptConst) {
         PromptTemplate promptTemplate = PromptTemplate.from(PromptStore.get(promptConst));
         Prompt prompt = promptTemplate.apply(BeanUtil.beanToMap(req, false, true));
         langChatService.stream(new ChatReq(prompt, req.getEmitter()));
     }
 
     @Override
-    public String text(ChatR req, PromptConst promptConst) {
+    public String text(TextR req, PromptConst promptConst) {
         PromptTemplate promptTemplate = PromptTemplate.from(PromptStore.get(promptConst));
         Prompt prompt = promptTemplate.apply(BeanUtil.beanToMap(req, false, true));
         return langChatService.text(new ChatReq(prompt));

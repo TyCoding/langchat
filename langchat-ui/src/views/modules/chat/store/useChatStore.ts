@@ -90,6 +90,7 @@ export const useChatStore = defineStore('chat-store', {
       await this.setEdit('');
       this.curConversation = params;
       this.messages = await getMessages(params.id);
+      await this.selectPath(params.id);
     },
 
     /**
@@ -116,23 +117,15 @@ export const useChatStore = defineStore('chat-store', {
       await delConversations(id);
       await this.setActive('');
       await this.loadData();
-      this.messages = [];
     },
 
     /**
      * 新增消息
      */
-    async addMessage(
-      message: string,
-      role: 'user' | 'assistant' | 'system',
-      chatId: string,
-      parentChatId: string
-    ) {
+    async addMessage(message: string, role: 'user' | 'assistant' | 'system', chatId: string) {
       const data = {
         chatId,
-        parentRefId: parentChatId,
         conversationId: this.curConversation?.id,
-        chatModel: '',
         role: role,
         content: message,
         createTime: formatToDateTime(new Date()),
@@ -145,10 +138,10 @@ export const useChatStore = defineStore('chat-store', {
      * 更新消息
      */
     async updateMessage(chatId: string | undefined, content: string, isError?: boolean) {
-      const promptIndex = this.messages.findIndex((item) => item?.chatId == chatId);
-      if (promptIndex !== -1) {
-        this.messages[promptIndex].content = content;
-        this.messages[promptIndex].isError = isError;
+      const index = this.messages.findIndex((item) => item?.chatId == chatId);
+      if (index !== -1) {
+        this.messages[index].content = content;
+        this.messages[index].isError = isError;
       }
     },
 

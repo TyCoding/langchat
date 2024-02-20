@@ -4,8 +4,8 @@ import static dev.ai4j.openai4j.image.ImageModel.DALL_E_QUALITY_HD;
 import static java.net.Proxy.Type.HTTP;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.common.dto.ChatData;
 import cn.tycoding.langchat.common.event.MessageEvent;
 import cn.tycoding.langchat.core.properties.LangChatProps;
 import cn.tycoding.langchat.core.properties.OssProps;
@@ -14,13 +14,13 @@ import cn.tycoding.langchat.core.utils.ChatReq;
 import cn.tycoding.langchat.core.utils.ChatRes;
 import cn.tycoding.langchat.core.utils.OssR;
 import cn.tycoding.langchat.core.utils.OssUtil;
+import cn.tycoding.langchat.core.utils.StreamEmitter;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
@@ -45,45 +45,11 @@ public class LangChatServiceImpl implements LangChatService {
     private final OssProps ossProps;
 
     @Override
-    public void chat(ChatReq req) {
-        long startTime = System.currentTimeMillis();
-        StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
-                .apiKey(props.getApiKey())
-                .modelName("gpt-4")
-                .proxy(new Proxy(HTTP, new InetSocketAddress("127.0.0.1", 7890)))
-                .build();
-
-        PromptTemplate promptTemplate = PromptTemplate.from(
-                req.getPrompt() + "\n\n Here's what you need to deal with: {{input_text}}");
-        Prompt prompt = promptTemplate.apply(Dict.create().set("input_text", req.getContent()));
-
-        StringBuilder res = new StringBuilder();
-        model.generate(prompt.toUserMessage().text(), new StreamingResponseHandler<AiMessage>() {
-            @Override
-            public void onNext(String s) {
-                res.append(s);
-                req.getEmitter().send(new ChatRes(s));
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                req.getEmitter().complete();
-            }
-
-            @Override
-            public void onComplete(Response<AiMessage> response) {
-                TokenUsage tokenUsage = response.tokenUsage();
-                req.getEmitter().send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
-                req.getEmitter().complete();
-
-                req.setContent(res.toString());
-                SpringContextHolder.publishEvent(new MessageEvent(req));
-            }
-        });
+    public void chat(StreamEmitter emitter, Prompt prompt, ChatData data) {
+        stream(emitter, prompt, data);
     }
 
-    @Override
-    public void stream(ChatReq req) {
+    private void stream(StreamEmitter emitter, Prompt prompt, ChatData data) {
         long startTime = System.currentTimeMillis();
         StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
                 .apiKey(props.getApiKey())
@@ -97,30 +63,38 @@ public class LangChatServiceImpl implements LangChatService {
 //                .build();
 
         StringBuilder res = new StringBuilder();
-        model.generate(req.getPrompt().toUserMessage().text(),
+        model.generate(prompt.toUserMessage().text(),
                 new StreamingResponseHandler<AiMessage>() {
                     @Override
                     public void onNext(String s) {
                         res.append(s);
-                        req.getEmitter().send(new ChatRes(s));
+                        emitter.send(new ChatRes(s));
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
-                        req.getEmitter().complete();
+                        emitter.complete();
                     }
 
                     @Override
                     public void onComplete(Response<AiMessage> response) {
                         TokenUsage tokenUsage = response.tokenUsage();
-                        req.getEmitter().send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
-                        req.getEmitter().complete();
+                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
+                        emitter.complete();
 
-                        req.setContent(res.toString());
-                        SpringContextHolder.publishEvent(new MessageEvent(req));
+                        // save message
+                        if (data != null) {
+                            data.setContent(res.toString());
+                            SpringContextHolder.publishEvent(new MessageEvent(data));
+                        }
                     }
                 });
+    }
+
+    @Override
+    public void stream(ChatReq req) {
+        stream(req.getEmitter(), req.getPrompt(), null);
     }
 
     @Override

@@ -3,10 +3,10 @@
   import { useMessage } from 'naive-ui';
   import TextComponent from './TextComponent.vue';
   import AvatarComponent from './Avatar.vue';
-  import { SvgIcon } from '@/components/common';
   import { useBasicLayout } from '../store/useBasicLayout';
   import { useIconRender } from '../store/useIconRender';
   import { copyToClip } from '@/utils/copy';
+  import { t } from '@/locales';
 
   interface Props {
     dateTime?: string;
@@ -17,35 +17,27 @@
   }
 
   interface Emit {
-    (ev: 'regenerate'): void;
     (ev: 'delete'): void;
   }
-
   const props = defineProps<Props>();
-
   const emit = defineEmits<Emit>();
 
   const { isMobile } = useBasicLayout();
-
   const { iconRender } = useIconRender();
-
   const message = useMessage();
-
   const textRef = ref<HTMLElement>();
-
   const asRawText = ref(props.inversion);
-
   const messageRef = ref<HTMLElement>();
 
   const options = computed(() => {
     const common = [
       {
-        label: '删除',
+        label: t('chat.deleteMessage'),
         key: 'delete',
         icon: iconRender({ icon: 'ri:delete-bin-line' }),
       },
       {
-        label: '复制',
+        label: t('chat.copy'),
         key: 'copyText',
         icon: iconRender({ icon: 'ri:file-copy-2-line' }),
       },
@@ -53,7 +45,7 @@
 
     if (!props.inversion) {
       common.unshift({
-        label: asRawText.value ? '预览' : '显示原文',
+        label: asRawText.value ? t('chat.preview') : t('chat.showRawText'),
         key: 'toggleRenderType',
         icon: iconRender({ icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code' }),
       });
@@ -63,7 +55,6 @@
   });
 
   function handleSelect(key: any) {
-    console.log('点击', key);
     switch (key) {
       case 'copyText':
         handleCopy();
@@ -76,17 +67,12 @@
     }
   }
 
-  function handleRegenerate() {
-    messageRef.value?.scrollIntoView();
-    emit('regenerate');
-  }
-
   async function handleCopy() {
     try {
       await copyToClip(props.text || '');
-      message.success('复制成功');
-    } catch {
-      message.error('复制失败');
+      message.success(t('chat.copied'));
+    } catch (e: any) {
+      console.error(e);
     }
   }
 </script>
@@ -120,15 +106,6 @@
           :as-raw-text="asRawText"
         />
         <div class="flex flex-row justify-start items-start gap-1">
-          <button
-            v-if="!inversion"
-            :disabled="loading"
-            class="mb-2 transition text-neutral-300 hover:text-neutral-800"
-            @click="handleRegenerate"
-          >
-            <SvgIcon icon="ri:restart-line" />
-          </button>
-
           <n-popover
             v-for="item in options"
             :key="item"

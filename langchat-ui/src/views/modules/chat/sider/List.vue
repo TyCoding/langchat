@@ -1,18 +1,18 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
+  import { computed, nextTick } from 'vue';
   import { NInput, NPopconfirm, NScrollbar } from 'naive-ui';
   import { SvgIcon } from '@/components/common';
   import { useChatStore } from '../store/useChatStore';
   import { debounce } from '@/utils/debounce';
   import { Conversation } from '@/typings/chat';
-  const chatStore = useChatStore();
+  import { t } from '@/locales';
 
+  const chatStore = useChatStore();
   const dataSources = computed(() => {
     return chatStore.conversations;
   });
 
   async function handleSelect(item: Conversation) {
-    console.log(item);
     if (isActive(item.id)) return;
     await chatStore.selectConversation(item);
   }
@@ -90,7 +90,7 @@
                       <SvgIcon icon="ri:delete-bin-line" />
                     </button>
                   </template>
-                  确认删除？
+                  {{ t('chat.deleteConversationConfirm') }}
                 </NPopconfirm>
               </template>
             </div>

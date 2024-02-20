@@ -3,9 +3,12 @@
   import { computed, watch } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { NButton, NLayoutSider, useMessage } from 'naive-ui';
-  import List from './List.vue';
   import { useChatStore } from '../store/useChatStore';
   import { useBasicLayout } from '../store/useBasicLayout';
+  import List from './List.vue';
+  import { add as addConversation } from '@/api/conversation';
+  import { t } from '@/locales';
+
   const chatStore = useChatStore();
   const { isMobile } = useBasicLayout();
   const ms = useMessage();
@@ -48,6 +51,11 @@
       flush: 'post',
     }
   );
+
+  async function onAddConversation() {
+    await addConversation({});
+    await chatStore.loadData();
+  }
 </script>
 
 <template>
@@ -68,12 +76,18 @@
       </div>
       <main v-else class="flex flex-col flex-1 min-h-0">
         <div class="p-4 pt-3 flex justify-between items-center gap-2">
-          <n-input size="small" placeholder="搜索">
+          <n-input size="small" :placeholder="t('chat.searchPlaceholder')">
             <template #prefix> <SvgIcon icon="carbon:search" /> </template>
           </n-input>
-          <n-button size="small" type="success" secondary>
-            <SvgIcon icon="ic:round-plus" />
-          </n-button>
+
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button @click="onAddConversation" size="small" type="success" secondary>
+                <SvgIcon icon="ic:round-plus" />
+              </n-button>
+            </template>
+            <span>{{ t('chat.newChatButton') }}</span>
+          </n-popover>
         </div>
         <div class="flex-1 min-h-0 pb-4 overflow-hidden">
           <List />

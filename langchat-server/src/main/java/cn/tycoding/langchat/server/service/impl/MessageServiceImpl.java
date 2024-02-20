@@ -60,8 +60,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
     }
 
     @Override
-    public void delConversation(Long id) {
-        conversationMapper.deleteById(id);
+    public void delConversation(String conversationId) {
+        conversationMapper.deleteById(conversationId);
+        baseMapper.delete(
+                Wrappers.<LcMessage>lambdaQuery().eq(LcMessage::getConversationId, conversationId));
     }
 
     @Override
@@ -74,7 +76,14 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
             message.setConversationId(conversation.getId());
         }
 
+        message.setCreateTime(new Date());
         baseMapper.insert(message);
+    }
+
+    @Override
+    public void clearMessage(String conversationId) {
+        baseMapper.delete(
+                Wrappers.<LcMessage>lambdaQuery().eq(LcMessage::getConversationId, conversationId));
     }
 }
 

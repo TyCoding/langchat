@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.server.listener;
 
 import cn.tycoding.langchat.common.constant.RoleEnum;
+import cn.tycoding.langchat.common.dto.ChatData;
 import cn.tycoding.langchat.common.event.MessageEvent;
-import cn.tycoding.langchat.core.utils.ChatReq;
 import cn.tycoding.langchat.server.entity.LcMessage;
 import cn.tycoding.langchat.server.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class MessageListener {
     @Order
     @EventListener(MessageEvent.class)
     public void handler(MessageEvent event) {
-        ChatReq data = (ChatReq) event.getSource();
+        ChatData data = (ChatData) event.getSource();
         LcMessage message = new LcMessage();
         BeanUtils.copyProperties(data, message);
         message.setRole(RoleEnum.ASSISTANT.getName());

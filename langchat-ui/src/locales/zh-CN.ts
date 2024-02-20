@@ -74,8 +74,7 @@ export default {
     user: '用户中心',
   },
   chat: {
-    newChatButton: '新建聊天',
-    placeholder: '来说点什么吧...（Shift + Enter = 换行，"/" 触发提示词）',
+    placeholder: '请输入您的问题...（Shift + Enter 换行，按下 Enter 发送）',
     placeholderMobile: '来说点什么...',
     copy: '复制',
     copied: '复制成功',
@@ -92,9 +91,12 @@ export default {
     deleteMessage: '删除消息',
     deleteMessageConfirm: '是否删除此消息?',
     deleteHistoryConfirm: '确定删除此记录?',
-    clearHistoryConfirm: '确定清空记录?',
+    deleteConversationConfirm: '确定删除会话内容?',
     preview: '预览',
     showRawText: '显示原文',
+    filePlaceholder: '上传图片或者文件内容',
+    searchPlaceholder: '搜索会话',
+    newChatButton: '新建会话',
   },
   store: {
     siderButton: '提示词商店',

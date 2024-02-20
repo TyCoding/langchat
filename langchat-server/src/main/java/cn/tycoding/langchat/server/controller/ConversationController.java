@@ -71,9 +71,15 @@ public class ConversationController {
     /**
      * 删除会话
      */
-    @DeleteMapping("/{id}")
-    public R delConversation(@PathVariable Long id) {
-        messageService.delConversation(id);
+    @DeleteMapping("/{conversationId}")
+    public R delConversation(@PathVariable String conversationId) {
+        messageService.delConversation(conversationId);
+        return R.ok();
+    }
+
+    @DeleteMapping("/message/{conversationId}")
+    public R clearMessage(@PathVariable String conversationId) {
+        messageService.clearMessage(conversationId);
         return R.ok();
     }
 

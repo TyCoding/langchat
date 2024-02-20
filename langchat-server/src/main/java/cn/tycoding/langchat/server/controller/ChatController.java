@@ -4,6 +4,7 @@ import cn.tycoding.langchat.core.utils.ChatRes;
 import cn.tycoding.langchat.core.utils.StreamEmitter;
 import cn.tycoding.langchat.common.constant.PromptConst;
 import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.TextR;
 import cn.tycoding.langchat.server.utils.ImageR;
 import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.service.ChatService;
@@ -29,12 +30,12 @@ public class ChatController {
     public SseEmitter chat(@RequestBody ChatR req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
-        chatService.stream(req, PromptConst.CHAT);
+        chatService.chat(req);
         return emitter.get();
     }
 
     @PostMapping("/translate")
-    public SseEmitter translate(@RequestBody ChatR req) {
+    public SseEmitter translate(@RequestBody TextR req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         chatService.stream(req, PromptConst.TRANSLATE);
@@ -42,7 +43,7 @@ public class ChatController {
     }
 
     @PostMapping("/write")
-    public SseEmitter write(@RequestBody ChatR req) {
+    public SseEmitter write(@RequestBody TextR req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         chatService.stream(req, PromptConst.WRITE);
@@ -50,12 +51,12 @@ public class ChatController {
     }
 
     @PostMapping("/mindmap")
-    public R mindmap(@RequestBody ChatR req) {
+    public R mindmap(@RequestBody TextR req) {
         return R.ok(new ChatRes(chatService.text(req, PromptConst.MIND_MAP)));
     }
 
     @PostMapping("/chart")
-    public R chart(@RequestBody ChatR req) {
+    public R chart(@RequestBody TextR req) {
         return R.ok(new ChatRes(chatService.text(req, PromptConst.LINE_CHART)));
     }
 

@@ -1,44 +1,18 @@
 package cn.tycoding.langchat.server.utils;
 
 import cn.tycoding.langchat.core.utils.StreamEmitter;
+import cn.tycoding.langchat.server.entity.LcMessage;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tycoding
- * @since 2024/1/4
+ * @since 2024/2/20
  */
 @Data
-public class ChatR {
+@EqualsAndHashCode(callSuper = true)
+public class ChatR extends LcMessage {
+    private static final long serialVersionUID = 2838308353711307727L;
 
     private StreamEmitter emitter;
-
-    /**
-     * 输入内容
-     */
-    private String content;
-
-    /**
-     * 角色
-     */
-    private String role;
-
-    /**
-     * 输出内容类型
-     */
-    private String type;
-
-    /**
-     * 输出内容语言
-     */
-    private String language;
-
-    /**
-     * 输出内容语气
-     */
-    private String tone;
-
-    /**
-     * 输出内容长度
-     */
-    private String length;
 }

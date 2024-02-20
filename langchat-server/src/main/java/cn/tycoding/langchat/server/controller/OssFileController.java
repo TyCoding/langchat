@@ -2,7 +2,7 @@ package cn.tycoding.langchat.server.controller;
 
 import cn.tycoding.langchat.core.utils.StreamEmitter;
 import cn.tycoding.langchat.common.constant.PromptConst;
-import cn.tycoding.langchat.server.utils.ChatR;
+import cn.tycoding.langchat.server.utils.TextR;
 import cn.tycoding.langchat.server.utils.R;
 import cn.tycoding.langchat.server.entity.LcOss;
 import cn.tycoding.langchat.server.service.ClientFileService;
@@ -50,7 +50,7 @@ public class OssFileController {
     }
 
     @PostMapping("/chat")
-    public SseEmitter chat(@RequestBody ChatR req) {
+    public SseEmitter chat(@RequestBody TextR req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         clientFileService.chat(req, PromptConst.DOCUMENT);

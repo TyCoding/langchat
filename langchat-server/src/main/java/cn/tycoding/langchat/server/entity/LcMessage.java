@@ -29,11 +29,6 @@ public class LcMessage implements Serializable {
     private String chatId;
 
     /**
-     * 上级消息ID
-     */
-    private String parentChatId;
-
-    /**
      * 会话ID
      */
     private String conversationId;
