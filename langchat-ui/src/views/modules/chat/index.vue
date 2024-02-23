@@ -48,7 +48,7 @@
     // user
     chatId.value = uuidv4();
     const messageData = await chatStore.addMessage(message, 'user', chatId.value);
-    await addMessage(messageData);
+    const data = await addMessage(messageData);
 
     loading.value = true;
     prompt.value = '';
@@ -60,6 +60,11 @@
     // ai
     aiChatId.value = uuidv4();
     await chatStore.addMessage('', 'assistant', aiChatId.value);
+    if (chatStore.curConversation?.id == undefined) {
+      chatStore.curConversation = { id: String(messageData.conversationId) };
+      await chatStore.selectConversation({ id: messageData.conversationId });
+      console.log(chatStore.active);
+    }
     await scrollToBottom();
     await onChat(message);
   }

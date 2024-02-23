@@ -50,7 +50,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
         String title = conversation.getTitle();
         if (StrUtil.isBlank(title)) {
             Long count = conversationMapper.selectCount(Wrappers.lambdaQuery());
-            title = "New Chat" + (count + 1);
+            title = "New Chat" + (count == 0 ? "" : count);
         }
         conversation.setTitle(title)
                 .setUserId(AuthUtil.getUserId()).setCreateTime(new Date());
@@ -72,7 +72,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
     }
 
     @Override
-    public void addMessage(LcMessage message) {
+    public LcMessage addMessage(LcMessage message) {
         if (StrUtil.isBlank(message.getConversationId()) && RoleEnum.USER.getName()
                 .equals(message.getRole())) {
             // create new conversation
@@ -83,6 +83,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
 
         message.setCreateTime(new Date());
         baseMapper.insert(message);
+        return message;
     }
 
     @Override

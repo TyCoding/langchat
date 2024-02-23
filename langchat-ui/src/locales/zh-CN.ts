@@ -97,6 +97,7 @@ export default {
     filePlaceholder: '上传图片或者文件内容',
     searchPlaceholder: '搜索会话',
     newChatButton: '新建会话',
+    emptyConversation: '会话列表为空',
   },
   store: {
     siderButton: '提示词商店',

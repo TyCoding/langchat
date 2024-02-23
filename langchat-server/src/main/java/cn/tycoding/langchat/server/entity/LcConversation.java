@@ -24,6 +24,11 @@ public class LcConversation implements Serializable {
     private String id;
 
     /**
+     * 提示词ID
+     */
+    private String promptId;
+
+    /**
      * 用户ID
      */
     private String userId;

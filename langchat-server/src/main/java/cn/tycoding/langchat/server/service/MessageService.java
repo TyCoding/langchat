@@ -38,7 +38,7 @@ public interface MessageService extends IService<LcMessage> {
      */
     void delConversation(String conversationId);
 
-    void addMessage(LcMessage message);
+    LcMessage addMessage(LcMessage message);
 
     void clearMessage(String conversationId);
 }

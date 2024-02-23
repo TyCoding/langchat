@@ -74,15 +74,45 @@ export function genImage(data: ImageR): Promise<Oss> {
   });
 }
 
-export const ModelList = [
+export const ModelOptions = [
   {
-    label: 'GPT-4',
-    value: 'gpt-4',
-    des: 'ChatGPT 4',
+    value: 'ChatGPT',
+    label: 'ChatGPT',
+    children: [
+      {
+        value: 'gpt-3.5',
+        label: 'GPT-3.5',
+      },
+      {
+        value: 'gpt-4',
+        label: 'GPT-4',
+      },
+    ],
   },
   {
-    label: 'GPT-3',
-    value: 'gpt-3',
-    des: 'ChatGPT 3',
+    value: 'Google',
+    label: 'Google',
+    children: [
+      {
+        value: 'gemini',
+        label: 'Gemini',
+      },
+    ],
   },
 ];
+
+export function findModelLabel(val: string) {
+  const result = ModelOptions.find((option) => {
+    if (option.children) {
+      const child = option.children.find((child) => child.value === val);
+      return !!child;
+    }
+    return option.value === val;
+  });
+
+  return result
+    ? result.children
+      ? result.children.find((child) => child.value === val)?.label
+      : result.label
+    : undefined;
+}

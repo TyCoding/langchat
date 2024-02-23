@@ -4,9 +4,9 @@
   import { useLanguage } from '@/hooks/useLanguage';
   import { NWatermark } from 'naive-ui';
 
-  const showWatermark = true;
   const { theme, themeOverrides } = useTheme();
   const { language } = useLanguage();
+  const waterMark = import.meta.env.VITE_WATER_MARK;
 </script>
 
 <template>
@@ -22,8 +22,8 @@
   </n-config-provider>
 
   <NWatermark
-    v-if="showWatermark"
-    content="LangChat"
+    v-if="waterMark !== ''"
+    :content="waterMark"
     cross
     fullscreen
     :z-index="9999"

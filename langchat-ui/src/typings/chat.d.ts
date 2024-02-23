@@ -55,15 +55,11 @@ export interface ChatState {
 }
 
 export type Conversation = {
-  id: string;
-  title: string;
-  appId: string;
-  appName: string;
-  flowId: string;
-  modelId: string;
-  model: string;
-  chatModel: string;
-  createTime: string;
+  id?: string;
+  promptId?: string;
+  userId?: string;
+  title?: string;
+  createTime?: string;
 };
 
 export type Message = {

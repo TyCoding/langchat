@@ -98,7 +98,6 @@ public class ConversationController {
 
     @PostMapping("/message")
     public R addMessage(@RequestBody LcMessage message) {
-        messageService.addMessage(message);
-        return R.ok();
+        return R.ok(messageService.addMessage(message));
     }
 }

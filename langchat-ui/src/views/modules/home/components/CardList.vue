@@ -16,9 +16,12 @@
   const router = useRouter();
 
   async function onUse(id: string) {
-    const data = (await addConversation({})) as Conversation;
+    const data = (await addConversation({ promptId: id })) as Conversation;
     chatStore.curConversation = data;
-    await router.push({ name: 'Chat', query: { conversationId: data.id, promptId: id } });
+    await router.push({
+      name: 'Chat',
+      query: { conversationId: data.id, promptId: data.id },
+    });
     chatStore.active = '';
   }
 </script>

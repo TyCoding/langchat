@@ -15,7 +15,7 @@ import { toRaw } from 'vue';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: 'gpt-3',
+      model: 'gpt-3.5',
       active: '',
       isEdit: '',
       siderCollapsed: true,
@@ -53,28 +53,14 @@ export const useChatStore = defineStore('chat-store', {
         if (data && data.length > 0) {
           this.conversations = data;
         } else {
+          this.active = '';
           this.conversations = [];
+          await router.replace({ path: router.currentRoute.value.path, query: {} });
         }
       } finally {
         this.sideIsLoading = false;
         this.chatIsLoading = false;
       }
-    },
-
-    async selectPath(conversationId: string | undefined, promptId: string | undefined) {
-      const query: any = {};
-      const cur = router.currentRoute.value;
-      if (conversationId !== undefined) {
-        query.conversationId = conversationId;
-      }
-      if (promptId !== undefined) {
-        query.promptId = promptId;
-      }
-      if (cur.query.promptId !== undefined) {
-        query.promptId = cur.query.promptId;
-      }
-
-      await router.replace({ path: router.currentRoute.value.path, query });
     },
 
     /**
@@ -95,7 +81,13 @@ export const useChatStore = defineStore('chat-store', {
       await this.setEdit('');
       this.curConversation = params;
       this.messages = await getMessages(params.id);
-      await this.selectPath(params.id, undefined);
+
+      // replace url path
+      let query: any = { conversationId: params.id };
+      if (params.promptId !== null) {
+        query.promptId = params.promptId;
+      }
+      await router.replace({ path: router.currentRoute.value.path, query });
     },
 
     /**

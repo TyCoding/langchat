@@ -2,7 +2,7 @@
   import { SvgIcon } from '@/components/common';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
-  import { ModelList } from '@/api/chat';
+  import { findModelLabel, ModelOptions } from '@/api/chat';
   import { computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { t } from '@/locales';
@@ -15,7 +15,7 @@
   const ms = useMessage();
 
   const chatModel = computed(() => {
-    return ModelList.filter((i) => i.value == chatStore.model)[0].label;
+    return findModelLabel(chatStore.model);
   });
 
   function onClear() {
@@ -79,14 +79,14 @@
           <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
         </n-button>
 
-        <n-popselect v-model:value="chatStore.model" :options="ModelList" trigger="click">
-          <n-button icon-placement="right">
-            <span class="font-bold">{{ chatModel }}</span>
-            <template #icon>
-              <SvgIcon icon="mingcute:down-fill" />
-            </template>
-          </n-button>
-        </n-popselect>
+        <n-cascader
+          v-model:value="chatStore.model"
+          class="bold-cascader"
+          expand-trigger="hover"
+          :options="ModelOptions"
+          check-strategy="child"
+          :show-path="true"
+        />
       </div>
 
       <div class="flex items-center space-x-2">
