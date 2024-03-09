@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import {
-  list as getConversations,
   add as addConversations,
-  update as updateConversations,
   del as delConversations,
   getMessages,
+  list as getConversations,
+  update as updateConversations,
 } from '@/api/conversation';
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
@@ -15,7 +15,7 @@ import { toRaw } from 'vue';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: 'gpt-3.5',
+      model: '',
       active: '',
       isEdit: '',
       siderCollapsed: true,
@@ -52,6 +52,7 @@ export const useChatStore = defineStore('chat-store', {
         }
         if (data && data.length > 0) {
           this.conversations = data;
+          this.curConversation = data[0];
         } else {
           this.active = '';
           this.conversations = [];
@@ -77,15 +78,25 @@ export const useChatStore = defineStore('chat-store', {
       if (params.id == undefined) {
         return;
       }
+      if (this.active !== '') {
+        this.messages = await getMessages(params.id);
+      }
       await this.setActive(params.id);
       await this.setEdit('');
       this.curConversation = params;
-      this.messages = await getMessages(params.id);
 
+      await this.replaceUrl();
+    },
+
+    async replaceUrl() {
+      if (this.curConversation == undefined) {
+        return;
+      }
+      const { id, promptId } = this.curConversation;
       // replace url path
-      let query: any = { conversationId: params.id };
-      if (params.promptId !== null) {
-        query.promptId = params.promptId;
+      const query: any = { conversationId: id };
+      if (promptId) {
+        query.promptId = promptId;
       }
       await router.replace({ path: router.currentRoute.value.path, query });
     },
@@ -124,7 +135,8 @@ export const useChatStore = defineStore('chat-store', {
         chatId,
         conversationId: this.curConversation?.id,
         role: role,
-        content: message,
+        message,
+        model: this.model,
         createTime: formatToDateTime(new Date()),
       };
       this.messages.push(data);
@@ -134,10 +146,10 @@ export const useChatStore = defineStore('chat-store', {
     /**
      * 更新消息
      */
-    async updateMessage(chatId: string | undefined, content: string, isError?: boolean) {
+    async updateMessage(chatId: string | undefined, message: string, isError?: boolean) {
       const index = this.messages.findIndex((item) => item?.chatId == chatId);
       if (index !== -1) {
-        this.messages[index].content = content;
+        this.messages[index].message = message;
         this.messages[index].isError = isError;
       }
     },

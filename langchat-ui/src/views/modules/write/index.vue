@@ -1,30 +1,30 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import Write from './components/Write.vue';
   import Beautify from './components/Beautify.vue';
   import { ref } from 'vue';
 
-  const content = ref('');
+  const message = ref('');
   function onOk(val: string) {
-    content.value = val;
+    message.value = val;
   }
 </script>
 
 <template>
-  <n-layout has-sider class="h-full w-full">
+  <n-layout class="h-full w-full" has-sider>
     <n-layout-sider
       :collapsed-width="0"
-      collapse-mode="width"
       :width="500"
-      show-trigger="arrow-circle"
       bordered
+      collapse-mode="width"
+      show-trigger="arrow-circle"
     >
       <div class="flex justify-center items-center m-4 rounded">
         <n-tabs type="segment">
-          <n-tab-pane name="chap1" tab="文案撰写" display-directive="show">
+          <n-tab-pane display-directive="show" name="chap1" tab="文案撰写">
             <Write @ok="onOk" />
           </n-tab-pane>
-          <n-tab-pane name="chap2" tab="内容美化" display-directive="show">
+          <n-tab-pane display-directive="show" name="chap2" tab="内容美化">
             <Beautify @ok="onOk" />
           </n-tab-pane>
         </n-tabs>
@@ -39,7 +39,7 @@
             <span>输出内容预览</span>
           </div>
           <div>
-            <n-button size="small" type="success" secondary>
+            <n-button secondary size="small" type="success">
               <template #icon>
                 <SvgIcon class="text-[14px]" icon="ion:sparkles-outline" />
               </template>
@@ -47,10 +47,10 @@
             </n-button>
           </div>
         </div>
-        <n-input v-model:value="content" type="textarea" class="h-full" />
+        <n-input v-model:value="message" class="h-full" type="textarea" />
       </div>
     </div>
   </n-layout>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

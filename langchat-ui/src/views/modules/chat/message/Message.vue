@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { computed, ref } from 'vue';
   import { useMessage } from 'naive-ui';
   import TextComponent from './TextComponent.vue';
@@ -80,43 +80,43 @@
 <template>
   <div
     ref="messageRef"
-    class="flex w-full mb-6 overflow-hidden"
     :class="[{ 'flex-row-reverse': inversion }]"
+    class="flex w-full mb-6 overflow-hidden"
   >
     <div
-      class="flex items-center justify-center flex-shrink-0 h-8 overflow-hidden rounded-full basis-8"
       :class="[inversion ? 'ml-2' : 'mr-2']"
+      class="flex items-center justify-center flex-shrink-0 h-8 overflow-hidden rounded-full basis-8"
     >
       <AvatarComponent :image="inversion" />
     </div>
-    <div class="overflow-hidden text-sm" :class="[inversion ? 'items-end' : 'items-start']">
-      <p class="text-xs text-[#b4bbc4]" :class="[inversion ? 'text-right' : 'text-left']">
+    <div :class="[inversion ? 'items-end' : 'items-start']" class="overflow-hidden text-sm">
+      <p :class="[inversion ? 'text-right' : 'text-left']" class="text-xs text-[#b4bbc4]">
         {{ dateTime }}
       </p>
       <div
-        class="flex gap-1 mt-2"
         :class="[inversion ? 'flex-col items-end' : 'flex-col justify-start items-start']"
+        class="flex gap-1 mt-2"
       >
         <TextComponent
           ref="textRef"
-          :inversion="inversion"
-          :error="error"
-          :text="text"
-          :loading="loading"
           :as-raw-text="asRawText"
+          :error="error"
+          :inversion="inversion"
+          :loading="loading"
+          :text="text"
         />
         <div class="flex flex-row justify-start items-start gap-1">
           <n-popover
             v-for="item in options"
             :key="item"
             :trigger="isMobile ? 'click' : 'hover'"
-            placement="bottom"
             class="custom-popover"
+            placement="bottom"
           >
             <template #trigger>
               <button
-                @click="handleSelect(item.key)"
                 class="transition text-neutral-300 hover:text-neutral-800"
+                @click="handleSelect(item.key)"
               >
                 <component :is="item.icon" />
               </button>

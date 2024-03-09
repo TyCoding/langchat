@@ -1,21 +1,30 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
-  import { findModelLabel, ModelOptions } from '@/api/chat';
-  import { computed } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { t } from '@/locales';
   import { clearMessage } from '@/api/conversation';
   import html2canvas from 'html2canvas';
+  import { getList } from '@/api/model';
 
   const { isMobile } = useBasicLayout();
   const chatStore = useChatStore();
   const dialog = useDialog();
   const ms = useMessage();
-
-  const chatModel = computed(() => {
-    return findModelLabel(chatStore.model);
+  const isShow = ref(true);
+  const model = ref('gemma:2b');
+  const modelList = ref<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([]);
+  onMounted(async () => {
+    modelList.value = await getList();
+    chatStore.model = modelList.value[0].value;
+    isShow.value = false;
   });
 
   function onClear() {
@@ -73,42 +82,42 @@
   <header
     class="sticky pl-4 pr-6 z-30 border-b dark:border-neutral-800 bg-white/80 dark:bg-black/20 backdrop-blur"
   >
-    <div class="relative flex items-center justify-between min-w-0 overflow-hidden h-14 ml-2 mr-2">
-      <div class="flex items-center">
-        <n-button v-if="isMobile" @click="chatStore.setSiderCollapsed(false)" text>
-          <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
-        </n-button>
+    <n-spin :show="isShow">
+      <div
+        class="relative flex items-center justify-between min-w-0 overflow-hidden h-14 ml-2 mr-2"
+      >
+        <div class="flex items-center gap-2">
+          <n-button v-if="isMobile" text @click="chatStore.setSiderCollapsed(false)">
+            <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
+          </n-button>
+          <n-select
+            v-model:value="chatStore.model"
+            :options="modelList"
+            class="!w-[200px] tracking-widest"
+          />
+        </div>
 
-        <n-cascader
-          v-model:value="chatStore.model"
-          class="bold-cascader"
-          expand-trigger="hover"
-          :options="ModelOptions"
-          check-strategy="child"
-          :show-path="true"
-        />
+        <div class="flex items-center space-x-2">
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button text @click="onClear">
+                <SvgIcon class="text-lg" icon="fluent:delete-28-regular" />
+              </n-button>
+            </template>
+            <span>{{ t('chat.clearChat') }}</span>
+          </n-popover>
+
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button text @click="handleExport">
+                <SvgIcon class="text-xl" icon="material-symbols:download" />
+              </n-button>
+            </template>
+            <span>{{ t('chat.exportImage') }}</span>
+          </n-popover>
+        </div>
       </div>
-
-      <div class="flex items-center space-x-2">
-        <n-popover trigger="hover">
-          <template #trigger>
-            <n-button @click="onClear" text>
-              <SvgIcon class="text-lg" icon="fluent:delete-28-regular" />
-            </n-button>
-          </template>
-          <span>{{ t('chat.clearChat') }}</span>
-        </n-popover>
-
-        <n-popover trigger="hover">
-          <template #trigger>
-            <n-button @click="handleExport" text>
-              <SvgIcon class="text-xl" icon="material-symbols:download" />
-            </n-button>
-          </template>
-          <span>{{ t('chat.exportImage') }}</span>
-        </n-popover>
-      </div>
-    </div>
+    </n-spin>
   </header>
 </template>
 

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { ref } from 'vue';
   import { chat } from '@/api/file';
   import { v4 as uuid } from 'uuid';
@@ -14,7 +14,7 @@
 
   const messageRef = ref();
   const router = useRouter();
-  const content = ref('');
+  const message = ref('');
   const loading = ref(false);
 
   function handleFocus() {
@@ -43,7 +43,7 @@
     {
       id: string;
       inversion: boolean;
-      content: string;
+      message: string;
       time?: number;
       usedToken?: number;
     }[]
@@ -59,12 +59,12 @@
         {
           id: uuid(),
           inversion: false,
-          content: content.value,
+          message: message.value,
         },
         {
           id: id,
           inversion: true,
-          content: '',
+          message: '',
           usedToken: 0,
           time: 0,
         }
@@ -72,7 +72,7 @@
       const items = messages.value.filter((i) => i.id == id);
       await chat(
         {
-          content: content.value,
+          message: message.value,
         },
         ({ event }) => {
           const list = event.target.responseText.split('\n\n');
@@ -81,19 +81,19 @@
             if (!i.startsWith('data:{')) {
               return;
             }
-            const { usedToken, done, content, time } = JSON.parse(i.substring(5, i.length));
+            const { usedToken, done, message, time } = JSON.parse(i.substring(5, i.length));
             if (done) {
               items[0].usedToken = usedToken;
               items[0].time = time;
             } else {
-              text += content;
+              text += message;
             }
           });
-          items[0].content = mdi.render(text);
+          items[0].message = mdi.render(text);
           messageRef.value.scrollToBottom();
         }
       ).catch(() => {});
-      content.value = '';
+      message.value = '';
       loading.value = false;
     } finally {
       loading.value = false;
@@ -117,16 +117,16 @@
     <div class="bottom absolute bottom-2 left-0 w-full h-[60px] z-10">
       <div class="pl-12 pr-12 flex justify-center items-center space-x-2 w-full">
         <n-input
-          @focus="handleFocus"
-          v-model:value="content"
-          type="textarea"
-          class="w-full ]text-xs rounded-md"
+          v-model:value="message"
           :autosize="{ minRows: 1, maxRows: 5 }"
           :disabled="loading"
+          class="w-full ]text-xs rounded-md"
+          type="textarea"
+          @focus="handleFocus"
           @keypress="handleEnter"
         >
           <template #suffix>
-            <n-button @click="handleSubmit" :loading="loading" size="small" text>
+            <n-button :loading="loading" size="small" text @click="handleSubmit">
               <template #icon>
                 <n-icon color="#18a058">
                   <SvgIcon icon="mingcute:send-line" />

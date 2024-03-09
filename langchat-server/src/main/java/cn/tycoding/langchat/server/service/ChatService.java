@@ -1,10 +1,9 @@
 package cn.tycoding.langchat.server.service;
 
-import cn.tycoding.langchat.common.constant.PromptConst;
-import cn.tycoding.langchat.server.utils.ChatR;
-import cn.tycoding.langchat.server.utils.TextR;
-import cn.tycoding.langchat.server.utils.ImageR;
-import cn.tycoding.langchat.server.entity.LcOss;
+import cn.tycoding.langchat.biz.entity.LcOss;
+import cn.tycoding.langchat.core.dto.ChatReq;
+import cn.tycoding.langchat.core.dto.ImageR;
+import cn.tycoding.langchat.core.dto.TextR;
 
 /**
  * @author tycoding
@@ -15,14 +14,14 @@ public interface ChatService {
     /**
      * 流式响应
      */
-    void chat(ChatR req);
+    void chat(ChatReq req);
 
-    void stream(TextR req, PromptConst promptConst);
+    void stream(TextR req);
 
     /**
      * 文本请求
      */
-    String text(TextR req, PromptConst promptConst);
+    String text(TextR req);
 
     /**
      * 文生图

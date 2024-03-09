@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { ref } from 'vue';
   import { useMessage } from 'naive-ui';
   import { genTranslate } from '@/api/chat';
@@ -8,7 +8,7 @@
   import mdKatex from '@traptitech/markdown-it-katex';
   import { ChatR } from '@/api/models';
 
-  const message = useMessage();
+  const ms = useMessage();
   const options = ref([
     { value: '中文' },
     { value: '英文' },
@@ -20,7 +20,7 @@
   const language = ref('');
   const result = ref('');
   const form = ref<ChatR>({
-    content: '',
+    message: '',
     language: '英文',
   });
 
@@ -51,11 +51,11 @@
         if (!i.startsWith('data:{')) {
           return;
         }
-        const { done, content } = JSON.parse(i.substring(5, i.length));
+        const { done, message } = JSON.parse(i.substring(5, i.length));
         if (done) {
-          message.success('翻译完成');
+          ms.success('翻译完成');
         } else {
-          text += content;
+          text += message;
         }
       });
       result.value = mdi.render(text);
@@ -70,41 +70,41 @@
   <div class="w-full flex flex-row gap-2 p-4 pt-0">
     <div class="w-full h-full">
       <div class="text-gray-600 mb-2 text-[15px] flex items-center justify-between">
-        <n-button @click="onSubmit" :loading="loading" size="small" type="success" secondary>
+        <n-button :loading="loading" secondary size="small" type="success" @click="onSubmit">
           开始翻译
         </n-button>
         <div
-          class="flex flex-row items-center justify-end gap-2"
           :class="form.language == '自定义' ? 'w-3/12' : 'w-2/12'"
+          class="flex flex-row items-center justify-end gap-2"
         >
           <n-select
-            :options="options"
             v-model:value="form.language"
-            label-field="value"
-            size="small"
+            :options="options"
             filterable
+            label-field="value"
             placeholder="请选择目标语言"
+            size="small"
           />
           <n-input
-            v-model:value="language"
             v-if="form.language == '自定义'"
-            size="small"
+            v-model:value="language"
             placeholder="请输入目标语言"
+            size="small"
           />
         </div>
       </div>
       <n-input
-        v-model:value="form.content"
+        v-model:value="form.message"
         :disabled="loading"
-        type="textarea"
         placeholder="原始文档内容"
         style="height: calc(100vh - 150px)"
+        type="textarea"
       />
     </div>
     <div class="w-full h-full">
       <div class="mb-2 text-lg text-gray-400 flex items-center justify-between">
         <div>Preview</div>
-        <n-button size="small" type="success" secondary>复制</n-button>
+        <n-button secondary size="small" type="success">复制</n-button>
       </div>
       <div class="w-full rounded-md p-2 h-full markdown-body" v-html="result"></div>
     </div>

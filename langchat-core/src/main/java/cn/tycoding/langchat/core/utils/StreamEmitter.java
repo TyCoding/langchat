@@ -4,7 +4,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * @author tycoding
- * @since 2023/12/30
+ * @since 2024/1/30
  */
 public class StreamEmitter {
 
@@ -32,6 +32,15 @@ public class StreamEmitter {
 
     public void complete() {
         try {
+            emitter.complete();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void error(String message) {
+        try {
+            emitter.send("Error: " + message);
             emitter.complete();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

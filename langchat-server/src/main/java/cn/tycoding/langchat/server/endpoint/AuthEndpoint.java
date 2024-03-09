@@ -3,26 +3,31 @@ package cn.tycoding.langchat.server.endpoint;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.TokenInfo;
+import cn.tycoding.langchat.biz.service.UserService;
+import cn.tycoding.langchat.biz.utils.AuthUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
-import cn.tycoding.langchat.server.dto.TokenInfo;
-import cn.tycoding.langchat.server.dto.LcUserInfo;
-import cn.tycoding.langchat.server.exception.ServiceException;
-import cn.tycoding.langchat.server.utils.AuthUtil;
-import cn.tycoding.langchat.server.utils.QueryPage;
-import cn.tycoding.langchat.server.utils.R;
-import cn.tycoding.langchat.server.properties.AuthProps;
-import cn.tycoding.langchat.server.service.UserService;
+import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.properties.AuthProps;
+import cn.tycoding.langchat.common.utils.QueryPage;
+import cn.tycoding.langchat.common.utils.R;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author tycoding
- * @since 2023/12/20
+ * @since 2024/1/20
  */
 @Slf4j
 @RestController

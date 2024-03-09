@@ -76,14 +76,18 @@
       </div>
       <main v-else class="flex flex-col flex-1 min-h-0">
         <div class="p-4 pt-3 flex justify-between items-center gap-2">
-          <n-input size="small" :placeholder="t('chat.searchPlaceholder')">
-            <template #prefix> <SvgIcon icon="carbon:search" /> </template>
-          </n-input>
-
           <n-popover trigger="hover">
             <template #trigger>
               <n-button @click="onAddConversation" size="small" type="success" secondary>
                 <SvgIcon icon="ic:round-plus" />
+              </n-button>
+            </template>
+            <span>{{ t('chat.newChatButton') }}</span>
+          </n-popover>
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button @click="onAddConversation" size="small" type="success" secondary>
+                <SvgIcon icon="material-symbols:refresh" />
               </n-button>
             </template>
             <span>{{ t('chat.newChatButton') }}</span>

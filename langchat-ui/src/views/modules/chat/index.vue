@@ -34,6 +34,9 @@
     scrollToBottom();
     return chatStore.messages;
   });
+  onUpdated(() => {
+    chatStore.replaceUrl();
+  });
 
   async function handleSubmit() {
     let message = prompt.value;
@@ -47,8 +50,7 @@
 
     // user
     chatId.value = uuidv4();
-    const messageData = await chatStore.addMessage(message, 'user', chatId.value);
-    const data = await addMessage(messageData);
+    const data = await chatStore.addMessage(message, 'user', chatId.value);
 
     loading.value = true;
     prompt.value = '';
@@ -58,47 +60,60 @@
     }
 
     // ai
+    const { conversationId } = await addMessage(data);
     aiChatId.value = uuidv4();
     await chatStore.addMessage('', 'assistant', aiChatId.value);
-    if (chatStore.curConversation?.id == undefined) {
-      chatStore.curConversation = { id: String(messageData.conversationId) };
-      await chatStore.selectConversation({ id: messageData.conversationId });
-      console.log(chatStore.active);
-    }
     await scrollToBottom();
-    await onChat(message);
+    await onChat(message, conversationId);
   }
 
-  async function onChat(message: string) {
+  async function onChat(message: string, conversationId?: string) {
     try {
       // 定义接口
       const fetchChatAPIOnce = async () => {
         await chat(
           {
             chatId: chatId.value,
-            content: message,
+            message,
             role: 'user',
-            conversationId: chatStore.curConversation?.id,
+            model: chatStore.model,
+            conversationId: conversationId,
           },
           async ({ event }) => {
             const list = event.target.responseText.split('\n\n');
 
             let text = '';
+            let isRun = true;
             list.forEach((i: any) => {
+              if (i.startsWith('data:Error')) {
+                isRun = false;
+                text += i.substring(5, i.length);
+                chatStore.updateMessage(aiChatId.value, text, true);
+                return;
+              }
               if (!i.startsWith('data:{')) {
                 return;
               }
 
-              const { done, content } = JSON.parse(i.substring(5, i.length));
+              const { done, message } = JSON.parse(i.substring(5, i.length));
               if (done) {
+                if (chatStore.curConversation?.id == undefined) {
+                  chatStore.curConversation = { id: String(conversationId) };
+                  chatStore.selectConversation({ id: conversationId });
+                }
                 return;
               }
-              text += content;
+              text += message;
             });
+            if (!isRun) {
+              return;
+            }
             await chatStore.updateMessage(aiChatId.value, text, false);
             await scrollToBottomIfAtBottom();
           }
-        ).catch(() => {});
+        ).catch(() => {
+          loading.value = false;
+        });
       };
 
       // 调用接口
@@ -189,7 +204,7 @@
 
 <template>
   <div class="transition-all overflow-hidden h-full">
-    <n-layout class="z-40 transition" :class="getContainerClass" has-sider>
+    <n-layout :class="getContainerClass" class="z-40 transition" has-sider>
       <!-- Sider -->
       <Sider />
 
@@ -200,19 +215,19 @@
 
           <!-- chat -->
           <main class="flex-1 overflow-hidden">
-            <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto" id="image-wrapper">
+            <div id="image-wrapper" ref="contentRef" class="h-full overflow-hidden overflow-y-auto">
               <div v-if="chatIsLoading" class="w-full h-full flex items-center justify-center">
                 <n-spin :show="chatIsLoading" size="large" />
               </div>
-              <div v-else ref="scrollRef" class="w-full m-auto" :class="[isMobile ? 'p-2' : 'p-8']">
+              <div v-else ref="scrollRef" :class="[isMobile ? 'p-2' : 'p-8']" class="w-full m-auto">
                 <Message
                   v-for="(item, index) of dataSources"
                   :key="index"
                   :date-time="item.createTime"
-                  :text="item.content"
-                  :inversion="item.role !== 'assistant'"
                   :error="item.isError"
+                  :inversion="item.role !== 'assistant'"
                   :loading="loading"
+                  :text="item.message"
                   @delete="handleDelete(item)"
                 />
                 <div class="sticky bottom-0 left-0 flex justify-center">
@@ -233,10 +248,10 @@
                 <n-input
                   ref="inputRef"
                   v-model:value="prompt"
-                  type="textarea"
                   :autosize="{ minRows: 3, maxRows: isMobile ? 4 : 8 }"
-                  @keypress="handleEnter"
                   :placeholder="t('chat.placeholder')"
+                  type="textarea"
+                  @keypress="handleEnter"
                 >
                   <template #suffix>
                     <div
@@ -245,12 +260,12 @@
                       <n-popover trigger="hover">
                         <template #trigger>
                           <n-button
-                            type="info"
-                            size="small"
                             :disabled="buttonDisabled"
-                            @click="handleSubmit"
-                            secondary
                             class="z-10"
+                            secondary
+                            size="small"
+                            type="info"
+                            @click="handleSubmit"
                           >
                             <template #icon>
                               <SvgIcon icon="ic:round-plus" />
@@ -261,12 +276,12 @@
                       </n-popover>
 
                       <n-button
-                        type="primary"
-                        size="small"
                         :disabled="buttonDisabled"
-                        @click="handleSubmit"
-                        secondary
                         class="z-10"
+                        secondary
+                        size="small"
+                        type="primary"
+                        @click="handleSubmit"
                       >
                         <template #icon>
                           <SvgIcon icon="ri:send-plane-fill" />
@@ -288,6 +303,7 @@
   ::v-deep(.n-input__textarea) {
     height: calc(100% - 30px);
   }
+
   ::v-deep(.n-scrollbar-rail) {
     height: calc(100% - 33px);
   }

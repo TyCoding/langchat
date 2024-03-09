@@ -8,22 +8,26 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author tycoding
- * @since 2023/10/19
+ * @since 2024/1/19
  */
 @Service
 public class SpringContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext = null;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextHolder.applicationContext = applicationContext;
-    }
-
     public static void publishEvent(ApplicationEvent event) {
         if (applicationContext == null) {
             return;
         }
         applicationContext.publishEvent(event);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SpringContextHolder.applicationContext = applicationContext;
+    }
+
+    public static <T> T getBean(Class<T> requiredType) {
+        return applicationContext.getBean(requiredType);
     }
 }

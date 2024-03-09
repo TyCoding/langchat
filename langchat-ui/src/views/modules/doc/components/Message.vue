@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { onMounted, onUnmounted, onUpdated, ref } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { copyToClip } from '@/utils/copy';
@@ -8,7 +8,7 @@
   interface Props {
     messages: {
       inversion: boolean;
-      content: string;
+      message: string;
       time?: number;
       usedToken?: number;
     }[];
@@ -78,10 +78,10 @@
   <div ref="textRef" class="middle absolute top-6 left-0 w-full bottom-[65px] z-0 overflow-y-auto">
     <div v-if="messages.length == 0" class="flex-1 flex h-full justify-center">
       <div class="w-1/2 flex flex-col justify-center text-xs items-center gap-2">
-        <n-icon size="70" color="#e4e4e7">
+        <n-icon color="#e4e4e7" size="70">
           <SvgIcon icon="et:chat" />
         </n-icon>
-        <n-button type="success" size="small" secondary>Chat starting</n-button>
+        <n-button secondary size="small" type="success">Chat starting</n-button>
       </div>
     </div>
     <div v-else class="flex-1 overflow-y-auto mb-1">
@@ -91,17 +91,17 @@
             v-if="!item.inversion"
             class="flex justify-end p-2 pl-3 pr-3 rounded select-text self-end bg-[#d2f9d1]"
           >
-            {{ item.content }}
+            {{ item.message }}
           </div>
           <div
             v-if="item.inversion"
             class="flex justify-start items-center rounded-md self-start min-w-[40px] min-h-[33px] bg-[#f4f6f8]"
           >
-            <div v-if="item.content == ''" class="flex justify-center items-center w-[55px]">
+            <div v-if="item.message == ''" class="flex justify-center items-center w-[55px]">
               <span class="dot-loading"></span>
             </div>
-            <div class="p-2 pl-3 pr-3" v-else>
-              <div class="pb-2 markdown-body" v-html="item.content"></div>
+            <div v-else class="p-2 pl-3 pr-3">
+              <div class="pb-2 markdown-body" v-html="item.message"></div>
               <div
                 v-if="item.time !== 0"
                 class="border-t border-gray-200 pt-2 text-xs text-gray-400 flex flex-row justify-between items-center min-w-[200px]"
@@ -111,13 +111,13 @@
                     <SvgIcon icon="mdi:success" />
                   </n-button>
                   <span>{{ (item.time / 1000).toFixed(1) }}s</span>
-                  <n-divider vertical class="ml-1 mr-1" />
+                  <n-divider class="ml-1 mr-1" vertical />
                   <span>{{ item.usedToken }} Token</span>
                 </div>
                 <div class="flex items-center">
                   <n-popover class="custom-popover">
                     <template #trigger>
-                      <n-button @click="onCopy(item.content)" text>
+                      <n-button text @click="onCopy(item.message)">
                         <SvgIcon icon="ph:copy-duotone" />
                       </n-button>
                     </template>
@@ -133,7 +133,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   @keyframes fHrN_o2s8Mo6LbmdjIwZ {
     0% {
       background-color: #000;

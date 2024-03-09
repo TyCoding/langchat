@@ -69,7 +69,7 @@ export type Message = {
   conversationId?: string;
   promptId?: string;
   role?: 'user' | 'assistant' | 'system';
-  content?: string;
+  message?: string;
   isError?: boolean;
   createTime: string;
 };

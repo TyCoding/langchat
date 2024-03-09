@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { computed, onMounted, onUnmounted, onUpdated, ref } from 'vue';
   import MarkdownIt from 'markdown-it';
   import mdKatex from '@traptitech/markdown-it-katex';
@@ -48,7 +48,6 @@
       // 黑色模式下，左边是黑色1e1e20，右边是绿色a1dc95
       props.inversion ? 'dark:bg-[#63e2b7]' : 'dark:bg-[#1e1e20]',
       props.inversion ? 'message-request' : 'message-reply',
-      { 'text-red-500': props.error },
     ];
   });
 
@@ -106,10 +105,15 @@
 </script>
 
 <template>
-  <div class="text-black" :class="wrapClass">
+  <div :class="wrapClass" class="text-black">
     <div ref="textRef" class="leading-relaxed break-words">
       <div v-if="!inversion">
-        <div v-if="!asRawText" class="markdown-body" v-html="text"></div>
+        <div
+          v-if="!asRawText"
+          :class="props.error ? '!text-red-500' : ''"
+          class="markdown-body"
+          v-html="text"
+        ></div>
         <div v-else class="whitespace-pre-wrap" v-text="text"></div>
       </div>
       <div v-else class="whitespace-pre-wrap" v-text="text"></div>

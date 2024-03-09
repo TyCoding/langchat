@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.server.endpoint;
 
-import cn.tycoding.langchat.server.utils.R;
+import cn.tycoding.langchat.common.utils.R;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;

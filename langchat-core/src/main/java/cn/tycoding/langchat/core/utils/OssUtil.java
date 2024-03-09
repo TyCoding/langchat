@@ -5,7 +5,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.URLUtil;
-import cn.tycoding.langchat.core.properties.OssProps;
+import cn.tycoding.langchat.core.dto.OssR;
+import cn.tycoding.langchat.core.props.file.OssProps;
 import java.io.File;
 import java.util.Date;
 import lombok.SneakyThrows;
@@ -15,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Oss工具类
  *
  * @author tycoding
- * @since 2023/8/31
+ * @since 2024/1/31
  */
 public class OssUtil {
 

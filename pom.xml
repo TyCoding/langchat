@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.14</version>
+        <version>3.2.3</version>
     </parent>
 
     <groupId>cn.tycoding</groupId>
@@ -17,16 +17,16 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>18</java.version>
         <revision>1.0</revision>
 
-        <hutool.version>5.8.23</hutool.version>
-        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <druid.version>1.2.18</druid.version>
-        <mysql-connector.version>8.0.33</mysql-connector.version>
-        <fastjson.version>2.0.38</fastjson.version>
+        <hutool.version>5.8.26</hutool.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <druid.version>1.2.21</druid.version>
+        <mysql-connector.version>8.3.0</mysql-connector.version>
+        <fastjson.version>2.0.47</fastjson.version>
         <snakeyaml.version>2.1</snakeyaml.version>
-        <langchain4j.version>0.26.1</langchain4j.version>
+        <langchain4j.version>0.27.1</langchain4j.version>
         <sa-token.version>1.37.0</sa-token.version>
     </properties>
 
@@ -35,10 +35,6 @@
         <module>langchat-core</module>
         <module>langchat-server</module>
     </modules>
-
-    <dependencies>
-
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -54,17 +50,14 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- Spring相关依赖版本 -->
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
             </dependency>
-            <!-- Mysql驱动版本 -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <scope>runtime</scope>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql-connector.version}</version>
             </dependency>
         </dependencies>

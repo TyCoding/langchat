@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { ref } from 'vue';
   import { genWrite } from '@/api/chat';
@@ -10,7 +10,7 @@
   const message = useMessage();
   const loading = ref(false);
   const form = ref<ChatR>({
-    content: '',
+    message: '',
     role: '自动',
     type: '自动',
     tone: '自动',
@@ -25,7 +25,7 @@
   const languageList = ['自动', '中文', '英文', '韩语', '日语'];
 
   async function onSubmit() {
-    if (isBlank(form.value.content)) {
+    if (isBlank(form.value.message)) {
       message.error('请输入内容');
       return;
     }
@@ -38,11 +38,11 @@
         if (!i.startsWith('data:{')) {
           return;
         }
-        const { done, content } = JSON.parse(i.substring(5, i.length));
+        const { done, contmessageent } = JSON.parse(i.substring(5, i.length));
         if (done) {
           message.success('翻译完成');
         } else {
-          text += content;
+          text += message;
         }
       });
       emit('ok', text);
@@ -57,11 +57,11 @@
         <SvgIcon class="text-lg" icon="solar:pen-2-broken" />
         <span>文案描述</span>
       </div>
-      <n-input v-model:value="form.content" :disabled="loading" type="textarea" :rows="6" />
+      <n-input v-model:value="form.message" :disabled="loading" :rows="6" type="textarea" />
     </div>
 
     <div class="w-full">
-      <n-button :loading="loading" @click="onSubmit" type="success" secondary block>
+      <n-button :loading="loading" block secondary type="success" @click="onSubmit">
         <template #icon>
           <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
         </template>
@@ -78,10 +78,10 @@
         <n-button
           v-for="item in lengthList"
           :key="item"
+          :type="form.role == item ? 'success' : 'default'"
+          secondary
           size="small"
           @click="form.role = item"
-          secondary
-          :type="form.role == item ? 'success' : 'default'"
         >
           {{ item }}
         </n-button>
@@ -97,10 +97,10 @@
         <n-button
           v-for="item in roleList"
           :key="item"
+          :type="form.role == item ? 'success' : 'default'"
+          secondary
           size="small"
           @click="form.role = item"
-          secondary
-          :type="form.role == item ? 'success' : 'default'"
         >
           {{ item }}
         </n-button>
@@ -117,10 +117,10 @@
         <n-button
           v-for="item in typeList"
           :key="item"
+          :type="form.type == item ? 'success' : 'default'"
+          secondary
           size="small"
           @click="form.type = item"
-          secondary
-          :type="form.type == item ? 'success' : 'default'"
         >
           {{ item }}
         </n-button>
@@ -137,10 +137,10 @@
         <n-button
           v-for="item in toneList"
           :key="item"
+          :type="form.tone == item ? 'success' : 'default'"
+          secondary
           size="small"
           @click="form.tone = item"
-          secondary
-          :type="form.tone == item ? 'success' : 'default'"
         >
           {{ item }}
         </n-button>
@@ -156,10 +156,10 @@
         <n-button
           v-for="item in languageList"
           :key="item"
+          :type="form.language == item ? 'success' : 'default'"
+          secondary
           size="small"
           @click="form.language = item"
-          secondary
-          :type="form.language == item ? 'success' : 'default'"
         >
           {{ item }}
         </n-button>

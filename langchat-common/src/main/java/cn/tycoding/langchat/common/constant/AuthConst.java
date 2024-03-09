@@ -2,7 +2,7 @@ package cn.tycoding.langchat.common.constant;
 
 /**
  * @author tycoding
- * @since 2023/11/15
+ * @since 2024/1/15
  */
 public interface AuthConst {
 

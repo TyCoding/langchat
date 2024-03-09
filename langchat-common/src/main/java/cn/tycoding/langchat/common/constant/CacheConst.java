@@ -2,7 +2,7 @@ package cn.tycoding.langchat.common.constant;
 
 /**
  * @author tycoding
- * @since 2023/11/15
+ * @since 2024/1/15
  */
 public interface CacheConst {
 
@@ -29,17 +29,8 @@ public interface CacheConst {
     String AUTH_TOKEN_INFO_KEY = "TOKEN_INFO";
 
     /**
-     * 验证码缓存前缀
-     */
-    String CAPTCHA_PREFIX = REDIS_KEY_PREFIX + "auth:captcha:";
-
-    /**
      * 用户信息缓存
      */
     String USER_DETAIL_KEY = REDIS_KEY_PREFIX + "user_details";
 
-    /**
-     * 菜单权限缓存
-     */
-    String MENU_DETAIL_KEY = REDIS_KEY_PREFIX + "menu_details";
 }

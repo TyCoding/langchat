@@ -1,17 +1,17 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { genImage } from '@/api/chat';
-  import { computed, ref } from 'vue';
+  import { ref } from 'vue';
   import { isBlank } from '@/utils/is';
   import { useMessage } from 'naive-ui';
   import { ImageR } from '@/api/models';
 
   const emit = defineEmits(['ok']);
   const loading = ref(false);
-  const message = useMessage();
-  const content = ref('');
+  const ms = useMessage();
+  const message = ref('');
   const form = ref<ImageR>({
-    content: '',
+    message: '',
     model: 'dall-e-2',
     quality: 'standard',
     size: '1024x1024',
@@ -19,17 +19,17 @@
   });
 
   async function onSubmit() {
-    if (isBlank(content.value)) {
-      message.error('请输入内容');
+    if (isBlank(message.value)) {
+      ms.error('请输入内容');
       return;
     }
     loading.value = true;
-    message.success('图片生成中，请稍后...');
+    ms.success('图片生成中，请稍后...');
     const data = await genImage({
-      content: content.value,
+      message: message.value,
     })
       .catch(() => {
-        message.error('图片生成失败');
+        ms.error('图片生成失败');
       })
       .finally(() => {
         loading.value = false;
@@ -65,11 +65,11 @@
         <SvgIcon class="text-lg" icon="solar:pen-2-broken" />
         <span>图片内容描述</span>
       </div>
-      <n-input :disabled="loading" v-model:value="content" type="textarea" :rows="5" />
+      <n-input v-model:value="message" :disabled="loading" :rows="5" type="textarea" />
     </div>
 
     <div class="w-full">
-      <n-button :loading="loading" @click="onSubmit" type="success" secondary block>
+      <n-button :loading="loading" block secondary type="success" @click="onSubmit">
         <template #icon>
           <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
         </template>
@@ -86,10 +86,10 @@
         <n-button
           v-for="item in modelList"
           :key="item"
-          @click="form.model = item.value"
-          size="small"
-          secondary
           :type="form.model == item.value ? 'success' : 'default'"
+          secondary
+          size="small"
+          @click="form.model = item.value"
         >
           {{ item.label }}
         </n-button>
@@ -105,11 +105,11 @@
         <n-button
           v-for="item in qualityList"
           :key="item"
-          @click="form.quality = item.value"
-          size="small"
-          secondary
           :disabled="form.model == 'dall-e-2'"
           :type="form.quality == item.value ? 'success' : 'default'"
+          secondary
+          size="small"
+          @click="form.quality = item.value"
         >
           {{ item.label }}
         </n-button>
@@ -125,13 +125,13 @@
         <n-button
           v-for="item in sizeList"
           :key="item"
-          @click="form.size = item.value"
-          size="small"
-          secondary
           :disabled="
             form.model == 'dall-e-2' && (item.value == '1792x1024' || item.value == '1024x1792')
           "
           :type="form.size == item.value ? 'success' : 'default'"
+          secondary
+          size="small"
+          @click="form.size = item.value"
         >
           {{ item.label }}
         </n-button>
@@ -147,11 +147,11 @@
         <n-button
           v-for="item in styleList"
           :key="item"
-          @click="form.style = item.value"
-          size="small"
-          secondary
           :disabled="form.model == 'dall-e-2'"
           :type="form.style == item.value ? 'success' : 'default'"
+          secondary
+          size="small"
+          @click="form.style = item.value"
         >
           {{ item.label }}
         </n-button>

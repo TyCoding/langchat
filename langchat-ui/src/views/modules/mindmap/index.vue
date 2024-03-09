@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import Sider from './components/Sider.vue';
   import MindMap from './components/MindMap.vue';
   import { ref } from 'vue';
@@ -7,19 +7,19 @@
   import { isBlank } from '@/utils/is';
   import { t } from '@/locales';
 
-  const message = useMessage();
+  const ms = useMessage();
   const loading = ref(false);
   const genText = ref('');
   async function onGenerate(text: string) {
     if (isBlank(text)) {
-      message.warning(t('common.emptyTips'));
+      ms.warning(t('common.emptyTips'));
       return;
     }
     loading.value = true;
-    const { content } = await genMindMap({
-      content: text,
+    const { message } = await genMindMap({
+      message: text,
     });
-    genText.value = content;
+    genText.value = message;
 
     loading.value = false;
   }
@@ -30,20 +30,20 @@
 </script>
 
 <template>
-  <n-layout has-sider class="w-full h-full">
+  <n-layout class="w-full h-full" has-sider>
     <n-layout-sider
       :collapsed-width="1"
-      collapse-mode="width"
-      :width="400"
-      show-trigger="arrow-circle"
-      bordered
       :native-scrollbar="false"
+      :width="400"
+      bordered
+      collapse-mode="width"
+      show-trigger="arrow-circle"
     >
-      <Sider :loading="loading" :genText="genText" @generate="onGenerate" @case="onCase" />
+      <Sider :genText="genText" :loading="loading" @case="onCase" @generate="onGenerate" />
     </n-layout-sider>
 
-    <MindMap :loading="loading" :genText="genText" />
+    <MindMap :genText="genText" :loading="loading" />
   </n-layout>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>
