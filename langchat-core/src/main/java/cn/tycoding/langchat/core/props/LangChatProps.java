@@ -3,7 +3,6 @@ package cn.tycoding.langchat.core.props;
 import cn.tycoding.langchat.core.props.chat.AzureOpenaiProps;
 import cn.tycoding.langchat.core.props.chat.ChatglmProps;
 import cn.tycoding.langchat.core.props.chat.GeminiProps;
-import cn.tycoding.langchat.core.props.chat.HuggingfaceProps;
 import cn.tycoding.langchat.core.props.chat.OllamaProps;
 import cn.tycoding.langchat.core.props.chat.OpenaiProps;
 import cn.tycoding.langchat.core.props.chat.QianfanProps;
@@ -31,8 +30,6 @@ public class LangChatProps {
     private QianfanProps qianfan = new QianfanProps();
 
     private ChatglmProps chatglm = new ChatglmProps();
-
-    private HuggingfaceProps huggingface = new HuggingfaceProps();
 
     private EmbeddingProps embedding = new EmbeddingProps();
 

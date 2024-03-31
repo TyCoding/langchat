@@ -4,7 +4,6 @@ import cn.tycoding.langchat.core.props.LangChatProps;
 import cn.tycoding.langchat.core.props.chat.AzureOpenaiProps;
 import cn.tycoding.langchat.core.props.chat.ChatglmProps;
 import cn.tycoding.langchat.core.props.chat.GeminiProps;
-import cn.tycoding.langchat.core.props.chat.HuggingfaceProps;
 import cn.tycoding.langchat.core.props.chat.OllamaProps;
 import cn.tycoding.langchat.core.props.chat.OpenaiProps;
 import cn.tycoding.langchat.core.props.chat.QianfanProps;
@@ -39,7 +38,6 @@ import org.springframework.context.annotation.Configuration;
         ChatglmProps.class,
         OpenaiImageProps.class,
         GeminiProps.class,
-        HuggingfaceProps.class,
         EmbeddingProps.class,
         OpenaiEmbedProps.class,
         AzureOpenaiEmbedProps.class,
