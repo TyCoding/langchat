@@ -4,6 +4,7 @@ import cn.tycoding.langchat.core.ModelProvider;
 import cn.tycoding.langchat.core.dto.ChatReq;
 import cn.tycoding.langchat.core.dto.ImageR;
 import cn.tycoding.langchat.core.dto.TextR;
+import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
