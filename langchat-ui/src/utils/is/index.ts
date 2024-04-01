@@ -1,61 +1,126 @@
-export function isNumber<T extends number>(value: T | unknown): value is number {
-  return Object.prototype.toString.call(value) === '[object Number]';
+const toString = Object.prototype.toString;
+
+/**
+ * @description: 判断值是否未某个类型
+ */
+export function is(val: unknown, type: string) {
+  return toString.call(val) === `[object ${type}]`;
 }
 
-export function isString<T extends string>(value: T | unknown): value is string {
-  return Object.prototype.toString.call(value) === '[object String]';
+/**
+ * @description:  是否为函数
+ */
+export function isFunction<T = Function>(val: unknown): val is T {
+  return is(val, 'Function') || is(val, 'AsyncFunction');
 }
 
-export function isBoolean<T extends boolean>(value: T | unknown): value is boolean {
-  return Object.prototype.toString.call(value) === '[object Boolean]';
+/**
+ * @description: 是否已定义
+ */
+export const isDef = <T = unknown>(val?: T): val is T => {
+  return typeof val !== 'undefined';
+};
+
+export const isUnDef = <T = unknown>(val?: T): val is T => {
+  return !isDef(val);
+};
+/**
+ * @description: 是否为对象
+ */
+export const isObject = (val: any): val is Record<any, any> => {
+  return val !== null && is(val, 'Object');
+};
+
+/**
+ * @description:  是否为时间
+ */
+export function isDate(val: unknown): val is Date {
+  return is(val, 'Date');
 }
 
-export function isNull<T extends null>(value: T | unknown): value is null {
-  return Object.prototype.toString.call(value) === '[object Null]';
+/**
+ * @description:  是否为数值
+ */
+export function isNumber(val: unknown): val is number {
+  return is(val, 'Number');
 }
 
-export function isUndefined<T extends undefined>(value: T | unknown): value is undefined {
-  return Object.prototype.toString.call(value) === '[object Undefined]';
+/**
+ * @description:  是否为AsyncFunction
+ */
+export function isAsyncFunction<T = any>(val: unknown): val is () => Promise<T> {
+  return is(val, 'AsyncFunction');
 }
 
-export function isObject<T extends object>(value: T | unknown): value is object {
-  return Object.prototype.toString.call(value) === '[object Object]';
+/**
+ * @description:  是否为promise
+ */
+export function isPromise<T = any>(val: unknown): val is Promise<T> {
+  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch);
 }
 
-export function isArray<T extends any[]>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object Array]';
+/**
+ * @description:  是否为字符串
+ */
+export function isString(val: unknown): val is string {
+  return is(val, 'String');
 }
 
-export function isFunction<T extends (...args: any[]) => any | void | never>(
-  value: T | unknown
-): value is T {
-  return Object.prototype.toString.call(value) === '[object Function]';
+/**
+ * @description:  是否为boolean类型
+ */
+export function isBoolean(val: unknown): val is boolean {
+  return is(val, 'Boolean');
 }
 
-export function isDate<T extends Date>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object Date]';
+/**
+ * @description:  是否为数组
+ */
+export function isArray(val: any): val is Array<any> {
+  return val && Array.isArray(val);
 }
 
-export function isRegExp<T extends RegExp>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object RegExp]';
+/**
+ * @description: 是否客户端
+ */
+export const isClient = () => {
+  return typeof window !== 'undefined';
+};
+
+/**
+ * @description: 是否为浏览器
+ */
+export const isWindow = (val: any): val is Window => {
+  return typeof window !== 'undefined' && is(val, 'Window');
+};
+
+export const isElement = (val: unknown): val is Element => {
+  return isObject(val) && !!val.tagName;
+};
+
+export const isServer = typeof window === 'undefined';
+
+// 是否为图片节点
+export function isImageDom(o: Element) {
+  return o && ['IMAGE', 'IMG'].includes(o.tagName);
 }
 
-export function isPromise<T extends Promise<any>>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object Promise]';
+export function isNull(val: unknown): val is null {
+  return val === null;
 }
 
-export function isSet<T extends Set<any>>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object Set]';
+export function isNullAndUnDef(val: unknown): val is null | undefined {
+  return isUnDef(val) && isNull(val);
 }
 
-export function isMap<T extends Map<any, any>>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object Map]';
+export function isNullOrUnDef(val: unknown): val is null | undefined {
+  return isUnDef(val) || isNull(val);
 }
 
-export function isFile<T extends File>(value: T | unknown): value is T {
-  return Object.prototype.toString.call(value) === '[object File]';
+export function isWhitespace(val: unknown) {
+  return val === '';
 }
 
-export function isBlank(val: unknown): val is null {
-  return val === null || val === undefined || val === '' || String(val).trim() === '';
+export function isNullOrWhitespace(val: unknown) {
+  return isNullOrUnDef(val) || isWhitespace(val);
 }

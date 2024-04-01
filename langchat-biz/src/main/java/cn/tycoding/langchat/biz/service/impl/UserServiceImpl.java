@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.UserInfo;
 import cn.tycoding.langchat.biz.entity.LcUser;
 import cn.tycoding.langchat.biz.mapper.UserMapper;
 import cn.tycoding.langchat.biz.service.UserService;
@@ -37,13 +37,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     private final AuthProps authProps;
 
     @Override
-    public LcUserInfo findById(String userId) {
+    public UserInfo findById(String userId) {
         LcUser user = baseMapper.selectById(userId);
         if (user == null) {
             return null;
         }
 
-        LcUserInfo info = BeanUtil.copyProperties(user, LcUserInfo.class);
+        UserInfo info = BeanUtil.copyProperties(user, UserInfo.class);
         info.setPassword(null);
 
         return info;
@@ -51,10 +51,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
 
     @Override
     @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
-    public LcUserInfo info(String username) {
-        LcUser user = baseMapper.selectOne(
-                Wrappers.<LcUser>lambdaQuery().eq(LcUser::getUsername, username));
-        LcUserInfo info = new LcUserInfo();
+    public UserInfo info(String username) {
+        LcUser user = baseMapper.selectOne(Wrappers.<LcUser>lambdaQuery().eq(LcUser::getUsername, username));
+        if (user == null) {
+            throw new RuntimeException("Username or password is error");
+        }
+        UserInfo info = new UserInfo();
         BeanUtils.copyProperties(user, info);
 
         return this.build(info);
@@ -63,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     /**
      * 构建用户信息、角色信息、权限标识信息、部门信息
      */
-    private LcUserInfo build(LcUserInfo userInfo) {
+    private UserInfo build(UserInfo userInfo) {
         if (userInfo == null) {
             throw new ServiceException("Not found user information");
         }

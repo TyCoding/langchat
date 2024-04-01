@@ -1,29 +1,19 @@
-<script setup lang="ts">
-  import { NaiveProvider } from '@/components/common';
-  import { useTheme } from '@/hooks/useTheme';
-  import { useLanguage } from '@/hooks/useLanguage';
-  import { NWatermark } from 'naive-ui';
-
-  const { theme, themeOverrides } = useTheme();
-  const { language } = useLanguage();
-  const waterMark = import.meta.env.VITE_WATER_MARK;
-</script>
-
 <template>
-  <n-config-provider
-    class="h-full w-full"
-    :theme="theme"
-    :theme-overrides="themeOverrides"
-    :locale="language"
+  <NConfigProvider
+    v-if="!isLock"
+    :locale="zhCN"
+    :theme="getDarkTheme"
+    :theme-overrides="getThemeOverrides"
+    :date-locale="dateZhCN"
   >
-    <NaiveProvider>
+    <AppProvider>
       <RouterView />
-    </NaiveProvider>
-  </n-config-provider>
+    </AppProvider>
+  </NConfigProvider>
 
-  <NWatermark
-    v-if="waterMark !== ''"
-    :content="waterMark"
+  <n-watermark
+    v-if="showWatermark"
+    content="LangChat"
     cross
     fullscreen
     :z-index="9999"
@@ -36,3 +26,45 @@
     :rotate="-20"
   />
 </template>
+
+<script lang="ts" setup>
+  import { computed, onMounted, onUnmounted } from 'vue';
+  import { zhCN, dateZhCN, darkTheme } from 'naive-ui';
+  import { AppProvider } from '@/components/Application';
+  import { useScreenLockStore } from '@/store/modules/screenLock.js';
+  import { useRoute } from 'vue-router';
+  import { useDesignSettingStore } from '@/store/modules/designSetting';
+  import { lighten } from '@/utils';
+
+  const route = useRoute();
+  const useScreenLock = useScreenLockStore();
+  const designStore = useDesignSettingStore();
+  const isLock = computed(() => useScreenLock.isLocked);
+
+  /**
+   * @type import('naive-ui').GlobalThemeOverrides
+   */
+  const getThemeOverrides = computed(() => {
+    const appTheme = designStore.appTheme;
+    const lightenStr = lighten(designStore.appTheme, 6);
+    return {
+      common: {
+        primaryColor: appTheme,
+        primaryColorHover: lightenStr,
+        primaryColorPressed: lightenStr,
+        primaryColorSuppl: appTheme,
+      },
+      LoadingBar: {
+        colorLoading: appTheme,
+      },
+    };
+  });
+
+  const getDarkTheme = computed(() => (designStore.darkTheme ? darkTheme : undefined));
+  const showWatermark = true;
+
+</script>
+
+<style lang="less">
+  @import 'styles/index.less';
+</style>

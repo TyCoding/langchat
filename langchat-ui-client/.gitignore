@@ -1,0 +1,32 @@
+# Logs
+logs
+*.lcLog
+npm-debug.lcLog*
+yarn-debug.lcLog*
+yarn-error.lcLog*
+pnpm-debug.lcLog*
+lerna-debug.lcLog*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables files
+/service/.env

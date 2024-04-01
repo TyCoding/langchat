@@ -1,83 +1,122 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="zh-cmn-Hans" id="htmlRoot" data-theme="light">
 <head>
-	<meta charset="UTF-8">
-	<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-	<meta content="yes" name="apple-mobile-web-app-capable"/>
-	<link rel="apple-touch-icon" href="/favicon.ico">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover" />
-	<title>LangChat</title>
+  <meta charset="UTF-8">
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta content="webkit" name="renderer"/>
+  <meta
+    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0"
+    name="viewport"
+  />
+  <link href="/favicon.ico" rel="icon"/>
+  <title><%= title %></title>
 </head>
+<body>
+<div id="appProvider" style="display: none"></div>
+<div id="app">
+  <style>
+    .first-loading-wrap {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-<body class="dark:bg-black">
-	<div id="app">
-		<style>
-			.loading-wrap {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				height: 100vh;
-			}
+    .first-loading-wrap > h1 {
+      font-size: 128px
+    }
 
-			.balls {
-				width: 4em;
-				display: flex;
-				flex-flow: row nowrap;
-				align-items: center;
-				justify-content: space-between;
-			}
+    .first-loading-wrap .loading-wrap {
+      padding: 98px;
+      display: flex;
+      justify-content: center;
+      align-items: center
+    }
 
-			.balls div {
-				width: 0.8em;
-				height: 0.8em;
-				border-radius: 50%;
-				background-color: #4b9e5f;
-			}
+    .dot {
+      animation: antRotate 1.2s infinite linear;
+      transform: rotate(45deg);
+      position: relative;
+      display: inline-block;
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      box-sizing: border-box
+    }
 
-			.balls div:nth-of-type(1) {
-				transform: translateX(-100%);
-				animation: left-swing 0.5s ease-in alternate infinite;
-			}
+    .dot i {
+      width: 14px;
+      height: 14px;
+      position: absolute;
+      display: block;
+      background-color: #1890ff;
+      border-radius: 100%;
+      transform: scale(.75);
+      transform-origin: 50% 50%;
+      opacity: .3;
+      animation: antSpinMove 1s infinite linear alternate
+    }
 
-			.balls div:nth-of-type(3) {
-				transform: translateX(-95%);
-				animation: right-swing 0.5s ease-out alternate infinite;
-			}
+    .dot i:nth-child(1) {
+      top: 0;
+      left: 0
+    }
 
-			@keyframes left-swing {
+    .dot i:nth-child(2) {
+      top: 0;
+      right: 0;
+      -webkit-animation-delay: .4s;
+      animation-delay: .4s
+    }
 
-				50%,
-				100% {
-					transform: translateX(95%);
-				}
-			}
+    .dot i:nth-child(3) {
+      right: 0;
+      bottom: 0;
+      -webkit-animation-delay: .8s;
+      animation-delay: .8s
+    }
 
-			@keyframes right-swing {
-				50% {
-					transform: translateX(-95%);
-				}
+    .dot i:nth-child(4) {
+      bottom: 0;
+      left: 0;
+      -webkit-animation-delay: 1.2s;
+      animation-delay: 1.2s
+    }
 
-				100% {
-					transform: translateX(100%);
-				}
-			}
+    @keyframes antRotate {
+      to {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg)
+      }
+    }
 
-			@media (prefers-color-scheme: dark) {
-				body {
-					background: #121212;
-				}
-			}
-		</style>
-		<div class="loading-wrap">
-			<div class="balls">
-				<div></div>
-				<div></div>
-				<div></div>
-			</div>
-		</div>
-	</div>
-	<script type="module" src="/src/main.ts"></script>
+    @-webkit-keyframes antRotate {
+      to {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg)
+      }
+    }
+
+    @keyframes antSpinMove {
+      to {
+        opacity: 1
+      }
+    }
+
+    @-webkit-keyframes antSpinMove {
+      to {
+        opacity: 1
+      }
+    }</style>
+  <div class="first-loading-wrap">
+    <div class="loading-wrap">
+      <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+    </div>
+  </div>
+</div>
+<script>var globalThis = window;</script>
+<script src="/src/main.ts" type="module"></script>
 </body>
-
 </html>

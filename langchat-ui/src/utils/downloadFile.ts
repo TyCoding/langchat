@@ -2,7 +2,7 @@
  * 根据文件url获取文件名
  * @param url 文件url
  */
-function getFileName(url: string) {
+function getFileName(url) {
   const num = url.lastIndexOf('/') + 1;
   let fileName = url.substring(num);
   //把参数和文件名分割开

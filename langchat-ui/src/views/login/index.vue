@@ -1,79 +1,169 @@
-<script lang="ts" setup>
-  import LoginForm from './Login.vue';
-  import PhoneLoginForm from './PhoneLogin.vue';
-  import { SvgIcon } from '@/components/common';
-  import { ref } from 'vue';
-  import EmailRegister from './EmailRegister.vue';
-  import PhoneRegister from './PhoneRegister.vue';
-
-  const isLogin = ref(true);
-</script>
-
 <template>
-  <div class="account-root">
-    <div class="account-root-item root-left-item">
-      <div class="root-left-logo">
-        <img src="@/assets/login/logo.png" alt="" />
-        <div class="stand-title ml-1">LangChain Chat</div>
-      </div>
-      <div class="root-left-title">开箱即用，中后台前端/设计解决方案</div>
-      <div class="root-left-desc">多生态支持、功能丰富、高颜值模板</div>
-      <div class="coding-img">
-        <img src="@/assets/login/login_bg.svg" alt="" />
-      </div>
-    </div>
-    <div class="account-root-item root-right-item">
-      <div class="account-form">
-        <div class="account-top">
-          <template v-if="isLogin">
-            <div class="user-account">登录你的账户</div>
-            <div class="user-register">
-              <span>没有账户？</span>
-              <n-button @click="isLogin = false" type="success" text>去注册</n-button>
-            </div>
-          </template>
-          <template v-else>
-            <div class="user-account">注册你的账户</div>
-            <div class="user-register">
-              <span>已经有账户？</span>
-              <n-button @click="isLogin = true" type="success" text>去登录</n-button>
-            </div>
-          </template>
+  <div class="view-account">
+    <div class="view-account-header"></div>
+    <div class="view-account-container">
+      <div class="view-account-top">
+        <div class="view-account-top-logo">
+          <img :src="websiteConfig.loginImage" alt="" />
         </div>
-
-        <n-tabs v-if="isLogin" type="line" animated>
-          <n-tab-pane name="chap1" tab="账号登录"><LoginForm /></n-tab-pane>
-          <n-tab-pane name="chap2" tab="短信登录"> <PhoneLoginForm /> </n-tab-pane>
-        </n-tabs>
-        <n-tabs v-else type="line" animated>
-          <n-tab-pane name="chap1" tab="邮箱注册"><EmailRegister /></n-tab-pane>
-          <n-tab-pane name="chap2" tab="手机号注册"> <PhoneRegister /> </n-tab-pane>
-        </n-tabs>
-
-        <NDivider>
-          <template #default>
-            <span class="social">其他登录方式</span>
-          </template>
-        </NDivider>
-        <div class="pb-8">
-          <n-space justify="space-around">
-            <n-button type="info" ghost circle>
-              <template #icon>
-                <SvgIcon icon="uiw:weixin" />
+        <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
+      </div>
+      <div class="view-account-form">
+        <n-form
+          ref="formRef"
+          label-placement="left"
+          size="large"
+          :model="formInline"
+          :rules="rules"
+        >
+          <n-form-item path="username">
+            <n-input v-model:value="formInline.username" placeholder="请输入用户名">
+              <template #prefix>
+                <n-icon size="18" color="#808695">
+                  <PersonOutline />
+                </n-icon>
               </template>
-            </n-button>
-            <n-button type="info" ghost circle>
-              <template #icon>
-                <SvgIcon icon="bi:phone-fill" />
+            </n-input>
+          </n-form-item>
+          <n-form-item path="password">
+            <n-input
+              v-model:value="formInline.password"
+              type="password"
+              showPasswordOn="click"
+              placeholder="请输入密码"
+            >
+              <template #prefix>
+                <n-icon size="18" color="#808695">
+                  <LockClosedOutline />
+                </n-icon>
               </template>
+            </n-input>
+          </n-form-item>
+          <n-form-item>
+            <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
+              登录
             </n-button>
-          </n-space>
-        </div>
+          </n-form-item>
+        </n-form>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="less">
-  @import '@/styles/login';
+<script lang="ts" setup>
+  import { reactive, ref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+  import { useUserStore } from '@/store/modules/user';
+  import { useMessage } from 'naive-ui';
+  import { ResultEnum } from '@/enums/httpEnum';
+  import { PersonOutline, LockClosedOutline, LogoGithub, LogoFacebook } from '@vicons/ionicons5';
+  import { PageEnum } from '@/enums/pageEnum';
+  import { websiteConfig } from '@/config/website.config';
+  interface FormState {
+    username: string;
+    password: string;
+  }
+
+  const formRef = ref();
+  const message = useMessage();
+  const loading = ref(false);
+  const autoLogin = ref(true);
+  const LOGIN_NAME = PageEnum.BASE_LOGIN_NAME;
+
+  const formInline = reactive({
+    username: 'administrator',
+    password: '123456',
+    isCaptcha: true,
+  });
+
+  const rules = {
+    username: { required: true, message: '请输入用户名', trigger: 'blur' },
+    password: { required: true, message: '请输入密码', trigger: 'blur' },
+  };
+
+  const userStore = useUserStore();
+
+  const router = useRouter();
+  const route = useRoute();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    formRef.value.validate(async (errors) => {
+      if (!errors) {
+        const { username, password } = formInline;
+        message.loading('登录中...');
+        loading.value = true;
+
+        const params: FormState = {
+          username,
+          password,
+        };
+
+        try {
+          await userStore.login(params);
+          const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
+          message.success('登录成功，即将进入系统');
+          if (route.name === LOGIN_NAME) {
+            router.replace('/');
+          } else router.replace(toPath);
+        } finally {
+          loading.value = false;
+        }
+      } else {
+        message.error('请填写完整信息，并且进行验证码校验');
+      }
+    });
+  };
+</script>
+
+<style lang="less" scoped>
+  .view-account {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: auto;
+
+    &-container {
+      flex: 1;
+      padding: 32px 12px;
+      max-width: 384px;
+      min-width: 320px;
+      margin: 0 auto;
+    }
+
+    &-top {
+      padding: 32px 0;
+      text-align: center;
+
+      &-desc {
+        font-size: 14px;
+        color: #808695;
+      }
+    }
+
+    &-other {
+      width: 100%;
+    }
+
+    .default-color {
+      color: #515a6e;
+
+      .ant-checkbox-wrapper {
+        color: #515a6e;
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .view-account {
+      background-image: url('../../assets/images/login.svg');
+      background-repeat: no-repeat;
+      background-position: 50%;
+      background-size: 100%;
+    }
+
+    .page-account-container {
+      padding: 32px 0 24px 0;
+    }
+  }
 </style>

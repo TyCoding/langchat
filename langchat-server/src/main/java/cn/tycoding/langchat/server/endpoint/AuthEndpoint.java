@@ -2,8 +2,9 @@ package cn.tycoding.langchat.server.endpoint;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.UserInfo;
 import cn.tycoding.langchat.biz.dto.TokenInfo;
 import cn.tycoding.langchat.biz.service.UserService;
 import cn.tycoding.langchat.biz.utils.AuthUtil;
@@ -12,6 +13,7 @@ import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -39,13 +41,21 @@ public class AuthEndpoint {
     private final AuthProps authProps;
     private final StringRedisTemplate redisTemplate;
 
+    @PostMapping("/administrator")
+    public R adminLogin(@RequestBody UserInfo user) {
+        if (authProps.getAdminName().equals(user.getUsername()) && authProps.getAdminPass().equals(user.getPassword())) {
+            return R.ok(Dict.create().set("token", IdWorker.get32UUID()));
+        }
+        return R.fail("Username or password is error");
+    }
+
     @PostMapping("/login")
-    public R login(@RequestBody LcUserInfo user) {
+    public R login(@RequestBody UserInfo user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
             throw new ServiceException("Username or password is empty");
         }
 
-        LcUserInfo userInfo = userService.info(user.getUsername());
+        UserInfo userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
             throw new ServiceException("Username or password is not match");
         }

@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.controller;
 
 import cn.hutool.core.lang.Dict;
-import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.UserInfo;
 import cn.tycoding.langchat.biz.entity.LcUser;
 import cn.tycoding.langchat.biz.service.UserService;
 import cn.tycoding.langchat.biz.utils.AuthUtil;
@@ -32,8 +32,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/info")
-    public R<LcUserInfo> info() {
-        LcUserInfo userInfo = userService.info(AuthUtil.getUsername());
+    public R<UserInfo> info() {
+        UserInfo userInfo = userService.info(AuthUtil.getUsername());
         userInfo.setPassword(null);
         return R.ok(userInfo);
     }

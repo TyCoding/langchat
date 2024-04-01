@@ -19,10 +19,10 @@ public class AuthProps {
     /**
      * administrator account username;
      */
-    private String adminName;
+    private String adminName = "administrator";
 
     /**
      * administrator account password
      */
-    private String adminPass;
+    private String adminPass = "123456";
 }

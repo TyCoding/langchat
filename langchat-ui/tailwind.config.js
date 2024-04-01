@@ -1,22 +1,7 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
+  important: true,
   theme: {
-    extend: {
-      animation: {
-        blink: 'blink 1.2s infinite steps(1, start)',
-      },
-      keyframes: {
-        blink: {
-          '0%, 100%': { 'background-color': 'currentColor' },
-          '50%': { 'background-color': 'transparent' },
-        },
-      },
-    },
+    extend: {},
   },
-  plugins: [],
-}
+};

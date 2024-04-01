@@ -1,0 +1,106 @@
+@import 'transition/index.less';
+
+@keyframes running-line {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+.custom-dropdown {
+  background: #27272a !important;
+  .n-dropdown-option-body__label {
+    color: #ffffff !important;
+  }
+  .n-dropdown-option:hover {
+    background-color: #2d8cf0 !important;
+  }
+  .n-dropdown-option-body::before {
+    transition: none !important;
+  }
+  .n-dropdown-option-body--pending::before {
+    background-color: #2d8cf0 !important;
+  }
+  .n-dropdown-divider {
+    background-color: #ffffff3b !important;
+  }
+}
+.custom-popover {
+  &:focus {
+    outline: none !important;
+    border: none !important;
+  }
+  background: #27272a !important;
+  color: #ffffff !important;
+  padding: 3px 8px !important;
+  .n-popover-arrow {
+    background: #27272a !important;
+  }
+}
+
+body {
+  font-family: inherit;
+}
+
+.robot-pin {
+  .n-drawer-header {
+    padding: 10px !important;
+    height: 45px !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    .n-drawer-header__main {
+      width: 100% !important;
+    }
+  }
+  .n-drawer-body {
+    .n-drawer-body-content-wrapper {
+      padding: 0 !important;
+    }
+  }
+  .n-drawer-footer {
+    border: none !important;
+    padding: 0.5rem !important;
+    justify-content: center !important;
+  }
+}
+
+.tips-line {
+  border-bottom: 1px dashed #71717a
+}
+
+.hover-input {
+  margin-left: 2px !important;
+  background: transparent !important;
+  .n-input-wrapper {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .n-input__border {
+    border: none !important;
+  }
+}
+
+.n-spin-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+.n-spin-content {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.pin-label {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.5px;
+}
+
+.n-menu.n-menu--collapsed .n-menu-item-content .n-menu-item-content-header {
+  opacity: 1 !important;
+}
+
+.custom-select {
+  .n-base-selection__border {
+    border: none !important;
+  }
+}

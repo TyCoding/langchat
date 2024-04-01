@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.biz.service;
 
-import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.UserInfo;
 import cn.tycoding.langchat.biz.entity.LcUser;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface UserService extends IService<LcUser> {
 
-    LcUserInfo findById(String userId);
+    UserInfo findById(String userId);
 
-    LcUserInfo info(String username);
+    UserInfo info(String username);
 
     List<LcUser> list(LcUser user);
 

@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.utils;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
-import cn.tycoding.langchat.biz.dto.LcUserInfo;
+import cn.tycoding.langchat.biz.dto.UserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class AuthUtil {
     /**
      * get user info
      */
-    public static LcUserInfo getUserInfo() {
+    public static UserInfo getUserInfo() {
         try {
 //            return (LcUserInfo) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class AuthUtil {
      * get username
      */
     public static String getUsername() {
-        LcUserInfo userInfo = getUserInfo();
+        UserInfo userInfo = getUserInfo();
         if (userInfo == null) {
             return null;
         }
@@ -75,7 +75,7 @@ public class AuthUtil {
      * get user id
      */
     public static String getUserId() {
-        LcUserInfo userInfo = getUserInfo();
+        UserInfo userInfo = getUserInfo();
         if (userInfo == null) {
             return null;
         }
