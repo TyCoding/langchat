@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.server.service;
 
 import cn.tycoding.langchat.biz.entity.LcOss;
-import cn.tycoding.langchat.core.dto.ChatReq;
-import cn.tycoding.langchat.core.dto.ImageR;
-import cn.tycoding.langchat.core.dto.TextR;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
 
 /**
  * @author tycoding

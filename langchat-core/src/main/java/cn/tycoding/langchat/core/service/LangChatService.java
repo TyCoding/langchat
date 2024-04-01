@@ -1,19 +1,19 @@
 package cn.tycoding.langchat.core.service;
 
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.core.ModelProvider;
-import cn.tycoding.langchat.core.dto.ChatReq;
-import cn.tycoding.langchat.core.dto.ImageR;
-import cn.tycoding.langchat.core.dto.TextR;
-import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.AiMessage;
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.TokenStream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,16 +28,24 @@ import org.springframework.stereotype.Service;
 public class LangChatService {
 
     private final ModelProvider provider;
+    private final PersistentChatMemoryStore chatMemoryStore;
 
-    public void stream(ChatReq req, StreamingResponseHandler<AiMessage> handler) {
+    public TokenStream stream(ChatReq req) {
         StreamingChatLanguageModel model = provider.stream(req.getModel());
 
+        ChatMemoryProvider chatMemoryProvider = memoryId -> MessageWindowChatMemory.builder()
+                .id(memoryId)
+                .maxMessages(10)
+                .chatMemoryStore(chatMemoryStore)
+                .build();
+
+        MessageWindowChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         Assistant assistant = AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(model)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+                .chatMemory(chatMemory)
+                .chatMemoryProvider(chatMemoryProvider)
                 .build();
-        assistant.chat(req.getPrompt().toUserMessage(), handler);
-//        model.generate(messages, handler);
+        return assistant.chat(req.getPrompt().toUserMessage());
     }
 
     public Response<AiMessage> text(TextR req) {

@@ -1,13 +1,13 @@
 package cn.tycoding.langchat.server.endpoint;
 
 import cn.tycoding.langchat.common.utils.R;
-import cn.tycoding.langchat.core.dto.ChatReq;
-import cn.tycoding.langchat.core.dto.ChatRes;
-import cn.tycoding.langchat.core.dto.ImageR;
-import cn.tycoding.langchat.core.dto.TextR;
-import cn.tycoding.langchat.core.enums.PromptConst;
-import cn.tycoding.langchat.core.utils.PromptUtil;
-import cn.tycoding.langchat.core.utils.StreamEmitter;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ChatRes;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
+import cn.tycoding.langchat.common.dto.PromptConst;
+import cn.tycoding.langchat.common.utils.PromptUtil;
+import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.server.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

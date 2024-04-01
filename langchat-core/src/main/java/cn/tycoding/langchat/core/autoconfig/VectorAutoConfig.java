@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.core.autoconfig;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.vectorstore.PgVectorProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.vectorstore.PgVectorProps;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

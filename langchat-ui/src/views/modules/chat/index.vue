@@ -111,8 +111,16 @@
             await chatStore.updateMessage(aiChatId.value, text, false);
             await scrollToBottomIfAtBottom();
           }
-        ).catch(() => {
+        ).catch((e: any) => {
           loading.value = false;
+          if (e.message !== undefined) {
+            chatStore.updateMessage(aiChatId.value, e.message, true);
+            return;
+          }
+          if (e.startsWith('data:Error')) {
+            chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
+            return;
+          }
         });
       };
 

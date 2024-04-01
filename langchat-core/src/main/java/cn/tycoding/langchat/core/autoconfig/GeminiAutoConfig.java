@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.core.autoconfig;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.GeminiProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.GeminiProps;
 import dev.langchain4j.model.vertexai.VertexAiGeminiChatModel;
 import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
 import lombok.AllArgsConstructor;

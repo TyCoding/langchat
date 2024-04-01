@@ -75,17 +75,28 @@ export const useChatStore = defineStore('chat-store', {
      * 选择会话窗口
      */
     async selectConversation(params: Conversation) {
+      console.log('点击开始');
+      this.chatIsLoading = true;
+      this.messages = [];
       if (params.id == undefined) {
         return;
       }
       if (this.active !== '') {
-        this.messages = await getMessages(params.id);
+        getMessages(params.id)
+          .then((res: any) => {
+            this.messages = res;
+            console.log('加载结束');
+          })
+          .finally(() => {
+            this.chatIsLoading = false;
+          });
       }
       await this.setActive(params.id);
       await this.setEdit('');
       this.curConversation = params;
 
       await this.replaceUrl();
+      console.log('点击结束');
     },
 
     async replaceUrl() {

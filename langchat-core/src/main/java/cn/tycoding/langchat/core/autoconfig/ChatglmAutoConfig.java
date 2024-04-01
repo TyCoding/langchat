@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.core.autoconfig;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.ChatglmProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.ChatglmProps;
 import dev.langchain4j.model.qianfan.QianfanChatModel;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

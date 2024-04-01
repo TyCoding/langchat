@@ -2,10 +2,10 @@ package cn.tycoding.langchat.core.autoconfig;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.OpenaiProps;
-import cn.tycoding.langchat.core.props.embed.OpenaiEmbedProps;
-import cn.tycoding.langchat.core.props.image.OpenaiImageProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.OpenaiProps;
+import cn.tycoding.langchat.core.properties.embed.OpenaiEmbedProps;
+import cn.tycoding.langchat.core.properties.image.OpenaiImageProps;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;

@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.core.autoconfig;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.AzureOpenaiProps;
-import cn.tycoding.langchat.core.props.embed.AzureOpenaiEmbedProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.AzureOpenaiProps;
+import cn.tycoding.langchat.core.properties.embed.AzureOpenaiEmbedProps;
 import dev.langchain4j.model.azure.AzureOpenAiChatModel;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;

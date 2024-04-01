@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.core.autoconfig;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.QianfanProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.QianfanProps;
 import dev.langchain4j.model.qianfan.QianfanChatModel;
 import dev.langchain4j.model.qianfan.QianfanStreamingChatModel;
 import lombok.AllArgsConstructor;

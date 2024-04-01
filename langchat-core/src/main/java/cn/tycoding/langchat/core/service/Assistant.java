@@ -1,8 +1,7 @@
 package cn.tycoding.langchat.core.service;
 
-import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.model.StreamingResponseHandler;
+import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.UserMessage;
 
 /**
@@ -11,5 +10,5 @@ import dev.langchain4j.service.UserMessage;
  */
 public interface Assistant {
 
-    String chat(@UserMessage ChatMessage messages, StreamingResponseHandler<AiMessage> handler);
+    TokenStream chat(@UserMessage ChatMessage messages);
 }

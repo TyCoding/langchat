@@ -2,9 +2,9 @@ package cn.tycoding.langchat.core.autoconfig;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.props.LangChatProps;
-import cn.tycoding.langchat.core.props.chat.OllamaProps;
-import cn.tycoding.langchat.core.props.embed.OllamaEmbedProps;
+import cn.tycoding.langchat.core.properties.LangChatProps;
+import cn.tycoding.langchat.core.properties.chat.OllamaProps;
+import cn.tycoding.langchat.core.properties.embed.OllamaEmbedProps;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;

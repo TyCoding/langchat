@@ -21,6 +21,9 @@ spring:
     multipart:
       max-file-size: 200MB
       max-request-size: 200MB
+  mvc:
+    async:
+      request-timeout: 3600000
 
 # MybatisPlus配置
 mybatis-plus:

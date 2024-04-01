@@ -16,14 +16,9 @@
     <dependencies>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-common</artifactId>
+            <artifactId>langchat-biz</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j</artifactId>
-            <version>${langchain4j.version}</version>
-        </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-open-ai</artifactId>

@@ -6,16 +6,14 @@ import cn.tycoding.langchat.biz.entity.LcOss;
 import cn.tycoding.langchat.biz.mapper.OssMapper;
 import cn.tycoding.langchat.biz.service.MessageService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
-import cn.tycoding.langchat.core.dto.ChatReq;
-import cn.tycoding.langchat.core.dto.ChatRes;
-import cn.tycoding.langchat.core.dto.ImageR;
-import cn.tycoding.langchat.core.dto.TextR;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ChatRes;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
+import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
-import cn.tycoding.langchat.core.utils.StreamEmitter;
 import cn.tycoding.langchat.server.service.ChatService;
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.model.output.TokenUsage;
 import lombok.AllArgsConstructor;
@@ -43,35 +41,30 @@ public class ChatServiceImpl implements ChatService {
         StringBuilder text = new StringBuilder();
 
         try {
-            langChatService.stream(req,
-                    new StreamingResponseHandler<>() {
-                        @Override
-                        public void onNext(String token) {
-                            text.append(token);
-                            emitter.send(new ChatRes(token));
-                        }
+            langChatService.stream(req)
+                    .onNext(e -> {
+                        text.append(e);
+                        emitter.send(new ChatRes(e));
+                    })
+                    .onComplete(e -> {
+                        TokenUsage tokenUsage = e.tokenUsage();
+                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
+                        emitter.complete();
 
-                        @Override
-                        public void onError(Throwable e) {
-                            emitter.error(e.getMessage());
+                        // save message
+                        if (StrUtil.isNotBlank(req.getConversationId())) {
+                            req.setMessage(text.toString());
+                            saveMessage(req);
                         }
-
-                        @Override
-                        public void onComplete(Response<AiMessage> response) {
-                            TokenUsage tokenUsage = response.tokenUsage();
-                            emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
-                            emitter.complete();
-
-                            // save message
-                            if (StrUtil.isNotBlank(req.getConversationId())) {
-                                req.setMessage(text.toString());
-                                saveMessage(req);
-                            }
-                        }
-                    });
+                    })
+                    .onError((e) -> {
+                        emitter.error(e.getMessage());
+                    })
+                    .start();
         } catch (Exception e) {
             e.printStackTrace();
             emitter.error(e.getMessage());
+            throw new RuntimeException("Ai Request Error");
         }
     }
 
