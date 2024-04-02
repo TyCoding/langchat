@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.server.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.entity.LcMessage;
-import cn.tycoding.langchat.biz.entity.LcOss;
+import cn.tycoding.langchat.biz.entity.SysMessage;
+import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.biz.mapper.OssMapper;
 import cn.tycoding.langchat.biz.service.MessageService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
@@ -69,7 +69,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private void saveMessage(ChatReq req) {
-        LcMessage message = new LcMessage();
+        SysMessage message = new SysMessage();
         BeanUtils.copyProperties(req, message);
         message.setRole(RoleEnum.ASSISTANT.getName());
         messageService.addMessage(message);
@@ -86,10 +86,10 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public LcOss image(ImageR req) {
+    public SysOss image(ImageR req) {
         Response<Image> image = langChatService.image(req);
 
-        LcOss oss = new LcOss();
+        SysOss oss = new SysOss();
 //        ossMapper.insert(oss);
         return oss;
     }

@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class LcOss extends OssR {
+public class SysOss extends OssR {
 
     private static final long serialVersionUID = -250127374910520163L;
 

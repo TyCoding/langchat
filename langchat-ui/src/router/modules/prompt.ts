@@ -1,9 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { HomeOutline } from '@vicons/ionicons5';
+import { CubeOutline } from '@vicons/ionicons5';
 import { renderIcon } from '@/utils/index';
 
-const routeName = 'dashboard';
+const routeName = 'prompt';
 
 /**
  * @param name 路由名称, 必须设置,且不能重名
@@ -17,13 +17,12 @@ const routeName = 'dashboard';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/dashboard',
+    path: `/${routeName}`,
     name: routeName,
-    redirect: '/dashboard/index',
+    redirect: `/${routeName}/index`,
     component: Layout,
     meta: {
-      icon: renderIcon(HomeOutline),
-      // permissions: ['dashboard_console', 'dashboard_console', 'dashboard_workplace'],
+      icon: renderIcon(CubeOutline),
       sort: 0,
     },
     children: [
@@ -31,11 +30,9 @@ const routes: Array<RouteRecordRaw> = [
         path: 'index',
         name: `${routeName}_index`,
         meta: {
-          title: '工作台',
-          // permissions: ['dashboard_console'],
-          // affix: true,
+          title: '提示词管理',
         },
-        component: () => import('@/views/dashboard/index.vue'),
+        component: () => import('@/views/modules/prompt/index.vue'),
       },
     ],
   },

@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.controller;
 
-import cn.tycoding.langchat.biz.entity.LcConversation;
-import cn.tycoding.langchat.biz.entity.LcMessage;
+import cn.tycoding.langchat.biz.entity.SysConversation;
+import cn.tycoding.langchat.biz.entity.SysMessage;
 import cn.tycoding.langchat.biz.service.MessageService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -43,7 +43,7 @@ public class ConversationController {
      * 分页数据
      */
     @GetMapping("/page")
-    public R list(LcConversation data, QueryPage queryPage) {
+    public R list(SysConversation data, QueryPage queryPage) {
         return R.ok(MybatisUtil.getData(messageService.conversationPages(data, queryPage)));
     }
 
@@ -51,7 +51,7 @@ public class ConversationController {
      * 新增会话
      */
     @PostMapping
-    public R addConversation(@RequestBody LcConversation conversation) {
+    public R addConversation(@RequestBody SysConversation conversation) {
         return R.ok(messageService.addConversation(conversation));
     }
 
@@ -59,7 +59,7 @@ public class ConversationController {
      * 修改会话
      */
     @PutMapping
-    public R updateConversation(@RequestBody LcConversation conversation) {
+    public R updateConversation(@RequestBody SysConversation conversation) {
         if (conversation.getId() == null) {
             return R.fail("参数错误");
         }
@@ -87,9 +87,9 @@ public class ConversationController {
      */
     @GetMapping("/messages/{conversationId}")
     public R messages(@PathVariable String conversationId) {
-        List<LcMessage> list = messageService.list(Wrappers.<LcMessage>lambdaQuery()
-                .eq(LcMessage::getConversationId, conversationId)
-                .orderByAsc(LcMessage::getCreateTime)
+        List<SysMessage> list = messageService.list(Wrappers.<SysMessage>lambdaQuery()
+                .eq(SysMessage::getConversationId, conversationId)
+                .orderByAsc(SysMessage::getCreateTime)
         );
 
         //TODO 处理会话
@@ -97,7 +97,7 @@ public class ConversationController {
     }
 
     @PostMapping("/message")
-    public R addMessage(@RequestBody LcMessage message) {
+    public R addMessage(@RequestBody SysMessage message) {
         return R.ok(messageService.addMessage(message));
     }
 }

@@ -143,6 +143,9 @@ export function useDataSource(
   }
 
   async function reload(opt?) {
+    setPagination({
+      page: 1,
+    });
     await fetch(opt);
   }
 

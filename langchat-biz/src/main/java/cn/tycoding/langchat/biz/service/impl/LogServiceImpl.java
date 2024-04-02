@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.biz.service.impl;
 
-import cn.tycoding.langchat.biz.entity.LcLog;
+import cn.tycoding.langchat.biz.entity.SysLog;
 import cn.tycoding.langchat.biz.mapper.LogMapper;
 import cn.tycoding.langchat.biz.service.LogService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -19,21 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
-public class LogServiceImpl extends ServiceImpl<LogMapper, LcLog> implements LogService {
+public class LogServiceImpl extends ServiceImpl<LogMapper, SysLog> implements LogService {
 
     @Override
-    public IPage<LcLog> list(LcLog lcLog, QueryPage queryPage) {
-        return baseMapper.selectPage(MybatisUtil.wrap(lcLog, queryPage),
-                Wrappers.<LcLog>lambdaQuery()
-                        .eq(lcLog.getType() != null, LcLog::getType, lcLog.getType())
-                        .like(StringUtils.isNotEmpty(lcLog.getOperation()), LcLog::getOperation,
-                                lcLog.getOperation()).orderByDesc(LcLog::getCreateTime));
+    public IPage<SysLog> list(SysLog sysLog, QueryPage queryPage) {
+        return baseMapper.selectPage(MybatisUtil.wrap(sysLog, queryPage),
+                Wrappers.<SysLog>lambdaQuery()
+                        .eq(sysLog.getType() != null, SysLog::getType, sysLog.getType())
+                        .like(StringUtils.isNotEmpty(sysLog.getOperation()), SysLog::getOperation,
+                                sysLog.getOperation()).orderByDesc(SysLog::getCreateTime));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void add(LcLog lcLog) {
-        baseMapper.insert(lcLog);
+    public void add(SysLog sysLog) {
+        baseMapper.insert(sysLog);
     }
 
     @Override

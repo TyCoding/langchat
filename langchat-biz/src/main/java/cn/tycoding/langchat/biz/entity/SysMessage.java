@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class LcConversation implements Serializable {
+public class SysMessage implements Serializable {
 
     private static final long serialVersionUID = -19545329638997333L;
 
@@ -24,19 +24,34 @@ public class LcConversation implements Serializable {
     private String id;
 
     /**
-     * 提示词ID
+     * 消息ID
+     */
+    private String chatId;
+
+    /**
+     * 会话ID
+     */
+    private String conversationId;
+
+    /**
+     * 应用ID
      */
     private String promptId;
 
     /**
-     * 用户ID
+     * 角色，user、assistant、system
      */
-    private String userId;
+    private String role;
 
     /**
-     * 会话标题
+     * 消息内容
      */
-    private String title;
+    private String model;
+
+    /**
+     * 消息内容
+     */
+    private String message;
 
     /**
      * 创建时间

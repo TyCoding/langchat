@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2024/1/19
  */
 @Data
-public class LcPrompt implements Serializable {
+public class SysPrompt implements Serializable {
 
     private static final long serialVersionUID = -19545329638997333L;
 

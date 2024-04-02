@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class LcLog implements Serializable {
+public class SysLog implements Serializable {
 
     private static final long serialVersionUID = -39039111282732175L;
 

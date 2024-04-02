@@ -2,7 +2,7 @@ import { http } from '@/utils/http/axios';
 
 export function page(params: any) {
   return http.request({
-    url: '/upms/log/page',
+    url: '/langchat/log/page',
     method: 'get',
     params,
   });
@@ -10,14 +10,14 @@ export function page(params: any) {
 
 export function getById(id: string) {
   return http.request({
-    url: `/upms/log/${id}`,
+    url: `/langchat/log/${id}`,
     method: 'get',
   });
 }
 
 export function del(id?: String) {
   return http.request({
-    url: `/upms/log/${id}`,
+    url: `/langchat/log/${id}`,
     method: 'delete',
   });
 }

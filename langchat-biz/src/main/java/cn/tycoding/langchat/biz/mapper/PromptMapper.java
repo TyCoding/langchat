@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.biz.mapper;
 
-import cn.tycoding.langchat.biz.entity.LcPrompt;
+import cn.tycoding.langchat.biz.entity.SysPrompt;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2024/1/19
  */
 @Mapper
-public interface PromptMapper extends BaseMapper<LcPrompt> {
+public interface PromptMapper extends BaseMapper<SysPrompt> {
 
 }
 

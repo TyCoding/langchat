@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.controller;
 
 import cn.hutool.core.lang.Dict;
-import cn.tycoding.langchat.biz.entity.LcLog;
+import cn.tycoding.langchat.biz.entity.SysLog;
 import cn.tycoding.langchat.biz.service.LogService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -25,12 +25,12 @@ public class LogController {
     private final LogService logService;
 
     @GetMapping("/page")
-    public R<Dict> list(LcLog sysLcLog, QueryPage queryPage) {
-        return R.ok(MybatisUtil.getData(logService.list(sysLcLog, queryPage)));
+    public R<Dict> list(SysLog sysSysLog, QueryPage queryPage) {
+        return R.ok(MybatisUtil.getData(logService.list(sysSysLog, queryPage)));
     }
 
     @GetMapping("/{id}")
-    public R<LcLog> findById(@PathVariable Long id) {
+    public R<SysLog> findById(@PathVariable Long id) {
         return R.ok(logService.getById(id));
     }
 

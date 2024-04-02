@@ -2,7 +2,7 @@ package cn.tycoding.langchat.biz.utils;
 
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.HttpUtil;
-import cn.tycoding.langchat.biz.entity.LcLog;
+import cn.tycoding.langchat.biz.entity.SysLog;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -37,13 +37,13 @@ public class LogUtil {
      * @return Log类
      */
     @SneakyThrows
-    public static LcLog build(Integer type, String operation, String method, Long time) {
+    public static SysLog build(Integer type, String operation, String method, Long time) {
         HttpServletRequest request =
                 ((ServletRequestAttributes)
                         Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
                         .getRequest();
 
-        return new LcLog()
+        return new SysLog()
                 .setType(type)
                 .setUsername(AuthUtil.getUsername())
                 .setOperation(operation)
@@ -63,7 +63,7 @@ public class LogUtil {
      * @param operation 描述
      */
     public static void publish(int type, String operation) {
-        LcLog lcLog = LogUtil.build(type, operation, null, null);
-        SpringContextHolder.publishEvent(new LogEvent(lcLog));
+        SysLog sysLog = LogUtil.build(type, operation, null, null);
+        SpringContextHolder.publishEvent(new LogEvent(sysLog));
     }
 }

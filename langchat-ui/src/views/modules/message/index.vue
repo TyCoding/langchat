@@ -20,7 +20,7 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { page as getPage, del } from '@/api/flow/conversation';
+  import { page as getPage, del } from '@/api/modules/conversation';
   import { columns, searchSchemas } from './columns';
   import { DeleteOutlined, EyeOutlined } from '@vicons/antd';
   import InfoList from './components/InfoList.vue';
@@ -60,6 +60,7 @@
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
     schemas: searchSchemas,
+    showAdvancedButton: false,
   });
 
   const loadDataTable = async (res: any) => {

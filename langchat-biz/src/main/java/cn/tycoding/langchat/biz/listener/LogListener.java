@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.biz.listener;
 
-import cn.tycoding.langchat.biz.entity.LcLog;
+import cn.tycoding.langchat.biz.entity.SysLog;
 import cn.tycoding.langchat.biz.service.LogService;
 import cn.tycoding.langchat.biz.utils.LogEvent;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class LogListener {
     @Order
     @EventListener(LogEvent.class)
     public void handler(LogEvent event) {
-        LcLog data = (LcLog) event.getSource();
+        SysLog data = (SysLog) event.getSource();
         logService.add(data);
     }
 }

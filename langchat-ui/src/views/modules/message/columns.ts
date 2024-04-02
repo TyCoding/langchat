@@ -1,10 +1,7 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { Conversation } from '@/api/models/flow';
-import { h } from 'vue';
-import { formatToDate } from '@/utils/dateUtil';
 
-export const columns: BasicColumn<Conversation>[] = [
+export const columns: BasicColumn[] = [
   {
     title: '应用名称',
     key: 'appName',
@@ -26,9 +23,6 @@ export const columns: BasicColumn<Conversation>[] = [
     key: 'createTime',
     width: 140,
     align: 'center',
-    render(row: Conversation) {
-      return h('span', {}, formatToDate(new Date(Number(row.createTime))));
-    },
   },
 ];
 

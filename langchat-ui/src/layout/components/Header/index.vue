@@ -281,16 +281,16 @@
           icon: 'GithubOutlined',
           tips: 'github',
           eventObject: {
-            click: () => window.open('https://github.com/tycoding'),
+            click: () => window.open('https://github.com/tycoding/langchat'),
           },
         },
-        {
-          icon: 'LockOutlined',
-          tips: '锁屏',
-          eventObject: {
-            click: () => useLockscreen.setLock(true),
-          },
-        },
+        // {
+        //   icon: 'LockOutlined',
+        //   tips: '锁屏',
+        //   eventObject: {
+        //     click: () => useLockscreen.setLock(true),
+        //   },
+        // },
       ];
       const avatarOptions = [
         {

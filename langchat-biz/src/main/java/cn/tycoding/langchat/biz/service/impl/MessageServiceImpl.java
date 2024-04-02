@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.biz.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.entity.LcConversation;
-import cn.tycoding.langchat.biz.entity.LcMessage;
+import cn.tycoding.langchat.biz.entity.SysConversation;
+import cn.tycoding.langchat.biz.entity.SysMessage;
 import cn.tycoding.langchat.biz.mapper.ConversationMapper;
 import cn.tycoding.langchat.biz.mapper.MessageMapper;
 import cn.tycoding.langchat.biz.service.MessageService;
@@ -24,29 +24,29 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> implements
+public class MessageServiceImpl extends ServiceImpl<MessageMapper, SysMessage> implements
         MessageService {
 
     private final ConversationMapper conversationMapper;
 
     @Override
-    public List<LcConversation> conversations() {
+    public List<SysConversation> conversations() {
         //TODO 只获取当前用户下的会话
         return conversationMapper.selectList(
-                Wrappers.<LcConversation>lambdaQuery().orderByDesc(LcConversation::getCreateTime));
+                Wrappers.<SysConversation>lambdaQuery().orderByDesc(SysConversation::getCreateTime));
     }
 
     @Override
-    public IPage<LcConversation> conversationPages(LcConversation data, QueryPage queryPage) {
+    public IPage<SysConversation> conversationPages(SysConversation data, QueryPage queryPage) {
         //TODO 只获取当前用户下的会话
-        Page<LcConversation> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        return conversationMapper.selectPage(page, Wrappers.<LcConversation>lambdaQuery()
-                .like(!StrUtil.isBlank(data.getTitle()), LcConversation::getTitle, data.getTitle())
-                .orderByDesc(LcConversation::getCreateTime));
+        Page<SysConversation> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        return conversationMapper.selectPage(page, Wrappers.<SysConversation>lambdaQuery()
+                .like(!StrUtil.isBlank(data.getTitle()), SysConversation::getTitle, data.getTitle())
+                .orderByDesc(SysConversation::getCreateTime));
     }
 
     @Override
-    public LcConversation addConversation(LcConversation conversation) {
+    public SysConversation addConversation(SysConversation conversation) {
         String title = conversation.getTitle();
         if (StrUtil.isBlank(title)) {
             Long count = conversationMapper.selectCount(Wrappers.lambdaQuery());
@@ -59,24 +59,24 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
     }
 
     @Override
-    public void updateConversation(LcConversation conversation) {
+    public void updateConversation(SysConversation conversation) {
         conversationMapper.updateById(
-                new LcConversation().setId(conversation.getId()).setTitle(conversation.getTitle()));
+                new SysConversation().setId(conversation.getId()).setTitle(conversation.getTitle()));
     }
 
     @Override
     public void delConversation(String conversationId) {
         conversationMapper.deleteById(conversationId);
         baseMapper.delete(
-                Wrappers.<LcMessage>lambdaQuery().eq(LcMessage::getConversationId, conversationId));
+                Wrappers.<SysMessage>lambdaQuery().eq(SysMessage::getConversationId, conversationId));
     }
 
     @Override
-    public LcMessage addMessage(LcMessage message) {
+    public SysMessage addMessage(SysMessage message) {
         if (StrUtil.isBlank(message.getConversationId()) && RoleEnum.USER.getName()
                 .equals(message.getRole())) {
             // create new conversation
-            LcConversation conversation = new LcConversation();
+            SysConversation conversation = new SysConversation();
             addConversation(conversation);
             message.setConversationId(conversation.getId());
         }
@@ -89,7 +89,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, LcMessage> im
     @Override
     public void clearMessage(String conversationId) {
         baseMapper.delete(
-                Wrappers.<LcMessage>lambdaQuery().eq(LcMessage::getConversationId, conversationId));
+                Wrappers.<SysMessage>lambdaQuery().eq(SysMessage::getConversationId, conversationId));
     }
 }
 

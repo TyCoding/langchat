@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2024/1/15
  */
 @Data
-public class LcUser implements Serializable {
+public class SysUser implements Serializable {
 
     private static final long serialVersionUID = -94827981963832107L;
 

@@ -105,35 +105,6 @@ const baseRoutes: RouteRecordRaw[] = [
   },
 
   {
-    path: '/user',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'User',
-        meta: {
-          label: t('menu.user'),
-        },
-        component: () => import('@/views/user/index.vue'),
-      },
-    ],
-  },
-  {
-    path: '/prompt',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Prompt',
-        meta: {
-          label: t('menu.user'),
-        },
-        component: () => import('@/views/prompt/index.vue'),
-      },
-    ],
-  },
-
-  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/index.vue'),

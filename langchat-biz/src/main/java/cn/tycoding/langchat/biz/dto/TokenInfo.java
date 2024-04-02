@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class TokenInfo<T> implements Serializable {
-
     private static final long serialVersionUID = 6422723675878957517L;
 
     /**

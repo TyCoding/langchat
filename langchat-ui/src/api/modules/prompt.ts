@@ -3,7 +3,7 @@ import { AxiosProgressEvent } from 'axios';
 
 export function list(params: any) {
   return http.request({
-    url: '/langchat/bot/list',
+    url: '/langchat/prompt/list',
     method: 'get',
     params,
   });
@@ -11,7 +11,7 @@ export function list(params: any) {
 
 export function page(params: any) {
   return http.request({
-    url: '/langchat/bot/page',
+    url: '/langchat/prompt/page',
     method: 'get',
     params,
   });
@@ -19,21 +19,21 @@ export function page(params: any) {
 
 export function getById(id: string) {
   return http.request({
-    url: `/langchat/bot/${id}`,
+    url: `/langchat/prompt/${id}`,
     method: 'get',
   });
 }
 
-export function getByModelId(id: string): Promise<Model> {
+export function getByModelId(id: string) {
   return http.request({
-    url: `/langchat/bot/byModelId/${id}`,
+    url: `/langchat/prompt/byModelId/${id}`,
     method: 'get',
   });
 }
 
 export function add(params: any) {
   return http.request({
-    url: '/langchat/bot',
+    url: '/langchat/prompt',
     method: 'post',
     params,
   });
@@ -41,7 +41,7 @@ export function add(params: any) {
 
 export function update(params: any) {
   return http.request({
-    url: '/langchat/bot',
+    url: '/langchat/prompt',
     method: 'put',
     params,
   });
@@ -60,7 +60,7 @@ export function chat(
 ) {
   return http.request(
     {
-      url: `/langchat/chat/bot`,
+      url: `/langchat/chat/prompt`,
       method: 'post',
       params,
       onDownloadProgress: onDownloadProgress,

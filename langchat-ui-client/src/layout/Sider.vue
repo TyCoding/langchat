@@ -57,7 +57,7 @@
 <template>
   <div class="h-full bg-gray-100 dark:bg-transparent flex flex-col">
     <n-scrollbar class="flex-1">
-      <div class="flex flex-col gap-3 border-neutral-800 pt-6 pl-3 pr-3">
+      <div class="flex flex-col gap-3 border-neutral-800 pt-3 pl-3 pr-3">
         <n-button
           v-for="item in routesConst"
           text
@@ -77,32 +77,6 @@
 
     <div class="m-2 flex flex-col justify-center items-center gap-2 mb-4 bottom-0">
       <n-space vertical class="mb-2">
-        <n-popover trigger="hover" placement="right">
-          <template #trigger>
-            <n-button
-              @click="router.push({ name: 'User' })"
-              :type="routerName == 'User' ? 'primary' : 'default'"
-              text
-            >
-              <SvgIcon class="text-xl" icon="lucide:user-cog" />
-            </n-button>
-          </template>
-          <span>{{ t('side.user') }}</span>
-        </n-popover>
-
-        <n-popover trigger="hover" placement="right">
-          <template #trigger>
-            <n-button
-              @click="router.push({ name: 'Prompt' })"
-              :type="routerName == 'Prompt' ? 'primary' : 'default'"
-              text
-            >
-              <SvgIcon class="text-xl" icon="bx:bot" />
-            </n-button>
-          </template>
-          <span>{{ t('side.prompt') }}</span>
-        </n-popover>
-
         <n-popover trigger="hover" placement="right">
           <template #trigger>
             <n-button

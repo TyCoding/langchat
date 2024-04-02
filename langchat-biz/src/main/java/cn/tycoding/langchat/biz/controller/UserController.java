@@ -2,7 +2,7 @@ package cn.tycoding.langchat.biz.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.biz.dto.UserInfo;
-import cn.tycoding.langchat.biz.entity.LcUser;
+import cn.tycoding.langchat.biz.entity.SysUser;
 import cn.tycoding.langchat.biz.service.UserService;
 import cn.tycoding.langchat.biz.utils.AuthUtil;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -39,35 +39,35 @@ public class UserController {
     }
 
     @GetMapping("/checkName")
-    public R<Boolean> checkName(LcUser user) {
+    public R<Boolean> checkName(SysUser user) {
         return R.ok(userService.checkName(user));
     }
 
     @GetMapping("/list")
-    public R<List<LcUser>> list(LcUser user) {
+    public R<List<SysUser>> list(SysUser user) {
         return R.ok(userService.list(user));
     }
 
     @GetMapping("/page")
-    public R<Dict> page(LcUser user, QueryPage queryPage) {
+    public R<Dict> page(SysUser user, QueryPage queryPage) {
         return R.ok(MybatisUtil.getData(userService.page(user, queryPage)));
     }
 
     @GetMapping("/{id}")
-    public R<LcUser> findById(@PathVariable String id) {
+    public R<SysUser> findById(@PathVariable String id) {
         return R.ok(userService.findById(id));
     }
 
     @PostMapping
 //    @PreAuthorize("@auth.hasAuth('upms:user:add')")
-    public R<LcUser> add(@RequestBody LcUser user) {
+    public R<SysUser> add(@RequestBody SysUser user) {
         userService.add(user);
         return R.ok();
     }
 
     @PutMapping
 //    @PreAuthorize("@auth.hasAuth('upms:user:update')")
-    public R update(@RequestBody LcUser user) {
+    public R update(@RequestBody SysUser user) {
         userService.update(user);
         return R.ok();
     }
@@ -75,7 +75,7 @@ public class UserController {
     @DeleteMapping("/{id}")
 //    @PreAuthorize("@auth.hasAuth('upms:user:delete')")
     public R delete(@PathVariable String id) {
-        LcUser user = userService.getById(id);
+        SysUser user = userService.getById(id);
         if (user != null) {
             userService.delete(id, user.getUsername());
         }
@@ -85,7 +85,7 @@ public class UserController {
     @GetMapping("/reset")
 //    @PreAuthorize("@auth.hasAuth('upms:user:reset')")
     public R reset(@RequestParam String id, String password) {
-        LcUser user = userService.getById(id);
+        SysUser user = userService.getById(id);
         if (user != null) {
             userService.reset(id, password, user.getUsername());
         }

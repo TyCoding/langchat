@@ -19,11 +19,10 @@
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
-  import { page as getPage, del } from '@/api/upms/log';
+  import { page as getPage, del } from '@/api/modules/log';
   import { columns } from './columns';
   import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';
-  import { Log } from '@/api/models/auth';
   const message = useMessage();
   const dialog = useDialog();
 
@@ -60,7 +59,7 @@
     actionRef.value.reload();
   }
 
-  function handleDelete(record: Log) {
+  function handleDelete(record: any) {
     dialog.info({
       title: '提示',
       content: `您确定删除 ${record.operation} 日志？`,

@@ -1,14 +1,15 @@
 package cn.tycoding.langchat.biz.controller;
 
-import cn.tycoding.langchat.biz.entity.LcOss;
-import cn.tycoding.langchat.biz.service.ClientFileService;
+import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.biz.service.OssService;
+import cn.tycoding.langchat.common.dto.OssR;
+import cn.tycoding.langchat.common.properties.OssProps;
+import cn.tycoding.langchat.common.utils.OssUtil;
 import cn.tycoding.langchat.common.utils.R;
-import cn.tycoding.langchat.common.dto.TextR;
-import cn.tycoding.langchat.common.utils.StreamEmitter;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * @author tycoding
@@ -27,44 +27,29 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/langchat/file")
 @RestController
 @AllArgsConstructor
-public class OssFileController {
+public class OssController {
 
-    private final ClientFileService clientFileService;
     private final OssService ossService;
+    private final OssProps ossProps;
 
     @GetMapping("/list")
     public R list() {
-        List<LcOss> list = ossService.list(Wrappers.<LcOss>lambdaQuery()
-//                .eq(LcOss::getUserId, ClientUtil.getClientId())
-//                .eq(LcOss::getChannel, FileEnum.INPUT.getChannel())
-                .orderByDesc(LcOss::getCreateTime)
+        List<SysOss> list = ossService.list(Wrappers.<SysOss>lambdaQuery()
+                .orderByDesc(SysOss::getCreateTime)
         );
         return R.ok(list);
     }
 
     @PostMapping("/upload")
     public R upload(MultipartFile file) {
-        LcOss oss = clientFileService.upload(file);
+        OssR ossR = OssUtil.transfer(ossProps, file);
+        SysOss oss = new SysOss();
+        BeanUtils.copyProperties(ossR, oss);
         return R.ok(oss);
     }
 
-    @PostMapping("/chat")
-    public SseEmitter chat(@RequestBody TextR req) {
-        StreamEmitter emitter = new StreamEmitter();
-        req.setEmitter(emitter);
-        clientFileService.chat(req);
-        return emitter.get();
-    }
-
-    @GetMapping("/task")
-    public R task() {
-//        int count = asyncFuture.getCount(ClientUtil.getClientId());
-//        return R.ok(count);
-        return R.ok();
-    }
-
     @PutMapping
-    public R update(@RequestBody LcOss data) {
+    public R update(@RequestBody SysOss data) {
         ossService.updateById(data);
         return R.ok();
     }

@@ -1,6 +1,6 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { User } from '@/api/models/upms';
+import { User } from '@/api/models';
 import { h } from 'vue';
 import { NTag } from 'naive-ui';
 
@@ -13,34 +13,6 @@ export const columns: BasicColumn<User>[] = [
   {
     title: '真实姓名',
     key: 'realName',
-    align: 'center',
-  },
-  {
-    title: '角色',
-    key: 'roles',
-    align: 'center',
-    render(row: User) {
-      return row.roles.map((item: any) => {
-        return h(
-          NTag,
-          {
-            style: {
-              marginRight: '6px',
-            },
-            size: 'small',
-            type: 'info',
-            bordered: false,
-          },
-          {
-            default: () => item.name,
-          }
-        );
-      });
-    },
-  },
-  {
-    title: '部门',
-    key: 'deptName',
     align: 'center',
   },
   {
@@ -102,26 +74,6 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入用户名', trigger: ['blur'] }],
   },
   {
-    field: 'roleIds',
-    label: '角色',
-    slot: 'roleSlot',
-    component: 'NInput',
-    componentProps: {
-      placeholder: '请选择角色',
-    },
-    rules: [{ type: 'array', required: true, message: '请选择角色', trigger: ['blur', 'change'] }],
-  },
-  {
-    field: 'deptId',
-    label: '部门',
-    slot: 'deptSlot',
-    component: 'NInput',
-    componentProps: {
-      placeholder: '请选择部门',
-    },
-    rules: [{ required: true, message: '请选择部门', trigger: ['blur', 'change'] }],
-  },
-  {
     field: 'realName',
     label: '真实姓名',
     component: 'NInput',
@@ -133,7 +85,7 @@ export const formSchemas: FormSchema[] = [
   {
     field: 'status',
     component: 'NRadioGroup',
-    label: '角色状态',
+    label: '用户状态',
     componentProps: {
       options: [
         {

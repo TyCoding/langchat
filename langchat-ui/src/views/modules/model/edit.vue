@@ -23,7 +23,7 @@
 </template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { add, update, getById } from '@/api/flow/model';
+  import { add, update, getById } from '@/api/modules/model';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';

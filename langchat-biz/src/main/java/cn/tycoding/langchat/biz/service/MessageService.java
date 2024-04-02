@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.service;
 
-import cn.tycoding.langchat.biz.entity.LcConversation;
-import cn.tycoding.langchat.biz.entity.LcMessage;
+import cn.tycoding.langchat.biz.entity.SysConversation;
+import cn.tycoding.langchat.biz.entity.SysMessage;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -11,34 +11,34 @@ import java.util.List;
  * @author tycoding
  * @since 2024/1/4
  */
-public interface MessageService extends IService<LcMessage> {
+public interface MessageService extends IService<SysMessage> {
 
     /**
      * 获取会话列表
      */
-    List<LcConversation> conversations();
+    List<SysConversation> conversations();
 
     /**
      * 获取会话分页列表
      */
-    IPage<LcConversation> conversationPages(LcConversation data, QueryPage queryPage);
+    IPage<SysConversation> conversationPages(SysConversation data, QueryPage queryPage);
 
     /**
      * 新增会话
      */
-    LcConversation addConversation(LcConversation conversation);
+    SysConversation addConversation(SysConversation conversation);
 
     /**
      * 修改会话
      */
-    void updateConversation(LcConversation conversation);
+    void updateConversation(SysConversation conversation);
 
     /**
      * 删除会话
      */
     void delConversation(String conversationId);
 
-    LcMessage addMessage(LcMessage message);
+    SysMessage addMessage(SysMessage message);
 
     void clearMessage(String conversationId);
 }

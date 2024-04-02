@@ -36,11 +36,21 @@
     "pinia": "^2.0.33",
     "typed.js": "^2.1.0",
     "uuid": "^9.0.1",
+		"date-fns": "^2.30.0",
     "vue": "^3.2.47",
     "vue-demi": "^0.14.6",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.1.6"
-  },
+    "vue-router": "^4.1.6",
+		"vue-echarts": "^6.6.4",
+		"@codemirror/lang-javascript": "^6.2.1",
+		"@codemirror/lang-json": "^6.0.1",
+		"@codemirror/theme-one-dark": "^6.1.2",
+		"@vue-office/docx": "^1.6.0",
+		"@vue-office/pdf": "^1.6.0",
+		"codemirror": "^6.0.1",
+		"vue-codemirror": "^6.1.1",
+		"echarts": "^5.4.3"
+	},
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.3",
     "@commitlint/cli": "^17.4.4",

@@ -2,7 +2,7 @@ package cn.tycoding.langchat.biz.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.tycoding.langchat.biz.dto.UserInfo;
-import cn.tycoding.langchat.biz.entity.LcUser;
+import cn.tycoding.langchat.biz.entity.SysUser;
 import cn.tycoding.langchat.biz.mapper.UserMapper;
 import cn.tycoding.langchat.biz.service.UserService;
 import cn.tycoding.langchat.biz.utils.AuthUtil;
@@ -32,13 +32,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, SysUser> implements UserService {
 
     private final AuthProps authProps;
 
     @Override
     public UserInfo findById(String userId) {
-        LcUser user = baseMapper.selectById(userId);
+        SysUser user = baseMapper.selectById(userId);
         if (user == null) {
             return null;
         }
@@ -52,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     @Override
     @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public UserInfo info(String username) {
-        LcUser user = baseMapper.selectOne(Wrappers.<LcUser>lambdaQuery().eq(LcUser::getUsername, username));
+        SysUser user = baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username));
         if (user == null) {
             throw new RuntimeException("Username or password is error");
         }
@@ -94,37 +94,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     }
 
     @Override
-    public List<LcUser> list(LcUser user) {
-        List<LcUser> list = baseMapper.selectList(
-                new LambdaQueryWrapper<LcUser>().ne(LcUser::getUsername, authProps.getAdminName())
-                        .like(StringUtils.isNotEmpty(user.getUsername()), LcUser::getUsername,
+    public List<SysUser> list(SysUser user) {
+        List<SysUser> list = baseMapper.selectList(
+                new LambdaQueryWrapper<SysUser>().ne(SysUser::getUsername, authProps.getAdminName())
+                        .like(StringUtils.isNotEmpty(user.getUsername()), SysUser::getUsername,
                                 user.getUsername()));
         list.forEach(i -> i.setPassword(null));
         return list;
     }
 
     @Override
-    public IPage<LcUser> page(LcUser user, QueryPage queryPage) {
+    public IPage<SysUser> page(SysUser user, QueryPage queryPage) {
         return baseMapper.selectPage(MybatisUtil.wrap(user, queryPage),
-                Wrappers.<LcUser>lambdaQuery());
+                Wrappers.<SysUser>lambdaQuery());
     }
 
     @Override
-    public boolean checkName(LcUser user) {
+    public boolean checkName(SysUser user) {
         if (authProps.getAdminName().equals(user.getUsername())) {
             return false;
         }
-        LambdaQueryWrapper<LcUser> queryWrapper = new LambdaQueryWrapper<LcUser>().eq(
-                LcUser::getUsername, user.getUsername());
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<SysUser>().eq(
+                SysUser::getUsername, user.getUsername());
         if (user.getId() != null) {
-            queryWrapper.ne(LcUser::getId, user.getId());
+            queryWrapper.ne(SysUser::getId, user.getId());
         }
         return baseMapper.selectList(queryWrapper).isEmpty();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void add(LcUser user) {
+    public void add(SysUser user) {
         if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
         }
@@ -143,7 +143,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#user.username")
-    public void update(LcUser user) {
+    public void update(SysUser user) {
         if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
         }
@@ -167,7 +167,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LcUser> implements 
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public void reset(String id, String password, String username) {
-        LcUser user = new LcUser();
+        SysUser user = new SysUser();
         user.setId(id);
         user.setPassword(AuthUtil.encode(authProps.getSaltKey(), password));
         baseMapper.updateById(user);

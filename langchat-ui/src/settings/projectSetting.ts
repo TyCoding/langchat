@@ -21,7 +21,7 @@ const setting = {
     //背景色
     bgColor: '#fff',
     //是否显示
-    show: false,
+    show: true,
     //固定多标签
     fixed: true,
   },

@@ -1,10 +1,7 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { Model } from '@/api/models/flow';
-import { h } from 'vue';
-import { formatToDate } from '@/utils/dateUtil';
 
-export const columns: BasicColumn<Model>[] = [
+export const columns: BasicColumn[] = [
   {
     title: '模型名称',
     key: 'name',
@@ -42,9 +39,6 @@ export const columns: BasicColumn<Model>[] = [
     key: 'createTime',
     align: 'center',
     width: 120,
-    render(row: Model) {
-      return h('span', {}, formatToDate(new Date(Number(row.createTime))));
-    },
   },
 ];
 

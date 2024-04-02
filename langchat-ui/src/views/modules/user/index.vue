@@ -31,7 +31,7 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { page as getPage, del } from '@/api/upms/user';
+  import { page as getPage, del } from '@/api/modules/user';
   import { columns, searchSchemas } from './columns';
   import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
@@ -71,6 +71,7 @@
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
     schemas: searchSchemas,
+    showAdvancedButton: false,
   });
 
   const loadDataTable = async (res: any) => {

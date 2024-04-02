@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.biz.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.entity.LcPrompt;
+import cn.tycoding.langchat.biz.entity.SysPrompt;
 import cn.tycoding.langchat.biz.service.PromptService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -32,11 +32,11 @@ public class PromptController {
     private final PromptService promptService;
 
     @GetMapping("/page")
-    public R list(LcPrompt data, QueryPage queryPage) {
-        LambdaQueryWrapper<LcPrompt> queryWrapper = Wrappers.<LcPrompt>lambdaQuery()
-                .like(!StrUtil.isBlank(data.getName()), LcPrompt::getName, data.getName())
-                .orderByDesc(LcPrompt::getCreateTime);
-        IPage<LcPrompt> iPage = promptService.page(MybatisUtil.wrap(data, queryPage), queryWrapper);
+    public R list(SysPrompt data, QueryPage queryPage) {
+        LambdaQueryWrapper<SysPrompt> queryWrapper = Wrappers.<SysPrompt>lambdaQuery()
+                .like(!StrUtil.isBlank(data.getName()), SysPrompt::getName, data.getName())
+                .orderByDesc(SysPrompt::getCreateTime);
+        IPage<SysPrompt> iPage = promptService.page(MybatisUtil.wrap(data, queryPage), queryWrapper);
         iPage.getRecords().forEach(i -> {
             if (i.getPrompt() != null && i.getPrompt().length() >= 50) {
                 i.setPrompt(StrUtil.sub(i.getPrompt(), 0, 50) + "...");
@@ -56,13 +56,13 @@ public class PromptController {
     }
 
     @PostMapping
-    public R add(@RequestBody LcPrompt data) {
+    public R add(@RequestBody SysPrompt data) {
         data.setCreateTime(new Date());
         return R.ok(promptService.save(data));
     }
 
     @PutMapping
-    public R update(@RequestBody LcPrompt data) {
+    public R update(@RequestBody SysPrompt data) {
         return R.ok(promptService.updateById(data));
     }
 }

@@ -1,35 +1,17 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
 import { h } from 'vue';
-import { NButton, NTag } from 'naive-ui';
-import { Bot } from '@/api/models/flow';
-import router from '@/router';
+import { NTag } from 'naive-ui';
 
-export const columns: BasicColumn<Bot>[] = [
+export const columns: BasicColumn[] = [
   {
     title: '名称',
     key: 'name',
-    render(row: Bot) {
-      return h(
-        NButton,
-        {
-          text: true,
-          tag: 'a',
-          type: 'success',
-          onClick: () => {
-            router.push({ name: 'bot_config_index', params: { id: row.id } });
-          },
-        },
-        {
-          default: () => row.name,
-        }
-      );
-    },
   },
   {
     title: '标签',
     key: 'tags',
-    render(row: Bot) {
+    render(row: any) {
       if (row.tags == undefined) {
         return;
       }

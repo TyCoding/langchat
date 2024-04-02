@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { nextTick, ref } from 'vue';
-  import { getMessages } from '@/api/flow/conversation';
+  import { getMessages } from '@/api/modules/conversation';
 
   const messageRef = ref();
   const contentRef = ref();
