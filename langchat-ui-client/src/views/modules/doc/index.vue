@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import VueOfficePdf from '@vue-office/pdf';
   import Chat from './components/Chat.vue';
   import FileList from './components/FileList.vue';
   import { useMessage } from 'naive-ui';
@@ -9,22 +8,11 @@
 
   const message = useMessage();
   const file = ref<Oss>({});
-  const fileLoading = ref(false);
-
-  function renderOk() {
-    fileLoading.value = false;
-  }
-  function renderFail() {
-    message.error(t('doc.previewError'));
-    fileLoading.value = false;
-    file.value.url = undefined;
-  }
 
   function onSelect(item: Oss) {
     if (file.value.url == item.url) {
       return;
     }
-    fileLoading.value = true;
     file.value = item;
   }
 </script>
@@ -48,14 +36,7 @@
         >
           {{ file.fileName }}.{{ file.type }}
         </div>
-        <n-spin
-          v-if="file.url"
-          :show="fileLoading"
-          description="File Viewer Loading..."
-          class="w-full h-full"
-        >
-          <VueOfficePdf :src="file.url" @error="renderFail" @rendered="renderOk" />
-        </n-spin>
+        <iframe v-if="file.url == ''" :src="file.url"></iframe>
         <n-empty v-else class="h-full w-full justify-center" :description="t('doc.previewEmpty')" />
       </div>
       <div class="w-4/12 border-l dark:border-l-[#1e1e20]">
@@ -65,13 +46,4 @@
   </n-layout>
 </template>
 
-<style scoped lang="less">
-  ::v-deep(.vue-office-pdf-wrapper) {
-    position: unset !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 18px 0px !important;
-  }
-</style>
+<style scoped lang="less"></style>

@@ -6,7 +6,6 @@ import cn.tycoding.langchat.biz.service.MessageService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,10 +86,7 @@ public class ConversationController {
      */
     @GetMapping("/messages/{conversationId}")
     public R messages(@PathVariable String conversationId) {
-        List<SysMessage> list = messageService.list(Wrappers.<SysMessage>lambdaQuery()
-                .eq(SysMessage::getConversationId, conversationId)
-                .orderByAsc(SysMessage::getCreateTime)
-        );
+        List<SysMessage> list = messageService.getMessages(conversationId);
 
         //TODO 处理会话
         return R.ok(list);

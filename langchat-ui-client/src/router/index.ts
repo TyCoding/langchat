@@ -49,13 +49,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/modules/write/index.vue'),
       },
       {
-        path: '/translate',
-        name: 'Translate',
+        path: '/ppt',
+        name: 'PPT',
         meta: {
-          label: t('menu.translate'),
-          icon: 'iconoir:translate',
+          label: t('menu.ppt'),
+          icon: 'bi:filetype-ppt',
         },
-        component: () => import('@/views/modules/translate/index.vue'),
+        component: () => import('@/views/modules/ppt/index.vue'),
       },
       {
         path: '/chart',

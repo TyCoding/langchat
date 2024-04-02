@@ -41,5 +41,7 @@ public interface MessageService extends IService<SysMessage> {
     SysMessage addMessage(SysMessage message);
 
     void clearMessage(String conversationId);
+
+    List<SysMessage> getMessages(String conversationId);
 }
 

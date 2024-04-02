@@ -33,7 +33,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, SysMessage> i
     public List<SysConversation> conversations() {
         //TODO 只获取当前用户下的会话
         return conversationMapper.selectList(
-                Wrappers.<SysConversation>lambdaQuery().orderByDesc(SysConversation::getCreateTime));
+                Wrappers.<SysConversation>lambdaQuery()
+                        .orderByDesc(SysConversation::getCreateTime));
     }
 
     @Override
@@ -61,14 +62,16 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, SysMessage> i
     @Override
     public void updateConversation(SysConversation conversation) {
         conversationMapper.updateById(
-                new SysConversation().setId(conversation.getId()).setTitle(conversation.getTitle()));
+                new SysConversation().setId(conversation.getId())
+                        .setTitle(conversation.getTitle()));
     }
 
     @Override
     public void delConversation(String conversationId) {
         conversationMapper.deleteById(conversationId);
         baseMapper.delete(
-                Wrappers.<SysMessage>lambdaQuery().eq(SysMessage::getConversationId, conversationId));
+                Wrappers.<SysMessage>lambdaQuery()
+                        .eq(SysMessage::getConversationId, conversationId));
     }
 
     @Override
@@ -89,7 +92,16 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, SysMessage> i
     @Override
     public void clearMessage(String conversationId) {
         baseMapper.delete(
-                Wrappers.<SysMessage>lambdaQuery().eq(SysMessage::getConversationId, conversationId));
+                Wrappers.<SysMessage>lambdaQuery()
+                        .eq(SysMessage::getConversationId, conversationId));
+    }
+
+    @Override
+    public List<SysMessage> getMessages(String conversationId) {
+        return baseMapper.selectPage(new Page<>(1, 20), Wrappers.<SysMessage>lambdaQuery()
+                .eq(SysMessage::getConversationId, conversationId)
+                .orderByAsc(SysMessage::getCreateTime)
+        ).getRecords();
     }
 }
 
