@@ -58,6 +58,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/modules/ppt/index.vue'),
       },
       {
+        path: '/mermaid',
+        name: 'Mermaid',
+        meta: {
+          label: t('menu.mermaid'),
+          icon: 'flowbite:chart-mixed-outline',
+        },
+        component: () => import('@/views/modules/mermaid/index.vue'),
+      },
+      {
         path: '/chart',
         name: 'Chart',
         meta: {

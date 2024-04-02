@@ -68,6 +68,7 @@ export default {
     doc: '文档',
     write: '撰写',
     ppt: 'PPT',
+    mermaid: 'Mermaid',
     chart: '图表分析',
     image: '文生图',
     mindmap: '思维导图',
