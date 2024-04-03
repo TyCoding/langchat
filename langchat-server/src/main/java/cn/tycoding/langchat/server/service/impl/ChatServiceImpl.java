@@ -11,9 +11,11 @@ import cn.tycoding.langchat.common.dto.ChatRes;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
+import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.server.service.ChatService;
 import dev.langchain4j.data.image.Image;
+import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.model.output.TokenUsage;
 import lombok.AllArgsConstructor;
@@ -87,7 +89,14 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public SysOss image(ImageR req) {
-        Response<Image> image = langChatService.image(req);
+        if (req.getModel().equals(ModelConst.GEMINI_IMAGE)) {
+            Response<AiMessage> text = langChatService.textImage(
+                    new TextR().setPrompt(req.getPrompt()).setModel(req.getModel()));
+            log.info("生成图片：{}", text);
+        } else {
+            Response<Image> image = langChatService.image(req);
+            log.info("生成图片：{}", image);
+        }
 
         SysOss oss = new SysOss();
 //        ossMapper.insert(oss);

@@ -5,6 +5,7 @@
   import { onMounted, ref, watch } from 'vue';
   import html2canvas from 'html2canvas';
   import { t } from '@/locales';
+  import { downloadPdf, downloadPng, downloadSvg } from '@/utils/downloadFile';
 
   const props = defineProps<{
     genText: string;
@@ -12,7 +13,7 @@
 
   let instance: Markmap | null = null;
   onMounted(() => {
-    const el = document.getElementById('mind-map') as any;
+    const el = document.getElementById('mindmap') as any;
     instance = Markmap.create(el);
   });
 
@@ -35,24 +36,20 @@
   function onZoomFill() {
     instance?.fit();
   }
-  async function onDownload() {
-    const ele = document.getElementById('mind-map-view');
-    const canvas = await html2canvas(ele as HTMLDivElement, {
-      useCORS: true,
-    });
-    const imgUrl = canvas.toDataURL('image/png');
-    const tempLink = document.createElement('a');
-    tempLink.style.display = 'none';
-    tempLink.href = imgUrl;
-    tempLink.setAttribute('download', 'mind-map-shot.png');
-    if (typeof tempLink.download === 'undefined') tempLink.setAttribute('target', '_blank');
-    document.body.appendChild(tempLink);
-    tempLink.click();
+
+  function downPng() {
+    downloadPng('mindmap-view', 'mindmap-shot');
+  }
+  function downSvg() {
+    downloadSvg('mindmap-view', 'mindmap-shot');
+  }
+  function downPdf() {
+    downloadPdf('mindmap-view', 'mindmap-shot');
   }
 </script>
 
 <template>
-  <div class="w-full h-full" :class="genText == '' ? 'overflow-hidden' : ''">
+  <div class="dot-bg w-full h-full" :class="genText == '' ? 'overflow-hidden' : ''">
     <div v-if="genText !== ''" class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
       <n-button @click="onZoomIn" text>
         <SvgIcon class="text-2xl" icon="basil:zoom-in-outline" />
@@ -63,8 +60,23 @@
       <n-button @click="onZoomFill" text>
         <SvgIcon class="text-2xl" icon="fluent:full-screen-zoom-24-filled" />
       </n-button>
-      <n-button text>
-        <SvgIcon @click="onDownload" class="text-2xl" icon="material-symbols:download" />
+      <n-button round size="small" @click="downPng">
+        <template #icon>
+          <SvgIcon class="text-lg" icon="material-symbols:download" />
+        </template>
+        PNG
+      </n-button>
+      <n-button round size="small" @click="downSvg">
+        <template #icon>
+          <SvgIcon class="text-lg" icon="material-symbols:download" />
+        </template>
+        SVG
+      </n-button>
+      <n-button round size="small" @click="downPdf">
+        <template #icon>
+          <SvgIcon class="text-lg" icon="material-symbols:download" />
+        </template>
+        PDF
       </n-button>
     </div>
 
@@ -75,8 +87,8 @@
       <n-button type="success">{{ t('mindmap.begin') }}</n-button>
     </div>
 
-    <div class="h-full w-full" id="mind-map-view">
-      <svg class="h-full w-full" id="mind-map" />
+    <div class="h-full w-full" id="mindmap-view">
+      <svg class="h-full w-full" id="mindmap" />
     </div>
   </div>
 </template>

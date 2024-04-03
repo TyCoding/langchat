@@ -1,3 +1,6 @@
+import html2canvas from 'html2canvas';
+import jspdf from 'jspdf';
+
 /**
  * 根据文件url获取文件名
  * @param url 文件url
@@ -73,4 +76,72 @@ export function downloadByUrl({
       img.onerror = (e) => reject(e);
     }
   });
+}
+
+export function downloadBlob(blob: any, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+export async function downloadPng(eleId: string, filename: string) {
+  const ele = document.getElementById(eleId);
+  const canvas = await html2canvas(ele as HTMLDivElement, {
+    useCORS: true,
+  });
+  const imgUrl = canvas.toDataURL('image/png');
+  if (imgUrl.length < 8) {
+    return;
+  }
+  const tempLink = document.createElement('a');
+  tempLink.style.display = 'none';
+  tempLink.href = imgUrl;
+  tempLink.setAttribute('download', filename + '.png');
+  if (typeof tempLink.download === 'undefined') tempLink.setAttribute('target', '_blank');
+  document.body.appendChild(tempLink);
+  tempLink.click();
+}
+
+export function downloadSvg(eleId: string, filename: string) {
+  const mermaidDiv = document.getElementById(eleId);
+  const svg = mermaidDiv!.querySelector('svg') as any;
+  if (svg == null) {
+    return;
+  }
+  const data = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([data], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename + '.svg';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+export async function downloadPdf(eleId: string, filename: string) {
+  const ele = document.getElementById(eleId);
+  const canvas = await html2canvas(ele as HTMLDivElement, {
+    useCORS: true,
+  });
+  const imgUrl = canvas.toDataURL('image/png');
+  if (imgUrl.length < 8) {
+    return;
+  }
+  const pdf = new jspdf();
+  pdf.addImage({
+    imageData: imgUrl,
+    x: 10,
+    y: 10,
+    width: 100,
+    height: 100,
+    format: 'PNG',
+  });
+  pdf.save(filename + '.pdf');
 }

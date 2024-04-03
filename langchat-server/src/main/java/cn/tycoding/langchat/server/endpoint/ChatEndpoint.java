@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.server.endpoint;
 
+import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
@@ -8,6 +9,7 @@ import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.dto.PromptConst;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
+import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.server.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +30,18 @@ public class ChatEndpoint {
     private final ChatService chatService;
 
     @PostMapping
-    public SseEmitter chat(@RequestBody ChatReq req) {
+    public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage()));
-        chatService.chat(req);
+
+        if (req.getModel().endsWith(ModelConst.IMAGE_SUFFIX)) {
+            SysOss oss = chatService.image(new ImageR().setPrompt(req.getPrompt()).setModel(req.getModel()));
+            emitter.send("Image:" + oss);
+            emitter.complete();
+        } else {
+            chatService.chat(req);
+        }
         return emitter.get();
     }
 

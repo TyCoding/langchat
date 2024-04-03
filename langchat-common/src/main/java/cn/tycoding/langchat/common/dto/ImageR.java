@@ -2,12 +2,14 @@ package cn.tycoding.langchat.common.dto;
 
 import dev.langchain4j.model.input.Prompt;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author tycoding
  * @since 2024/1/6
  */
 @Data
+@Accessors(chain = true)
 public class ImageR {
 
     private Prompt prompt;

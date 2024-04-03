@@ -24,6 +24,7 @@ public class ModelConst {
 
     public static final String GEMINI = "gemini";
     public static final String GEMINI_TEXT = GEMINI + TEXT_SUFFIX;
+    public static final String GEMINI_IMAGE = GEMINI + IMAGE_SUFFIX;
 
     public static final String AZUREOPENAI = "azureopenai";
     public static final String AZUREOPENAI_TEXT = AZUREOPENAI + TEXT_SUFFIX;

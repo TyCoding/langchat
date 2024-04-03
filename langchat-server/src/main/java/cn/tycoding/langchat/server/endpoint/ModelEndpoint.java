@@ -6,7 +6,6 @@ import cn.tycoding.langchat.core.enums.ModelConst;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +25,7 @@ public class ModelEndpoint {
                 set("ChatGPT", ModelConst.OPENAI),
                 set("Ollama", ModelConst.OLLAMA),
                 set("Google Gemini", ModelConst.GEMINI),
+                set("Google Gemini Image", ModelConst.GEMINI_IMAGE),
                 set("Azure OpenAI", ModelConst.AZUREOPENAI),
                 set("ChatGLM", ModelConst.CHATGLM),
                 set("千帆大模型", ModelConst.QIANFAN)

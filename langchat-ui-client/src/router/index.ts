@@ -49,6 +49,24 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/modules/write/index.vue'),
       },
       {
+        path: '/image',
+        name: 'Image',
+        meta: {
+          label: t('menu.image'),
+          icon: 'radix-icons:image',
+        },
+        component: () => import('@/views/modules/image/index.vue'),
+      },
+      {
+        path: '/chart',
+        name: 'Chart',
+        meta: {
+          label: t('menu.chart'),
+          icon: 'fluent:data-area-24-regular',
+        },
+        component: () => import('@/views/modules/chart/index.vue'),
+      },
+      {
         path: '/ppt',
         name: 'PPT',
         meta: {
@@ -65,24 +83,6 @@ const routes: RouteRecordRaw[] = [
           icon: 'flowbite:chart-mixed-outline',
         },
         component: () => import('@/views/modules/mermaid/index.vue'),
-      },
-      {
-        path: '/chart',
-        name: 'Chart',
-        meta: {
-          label: t('menu.chart'),
-          icon: 'fluent:data-area-24-regular',
-        },
-        component: () => import('@/views/modules/chart/index.vue'),
-      },
-      {
-        path: '/image',
-        name: 'Image',
-        meta: {
-          label: t('menu.image'),
-          icon: 'radix-icons:image',
-        },
-        component: () => import('@/views/modules/image/index.vue'),
       },
       {
         path: '/mindmap',

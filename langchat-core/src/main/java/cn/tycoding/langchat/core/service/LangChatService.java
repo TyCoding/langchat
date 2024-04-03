@@ -67,4 +67,14 @@ public class LangChatService {
             return null;
         }
     }
+
+    public Response<AiMessage> textImage(TextR req) {
+        try {
+            ChatLanguageModel model = provider.text(req.getModel());
+            return model.generate(req.getPrompt().toUserMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

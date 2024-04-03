@@ -158,4 +158,15 @@ export default {
     titleDes: '在左侧输入内容点击生成思维导图，或者点击左侧查看示例',
     begin: '立即开始',
   },
+  mermaid: {
+    example: '示例',
+    des: '内容描述',
+    output: '输出内容',
+    confirm: '生成序列图',
+    inputTips: '请描述要生成的序列图Mermaid',
+    outputTips: '根据描述生成的序列图Mermaid脚本内容',
+    title: '序列图',
+    titleDes: '在左侧输入内容点击生成序列图Mermaid，或者点击左侧查看示例',
+    begin: '立即开始',
+  },
 };

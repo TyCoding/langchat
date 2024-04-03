@@ -45,11 +45,11 @@
 
 <template>
   <div class="p-4">
-    <div class="pb-2">{{ t('mindmap.des') }}</div>
+    <div class="pb-2">{{ t('mermaid.des') }}</div>
     <n-input
       :disabled="loading"
       v-model:value="text"
-      :placeholder="t('mindmap.inputTips')"
+      :placeholder="t('mermaid.inputTips')"
       type="textarea"
       :rows="6"
     />
@@ -58,19 +58,19 @@
         <template #icon>
           <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
         </template>
-        {{ t('mindmap.confirm') }}
+        {{ t('mermaid.confirm') }}
       </n-button>
     </div>
 
     <div class="mt-6">
       <div class="flex flex-wrap justify-between items-center mb-2">
-        <div>{{ t('mindmap.output') }}</div>
-        <n-button @click="onCase" type="success" text>{{ t('mindmap.example') }}</n-button>
+        <div>{{ t('mermaid.output') }}</div>
+        <n-button @click="onCase" type="success" text>{{ t('mermaid.example') }}</n-button>
       </div>
     </div>
     <n-input
       v-model:value="gen"
-      :placeholder="t('mindmap.outputTips')"
+      :placeholder="t('mermaid.outputTips')"
       type="textarea"
       :rows="16"
     />
