@@ -2,14 +2,10 @@ package cn.tycoding.langchat.biz.controller;
 
 import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.biz.service.OssService;
-import cn.tycoding.langchat.common.dto.OssR;
-import cn.tycoding.langchat.common.properties.OssProps;
-import cn.tycoding.langchat.common.utils.OssUtil;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class OssController {
 
     private final OssService ossService;
-    private final OssProps ossProps;
 
     @GetMapping("/list")
     public R list() {
@@ -42,10 +37,7 @@ public class OssController {
 
     @PostMapping("/upload")
     public R upload(MultipartFile file) {
-        OssR ossR = OssUtil.transfer(ossProps, file);
-        SysOss oss = new SysOss();
-        BeanUtils.copyProperties(ossR, oss);
-        return R.ok(oss);
+        return R.ok(ossService.upload(file));
     }
 
     @PutMapping

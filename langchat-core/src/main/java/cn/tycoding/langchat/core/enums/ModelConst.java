@@ -37,5 +37,6 @@ public class ModelConst {
     public static final String CHATGLM_TEXT = CHATGLM + TEXT_SUFFIX;
 
     public static final String PGVECTOR = "pgvector";
+    public static final String MILVUS = "milvus";
 
 }

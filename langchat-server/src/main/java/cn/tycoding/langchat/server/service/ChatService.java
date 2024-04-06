@@ -2,6 +2,7 @@ package cn.tycoding.langchat.server.service;
 
 import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.dto.TextR;
 
@@ -27,4 +28,8 @@ public interface ChatService {
      * 文生图
      */
     SysOss image(ImageR req);
+
+    void docsChat(DocR req);
+
+    void docsEmbed(SysOss req);
 }

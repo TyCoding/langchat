@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core.autoconfig;
+package cn.tycoding.langchat.core.component;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.core.enums.ModelConst;
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-public class GeminiAutoConfig {
+public class GeminiComponent {
 
     private final LangChatProps props;
 

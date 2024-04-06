@@ -19,7 +19,7 @@ export function useScroll(): ScrollReturn {
   const scrollToBottom = async () => {
     await nextTick();
     if (contentRef.value && scrollRef.value) {
-      contentRef.value.scrollTo({ top: scrollRef.value.scrollHeight });
+      contentRef.value.scrollTo({ top: scrollRef.value.scrollHeight + 20 });
     }
   };
 

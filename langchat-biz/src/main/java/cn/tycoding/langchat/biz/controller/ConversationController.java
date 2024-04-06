@@ -82,7 +82,7 @@ public class ConversationController {
     }
 
     /**
-     * 获取指定会话下的所有聊天记录
+     * 获取指定会话下的聊天记录
      */
     @GetMapping("/messages/{conversationId}")
     public R messages(@PathVariable String conversationId) {

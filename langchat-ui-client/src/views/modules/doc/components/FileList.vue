@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { SvgIcon } from '@/components/common';
   import { UploadCustomRequestOptions, useMessage, type UploadFileInfo } from 'naive-ui';
-  import { list, upload, del, update, task as getTask } from '@/api/file';
+  import { list, upload, del, update, task as getTask } from '@/api/docs';
   import { onMounted, ref } from 'vue';
   import { Oss } from '@/api/models';
   import { t } from '@/locales';
@@ -29,16 +29,7 @@
     emit('select', item);
   }
 
-  const onUpload = ({
-    file,
-    data,
-    headers,
-    withCredentials,
-    action,
-    onFinish,
-    onError,
-    onProgress,
-  }: UploadCustomRequestOptions) => {
+  const onUpload = ({ file, onFinish, onError, onProgress }: UploadCustomRequestOptions) => {
     upload(
       {
         file: file.file,
@@ -54,6 +45,7 @@
         fileList.value.push(res);
         message.success(t('common.importSuccess'));
         onFinish();
+        fetchData();
         startTask();
       })
       .catch(() => {
@@ -61,13 +53,6 @@
         onError();
       });
   };
-  function onBeforeUpload(data: { file: UploadFileInfo }) {
-    if (!data.file.file?.type.includes('pdf')) {
-      message.error(t('common.onlyPdf'));
-      return false;
-    }
-    return true;
-  }
 
   async function onDelete(item: Oss) {
     await del(item.id);
@@ -113,7 +98,7 @@
       <n-upload
         :show-file-list="false"
         :custom-request="onUpload"
-        @before-upload="onBeforeUpload"
+        :accept="'application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.xls,.xlsx,.csv,application/excel,application/vnd.ms-excel,application/vnd.msexcel,text/plain,.md'"
         :trigger-style="{ width: '100%' }"
       >
         <n-button dashed type="success" block>{{ t('doc.upload') }}</n-button>

@@ -3,10 +3,10 @@ package cn.tycoding.langchat.common.utils;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.URLUtil;
 import cn.tycoding.langchat.common.dto.OssR;
 import cn.tycoding.langchat.common.properties.OssProps;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.io.File;
 import java.util.Date;
 import lombok.SneakyThrows;
@@ -37,7 +37,7 @@ public class OssUtil {
      */
     public static String getName(String fileName) {
         String suffix = FileUtil.getSuffix(fileName);
-        return FileUtil.mainName(fileName) + "-" + UUID.randomUUID().toString(true) + "." + suffix;
+        return IdWorker.get32UUID() + "." + suffix;
     }
 
     /**
@@ -91,7 +91,7 @@ public class OssUtil {
                 .setPath(targetFile.getPath())
                 .setSize(originSize)
                 .setType(FileUtil.getSuffix(targetName))
-                .setUrl(getUrl(props.getRemotePath(), bucket, targetName))
+                .setUrl(getUrl(props.getRemotePath() + "/cdn", bucket, targetName))
                 .setCreateTime(new Date())
                 ;
     }

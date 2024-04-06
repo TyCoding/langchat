@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core.autoconfig;
+package cn.tycoding.langchat.core.component;
 
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.properties.LangChatProps;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-public class EmbeddingAutoConfig {
+public class QianfanComponent {
 
     private final LangChatProps props;
 

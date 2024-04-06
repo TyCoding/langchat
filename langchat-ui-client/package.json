@@ -25,6 +25,7 @@
     "@codemirror/lang-javascript": "^6.2.1",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@flyfish-group/file-viewer3": "^1.0.3",
     "@traptitech/markdown-it-katex": "^3.6.0",
     "@vueuse/core": "^9.13.0",
     "codemirror": "^6.0.1",

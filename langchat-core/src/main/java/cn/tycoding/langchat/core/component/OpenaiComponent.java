@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core.autoconfig;
+package cn.tycoding.langchat.core.component;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.core.enums.ModelConst;
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-public class OpenAiAutoConfig {
+public class OpenaiComponent {
 
     private final LangChatProps props;
 
@@ -112,10 +112,17 @@ public class OpenAiAutoConfig {
                 .build();
     }
 
-    @Bean(ModelConst.OPENAI_IMAGE)
+    @Bean(ModelConst.OPENAI_EMBED)
     @ConditionalOnProperty(value = "langchat.openai.api-key", matchIfMissing = false)
     public OpenAiEmbeddingModel openAiEmbeddingModel() {
+        OpenaiProps openai = props.getOpenai();
         OpenaiEmbedProps prop = props.getEmbedding().getOpenai();
+        if (StrUtil.isBlank(prop.getApiKey())) {
+            prop.setApiKey(openai.getApiKey());
+        }
+        if (StrUtil.isBlank(prop.getBaseUrl())) {
+            prop.setBaseUrl(openai.getBaseUrl());
+        }
         return OpenAiEmbeddingModel
                 .builder()
                 .baseUrl(prop.getBaseUrl())

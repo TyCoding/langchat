@@ -2,6 +2,7 @@ package cn.tycoding.langchat.biz.service;
 
 import cn.tycoding.langchat.biz.entity.SysOss;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author tycoding
@@ -9,5 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OssService extends IService<SysOss> {
 
+    SysOss upload(MultipartFile file);
 }
 

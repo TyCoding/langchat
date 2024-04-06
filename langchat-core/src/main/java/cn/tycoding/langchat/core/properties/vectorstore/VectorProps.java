@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "langchat.vectorstore")
 public class VectorProps {
 
-    private PineconeProps pinecone;
     private PgVectorProps pgvector;
+    private MilvusProps milvus;
 
 }

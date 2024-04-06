@@ -1,13 +1,13 @@
 package cn.tycoding.langchat.server.endpoint;
 
 import cn.tycoding.langchat.biz.entity.SysOss;
-import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
 import cn.tycoding.langchat.common.dto.ImageR;
-import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.dto.PromptConst;
+import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.PromptUtil;
+import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.server.service.ChatService;
@@ -79,4 +79,5 @@ public class ChatEndpoint {
     public R image(@RequestBody ImageR req) {
         return R.ok(chatService.image(req));
     }
+
 }

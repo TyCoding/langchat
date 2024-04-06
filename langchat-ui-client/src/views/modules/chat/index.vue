@@ -60,10 +60,12 @@
     }
 
     // ai
+    await scrollToBottom();
     const { conversationId } = await addMessage(data);
     aiChatId.value = uuidv4();
-    await chatStore.addMessage('', 'assistant', aiChatId.value);
     await scrollToBottom();
+    await chatStore.addMessage('', 'assistant', aiChatId.value);
+    await scrollToBottomIfAtBottom();
     await onChat(message, conversationId);
   }
 
@@ -106,22 +108,27 @@
               text += message;
             });
             if (!isRun) {
+              await scrollToBottomIfAtBottom();
               return;
             }
             await chatStore.updateMessage(aiChatId.value, text, false);
             await scrollToBottomIfAtBottom();
           }
-        ).catch((e: any) => {
-          loading.value = false;
-          if (e.message !== undefined) {
-            chatStore.updateMessage(aiChatId.value, e.message, true);
-            return;
-          }
-          if (e.startsWith('data:Error')) {
-            chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
-            return;
-          }
-        });
+        )
+          .catch((e: any) => {
+            loading.value = false;
+            if (e.message !== undefined) {
+              chatStore.updateMessage(aiChatId.value, e.message, true);
+              return;
+            }
+            if (e.startsWith('data:Error')) {
+              chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
+              return;
+            }
+          })
+          .finally(() => {
+            scrollToBottomIfAtBottom();
+          });
       };
 
       // 调用接口

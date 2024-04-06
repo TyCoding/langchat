@@ -98,9 +98,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, SysMessage> i
 
     @Override
     public List<SysMessage> getMessages(String conversationId) {
-        return baseMapper.selectPage(new Page<>(1, 20), Wrappers.<SysMessage>lambdaQuery()
+        // 避免页面渲染压力大，只截取最新的20条数据
+        return baseMapper.selectPage(new Page<>(0, 20), Wrappers.<SysMessage>lambdaQuery()
                 .eq(SysMessage::getConversationId, conversationId)
-                .orderByAsc(SysMessage::getCreateTime)
+                .orderByDesc(SysMessage::getCreateTime)
         ).getRecords();
     }
 }

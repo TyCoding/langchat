@@ -48,7 +48,7 @@ export const useChatStore = defineStore('chat-store', {
         const conversationId = router.currentRoute.value.query.conversationId as string;
         if (conversationId !== undefined && conversationId !== null) {
           this.active = conversationId;
-          this.messages = await getMessages(conversationId);
+          await this.selectConversation({ id: conversationId });
         }
         if (data && data.length > 0) {
           this.conversations = data;
@@ -84,8 +84,8 @@ export const useChatStore = defineStore('chat-store', {
       if (this.active !== '') {
         getMessages(params.id)
           .then((res: any) => {
-            this.messages = res;
-            console.log('加载结束');
+            console.log('ge', res);
+            this.messages = res.reverse();
           })
           .finally(() => {
             this.chatIsLoading = false;
@@ -96,7 +96,6 @@ export const useChatStore = defineStore('chat-store', {
       this.curConversation = params;
 
       await this.replaceUrl();
-      console.log('点击结束');
     },
 
     async replaceUrl() {

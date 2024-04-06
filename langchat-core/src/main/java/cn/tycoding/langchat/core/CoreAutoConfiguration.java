@@ -13,8 +13,8 @@ import cn.tycoding.langchat.core.properties.embed.OllamaEmbedProps;
 import cn.tycoding.langchat.core.properties.embed.OpenaiEmbedProps;
 import cn.tycoding.langchat.common.properties.OssProps;
 import cn.tycoding.langchat.core.properties.image.OpenaiImageProps;
+import cn.tycoding.langchat.core.properties.vectorstore.MilvusProps;
 import cn.tycoding.langchat.core.properties.vectorstore.PgVectorProps;
-import cn.tycoding.langchat.core.properties.vectorstore.PineconeProps;
 import cn.tycoding.langchat.core.properties.vectorstore.VectorProps;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Configuration;
         AzureOpenaiEmbedProps.class,
         OllamaEmbedProps.class,
         PgVectorProps.class,
-        PineconeProps.class
+        MilvusProps.class
 })
 @AllArgsConstructor
 public class CoreAutoConfiguration {

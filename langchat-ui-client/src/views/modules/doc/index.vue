@@ -36,8 +36,21 @@
         >
           {{ file.fileName }}.{{ file.type }}
         </div>
-        <iframe v-if="file.url == ''" :src="file.url"></iframe>
-        <n-empty v-else class="h-full w-full justify-center" :description="t('doc.previewEmpty')" />
+        <n-empty
+          v-if="file.url === undefined"
+          class="h-full w-full justify-center"
+          :description="t('doc.previewEmpty')"
+        />
+        <template v-else>
+          <file-viewer :url="file.url" />
+          <!--          <iframe v-if="file.type === 'pdf'" width="100%" height="100%" :src="file.url"></iframe>-->
+          <!--          <iframe-->
+          <!--            v-else-->
+          <!--            width="100%"-->
+          <!--            height="100%"-->
+          <!--            :src="'https://view.officeapps.live.com/op/embed.aspx?src=' + file.url"-->
+          <!--          ></iframe>-->
+        </template>
       </div>
       <div class="w-4/12 border-l dark:border-l-[#1e1e20]">
         <Chat />

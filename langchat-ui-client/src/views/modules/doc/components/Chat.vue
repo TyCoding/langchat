@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { chat } from '@/api/file';
+  import { chat } from '@/api/docs';
   import { v4 as uuid } from 'uuid';
   import { useRouter } from 'vue-router';
   import MarkdownIt from 'markdown-it';
@@ -77,7 +77,7 @@
         ({ event }) => {
           const list = event.target.responseText.split('\n\n');
           let text = '';
-          list.forEach((i) => {
+          list.forEach((i: any) => {
             if (!i.startsWith('data:{')) {
               return;
             }
