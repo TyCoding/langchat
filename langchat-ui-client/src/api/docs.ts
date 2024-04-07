@@ -1,5 +1,5 @@
 import { http } from '@/utils/request';
-import { ChatR, Oss } from '@/api/models';
+import { Oss } from '@/api/models';
 import { AxiosProgressEvent } from 'axios';
 
 /**
@@ -20,7 +20,10 @@ export function upload(data: any, onUploadProgress?: (progressEvent: AxiosProgre
  * @description: Doc聊天
  */
 export function chat(
-  data: ChatR,
+  data: {
+    id: string;
+    message: string;
+  },
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({

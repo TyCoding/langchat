@@ -8,6 +8,7 @@
   interface Props {
     messages: {
       inversion: boolean;
+      error: boolean;
       message: string;
       time?: number;
       usedToken?: number;
@@ -85,7 +86,7 @@
       </div>
     </div>
     <div v-else class="flex-1 overflow-y-auto mb-1">
-      <div class="h-full w-full flex flex-col space-y-3 relative p-3 pt-0">
+      <div class="h-full w-full flex flex-col space-y-3 relative px-5 pt-0">
         <template v-for="item in messages" :key="item">
           <div
             v-if="!item.inversion"
@@ -101,7 +102,8 @@
               <span class="dot-loading"></span>
             </div>
             <div v-else class="p-2 pl-3 pr-3">
-              <div class="pb-2 markdown-body" v-html="item.message"></div>
+              <div v-if="item.error" class="text-red-400" v-text="item.message"></div>
+              <div v-else class="markdown-body pb-2" v-html="item.message"></div>
               <div
                 v-if="item.time !== 0"
                 class="border-t border-gray-200 pt-2 text-xs text-gray-400 flex flex-row justify-between items-center min-w-[200px]"

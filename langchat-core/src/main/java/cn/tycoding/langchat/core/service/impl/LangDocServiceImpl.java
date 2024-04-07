@@ -19,7 +19,7 @@ import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentPa
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
@@ -58,8 +58,7 @@ public class LangDocServiceImpl implements LangDocService {
     @Override
     public void embedDoc(OssR req) {
         EmbeddingModel model = provider.embed();
-        Document document = FileSystemDocumentLoader.loadDocument(req.getUrl(),
-                new ApachePdfBoxDocumentParser());
+        Document document = FileSystemDocumentLoader.loadDocument(req.getUrl(), new ApachePdfBoxDocumentParser());
         Map<String, Object> beanMap = BeanUtil.beanToMap(req);
         beanMap.forEach((k, v) -> {
             document.metadata().add(k, v);
@@ -77,7 +76,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public TokenStream search(DocR req) {
-        ChatLanguageModel chatLanguageModel = modelProvider.text(ModelConst.OPENAI_TEXT);
+        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
         EmbeddingModel model = provider.embed();
         Function<Query, Filter> filterByUserId = (query) -> metadataKey("id").isEqualTo(
                 req.getId());
@@ -89,10 +88,10 @@ public class LangDocServiceImpl implements LangDocService {
                 .build();
 
         Assistant assistant = AiServices.builder(Assistant.class)
-                .chatLanguageModel(chatLanguageModel)
+                .streamingChatLanguageModel(chatLanguageModel)
                 .contentRetriever(contentRetriever)
                 .build();
 
-        return assistant.chat("Which animal?");
+        return assistant.chat(req.getPrompt().toUserMessage());
     }
 }

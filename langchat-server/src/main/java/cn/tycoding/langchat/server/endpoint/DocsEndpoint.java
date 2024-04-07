@@ -34,7 +34,7 @@ public class DocsEndpoint {
     public SseEmitter chat(@RequestBody DocR req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
-        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.CHART_LINE));
+        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.DOCUMENT));
         chatService.docsChat(req);
         return emitter.get();
     }
@@ -44,7 +44,7 @@ public class DocsEndpoint {
         SysOss oss = ossService.upload(file);
         asyncFuture.async(() -> {
             chatService.docsEmbed(oss);
-        },"1","1");
+        }, System.currentTimeMillis() + "", oss.getId());
         return R.ok(oss);
     }
 }

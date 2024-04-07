@@ -5,6 +5,7 @@
   import { useMessage } from 'naive-ui';
   import { Oss } from '@/api/models';
   import { t } from '@/locales';
+  import FileView from './components/FileView.vue';
 
   const message = useMessage();
   const file = ref<Oss>({});
@@ -14,6 +15,10 @@
       return;
     }
     file.value = item;
+  }
+
+  function onClear() {
+    file.value.url = '';
   }
 </script>
 
@@ -26,35 +31,35 @@
       show-trigger="arrow-circle"
       bordered
     >
-      <FileList :file="file" @select="onSelect" />
+      <FileList :file="file" @clear="onClear" @select="onSelect" />
     </n-layout-sider>
-    <div class="w-full h-full flex flex-row pt-2 gap-2">
-      <div class="w-8/12 h-full overflow-y-auto">
-        <div
-          v-if="file.fileName"
-          class="text-gray-700 text-[17px] pl-2 pb-2 pt-0 font-bold h-min-8 mt-0.5"
-        >
-          {{ file.fileName }}.{{ file.type }}
-        </div>
-        <n-empty
-          v-if="file.url === undefined"
-          class="h-full w-full justify-center"
-          :description="t('doc.previewEmpty')"
-        />
-        <template v-else>
-          <file-viewer :url="file.url" />
-          <!--          <iframe v-if="file.type === 'pdf'" width="100%" height="100%" :src="file.url"></iframe>-->
-          <!--          <iframe-->
-          <!--            v-else-->
-          <!--            width="100%"-->
-          <!--            height="100%"-->
-          <!--            :src="'https://view.officeapps.live.com/op/embed.aspx?src=' + file.url"-->
-          <!--          ></iframe>-->
+    <div class="w-full h-full">
+      <n-split direction="horizontal" class="h-full" :default-size="0.6">
+        <template #1>
+          <div class="w-full h-full">
+            <div
+              v-if="file.fileName"
+              class="text-gray-700 text-[17px] border-b px-4 font-bold h-12 flex justify-between items-center dark:text-white"
+            >
+              <div>{{ file.fileName }}.{{ file.type }}</div>
+              <div>OpenAI</div>
+            </div>
+            <n-empty
+              v-if="file.url === undefined"
+              class="h-full w-full justify-center"
+              :description="t('doc.previewEmpty')"
+            />
+            <template v-else>
+              <FileView :url="file.url" />
+            </template>
+          </div>
         </template>
-      </div>
-      <div class="w-4/12 border-l dark:border-l-[#1e1e20]">
-        <Chat />
-      </div>
+        <template #2>
+          <div class="w-full h-full border-l dark:border-l-[#1e1e20]">
+            <Chat :file="file" />
+          </div>
+        </template>
+      </n-split>
     </div>
   </n-layout>
 </template>

@@ -91,7 +91,7 @@ public class OssUtil {
                 .setPath(targetFile.getPath())
                 .setSize(originSize)
                 .setType(FileUtil.getSuffix(targetName))
-                .setUrl(getUrl(props.getRemotePath() + "/cdn", bucket, targetName))
+                .setUrl(getUrl(props.getRemotePath(), bucket, targetName))
                 .setCreateTime(new Date())
                 ;
     }

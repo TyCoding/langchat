@@ -10,8 +10,10 @@
   import Message from './Message.vue';
   import { SvgIcon } from '@/components/common';
 
+  const props = defineProps<{
+    file: any;
+  }>();
   const emits = defineEmits(['focus-active']);
-
   const messageRef = ref();
   const router = useRouter();
   const message = ref('');
@@ -43,6 +45,7 @@
     {
       id: string;
       inversion: boolean;
+      error: boolean;
       message: string;
       time?: number;
       usedToken?: number;
@@ -50,19 +53,25 @@
   >([]);
 
   async function handleSubmit() {
+    if (props.file.id === undefined) {
+      window.$message?.error('请先选择文档');
+      return;
+    }
+
     loading.value = true;
     messageRef.value.scrollToBottom();
-
     try {
       let id = uuid();
       messages.value.push(
         {
           id: uuid(),
+          error: false,
           inversion: false,
           message: message.value,
         },
         {
           id: id,
+          error: false,
           inversion: true,
           message: '',
           usedToken: 0,
@@ -72,6 +81,7 @@
       const items = messages.value.filter((i) => i.id == id);
       await chat(
         {
+          id: props.file?.id,
           message: message.value,
         },
         ({ event }) => {
@@ -87,14 +97,23 @@
               items[0].time = time;
             } else {
               text += message;
+              items[0].message = mdi.render(text);
+              messageRef.value.scrollToBottom();
             }
           });
-          items[0].message = mdi.render(text);
-          messageRef.value.scrollToBottom();
         }
-      ).catch(() => {});
-      message.value = '';
-      loading.value = false;
+      )
+        .catch((err: any) => {
+          if (err.message !== undefined) {
+            items[0].error = true;
+            items[0].message = err.message;
+          }
+          loading.value = false;
+        })
+        .finally(() => {
+          message.value = '';
+          loading.value = false;
+        });
     } finally {
       loading.value = false;
       messageRef.value.scrollToBottom();
@@ -114,8 +133,8 @@
   <div class="container relative h-full card-shadow rounded-xl mb-2">
     <Message ref="messageRef" :messages="messages" />
 
-    <div class="bottom absolute bottom-2 left-0 w-full h-[60px] z-10">
-      <div class="pl-12 pr-12 flex justify-center items-center space-x-2 w-full">
+    <div class="bottom absolute bottom-2 pt-5 left-0 w-full h-[60px] z-10">
+      <div class="px-8 flex justify-center items-center space-x-2 w-full">
         <n-input
           v-model:value="message"
           :autosize="{ minRows: 1, maxRows: 5 }"
@@ -140,4 +159,9 @@
   </div>
 </template>
 
-<style lang="less"></style>
+<style scoped lang="less">
+  ::v-deep(.markdown-body) {
+    background-color: transparent !important;
+    font-size: inherit;
+  }
+</style>

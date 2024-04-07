@@ -9,7 +9,7 @@
   const props = defineProps<{
     file: any;
   }>();
-  const emit = defineEmits(['select']);
+  const emit = defineEmits(['select', 'clear']);
   const message = useMessage();
   const fileList = ref<Oss[]>([]);
   const loading = ref(true);
@@ -58,6 +58,7 @@
     await del(item.id);
     message.success(t('common.deleteSuccess'));
     await fetchData();
+    emit('clear');
   }
 
   async function onUpdate(item: Oss) {
