@@ -13,10 +13,13 @@ import cn.tycoding.langchat.common.dto.TextR;
 public interface ChatService {
 
     /**
-     * 流式响应
+     * 聊天接口
      */
     void chat(ChatReq req);
 
+    /**
+     * 流式请求
+     */
     void stream(TextR req);
 
     /**
@@ -29,7 +32,13 @@ public interface ChatService {
      */
     SysOss image(ImageR req);
 
+    /**
+     * 文档聊天
+     */
     void docsChat(DocR req);
 
+    /**
+     * 文档Embedding
+     */
     void docsEmbed(SysOss req);
 }

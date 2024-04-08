@@ -73,3 +73,17 @@ export function genImage(data: ImageR): Promise<Oss> {
     data: data,
   });
 }
+
+/**
+ * @description: generate Mermaid
+ */
+export function genMermaid(
+  data: ChatR,
+  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
+) {
+  return http.post({
+    url: '/langchat/chat/mermaid',
+    data: data,
+    onDownloadProgress: onDownloadProgress,
+  });
+}

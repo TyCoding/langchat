@@ -2,23 +2,17 @@
   import { ref } from 'vue';
   import Chat from './components/Chat.vue';
   import FileList from './components/FileList.vue';
-  import { useMessage } from 'naive-ui';
-  import { Oss } from '@/api/models';
   import { t } from '@/locales';
   import FileView from './components/FileView.vue';
+  import { useDocStore } from '@/views/modules/doc/store';
+  import { Oss } from '@/api/models';
 
-  const message = useMessage();
-  const file = ref<Oss>({});
+  const chatRef = ref();
+  const docStore = useDocStore();
 
   function onSelect(item: Oss) {
-    if (file.value.url == item.url) {
-      return;
-    }
-    file.value = item;
-  }
-
-  function onClear() {
-    file.value.url = '';
+    docStore.onSelect(item);
+    chatRef.value.init();
   }
 </script>
 
@@ -31,32 +25,32 @@
       show-trigger="arrow-circle"
       bordered
     >
-      <FileList :file="file" @clear="onClear" @select="onSelect" />
+      <FileList @select="onSelect" />
     </n-layout-sider>
     <div class="w-full h-full">
       <n-split direction="horizontal" class="h-full" :default-size="0.6">
         <template #1>
           <div class="w-full h-full">
             <div
-              v-if="file.fileName"
+              v-if="docStore.file.fileName"
               class="text-gray-700 text-[17px] border-b px-4 font-bold h-12 flex justify-between items-center dark:text-white"
             >
-              <div>{{ file.fileName }}.{{ file.type }}</div>
+              <div>{{ docStore.file.fileName }}.{{ docStore.file.type }}</div>
               <div>OpenAI</div>
             </div>
             <n-empty
-              v-if="file.url === undefined"
+              v-if="docStore.file.url === undefined"
               class="h-full w-full justify-center"
               :description="t('doc.previewEmpty')"
             />
             <template v-else>
-              <FileView :url="file.url" />
+              <FileView :url="docStore.file.url" />
             </template>
           </div>
         </template>
         <template #2>
           <div class="w-full h-full border-l dark:border-l-[#1e1e20]">
-            <Chat :file="file" />
+            <Chat ref="chatRef" />
           </div>
         </template>
       </n-split>

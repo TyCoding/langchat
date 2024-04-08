@@ -33,7 +33,7 @@ export default {
     verify: '验证',
     unauthorizedTips: '未经授权，请先进行验证。',
     stopResponding: '停止响应',
-    onlyPdf: '只能上传pdf格式的文件，请重新上传',
+    onlyPdf: '只能上传文档类型的文件，请重新上传',
     editModal: '新增/编辑',
     emptyTips: '请输入内容',
   },
@@ -119,7 +119,7 @@ export default {
     downloadError: '请检查网络状态与 JSON 文件有效性',
   },
   doc: {
-    upload: '上传PDF文件',
+    upload: '上传文档文件',
     taskOk: '所有文档都解析完成',
     taskRun: '文件解析操作进行中，任务数',
     previewEmpty: '点击左侧文件列表预览文件内容',

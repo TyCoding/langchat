@@ -5,15 +5,14 @@
   import { onMounted, ref } from 'vue';
   import { Oss } from '@/api/models';
   import { t } from '@/locales';
+  import { useDocStore } from '@/views/modules/doc/store';
 
-  const props = defineProps<{
-    file: any;
-  }>();
   const emit = defineEmits(['select', 'clear']);
-  const message = useMessage();
+  const ms = useMessage();
   const fileList = ref<Oss[]>([]);
   const loading = ref(true);
   const isEdit = ref(0);
+  const docStore = useDocStore();
 
   onMounted(async () => {
     await fetchData();
@@ -43,27 +42,27 @@
       .then((res: any) => {
         console.log(res);
         fileList.value.push(res);
-        message.success(t('common.importSuccess'));
+        ms.success(t('common.importSuccess'));
         onFinish();
         fetchData();
         startTask();
       })
       .catch(() => {
-        message.error(t('common.wrong'));
+        ms.error(t('common.wrong'));
         onError();
       });
   };
 
   async function onDelete(item: Oss) {
     await del(item.id);
-    message.success(t('common.deleteSuccess'));
+    ms.success(t('common.deleteSuccess'));
     await fetchData();
     emit('clear');
   }
 
   async function onUpdate(item: Oss) {
     await update(item);
-    message.success(t('common.editSuccess'));
+    ms.success(t('common.editSuccess'));
     isEdit.value = 0;
     await fetchData();
   }
@@ -122,10 +121,13 @@
         @click="onSelect(item)"
         :key="item"
         class="flex p-3 pb-2 flex-row items-start justify-start rounded-md gap-2 cursor-pointer card-hover h-full"
-        :class="file.id == item.id ? 'card-active' : ''"
+        :class="docStore.file.id == item.id ? 'card-active' : ''"
       >
         <n-icon size="30" color="#d03050">
-          <SvgIcon icon="ant-design:file-pdf-filled" />
+          <SvgIcon v-if="item.type?.startsWith('doc')" icon="ant-design:file-word-twotone" />
+          <SvgIcon v-else-if="item.type?.startsWith('xls')" icon="ant-design:file-excel-twotone" />
+          <SvgIcon v-else-if="item.type?.startsWith('pdf')" icon="ant-design:file-pdf-filled" />
+          <SvgIcon v-else icon="ant-design:file-text-twotone" />
         </n-icon>
         <div class="flex flex-col justify-between items-start gap-2 h-full w-full !mt-[-5px]">
           <n-input v-if="isEdit == item.id" size="tiny" @click.stop v-model:value="item.fileName">
@@ -139,7 +141,7 @@
 
           <div class="flex flex-row justify-between items-center w-full">
             <div class="text-gray-400 text-xs">{{ item.createTime }}</div>
-            <div class="flex justify-center items-center gap-1" v-if="file.id == item.id">
+            <div class="flex justify-center items-center gap-1" v-if="docStore.file.id == item.id">
               <n-button @click.stop="isEdit = item.id" text>
                 <SvgIcon icon="tabler:edit" class="text-gray-600" />
               </n-button>

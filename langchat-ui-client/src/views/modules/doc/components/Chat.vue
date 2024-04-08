@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { onMounted, ref, watch } from 'vue';
   import { chat } from '@/api/docs';
   import { v4 as uuid } from 'uuid';
   import { useRouter } from 'vue-router';
@@ -9,15 +9,18 @@
   import mdKatex from '@traptitech/markdown-it-katex';
   import Message from './Message.vue';
   import { SvgIcon } from '@/components/common';
+  import { useDocStore } from '@/views/modules/doc/store';
 
-  const props = defineProps<{
-    file: any;
-  }>();
   const emits = defineEmits(['focus-active']);
   const messageRef = ref();
   const router = useRouter();
   const message = ref('');
   const loading = ref(false);
+  const docStore = useDocStore();
+
+  function init() {
+    messages.value = docStore.curMessage;
+  }
 
   function handleFocus() {
     emits('focus-active');
@@ -53,7 +56,7 @@
   >([]);
 
   async function handleSubmit() {
-    if (props.file.id === undefined) {
+    if (docStore.file.id === undefined) {
       window.$message?.error('请先选择文档');
       return;
     }
@@ -62,26 +65,25 @@
     messageRef.value.scrollToBottom();
     try {
       let id = uuid();
-      messages.value.push(
-        {
-          id: uuid(),
-          error: false,
-          inversion: false,
-          message: message.value,
-        },
-        {
-          id: id,
-          error: false,
-          inversion: true,
-          message: '',
-          usedToken: 0,
-          time: 0,
-        }
-      );
+      const userChat = {
+        id: uuid(),
+        error: false,
+        inversion: false,
+        message: message.value,
+      };
+      docStore.addMessage(userChat);
+      messages.value.push(userChat, {
+        id: id,
+        error: false,
+        inversion: true,
+        message: '',
+        usedToken: 0,
+        time: 0,
+      });
       const items = messages.value.filter((i) => i.id == id);
       await chat(
         {
-          id: props.file?.id,
+          id: docStore.file?.id,
           message: message.value,
         },
         ({ event }) => {
@@ -95,6 +97,7 @@
             if (done) {
               items[0].usedToken = usedToken;
               items[0].time = time;
+              docStore.addMessage(items[0]);
             } else {
               text += message;
               items[0].message = mdi.render(text);
@@ -127,6 +130,8 @@
       handleSubmit();
     }
   }
+
+  defineExpose({ init });
 </script>
 
 <template>

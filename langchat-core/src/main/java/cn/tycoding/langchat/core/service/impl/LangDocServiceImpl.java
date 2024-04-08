@@ -4,9 +4,8 @@ import static dev.langchain4j.data.document.Metadata.metadata;
 import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
 import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
-import cn.hutool.core.bean.BeanUtil;
+import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.common.dto.DocR;
-import cn.tycoding.langchat.common.dto.OssR;
 import cn.tycoding.langchat.core.EmbedProvider;
 import cn.tycoding.langchat.core.ModelProvider;
 import cn.tycoding.langchat.core.enums.ModelConst;
@@ -15,7 +14,7 @@ import cn.tycoding.langchat.core.service.LangDocService;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
-import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
+import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
@@ -30,7 +29,6 @@ import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,13 +54,11 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public void embedDoc(OssR req) {
+    public void embedDoc(SysOss req) {
         EmbeddingModel model = provider.embed();
-        Document document = FileSystemDocumentLoader.loadDocument(req.getUrl(), new ApachePdfBoxDocumentParser());
-        Map<String, Object> beanMap = BeanUtil.beanToMap(req);
-        beanMap.forEach((k, v) -> {
-            document.metadata().add(k, v);
-        });
+
+        Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
+        document.metadata().add("id", req.getId());
 
         DocumentSplitter splitter = DocumentSplitters.recursive(
                 100,
@@ -78,8 +74,7 @@ public class LangDocServiceImpl implements LangDocService {
     public TokenStream search(DocR req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
         EmbeddingModel model = provider.embed();
-        Function<Query, Filter> filterByUserId = (query) -> metadataKey("id").isEqualTo(
-                req.getId());
+        Function<Query, Filter> filterByUserId = (query) -> metadataKey("id").isEqualTo(req.getId());
 
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(milvusEmbeddingStore)

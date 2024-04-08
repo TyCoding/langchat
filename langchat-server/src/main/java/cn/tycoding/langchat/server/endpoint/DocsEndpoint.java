@@ -10,6 +10,7 @@ import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.server.service.ChatService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,13 @@ public class DocsEndpoint {
         SysOss oss = ossService.upload(file);
         asyncFuture.async(() -> {
             chatService.docsEmbed(oss);
-        }, System.currentTimeMillis() + "", oss.getId());
+        }, "111", oss.getId());
         return R.ok(oss);
+    }
+
+    @GetMapping("/task")
+    public R task() {
+        int count = asyncFuture.getCount("111");
+        return R.ok(count);
     }
 }

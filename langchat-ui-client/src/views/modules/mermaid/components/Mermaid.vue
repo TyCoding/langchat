@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { SvgIcon } from '@/components/common';
   import { onMounted, ref, watch } from 'vue';
-  import html2canvas from 'html2canvas';
   import { t } from '@/locales';
   import { VueMermaidRender } from 'vue-mermaid-render';
   import { downloadPdf, downloadPng, downloadSvg } from '@/utils/downloadFile';
@@ -10,8 +9,6 @@
     genText: string;
   }>();
   const width = ref(80);
-
-  onMounted(() => {});
 
   watch(
     () => props.genText,

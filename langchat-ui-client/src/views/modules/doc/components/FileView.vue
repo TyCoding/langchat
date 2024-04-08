@@ -15,18 +15,23 @@
   ::v-deep(.name) {
     display: none !important;
   }
+  ::v-deep(.pdf_down) {
+    display: none !important;
+  }
   ::v-deep(.docx) {
     color: #343639;
-    background: #f2f2f2 !important;
+    //background: #f2f2f2 !important;
   }
   ::v-deep(.docx span) {
     font-size: medium !important;
   }
   ::v-deep(.docx-wrapper) {
-    padding: 0 !important;
+    padding: 20px !important;
+    background: transparent !important;
     .docx {
+      box-shadow: none !important;
       width: auto !important;
-      padding: 5pt 15pt !important;
+      padding: 10pt 15pt !important;
       //background: #f2f2f2 !important;
     }
   }

@@ -54,6 +54,6 @@ export function del(id?: number) {
 
 export function task() {
   return http.get({
-    url: `/langchat/file/task`,
+    url: `/langchat/docs/task`,
   });
 }

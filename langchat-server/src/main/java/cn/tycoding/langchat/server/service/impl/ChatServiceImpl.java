@@ -82,6 +82,29 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void stream(TextR req) {
+        StreamEmitter emitter = req.getEmitter();
+        long startTime = System.currentTimeMillis();
+        ChatReq chat = new ChatReq().setModel(ModelConst.OPENAI).setPrompt(req.getPrompt());
+
+        try {
+            langChatService.stream(chat)
+                    .onNext(e -> {
+                        emitter.send(new ChatRes(e));
+                    })
+                    .onComplete(e -> {
+                        TokenUsage tokenUsage = e.tokenUsage();
+                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
+                        emitter.complete();
+                    })
+                    .onError((e) -> {
+                        emitter.error(e.getMessage());
+                    })
+                    .start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            emitter.error(e.getMessage());
+            throw new RuntimeException("Ai Request Error");
+        }
     }
 
     @Override

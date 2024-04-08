@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.core.service;
 
+import cn.tycoding.langchat.biz.entity.SysOss;
 import cn.tycoding.langchat.common.dto.DocR;
-import cn.tycoding.langchat.common.dto.OssR;
 import dev.langchain4j.service.TokenStream;
 
 /**
@@ -12,7 +12,7 @@ public interface LangDocService {
 
     void embedText();
 
-    void embedDoc(OssR req);
+    void embedDoc(SysOss req);
 
     TokenStream search(DocR req);
 

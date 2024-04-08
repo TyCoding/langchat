@@ -69,6 +69,15 @@ public class ChatEndpoint {
         return R.ok(new ChatRes(chatService.text(req)));
     }
 
+    @PostMapping("/mermaid")
+    public SseEmitter mermaid(@RequestBody TextR req) {
+        StreamEmitter emitter = new StreamEmitter();
+        req.setEmitter(emitter);
+        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.MERMAID));
+        chatService.stream(req);
+        return emitter.get();
+    }
+
     @PostMapping("/chart")
     public R chart(@RequestBody TextR req) {
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.CHART_LINE));
