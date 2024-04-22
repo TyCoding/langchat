@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tycoding.langchat.upms.mapper.SysUserMapper">
+
+    <!-- 分页查询映射结果集 -->
+    <resultMap type="cn.tycoding.langchat.upms.dto.UserInfo" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="BOOLEAN"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <collection property="roles" ofType="cn.tycoding.langchat.upms.entity.SysRole"
+                    select="cn.tycoding.langchat.upms.mapper.SysUserRoleMapper.getRoleListByUserId" column="id">
+        </collection>
+    </resultMap>
+
+    <!-- 分页、条件查询 -->
+    <select id="page" resultMap="UserMap">
+        SELECT `user`.id,
+            `user`.username,
+            `user`.real_name,
+            `user`.sex,
+            `user`.email,
+            `user`.dept_id,
+            `user`.avatar,
+            `user`.phone,
+            `user`.dept_id,
+            `user`.status,
+            `user`.create_time,
+            sd.name AS deptName
+        FROM sys_user AS `user`
+            LEFT JOIN sys_dept AS sd on `user`.dept_id = sd.id
+        WHERE `user`.id != #{ignoreId} AND `user`.username != #{ignoreName}
+        <if test="user.username != null and user.username != ''">
+            AND `user`.username LIKE CONCAT('%', #{user.username},  '%')
+        </if>
+        <if test="user.phone != null and user.phone != ''">
+            AND `user`.phone LIKE CONCAT('%', #{user.phone},  '%')
+        </if>
+        <if test="user.deptId != null and user.deptId != ''">
+            AND `user`.dept_id LIKE CONCAT('%', #{user.deptId},  '%')
+        </if>
+    </select>
+</mapper>

@@ -1,12 +1,13 @@
 package cn.tycoding.langchat.core.service;
 
-import cn.tycoding.langchat.biz.service.MessageService;
+import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class PersistentChatMemoryStore implements ChatMemoryStore {
 
-    private final MessageService messageService;
+    private final AigcMessageService aigcMessageService;
     private final List<ChatMessage> list = new ArrayList<>();
 
     @Override

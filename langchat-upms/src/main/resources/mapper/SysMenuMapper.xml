@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tycoding.langchat.upms.mapper.SysMenuMapper">
+
+    <select id="build" resultType="cn.tycoding.langchat.upms.entity.SysMenu">
+        SELECT
+            sm.*
+        FROM
+            sys_menu sm
+        WHERE sm.is_disabled = 0
+        <if test="type != null">
+            AND sm.type = #{type}
+        </if>
+        <if test="roleIds != null and roleIds.size > 0">
+            AND sm.id in
+                (SELECT menu_id FROM sys_role_menu AS srm WHERE sm.id = srm.menu_id AND srm.role_id IN
+                <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                    #{roleId}
+                </foreach>
+                )
+        </if>
+            ORDER BY sm.order_no ASC
+    </select>
+</mapper>

@@ -1,4 +1,4 @@
-import { ErrorPage, RedirectName, Layout } from '@/router/constant';
+import { ErrorPage, Layout, RedirectName } from '@/router/constant';
 import { RouteRecordRaw } from 'vue-router';
 
 // 404 on a page
@@ -43,3 +43,25 @@ export const RedirectRoute: RouteRecordRaw = {
     },
   ],
 };
+
+export const BaseRoute: Array<any> = [
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: 'LAYOUT',
+    meta: {
+      icon: 'FileTrayOutline',
+      title: 'Dashboard',
+    },
+    children: [
+      {
+        path: 'console',
+        name: 'dashboard_console',
+        component: '/dashboard/index',
+        meta: {
+          title: '主控台',
+        },
+      },
+    ],
+  },
+];

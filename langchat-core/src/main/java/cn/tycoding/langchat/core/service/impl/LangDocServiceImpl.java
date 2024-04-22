@@ -1,10 +1,6 @@
 package cn.tycoding.langchat.core.service.impl;
 
-import static dev.langchain4j.data.document.Metadata.metadata;
-import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
-import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
-
-import cn.tycoding.langchat.biz.entity.SysOss;
+import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.core.EmbedProvider;
 import cn.tycoding.langchat.core.ModelProvider;
@@ -28,11 +24,16 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
-import java.util.List;
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.function.Function;
+
+import static dev.langchain4j.data.document.Metadata.metadata;
+import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
 /**
  * @author tycoding
@@ -54,7 +55,7 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public void embedDoc(SysOss req) {
+    public void embedDoc(AigcOss req) {
         EmbeddingModel model = provider.embed();
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());

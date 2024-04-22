@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '用户管理',
         },
-        component: () => import('@/views/modules/message/index.vue'),
+        component: () => import('@/views/aigc/message/index.vue'),
       },
     ],
   },

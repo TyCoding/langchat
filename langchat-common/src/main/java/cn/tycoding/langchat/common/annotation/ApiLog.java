@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * 自定义日志记录切面注解
  *
  * @author tycoding
- * @since 2023/10/19
+ * @since 2024/4/15
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

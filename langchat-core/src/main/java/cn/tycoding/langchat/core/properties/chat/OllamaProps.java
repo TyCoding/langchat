@@ -1,13 +1,14 @@
 package cn.tycoding.langchat.core.properties.chat;
 
-import java.time.Duration;
-import java.util.List;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.time.Duration;
+import java.util.List;
+
 /**
  * @author tycoding
- * @since 2023/12/15
+ * @since 2024/4/15
  */
 @Data
 @ConfigurationProperties(prefix = "langchat.ollama")

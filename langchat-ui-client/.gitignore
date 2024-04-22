@@ -1,11 +1,11 @@
 # Logs
 logs
-*.sysLog
-npm-debug.sysLog*
-yarn-debug.sysLog*
-yarn-error.sysLog*
-pnpm-debug.sysLog*
-lerna-debug.sysLog*
+*.aigcLog
+npm-debug.aigcLog*
+yarn-debug.aigcLog*
+yarn-error.aigcLog*
+pnpm-debug.aigcLog*
+lerna-debug.aigcLog*
 
 node_modules
 .DS_Store

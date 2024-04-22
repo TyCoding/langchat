@@ -2,6 +2,8 @@ import { constantRouterIcon } from './icons';
 import { RouteRecordRaw } from 'vue-router';
 import { Layout, ParentLayout } from '@/router/constant';
 import type { AppRouteRecordRaw } from '@/router/types';
+import { getMenus } from '@/api/auth';
+import { BaseRoute } from '@/router/base';
 
 const Iframe = () => import('@/views/base/iframe/index.vue');
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
@@ -54,12 +56,11 @@ export const generateRoutes = (routerMap, parent?): any[] => {
  * @returns {Promise<Router>}
  */
 export const generateDynamicRoutes = async (): Promise<RouteRecordRaw[]> => {
-  // const result = await getMenus();
-  const result = [];
+  const result = await getMenus();
+  result.unshift(...BaseRoute);
 
   const router = generateRoutes(result);
   asyncImportRoute(router);
-  console.log(router);
   return router;
 };
 

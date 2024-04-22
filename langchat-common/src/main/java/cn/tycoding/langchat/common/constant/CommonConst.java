@@ -35,4 +35,6 @@ public interface CommonConst {
      * 默认用户头像路径
      */
     String DEFAULT_AVATAR = "/default.png";
+
+    String LAYOUT = "LAYOUT";
 }

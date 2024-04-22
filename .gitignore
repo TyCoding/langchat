@@ -36,7 +36,7 @@ target/
 ### logs ####
 /logs/
 */logs/
-*.sysLog
+*.aigcLog
 
 ### temp ignore ###
 *.cache

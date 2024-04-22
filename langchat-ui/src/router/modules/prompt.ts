@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '提示词管理',
         },
-        component: () => import('@/views/modules/prompt/index.vue'),
+        component: () => import('@/views/aigc/prompt/index.vue'),
       },
     ],
   },

@@ -18,25 +18,6 @@ public class VectorStoreComponent {
 
     private final LangChatProps props;
 
-//    @Bean(ModelConst.PGVECTOR)
-//    @ConditionalOnProperty(value = "langchat.pgvector.host", matchIfMissing = false)
-//    public PgVectorEmbeddingStore pgVectorEmbeddingStore() {
-//        PgVectorProps prop = props.getVectorstore().getPgvector();
-//        return PgVectorEmbeddingStore.builder()
-//                .host(prop.getHost())
-//                .port(prop.getPort())
-//                .user(prop.getUser())
-//                .password(prop.getPassword())
-//                .database(prop.getDatabase())
-//                .table(prop.getTable())
-//                .dimension(prop.getDimension())
-//                .useIndex(prop.getUseIndex())
-//                .indexListSize(prop.getIndexListSize())
-//                .createTable(prop.getCreateTable())
-//                .dropTableFirst(prop.getDropTableFirst())
-//                .build();
-//    }
-
     @Bean
     @ConditionalOnProperty(value = "langchat.vectorstore.milvus.host", matchIfMissing = false)
     public MilvusEmbeddingStore milvusEmbeddingStore() {

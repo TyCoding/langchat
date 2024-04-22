@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author tycoding
- * @since 2023/12/15
+ * @since 2024/4/15
  */
 @Data
 @ConfigurationProperties(prefix = "langchat.gemini")

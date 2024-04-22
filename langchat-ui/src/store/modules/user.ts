@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED } from '@/store/mutation-types';
 
-import { login } from '@/api/auth';
+import { getUserInfo, login, logout } from '@/api/auth';
 import { storage } from '@/utils/Storage';
 
 export type UserInfoType = {
@@ -72,26 +72,22 @@ export const useUserStore = defineStore({
 
     // 获取用户信息
     async getInfo() {
-      // const { perms, user } = await getUserInfo();
-      const perms = [];
-      const user = {
-        id: '1',
-        username: 'Administrator',
-        realName: 'Administrator',
-        avatar: '',
-      };
+      const data = await getUserInfo();
 
-      if (perms.length) {
-        this.setPermissions(perms);
+      if (data.perms !== null && data.perms.length) {
+        this.setPermissions(data.perms);
+        this.setUserInfo(data);
+      } else {
+        throw new Error('getInfo: permissionsList must be a non-null array !');
       }
-
-      this.setUserInfo(user);
-      this.setAvatar(user.avatar);
-      return user;
+      this.setUserInfo(data);
+      this.setAvatar(data.avatar);
+      return data;
     },
 
     // 登出
     async logout() {
+      await logout();
       this.setPermissions([]);
       this.setUserInfo({
         id: '',
