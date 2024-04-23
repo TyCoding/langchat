@@ -1,5 +1,6 @@
-package cn.tycoding.langchat.upms.dto;
+package cn.tycoding.langchat.upms.utils;
 
+import cn.tycoding.langchat.upms.dto.MenuTree;
 import cn.tycoding.langchat.upms.entity.SysMenu;
 
 import java.util.ArrayList;
@@ -8,12 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 自定义封装Menu Tree 工具类
- *
  * @author tycoding
  * @since 2024/4/15
  */
-public class MenuTreeUtil {
+public class TreeUtil {
 
     private static List<MenuTree<SysMenu>> init(List<SysMenu> list) {
         List<MenuTree<SysMenu>> treeList = new ArrayList<>();
@@ -26,7 +25,7 @@ public class MenuTreeUtil {
             tree.setType(menu.getType());
             tree.setComponent(menu.getComponent());
             tree.setPerms(menu.getPerms());
-            tree.setMeta(new MenuMeta(menu.getName(), menu.getIcon()));
+            tree.setMeta(new MenuTree.MenuMeta(menu.getName(), menu.getIcon()));
             tree.setOrderNo(menu.getOrderNo());
             tree.setDisabled(menu.getIsDisabled());
             tree.setIsExt(menu.getIsExt());

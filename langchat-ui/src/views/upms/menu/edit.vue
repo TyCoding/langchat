@@ -1,7 +1,7 @@
 <template>
-  <basicModal @register="modalRegister" style="width: 45%">
+  <basicModal style="width: 45%" @register="modalRegister">
     <template #default>
-      <BasicForm @register="register" @submit="handleSubmit" class="mt-5">
+      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
         <template #iconSlot="{ model, field }">
           <IconPicker :value="model[field]" @update:value="onSelectIcon" />
         </template>
@@ -20,21 +20,21 @@
         <template #menuSlot="{ model, field }">
           <n-tree-select
             v-model:value="model[field]"
-            @update:value="(val) => onMenuChange(val, model, field)"
-            filterable
+            :options="menuList"
             clearable
+            filterable
             key-field="id"
             label-field="name"
-            value-field="id"
             placeholder="请选择上级菜单"
-            :options="menuList"
+            value-field="id"
+            @update:value="(val) => onMenuChange(val, model, field)"
           />
         </template>
-        <template #pathSlot="{ model, field }">
+        <template #componentSlot="{ model, field }">
           <n-input
-            :disabled="model[field] == 'Layout'"
             v-model:value="model[field]"
-            placeholder="请输入菜单路径"
+            :disabled="model[field] === 'LAYOUT'"
+            placeholder="请输入组件路径"
           />
         </template>
       </BasicForm>
@@ -43,7 +43,7 @@
 </template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { tree as getMenuList, add, update, getById } from '@/api/upms/menu';
+  import { add, getById, tree as getMenuList, update } from '@/api/upms/menu';
   import { useMessage } from 'naive-ui';
   import { formSchemas, typeOptions } from './columns';
   import { basicModal, useModal } from '@/components/Modal';
@@ -145,4 +145,4 @@
   defineExpose({ show });
 </script>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

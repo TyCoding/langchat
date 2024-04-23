@@ -94,4 +94,14 @@ public class MenuTree<T> implements Serializable {
      * 子节点
      */
     private List<MenuTree<T>> children = new ArrayList<>();
+
+    @Data
+    public static class MenuMeta {
+        private String title;
+        private String icon;
+        public MenuMeta(String title, String icon) {
+            this.title = title;
+            this.icon = icon;
+        }
+    }
 }

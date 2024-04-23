@@ -12,7 +12,6 @@ export const columns: BasicColumn[] = [
   {
     title: '菜单路径',
     key: 'path',
-    align: 'center',
   },
   {
     title: '菜单类型',
@@ -35,7 +34,6 @@ export const columns: BasicColumn[] = [
   {
     title: '组件路径',
     key: 'component',
-    align: 'center',
   },
   {
     title: '图标',
@@ -58,7 +56,6 @@ export const columns: BasicColumn[] = [
   {
     title: '权限标识',
     key: 'perms',
-    align: 'center',
   },
   {
     title: '状态',
@@ -150,7 +147,6 @@ export const formSchemas: FormSchema[] = [
   {
     field: 'path',
     label: '菜单路径',
-    slot: 'pathSlot',
     labelMessage: '如果是根目录菜单没有父级菜单时为Layout',
     component: 'NInput',
     componentProps: {
@@ -167,6 +163,7 @@ export const formSchemas: FormSchema[] = [
   {
     field: 'component',
     label: '组件路径',
+    slot: 'componentSlot',
     labelMessage: '.vue文件所在src/views目录位置',
     component: 'NInput',
     componentProps: {

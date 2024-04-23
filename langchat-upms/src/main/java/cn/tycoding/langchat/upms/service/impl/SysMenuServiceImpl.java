@@ -3,13 +3,13 @@ package cn.tycoding.langchat.upms.service.impl;
 import cn.tycoding.langchat.common.constant.CommonConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.upms.dto.MenuTree;
-import cn.tycoding.langchat.upms.dto.MenuTreeUtil;
 import cn.tycoding.langchat.upms.entity.SysMenu;
 import cn.tycoding.langchat.upms.entity.SysRole;
 import cn.tycoding.langchat.upms.mapper.SysMenuMapper;
 import cn.tycoding.langchat.upms.service.SysMenuService;
 import cn.tycoding.langchat.upms.service.SysRoleMenuService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
+import cn.tycoding.langchat.upms.utils.TreeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<MenuTree<SysMenu>> tree(SysMenu sysMenu) {
         List<SysMenu> list = baseMapper.selectList(new LambdaQueryWrapper<SysMenu>().ne(sysMenu.getId() != null, SysMenu::getId, sysMenu.getId()).eq(sysMenu.getIsDisabled() != null, SysMenu::getIsDisabled, sysMenu.getIsDisabled()));
-        return MenuTreeUtil.build(list);
+        return TreeUtil.build(list);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             roleIds.clear();
         }
         List<SysMenu> sysMenuList = baseMapper.build(roleIds, CommonConst.MENU_TYPE_MENU);
-        List<MenuTree<SysMenu>> build = MenuTreeUtil.build(sysMenuList);
+        List<MenuTree<SysMenu>> build = TreeUtil.build(sysMenuList);
         build.forEach(i -> {
             if (i.getChildren() == null || i.getChildren().isEmpty()) {
                 // 对没有children的路由单独处理，前端要求至少有一个children，当children.length=1时自动转换成跟路由
