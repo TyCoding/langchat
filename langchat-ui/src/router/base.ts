@@ -64,4 +64,25 @@ export const BaseRoute: Array<any> = [
       },
     ],
   },
+  {
+    path: '/aigc',
+    name: 'aigc',
+    component: 'LAYOUT',
+    show: false,
+    meta: {
+      title: '知识库',
+    },
+    children: [
+      {
+        path: 'knowledge/:id?',
+        name: 'knowledge_info',
+        component: '/aigc/knowledge/components/index',
+        show: false,
+        meta: {
+          title: '知识库数据',
+          activeMenu: 'knowledge',
+        },
+      },
+    ],
+  },
 ];

@@ -1,4 +1,4 @@
-import { ref, ComputedRef, unref, computed, onMounted, watchEffect, watch } from 'vue';
+import { computed, ComputedRef, onMounted, ref, unref, watch, watchEffect } from 'vue';
 import type { BasicTableProps } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
 import { isBoolean, isFunction } from '@/utils/is';
@@ -143,9 +143,6 @@ export function useDataSource(
   }
 
   async function reload(opt?) {
-    setPagination({
-      page: 1,
-    });
     await fetch(opt);
   }
 

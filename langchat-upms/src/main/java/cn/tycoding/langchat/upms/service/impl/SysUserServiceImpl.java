@@ -75,7 +75,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     private UserInfo build(UserInfo userInfo) {
         if (userInfo == null) {
-            throw new ServiceException("没有查询用用户信息");
+            throw new ServiceException(401, "没有查询用用户信息");
         }
         //获取用户角色列表
         List<SysRole> sysRoleList = sysRoleService.findRolesByUserId(userInfo.getId());

@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends ServiceImpl<AigcUserMapper, AigcUser> implements AigcUserService {
+public class AigcUserServiceImpl extends ServiceImpl<AigcUserMapper, AigcUser> implements AigcUserService {
 
 }

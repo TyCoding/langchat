@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import { nextTick, ref } from 'vue';
-  import { add, getById, update } from '@/api/aigc/prompt';
+  import { nextTick } from 'vue';
+  import { add, getById, update } from '@/api/aigc/kb';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';
@@ -10,10 +10,7 @@
   const emit = defineEmits(['reload']);
   const message = useMessage();
 
-  const [
-    modalRegister,
-    { openModal: openModal, closeModal: closeModal, setSubLoading: setSubLoading },
-  ] = useModal({
+  const [modalRegister, { openModal, closeModal }] = useModal({
     title: '新增/编辑',
     closable: true,
     maskClosable: false,
@@ -28,8 +25,6 @@
     schemas: formSchemas,
   });
 
-  const modelTypes = ref();
-  const chatModels = ref();
   async function show(id: string) {
     openModal();
     await nextTick();
@@ -37,9 +32,6 @@
       setFieldsValue(await getById(id));
     }
   }
-
-  function handleSelectModel(value: any, option: any) {}
-
   async function handleSubmit(values: any) {
     if (values !== false) {
       closeModal();
@@ -61,25 +53,7 @@
 
 <template>
   <basicModal style="width: 45%" @register="modalRegister">
-    <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
-      <template #modelSlot="{ model, field }">
-        <n-select
-          v-model:value="model[field]"
-          :options="modelTypes"
-          filterable
-          placeholder="请选择模型名称"
-          @update:value="handleSelectModel"
-        />
-      </template>
-      <template #chatModelSlot="{ model, field }">
-        <n-select
-          v-model:value="model[field]"
-          :options="chatModels"
-          filterable
-          placeholder="请选择对话模型"
-        />
-      </template>
-    </BasicForm>
+    <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
   </basicModal>
 </template>
 

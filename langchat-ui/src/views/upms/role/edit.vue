@@ -1,28 +1,3 @@
-<template>
-  <basicModal style="width: 35%" @register="modalRegister">
-    <template #default>
-      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
-        <template #menuSlot="{ model, field }">
-          <n-tree
-            :checked-keys="menuChecked"
-            :data="menuList"
-            :default-checked-keys="model[field]"
-            block-line
-            cascade
-            checkable
-            children-field="children"
-            expand-on-click
-            key-field="id"
-            label-field="name"
-            selectable
-            value-field="id"
-            @update:checked-keys="checkedTree"
-          />
-        </template>
-      </BasicForm>
-    </template>
-  </basicModal>
-</template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { tree as getMenuList } from '@/api/upms/menu';
@@ -96,5 +71,31 @@
   }
   defineExpose({ show });
 </script>
+
+<template>
+  <basicModal style="width: 35%" @register="modalRegister">
+    <template #default>
+      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
+        <template #menuSlot="{ model, field }">
+          <n-tree
+            :checked-keys="menuChecked"
+            :data="menuList"
+            :default-checked-keys="model[field]"
+            block-line
+            cascade
+            checkable
+            children-field="children"
+            expand-on-click
+            key-field="id"
+            label-field="name"
+            selectable
+            value-field="id"
+            @update:checked-keys="checkedTree"
+          />
+        </template>
+      </BasicForm>
+    </template>
+  </basicModal>
+</template>
 
 <style lang="less" scoped></style>

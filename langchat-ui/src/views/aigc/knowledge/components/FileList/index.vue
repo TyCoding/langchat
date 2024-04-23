@@ -1,13 +1,30 @@
+<template>
+  <n-card>
+    <BasicForm
+      ref="actionRef"
+      :actionColumn="actionColumn"
+      :columns="[...columns, ...embedColumn]"
+      :request="loadDataTable"
+      :row-key="(row:any) => row.id"
+      @register="register"
+      @reset="handleReset"
+      @submit="reloadTable"
+    />
+  </n-card>
+</template>
+
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
-  import { BasicTable, TableAction } from '@/components/Table';
+  import { BasicColumn, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, tree as getPage } from '@/api/upms/menu';
+  import { del, page as getPage } from '@/api/aigc/kb-file';
   import { columns, searchSchemas } from './columns';
-  import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
-  import Edit from './edit.vue';
-  import { useDialog, useMessage } from 'naive-ui';
+  import { DeleteOutlined, EditOutlined } from '@vicons/antd';
+  import { NSwitch, useDialog, useMessage } from 'naive-ui';
+  import { useRouter } from 'vue-router';
+  import { KbFile } from '@/api/models/flow';
 
+  const router = useRouter();
   const message = useMessage();
   const dialog = useDialog();
 
@@ -15,7 +32,7 @@
   const editRef = ref();
 
   const actionColumn = reactive({
-    width: 120,
+    width: 100,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -24,11 +41,6 @@
       return h(TableAction as any, {
         style: 'text',
         actions: [
-          {
-            type: 'success',
-            icon: PlusOutlined,
-            onClick: handlePlus.bind(null, record),
-          },
           {
             type: 'info',
             icon: EditOutlined,
@@ -48,30 +60,45 @@
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
     schemas: searchSchemas,
-    showAdvancedButton: false,
   });
 
   const loadDataTable = async (res: any) => {
-    return await getPage({ ...getFieldsValue(), ...res });
+    const kbId = router.currentRoute.value.params.id;
+    return await getPage({ ...getFieldsValue(), ...res, kbId });
   };
 
   function reloadTable() {
     actionRef.value.reload();
   }
 
+  const embedColumn: BasicColumn<KbFile>[] = [
+    {
+      title: '是否Embed',
+      key: 'isEmbed',
+      align: 'center',
+      width: 100,
+      render(row) {
+        return h(NSwitch, {
+          size: 'small',
+          'v-model:value': row.isEmbed,
+          'onUpdate:value': (val) => embedHandler(val, row),
+        });
+      },
+    },
+  ];
+  function embedHandler(val: boolean, row: KbFile) {
+    console.log('点击了', val, row);
+  }
+
   function handleAdd() {
     editRef.value.show();
   }
 
-  function handleEdit(record: any) {
+  function handleEdit(record: Recordable) {
     editRef.value.show(record.id);
   }
 
-  function handlePlus(record: any) {
-    editRef.value.show(null, record.id);
-  }
-
-  function handleDelete(record: any) {
+  function handleDelete(record: Recordable) {
     dialog.info({
       title: '提示',
       content: `您想删除 ${record.name}`,
@@ -86,41 +113,9 @@
     });
   }
 
-  function handleReset(values: any) {
+  function handleReset(values: Recordable) {
     reloadTable();
   }
 </script>
-
-<template>
-  <div class="h-full">
-    <n-card :bordered="false">
-      <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
-
-      <BasicTable
-        ref="actionRef"
-        :actionColumn="actionColumn"
-        :columns="columns"
-        :pagination="false"
-        :request="loadDataTable"
-        :row-key="(row:any) => row.id"
-        :single-line="false"
-        :size="'small'"
-      >
-        <template #tableTitle>
-          <n-button size="small" type="primary" @click="handleAdd">
-            <template #icon>
-              <n-icon>
-                <PlusOutlined />
-              </n-icon>
-            </template>
-            新建菜单
-          </n-button>
-        </template>
-      </BasicTable>
-    </n-card>
-
-    <Edit ref="editRef" @reload="reloadTable" />
-  </div>
-</template>
 
 <style lang="less" scoped></style>

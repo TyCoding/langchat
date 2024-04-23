@@ -36,7 +36,7 @@
       <!--刷新-->
       <n-tooltip trigger="hover">
         <template #trigger>
-          <div class="table-toolbar-right-icon" @click="reload">
+          <div class="table-toolbar-right-icon" @click="refresh">
             <n-icon size="18">
               <ReloadOutlined />
             </n-icon>
@@ -208,6 +208,12 @@
       function updateCheckedRowKeys(rowKeys) {
         emit('update:checked-row-keys', rowKeys);
       }
+      async function refresh() {
+        await reload();
+        setPagination({
+          page: 1,
+        });
+      }
 
       //获取表格大小
       const getTableSize = computed(() => state.tableSize);
@@ -296,6 +302,7 @@
         getBindValues,
         getDataSource,
         densityOptions,
+        refresh,
         reload,
         densitySelect,
         updatePage,

@@ -3,25 +3,20 @@ import { VAxios } from './Axios';
 import { AxiosTransform } from './axiosTransform';
 import axios, { AxiosResponse } from 'axios';
 import { checkStatus } from './checkStatus';
-import { joinTimestamp, formatRequestDate } from './helper';
-import { RequestEnum, ResultEnum, ContentTypeEnum } from '@/enums/httpEnum';
+import { formatRequestDate, joinTimestamp } from './helper';
+import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum';
 import { PageEnum } from '@/enums/pageEnum';
-
 import { useGlobSetting } from '@/hooks/setting';
-
 import { isString } from '@/utils/is/';
 import { deepMerge, isUrl } from '@/utils';
 import { setObjToUrlParams } from '@/utils/urlUtils';
-
-import { RequestOptions, Result, CreateAxiosOptions } from './types';
-
+import { CreateAxiosOptions, RequestOptions, Result } from './types';
 import { useUser } from '@/store/modules/user';
+import router from '@/router';
+import { storage } from '@/utils/Storage';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix || '';
-
-import router from '@/router';
-import { storage } from '@/utils/Storage';
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -98,7 +93,7 @@ const transform: AxiosTransform = {
         $message.error(errorMsg);
         break;
       // 登录超时
-      case ResultEnum.TIMEOUT:
+      case ResultEnum.UnAuthorization:
         const LoginName = PageEnum.BASE_LOGIN_NAME;
         const LoginPath = PageEnum.BASE_LOGIN;
         if (router.currentRoute.value?.name === LoginName) return;
@@ -203,7 +198,10 @@ const transform: AxiosTransform = {
         $message.error('接口请求超时，请刷新页面重试!');
         return;
       }
-      if (response.status === ResultEnum.UnAuthorization) {
+      if (
+        response.status === ResultEnum.UnAuthorization ||
+        response.data.code === ResultEnum.UnAuthorization
+      ) {
         const LoginName = PageEnum.BASE_LOGIN_NAME;
         const LoginPath = PageEnum.BASE_LOGIN;
         if (router.currentRoute.value?.name === LoginName) return Promise.resolve(response);

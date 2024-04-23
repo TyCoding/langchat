@@ -16,13 +16,6 @@ export function page(params: any) {
   });
 }
 
-export function getTags() {
-  return http.request({
-    url: '/aigc/kb/getTags',
-    method: 'get',
-  });
-}
-
 export function getById(id: string) {
   return http.request({
     url: `/aigc/kb/${id}`,

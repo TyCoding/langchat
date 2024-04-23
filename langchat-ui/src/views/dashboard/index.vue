@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+  import avatar from '@/assets/avatar.jpg';
+</script>
+
 <template>
   <div>
     <div class="n-layout-page-header">
@@ -36,9 +40,5 @@
     <div style="width: 200px"> </div>
   </div>
 </template>
-<script lang="ts" setup>
-  import avatar from '@/assets/avatar.jpg';
-  import { ref } from 'vue';
-</script>
 
 <style lang="less" scoped></style>

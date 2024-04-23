@@ -1,21 +1,3 @@
-<template>
-  <div class="n-layout-page-header">
-    <n-card :bordered="false" title="日志数据管理"> 所有用户的操作日志信息。 </n-card>
-  </div>
-
-  <n-card :bordered="false" class="mt-4">
-    <BasicTable
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="columns"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      :single-line="false"
-      :size="'small'"
-    />
-  </n-card>
-</template>
-
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
@@ -28,7 +10,6 @@
   const dialog = useDialog();
 
   const actionRef = ref();
-  const editRef = ref();
 
   const actionColumn = reactive({
     width: 100,
@@ -75,5 +56,25 @@
     });
   }
 </script>
+
+<template>
+  <div class="h-full">
+    <div class="n-layout-page-header">
+      <n-card :bordered="false" title="日志数据管理"> 所有用户的操作日志信息。 </n-card>
+    </div>
+
+    <n-card :bordered="false" class="mt-4">
+      <BasicTable
+        ref="actionRef"
+        :actionColumn="actionColumn"
+        :columns="columns"
+        :request="loadDataTable"
+        :row-key="(row:any) => row.id"
+        :single-line="false"
+        :size="'small'"
+      />
+    </n-card>
+  </div>
+</template>
 
 <style lang="less" scoped></style>

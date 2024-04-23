@@ -1,32 +1,3 @@
-<template>
-  <n-card :bordered="false">
-    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
-
-    <BasicTable
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="columns"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      :single-line="false"
-      :size="'small'"
-    >
-      <template #tableTitle>
-        <n-button size="small" type="primary" @click="handleAdd">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          新建角色
-        </n-button>
-      </template>
-    </BasicTable>
-  </n-card>
-
-  <Edit ref="editRef" @reload="reloadTable" />
-</template>
-
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
@@ -110,5 +81,36 @@
     reloadTable();
   }
 </script>
+
+<template>
+  <div class="h-full">
+    <n-card :bordered="false">
+      <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+
+      <BasicTable
+        ref="actionRef"
+        :actionColumn="actionColumn"
+        :columns="columns"
+        :request="loadDataTable"
+        :row-key="(row:any) => row.id"
+        :single-line="false"
+        :size="'small'"
+      >
+        <template #tableTitle>
+          <n-button size="small" type="primary" @click="handleAdd">
+            <template #icon>
+              <n-icon>
+                <PlusOutlined />
+              </n-icon>
+            </template>
+            新建角色
+          </n-button>
+        </template>
+      </BasicTable>
+    </n-card>
+
+    <Edit ref="editRef" @reload="reloadTable" />
+  </div>
+</template>
 
 <style lang="less" scoped></style>

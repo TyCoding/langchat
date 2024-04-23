@@ -1,51 +1,3 @@
-<template>
-  <div class="h-full">
-    <div class="n-layout-page-header mb-4">
-      <n-card :bordered="false" title="日志数据管理">
-        <template #header>
-          <div class="flex flex-wrap items-start">
-            <n-popover class="custom-popover">
-              <template #trigger>
-                <span class="tips-line">部门管理</span>
-              </template>
-              右键或双击节点进行自定义操作
-            </n-popover>
-
-            <n-icon size="14" class="ml-1">
-              <AlertCircleOutline />
-            </n-icon>
-          </div>
-        </template>
-
-        <template #footer>
-          <n-space>
-            <n-button v-if="data == null" type="info" secondary size="small">新增顶层部门</n-button>
-            <n-button type="info" secondary size="small">导入</n-button>
-            <n-button @click="onExpand" type="success" secondary size="small">展开/折叠</n-button>
-          </n-space>
-        </template>
-      </n-card>
-    </div>
-
-    <n-spin :show="loading">
-      <vue3-tree-org
-        :data="data"
-        :props="{ id: 'id', pid: 'parentId', label: 'name', children: 'children' }"
-        :define-menus="menus"
-        center
-        :collapsable="collapsable"
-        :node-add="handleAdd"
-        :node-edit="handleEdit"
-        :node-delete="handleDelete"
-        @on-node-dblclick="handleClick"
-        :expandAll="true"
-      />
-    </n-spin>
-  </div>
-
-  <Edit ref="editRef" @reload="reloadTable" />
-</template>
-
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { AlertCircleOutline } from '@vicons/ionicons5';
@@ -108,14 +60,58 @@
     });
   }
 
-  function handleReset(values: Recordable) {
-    reloadTable();
-  }
-
   function onExpand() {
     collapsable.value = !collapsable.value;
   }
 </script>
+
+<template>
+  <div class="h-full">
+    <div class="n-layout-page-header mb-4">
+      <n-card :bordered="false" title="日志数据管理">
+        <template #header>
+          <div class="flex flex-wrap items-start">
+            <n-popover class="custom-popover">
+              <template #trigger>
+                <span class="tips-line">部门管理</span>
+              </template>
+              右键或双击节点进行自定义操作
+            </n-popover>
+
+            <n-icon size="14" class="ml-1">
+              <AlertCircleOutline />
+            </n-icon>
+          </div>
+        </template>
+
+        <template #footer>
+          <n-space>
+            <n-button v-if="data == null" type="info" secondary size="small">新增顶层部门</n-button>
+            <n-button type="info" secondary size="small">导入</n-button>
+            <n-button @click="onExpand" type="success" secondary size="small">展开/折叠</n-button>
+          </n-space>
+        </template>
+      </n-card>
+    </div>
+
+    <n-spin :show="loading">
+      <vue3-tree-org
+        :data="data"
+        :props="{ id: 'id', pid: 'parentId', label: 'name', children: 'children' }"
+        :define-menus="menus"
+        center
+        :collapsable="collapsable"
+        :node-add="handleAdd"
+        :node-edit="handleEdit"
+        :node-delete="handleDelete"
+        @on-node-dblclick="handleClick"
+        :expandAll="true"
+      />
+    </n-spin>
+
+    <Edit ref="editRef" @reload="reloadTable" />
+  </div>
+</template>
 
 <style lang="less" scoped>
   ::v-deep(.zm-draggable) {

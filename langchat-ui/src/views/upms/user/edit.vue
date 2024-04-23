@@ -1,36 +1,3 @@
-<template>
-  <basicModal @register="modalRegister" style="width: 45%">
-    <template #default>
-      <BasicForm @register="register" @submit="handleSubmit" class="mt-5">
-        <template #deptSlot="{ model, field }">
-          <n-select
-            v-model:value="model[field]"
-            filterable
-            key-field="id"
-            label-field="name"
-            value-field="id"
-            placeholder="请选择部门"
-            :options="deptList"
-          />
-        </template>
-        <template #roleSlot="{ model, field }">
-          <n-tree-select
-            v-model:value="model[field]"
-            filterable
-            multiple
-            clearable
-            key-field="id"
-            label-field="name"
-            value-field="id"
-            children-field="children"
-            placeholder="请选择角色"
-            :options="roleList"
-          />
-        </template>
-      </BasicForm>
-    </template>
-  </basicModal>
-</template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { list as getDeptList } from '@/api/upms/dept';
@@ -98,5 +65,39 @@
   }
   defineExpose({ show });
 </script>
+
+<template>
+  <basicModal @register="modalRegister" style="width: 45%">
+    <template #default>
+      <BasicForm @register="register" @submit="handleSubmit" class="mt-5">
+        <template #deptSlot="{ model, field }">
+          <n-select
+            v-model:value="model[field]"
+            filterable
+            key-field="id"
+            label-field="name"
+            value-field="id"
+            placeholder="请选择部门"
+            :options="deptList"
+          />
+        </template>
+        <template #roleSlot="{ model, field }">
+          <n-tree-select
+            v-model:value="model[field]"
+            filterable
+            multiple
+            clearable
+            key-field="id"
+            label-field="name"
+            value-field="id"
+            children-field="children"
+            placeholder="请选择角色"
+            :options="roleList"
+          />
+        </template>
+      </BasicForm>
+    </template>
+  </basicModal>
+</template>
 
 <style scoped lang="less"></style>

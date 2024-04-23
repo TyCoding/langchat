@@ -1,46 +1,3 @@
-<template>
-  <basicModal style="width: 45%" @register="modalRegister">
-    <template #default>
-      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
-        <template #iconSlot="{ model, field }">
-          <IconPicker :value="model[field]" @update:value="onSelectIcon" />
-        </template>
-        <template #typeSlot="{ model, field }">
-          <n-radio-group
-            v-model:value="model[field]"
-            @update:value="(val) => onSelectType(val, model, field)"
-          >
-            <n-space>
-              <n-radio v-for="item in typeOptions" :key="item.value" :value="item.value">
-                {{ item.label }}
-              </n-radio>
-            </n-space>
-          </n-radio-group>
-        </template>
-        <template #menuSlot="{ model, field }">
-          <n-tree-select
-            v-model:value="model[field]"
-            :options="menuList"
-            clearable
-            filterable
-            key-field="id"
-            label-field="name"
-            placeholder="请选择上级菜单"
-            value-field="id"
-            @update:value="(val) => onMenuChange(val, model, field)"
-          />
-        </template>
-        <template #componentSlot="{ model, field }">
-          <n-input
-            v-model:value="model[field]"
-            :disabled="model[field] === 'LAYOUT'"
-            placeholder="请输入组件路径"
-          />
-        </template>
-      </BasicForm>
-    </template>
-  </basicModal>
-</template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { add, getById, tree as getMenuList, update } from '@/api/upms/menu';
@@ -144,5 +101,49 @@
 
   defineExpose({ show });
 </script>
+
+<template>
+  <basicModal style="width: 45%" @register="modalRegister">
+    <template #default>
+      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
+        <template #iconSlot="{ model, field }">
+          <IconPicker :value="model[field]" @update:value="onSelectIcon" />
+        </template>
+        <template #typeSlot="{ model, field }">
+          <n-radio-group
+            v-model:value="model[field]"
+            @update:value="(val) => onSelectType(val, model, field)"
+          >
+            <n-space>
+              <n-radio v-for="item in typeOptions" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </n-radio>
+            </n-space>
+          </n-radio-group>
+        </template>
+        <template #menuSlot="{ model, field }">
+          <n-tree-select
+            v-model:value="model[field]"
+            :options="menuList"
+            clearable
+            filterable
+            key-field="id"
+            label-field="name"
+            placeholder="请选择上级菜单"
+            value-field="id"
+            @update:value="(val) => onMenuChange(val, model, field)"
+          />
+        </template>
+        <template #componentSlot="{ model, field }">
+          <n-input
+            v-model:value="model[field]"
+            :disabled="model[field] === 'LAYOUT'"
+            placeholder="请输入组件路径"
+          />
+        </template>
+      </BasicForm>
+    </template>
+  </basicModal>
+</template>
 
 <style lang="less" scoped></style>
