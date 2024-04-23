@@ -16,7 +16,7 @@ export function chat(
 ) {
   return http.request(
     {
-      url: '/langchat/chat',
+      url: '/aigc/chat',
       method: 'post',
       data,
       timeout: 1000 * 60 * 30,
@@ -31,7 +31,7 @@ export function chat(
 
 export function del(id: string) {
   return http.request({
-    url: `/langchat/chat/${id}`,
+    url: `/aigc/chat/${id}`,
     method: 'delete',
   });
 }

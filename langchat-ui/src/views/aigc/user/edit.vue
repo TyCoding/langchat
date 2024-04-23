@@ -1,13 +1,13 @@
 <template>
-  <basicModal @register="modalRegister" style="width: 45%">
+  <basicModal style="width: 45%" @register="modalRegister">
     <template #default>
-      <BasicForm @register="register" @submit="handleSubmit" class="mt-5" />
+      <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
     </template>
   </basicModal>
 </template>
 <script lang="ts" setup>
-  import { nextTick, ref } from 'vue';
-  import { add, update, getById } from '@/api/modules/user';
+  import { nextTick } from 'vue';
+  import { add, getById, update } from '@/api/aigc/user';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { basicModal, useModal } from '@/components/Modal';
@@ -67,4 +67,4 @@
   defineExpose({ show });
 </script>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

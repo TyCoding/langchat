@@ -21,7 +21,7 @@ export const columns: BasicColumn[] = [
   {
     title: '创建时间',
     key: 'createTime',
-    width: 140,
+    width: 160,
     align: 'center',
   },
 ];

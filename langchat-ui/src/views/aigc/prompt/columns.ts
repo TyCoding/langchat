@@ -7,10 +7,12 @@ export const columns: BasicColumn[] = [
   {
     title: '名称',
     key: 'name',
+    width: 300,
   },
   {
     title: '标签',
     key: 'tags',
+    width: 200,
     render(row: any) {
       if (row.tags == undefined) {
         return;
@@ -33,14 +35,14 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '描述',
-    key: 'des',
+    title: '提示词',
+    key: 'prompt',
   },
   {
     title: '创建时间',
     key: 'createTime',
     align: 'center',
-    width: 120,
+    width: 160,
   },
 ];
 
@@ -63,15 +65,10 @@ export const formSchemas: FormSchema[] = [
     isHidden: true,
   },
   {
-    field: 'title',
+    field: 'name',
     label: '标题',
     component: 'NInput',
     rules: [{ required: true, message: '请输入标题', trigger: ['blur'] }],
-  },
-  {
-    field: 'des',
-    label: '描述',
-    component: 'NInput',
   },
   {
     field: 'icon',
@@ -81,11 +78,11 @@ export const formSchemas: FormSchema[] = [
   {
     field: 'prompt',
     component: 'NInput',
-    label: 'Prompt',
+    label: '提示词',
     isFull: true,
     componentProps: {
       isFull: true,
-      placeholder: '请输入Prompt',
+      placeholder: '请输入提示词',
       type: 'textarea',
       autosize: {
         minRows: 20,

@@ -1,18 +1,18 @@
 <template>
   <n-card :bordered="false">
-    <BasicForm @register="register" @submit="reloadTable" @reset="handleReset" />
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
 
     <BasicTable
-      :single-line="false"
-      :size="'small'"
+      ref="actionRef"
+      :actionColumn="actionColumn"
       :columns="columns"
       :request="loadDataTable"
       :row-key="(row:any) => row.id"
-      ref="actionRef"
-      :actionColumn="actionColumn"
+      :single-line="false"
+      :size="'small'"
     >
       <template #tableTitle>
-        <n-button type="primary" size="small" @click="handleAdd">
+        <n-button size="small" type="primary" @click="handleAdd">
           <template #icon>
             <n-icon>
               <PlusOutlined />
@@ -31,11 +31,12 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form';
-  import { page as getPage, del } from '@/api/modules/prompt';
+  import { del, page as getPage } from '@/api/aigc/prompt';
   import { columns, searchSchemas } from './columns';
   import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
+
   const message = useMessage();
   const dialog = useDialog();
 

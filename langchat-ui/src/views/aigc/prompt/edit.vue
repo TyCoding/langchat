@@ -1,21 +1,21 @@
 <template>
-  <basicModal @register="modalRegister" style="width: 45%">
-    <BasicForm @register="register" @submit="handleSubmit" class="mt-5">
+  <basicModal style="width: 45%" @register="modalRegister">
+    <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
       <template #modelSlot="{ model, field }">
         <n-select
-          @update:value="handleSelectModel"
           v-model:value="model[field]"
+          :options="modelTypes"
           filterable
           placeholder="请选择模型名称"
-          :options="modelTypes"
+          @update:value="handleSelectModel"
         />
       </template>
       <template #chatModelSlot="{ model, field }">
         <n-select
           v-model:value="model[field]"
+          :options="chatModels"
           filterable
           placeholder="请选择对话模型"
-          :options="chatModels"
         />
       </template>
     </BasicForm>
@@ -23,7 +23,7 @@
 </template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { add, update, getById } from '@/api/modules/prompt';
+  import { add, getById, update } from '@/api/aigc/prompt';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';
@@ -82,4 +82,4 @@
   defineExpose({ show });
 </script>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

@@ -2,7 +2,7 @@ import { http } from '@/utils/http/axios';
 
 export function list(params: any) {
   return http.request({
-    url: '/langchat/kb/doc/list',
+    url: '/aigc/kb/list',
     method: 'get',
     params,
   });
@@ -10,22 +10,29 @@ export function list(params: any) {
 
 export function page(params: any) {
   return http.request({
-    url: '/langchat/kb/doc/page',
+    url: '/aigc/kb/page',
     method: 'get',
     params,
   });
 }
 
+export function getTags() {
+  return http.request({
+    url: '/aigc/kb/getTags',
+    method: 'get',
+  });
+}
+
 export function getById(id: string) {
   return http.request({
-    url: `/langchat/kb/doc/${id}`,
+    url: `/aigc/kb/${id}`,
     method: 'get',
   });
 }
 
 export function add(params: any) {
   return http.request({
-    url: '/langchat/kb/doc',
+    url: '/aigc/kb',
     method: 'post',
     params,
   });
@@ -33,15 +40,15 @@ export function add(params: any) {
 
 export function update(params: any) {
   return http.request({
-    url: '/langchat/kb/doc',
+    url: '/aigc/kb',
     method: 'put',
     params,
   });
 }
 
-export function del(id: string) {
+export function del(id?: String) {
   return http.request({
-    url: `/langchat/kb/doc/${id}`,
+    url: `/aigc/kb/${id}`,
     method: 'delete',
   });
 }

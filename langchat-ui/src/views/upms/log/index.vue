@@ -5,13 +5,13 @@
 
   <n-card :bordered="false" class="mt-4">
     <BasicTable
-      :single-line="false"
-      :size="'small'"
+      ref="actionRef"
+      :actionColumn="actionColumn"
       :columns="columns"
       :request="loadDataTable"
       :row-key="(row:any) => row.id"
-      ref="actionRef"
-      :actionColumn="actionColumn"
+      :single-line="false"
+      :size="'small'"
     />
   </n-card>
 </template>
@@ -19,10 +19,11 @@
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
-  import { page as getPage, del } from '@/api/modules/log';
+  import { del, page as getPage } from '@/api/aigc/log';
   import { columns } from './columns';
   import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';
+
   const message = useMessage();
   const dialog = useDialog();
 

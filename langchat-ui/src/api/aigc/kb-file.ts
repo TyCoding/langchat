@@ -7,7 +7,7 @@ export function upload(
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.request({
-    url: `/langchat/oss/put/${id}`,
+    url: `/aigc/oss/put/${id}`,
     method: 'post',
     data,
     headers: {
@@ -19,7 +19,7 @@ export function upload(
 
 export function list(params: any) {
   return http.request({
-    url: '/langchat/kb/file/list',
+    url: '/aigc/kb/file/list',
     method: 'get',
     params,
   });
@@ -27,7 +27,7 @@ export function list(params: any) {
 
 export function page(params: any) {
   return http.request({
-    url: '/langchat/kb/file/page',
+    url: '/aigc/kb/file/page',
     method: 'get',
     params,
   });
@@ -35,14 +35,14 @@ export function page(params: any) {
 
 export function getById(id: string) {
   return http.request({
-    url: `/langchat/kb/file/${id}`,
+    url: `/aigc/kb/file/${id}`,
     method: 'get',
   });
 }
 
 export function add(params: any) {
   return http.request({
-    url: '/langchat/kb/file',
+    url: '/aigc/kb/file',
     method: 'post',
     params,
   });
@@ -50,7 +50,7 @@ export function add(params: any) {
 
 export function update(params: any) {
   return http.request({
-    url: '/langchat/kb/file',
+    url: '/aigc/kb/file',
     method: 'put',
     params,
   });
@@ -58,7 +58,7 @@ export function update(params: any) {
 
 export function del(id: string) {
   return http.request({
-    url: `/langchat/kb/file/${id}`,
+    url: `/aigc/kb/file/${id}`,
     method: 'delete',
   });
 }

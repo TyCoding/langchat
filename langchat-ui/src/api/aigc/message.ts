@@ -2,7 +2,7 @@ import { http } from '@/utils/http/axios';
 
 export function list(params: any) {
   return http.request({
-    url: '/langchat/message/list',
+    url: '/aigc/message/list',
     method: 'get',
     params,
   });
@@ -10,7 +10,7 @@ export function list(params: any) {
 
 export function page(params: any) {
   return http.request({
-    url: '/langchat/message/page',
+    url: '/aigc/message/page',
     method: 'get',
     params,
   });
@@ -18,7 +18,7 @@ export function page(params: any) {
 
 export function add(params: any) {
   return http.request({
-    url: '/langchat/message',
+    url: '/aigc/message',
     method: 'post',
     params,
   });
@@ -26,7 +26,7 @@ export function add(params: any) {
 
 export function update(params: any) {
   return http.request({
-    url: '/langchat/message',
+    url: '/aigc/message',
     method: 'put',
     params,
   });
@@ -34,7 +34,7 @@ export function update(params: any) {
 
 export function del(id: string) {
   return http.request({
-    url: `/langchat/message/${id}`,
+    url: `/aigc/message/${id}`,
     method: 'delete',
   });
 }

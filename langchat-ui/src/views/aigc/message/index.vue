@@ -1,15 +1,15 @@
 <template>
   <n-card :bordered="false">
-    <BasicForm @register="register" @submit="reloadTable" @reset="handleReset" />
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
 
     <BasicTable
-      :single-line="false"
-      :size="'small'"
+      ref="actionRef"
+      :actionColumn="actionColumn"
       :columns="columns"
       :request="loadDataTable"
       :row-key="(row:any) => row.id"
-      ref="actionRef"
-      :actionColumn="actionColumn"
+      :single-line="false"
+      :size="'small'"
     />
 
     <InfoList ref="infoRef" />
@@ -20,11 +20,12 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { page as getPage, del } from '@/api/modules/conversation';
+  import { del, page as getPage } from '@/api/aigc/conversation';
   import { columns, searchSchemas } from './columns';
   import { DeleteOutlined, EyeOutlined } from '@vicons/antd';
   import InfoList from './components/InfoList.vue';
   import { useDialog, useMessage } from 'naive-ui';
+
   const message = useMessage();
   const dialog = useDialog();
 

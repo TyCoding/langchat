@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { getMessages } from '@/api/modules/conversation';
+  import { getMessages } from '@/api/aigc/conversation';
 
   const messageRef = ref();
   const contentRef = ref();
@@ -34,10 +34,10 @@
             v-for="(item, index) of messages"
             :key="index"
             :date-time="item.createTime"
-            :text="item.content"
-            :inversion="item.role !== 'assistant'"
             :error="false"
+            :inversion="item.role !== 'assistant'"
             :loading="loading"
+            :text="item.content"
             @delete="handleDelete(item)"
           />
         </n-scrollbar>
@@ -51,4 +51,4 @@
   </n-drawer>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

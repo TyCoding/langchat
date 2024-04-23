@@ -3,7 +3,7 @@ import { AxiosProgressEvent } from 'axios';
 
 export function list(params: any) {
   return http.request({
-    url: '/langchat/prompt/list',
+    url: '/aigc/prompt/list',
     method: 'get',
     params,
   });
@@ -11,7 +11,7 @@ export function list(params: any) {
 
 export function page(params: any) {
   return http.request({
-    url: '/langchat/prompt/page',
+    url: '/aigc/prompt/page',
     method: 'get',
     params,
   });
@@ -19,21 +19,21 @@ export function page(params: any) {
 
 export function getById(id: string) {
   return http.request({
-    url: `/langchat/prompt/${id}`,
+    url: `/aigc/prompt/${id}`,
     method: 'get',
   });
 }
 
 export function getByModelId(id: string) {
   return http.request({
-    url: `/langchat/prompt/byModelId/${id}`,
+    url: `/aigc/prompt/byModelId/${id}`,
     method: 'get',
   });
 }
 
 export function add(params: any) {
   return http.request({
-    url: '/langchat/prompt',
+    url: '/aigc/prompt',
     method: 'post',
     params,
   });
@@ -41,7 +41,7 @@ export function add(params: any) {
 
 export function update(params: any) {
   return http.request({
-    url: '/langchat/prompt',
+    url: '/aigc/prompt',
     method: 'put',
     params,
   });
@@ -49,7 +49,7 @@ export function update(params: any) {
 
 export function del(id: string) {
   return http.request({
-    url: `/langchat/prompt/${id}`,
+    url: `/aigc/prompt/${id}`,
     method: 'delete',
   });
 }
@@ -60,7 +60,7 @@ export function chat(
 ) {
   return http.request(
     {
-      url: `/langchat/chat/prompt`,
+      url: `/aigc/chat/prompt`,
       method: 'post',
       params,
       onDownloadProgress: onDownloadProgress,
