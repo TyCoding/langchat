@@ -43,7 +43,7 @@
         isExt: false,
         parentId: '',
         orderNo: 0,
-        path: 'Layout',
+        path: '',
         icon: '',
       };
       if (parentId !== undefined) {

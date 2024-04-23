@@ -33,9 +33,19 @@ public class AigcUser implements Serializable {
     private String password;
 
     /**
+     * 昵称
+     */
+    private String nickname;
+
+    /**
      * 邮箱
      */
     private String email;
+
+    /**
+     * 手机号
+     */
+    private String phone;
 
     /**
      * 头像

@@ -1,18 +1,17 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { User } from '@/api/models';
 import { h } from 'vue';
 import { NTag } from 'naive-ui';
 
-export const columns: BasicColumn<User>[] = [
+export const columns: BasicColumn[] = [
   {
     title: '用户名',
     key: 'username',
     align: 'center',
   },
   {
-    title: '真实姓名',
-    key: 'realName',
+    title: '用户昵称',
+    key: 'nickname',
     align: 'center',
   },
   {
@@ -74,13 +73,13 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入用户名', trigger: ['blur'] }],
   },
   {
-    field: 'realName',
-    label: '真实姓名',
+    field: 'nickname',
+    label: '用户昵称',
     component: 'NInput',
     componentProps: {
-      placeholder: '请输入真实姓名',
+      placeholder: '请输入用户昵称',
     },
-    rules: [{ required: true, message: '请输入真实姓名', trigger: ['blur'] }],
+    rules: [{ required: true, message: '请输入用户昵称', trigger: ['blur'] }],
   },
   {
     field: 'status',
@@ -95,23 +94,6 @@ export const formSchemas: FormSchema[] = [
         {
           label: '禁用',
           value: false,
-        },
-      ],
-    },
-  },
-  {
-    field: 'sex',
-    label: '性别',
-    component: 'NRadioGroup',
-    componentProps: {
-      options: [
-        {
-          label: '男',
-          value: '男',
-        },
-        {
-          label: '女',
-          value: '女',
         },
       ],
     },

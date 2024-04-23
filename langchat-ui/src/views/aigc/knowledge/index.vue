@@ -88,7 +88,7 @@
 
     <n-spin :show="loading">
       <ul class="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg hover:shadow bg-gray-50">
+        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow bg-gray-50">
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
               <n-avatar :size="48" round>
