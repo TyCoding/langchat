@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.aigc.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -44,5 +45,26 @@ public class AigcConversation implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 用户名
+     */
+    @TableField(exist = false)
+    private String username;
+
+    /**
+     * 对话次数
+     */
+    @TableField(exist = false)
+    private Integer chatTotal;
+    /**
+     * Token消耗量
+     */
+    @TableField(exist = false)
+    private String tokenUsed;
+    /**
+     * 最后一次对话时间
+     */
+    @TableField(exist = false)
+    private Date endTime;
 }
 

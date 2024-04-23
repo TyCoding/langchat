@@ -15,6 +15,16 @@ export const columns: BasicColumn[] = [
     align: 'center',
   },
   {
+    title: '会话次数',
+    key: 'chatLimit',
+    align: 'center',
+  },
+  {
+    title: 'Token消耗量',
+    key: 'tokenUsed',
+    align: 'center',
+  },
+  {
     title: '账号状态',
     key: 'status',
     align: 'center',

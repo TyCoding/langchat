@@ -3,8 +3,10 @@ package cn.tycoding.langchat.aigc.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcConversation;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
+import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.aigc.mapper.AigcConversationMapper;
 import cn.tycoding.langchat.aigc.mapper.AigcMessageMapper;
+import cn.tycoding.langchat.aigc.mapper.AigcUserMapper;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author tycoding
@@ -26,8 +31,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcMessage> implements
         AigcMessageService {
-
     private final AigcConversationMapper aigcConversationMapper;
+    private final AigcUserMapper aigcUserMapper;
 
     @Override
     public List<AigcConversation> conversations() {
@@ -39,11 +44,32 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
 
     @Override
     public IPage<AigcConversation> conversationPages(AigcConversation data, QueryPage queryPage) {
-        //TODO 只获取当前用户下的会话
         Page<AigcConversation> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        return aigcConversationMapper.selectPage(page, Wrappers.<AigcConversation>lambdaQuery()
+        Page<AigcConversation> iPage = aigcConversationMapper.selectPage(page, Wrappers.<AigcConversation>lambdaQuery()
                 .like(!StrUtil.isBlank(data.getTitle()), AigcConversation::getTitle, data.getTitle())
                 .orderByDesc(AigcConversation::getCreateTime));
+
+        if (!iPage.getRecords().isEmpty()) {
+            Map<String, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
+            Set<String> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
+            List<AigcMessage> messages = baseMapper.selectList(Wrappers.<AigcMessage>lambdaQuery()
+                    .in(AigcMessage::getConversationId, ids)
+                    .orderByDesc(AigcMessage::getCreateTime));
+
+            iPage.getRecords().forEach(i -> {
+                List<AigcUser> list = map.get(i.getUserId());
+                if (list != null && !list.isEmpty()) {
+                    i.setUsername(list.get(0).getUsername());
+                }
+
+                List<AigcMessage> messageList = messages.stream().filter(m -> m.getConversationId() != null && m.getConversationId().equals(i.getId())).toList();
+                if (!messageList.isEmpty()) {
+                    i.setChatTotal(messageList.size());
+                    i.setEndTime(messageList.get(0).getCreateTime());
+                }
+            });
+        }
+        return iPage;
     }
 
     @Override

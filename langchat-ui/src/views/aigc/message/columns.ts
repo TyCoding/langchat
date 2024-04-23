@@ -3,8 +3,8 @@ import { FormSchema } from '@/components/Form';
 
 export const columns: BasicColumn[] = [
   {
-    title: '应用名称',
-    key: 'appName',
+    title: '用户名',
+    key: 'username',
     align: 'center',
   },
   {
@@ -13,15 +13,27 @@ export const columns: BasicColumn[] = [
     align: 'center',
   },
   {
-    title: '对话模型',
-    key: 'chatModel',
+    title: '对话次数',
+    key: 'chatTotal',
+    align: 'center',
+    width: 180,
+  },
+  {
+    title: 'Token消耗量',
+    key: 'tokenUsed',
+    align: 'center',
+    width: 180,
+  },
+  {
+    title: '最后一次对话时间',
+    key: 'endTime',
     align: 'center',
     width: 180,
   },
   {
     title: '创建时间',
     key: 'createTime',
-    width: 160,
+    width: 180,
     align: 'center',
   },
 ];

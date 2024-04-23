@@ -53,6 +53,11 @@ public class AigcUser implements Serializable {
     private String avatar;
 
     /**
+     * 会话次数
+     */
+    private Integer chatLimit;
+
+    /**
      * 状态 0锁定 1有效
      */
     private Boolean status;
