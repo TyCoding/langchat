@@ -37,9 +37,26 @@ public class AigcMessage implements Serializable {
     private String conversationId;
 
     /**
+     * 用户ID
+     */
+    private String userId;
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
      * 应用ID
      */
     private String promptId;
+
+    /**
+     * 请求IP
+     */
+    private String ip;
+
+    private Integer tokens;
+    private Integer promptTokens;
 
     /**
      * 角色，user、assistant、system

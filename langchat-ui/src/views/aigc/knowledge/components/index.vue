@@ -26,17 +26,17 @@
         <n-menu v-model:value="menu" :options="menuOptions" @update:value="handleSelect" />
       </n-gi>
       <n-gi class="h-full overflow-y-auto" span="21">
-        <!--        <DocList v-if="menu == 'doc-list'" />-->
-        <!--        <ImportFile v-if="menu == 'import-file'" />-->
+        <DocList v-if="menu == 'doc-list'" />
+        <ImportFile v-if="menu == 'import-file'" />
         <FileList v-if="menu == 'file-list'" />
       </n-gi>
     </n-grid>
   </div>
 </template>
 <script lang="ts" setup>
-  // import DocList from '@/views/kb/modules/DocList/Layout.vue';
+  import DocList from './DocList/index.vue';
   import FileList from './FileList/index.vue';
-  // import ImportFile from '@/views/kb/modules/ImportFile/Layout.vue';
+  import ImportFile from './ImportFile/index.vue';
   import { onMounted, ref } from 'vue';
   import type { MenuOption } from 'naive-ui';
   import { NIcon } from 'naive-ui';
