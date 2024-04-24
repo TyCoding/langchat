@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-upms</artifactId>
+            <artifactId>langchat-auth</artifactId>
         </dependency>
     </dependencies>
 

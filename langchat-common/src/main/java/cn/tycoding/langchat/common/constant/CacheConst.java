@@ -33,4 +33,9 @@ public interface CacheConst {
      */
     String USER_DETAIL_KEY = REDIS_KEY_PREFIX + "user_details";
 
+    /**
+     * 验证码缓存前缀
+     */
+    String CAPTCHA_PREFIX = REDIS_KEY_PREFIX + "auth:captcha:";
+
 }

@@ -35,3 +35,4 @@ mybatis-plus:
 
 sa-token:
   is-print: false
+  token-name: Authorization

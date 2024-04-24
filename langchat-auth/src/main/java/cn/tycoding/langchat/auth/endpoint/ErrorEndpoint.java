@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.common.component;
+package cn.tycoding.langchat.auth.endpoint;
 
 import cn.tycoding.langchat.common.utils.R;
 import org.springframework.boot.web.servlet.error.ErrorController;

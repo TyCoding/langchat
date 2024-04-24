@@ -1,8 +1,9 @@
-package cn.tycoding.langchat.auth;
+package cn.tycoding.langchat.auth.endpoint;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.auth.service.TokenInfo;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 /**
  * @author tycoding
- * @since 2024/1/20
+ * @since 2024/1/5
  */
 @Slf4j
 @RestController
@@ -36,17 +37,16 @@ public class AuthEndpoint {
     @PostMapping("/login")
     public R login(@RequestBody UserInfo user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
-            throw new ServiceException("Username or password is empty");
+            throw new ServiceException("用户名或密码为空");
         }
-
         UserInfo userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
-            throw new ServiceException("Username or password is not match");
+            throw new ServiceException("用户名或密码错误");
         }
 
         String decryptPass = AuthUtil.decrypt(authProps.getSaltKey(), userInfo.getPassword());
         if (!decryptPass.equals(user.getPassword())) {
-            throw new ServiceException("Username or password is not match");
+            throw new ServiceException("用户名或密码错误");
         }
 
         StpUtil.login(userInfo.getId());
@@ -54,10 +54,8 @@ public class AuthEndpoint {
         StpUtil.getSession()
                 .set(CacheConst.AUTH_USER_INFO_KEY, userInfo)
                 .set(CacheConst.AUTH_TOKEN_INFO_KEY, tokenInfo);
-        log.info("====> Login success! token={}", tokenInfo.getTokenValue());
-        return R.ok(
-                new TokenInfo().setToken(tokenInfo.tokenValue)
-                        .setExpiration(tokenInfo.tokenTimeout));
+        log.info("====> 登陆成功，token={}", tokenInfo.getTokenValue());
+        return R.ok(new TokenInfo().setToken(tokenInfo.tokenValue).setExpiration(tokenInfo.tokenTimeout));
     }
 
     @DeleteMapping("/logout")
@@ -74,17 +72,15 @@ public class AuthEndpoint {
 
     @GetMapping("/token/page")
     public R tokenPage(QueryPage queryPage) {
-        List<String> list =
-                StpUtil.searchTokenValue("", queryPage.getPage(), queryPage.getLimit(), true);
+        List<String> list = StpUtil.searchTokenValue("", queryPage.getPage(), queryPage.getLimit(), true);
         List ids = redisTemplate.opsForValue().multiGet(list);
-        ids.forEach(
-                id -> {
-                    Map<String, Object> dataMap = StpUtil.getSessionByLoginId(id).getDataMap();
-                    //            UserInfo userInfo = (UserInfo)dataMap.get(CacheConst.AUTH_USER_INFO_KEY);
-                    //            SaTokenInfo tokenInfo =
-                    // (SaTokenInfo)dataMap.get(CacheConst.AUTH_TOKEN_INFO_KEY);
-                });
+        ids.forEach(id -> {
+            Map<String, Object> dataMap = StpUtil.getSessionByLoginId(id).getDataMap();
+            UserInfo userInfo = (UserInfo)dataMap.get(CacheConst.AUTH_USER_INFO_KEY);
+            SaTokenInfo tokenInfo = (SaTokenInfo)dataMap.get(CacheConst.AUTH_TOKEN_INFO_KEY);
+        });
 
         return R.ok(list);
     }
+
 }

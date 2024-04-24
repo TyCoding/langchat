@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.auth;
+package cn.tycoding.langchat.auth.endpoint;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.hutool.core.util.StrUtil;
@@ -6,6 +6,7 @@ import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.aigc.service.AigcUserService;
 import cn.tycoding.langchat.aigc.utils.AigcStpUtil;
 import cn.tycoding.langchat.aigc.utils.AigcUserInfo;
+import cn.tycoding.langchat.auth.service.TokenInfo;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
