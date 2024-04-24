@@ -60,7 +60,7 @@ public class AigcConversation implements Serializable {
      * Token消耗量
      */
     @TableField(exist = false)
-    private String tokenUsed;
+    private Integer tokenUsed;
     /**
      * 最后一次对话时间
      */

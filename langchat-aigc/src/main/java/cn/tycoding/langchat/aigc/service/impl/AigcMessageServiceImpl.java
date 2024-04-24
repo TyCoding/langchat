@@ -66,6 +66,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
                 if (!messageList.isEmpty()) {
                     i.setChatTotal(messageList.size());
                     i.setEndTime(messageList.get(0).getCreateTime());
+                    i.setTokenUsed(messageList.stream().filter(m -> m.getTokens() != null).mapToInt(AigcMessage::getTokens).sum());
                 }
             });
         }
