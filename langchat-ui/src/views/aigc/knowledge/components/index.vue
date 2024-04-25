@@ -1,3 +1,57 @@
+<script lang="ts" setup>
+  import DocList from './DocsList/index.vue';
+  import FileList from './DocsSlice/index.vue';
+  import ImportFile from './ImportFile/index.vue';
+  import { onMounted, ref } from 'vue';
+  import type { MenuOption } from 'naive-ui';
+  import { NIcon } from 'naive-ui';
+  import { useRouter } from 'vue-router';
+  import { renderIcon } from '@/utils';
+  import {
+    ArrowUndoOutline,
+    CloudUploadOutline,
+    DocumentTextOutline,
+    AlbumsOutline,
+  } from '@vicons/ionicons5';
+  import { getById } from '@/api/aigc/knowledge';
+
+  const router = useRouter();
+
+  const menu = ref();
+  const menuOptions: MenuOption[] = [
+    {
+      label: '文档管理',
+      key: 'doc-list',
+      icon: renderIcon(DocumentTextOutline),
+    },
+    {
+      label: '切片管理',
+      key: 'slice-list',
+      icon: renderIcon(AlbumsOutline),
+    },
+    {
+      label: '数据导入',
+      key: 'import-file',
+      icon: renderIcon(CloudUploadOutline),
+    },
+  ];
+
+  const kb = ref<any>({});
+  onMounted(async () => {
+    const id = router.currentRoute.value.params.id;
+    kb.value = await getById(String(id));
+    menu.value = 'doc-list';
+  });
+
+  function handleSelect(key: string, item: MenuOption) {
+    menu.value = key;
+  }
+
+  function handleReturn() {
+    router.back();
+  }
+</script>
+
 <template>
   <div class="n-layout-page-header">
     <n-card :bordered="false" size="medium">
@@ -28,62 +82,10 @@
       <n-gi class="h-full overflow-y-auto" span="21">
         <DocList v-if="menu == 'doc-list'" />
         <ImportFile v-if="menu == 'import-file'" />
-        <FileList v-if="menu == 'file-list'" />
+        <FileList v-if="menu == 'slice-list'" />
       </n-gi>
     </n-grid>
   </div>
 </template>
-<script lang="ts" setup>
-  import DocList from './DocList/index.vue';
-  import FileList from './FileList/index.vue';
-  import ImportFile from './ImportFile/index.vue';
-  import { onMounted, ref } from 'vue';
-  import type { MenuOption } from 'naive-ui';
-  import { NIcon } from 'naive-ui';
-  import { useRouter } from 'vue-router';
-  import { renderIcon } from '@/utils';
-  import {
-    ArrowUndoOutline,
-    CloudUploadOutline,
-    CreateOutline,
-    FileTrayFullOutline,
-  } from '@vicons/ionicons5';
-  import { getById } from '@/api/aigc/kb';
 
-  const router = useRouter();
-
-  const menu = ref();
-  const menuOptions: MenuOption[] = [
-    {
-      label: '文档录入列表',
-      key: 'doc-list',
-      icon: renderIcon(CreateOutline),
-    },
-    {
-      label: '文件上传列表',
-      key: 'file-list',
-      icon: renderIcon(FileTrayFullOutline),
-    },
-    {
-      label: '导入数据文件',
-      key: 'import-file',
-      icon: renderIcon(CloudUploadOutline),
-    },
-  ];
-
-  const kb = ref<any>({});
-  onMounted(async () => {
-    const id = router.currentRoute.value.params.id;
-    kb.value = await getById(String(id));
-    menu.value = 'doc-list';
-  });
-
-  function handleSelect(key: string, item: MenuOption) {
-    menu.value = key;
-  }
-
-  function handleReturn() {
-    router.back();
-  }
-</script>
 <style lang="less" scoped></style>

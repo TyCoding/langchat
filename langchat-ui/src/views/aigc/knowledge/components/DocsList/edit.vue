@@ -1,17 +1,6 @@
-<template>
-  <n-modal
-    v-model:show="showModal"
-    :show-icon="false"
-    preset="dialog"
-    style="width: 40%"
-    title="编辑文档"
-  >
-    <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
-  </n-modal>
-</template>
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { add, getById, update } from '@/api/aigc/kb-doc';
+  import { add, getById, update } from '@/api/aigc/docs';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';
@@ -57,5 +46,17 @@
 
   defineExpose({ show });
 </script>
+
+<template>
+  <n-modal
+    v-model:show="showModal"
+    :show-icon="false"
+    preset="dialog"
+    style="width: 40%"
+    title="编辑文档"
+  >
+    <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
+  </n-modal>
+</template>
 
 <style lang="less" scoped></style>

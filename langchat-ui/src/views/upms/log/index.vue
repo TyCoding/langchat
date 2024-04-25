@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
-  import { del, page as getPage } from '@/api/aigc/log';
+  import { del, page as getPage } from '@/api/upms/log';
   import { columns } from './columns';
   import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';

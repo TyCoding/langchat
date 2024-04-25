@@ -80,7 +80,6 @@ export const BaseRoute: Array<any> = [
         show: false,
         meta: {
           title: '知识库数据',
-          activeMenu: 'knowledge',
         },
       },
     ],

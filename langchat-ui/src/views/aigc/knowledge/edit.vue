@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { nextTick } from 'vue';
-  import { add, getById, update } from '@/api/aigc/kb';
+  import { add, getById, update } from '@/api/aigc/knowledge';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, page as getPage } from '@/api/aigc/kb';
+  import { del, page as getPage } from '@/api/aigc/knowledge';
   import { searchSchemas } from './columns';
   import {
     AntCloudOutlined,

@@ -1,40 +1,10 @@
-<template>
-  <n-card>
-    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
-
-    <BasicTable
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="columns"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      :single-line="false"
-      :size="'small'"
-    >
-      <template #tableTitle>
-        <n-button size="small" type="primary" @click="handleAdd">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          手动录入
-        </n-button>
-      </template>
-    </BasicTable>
-
-    <Edit ref="editRef" @reload="reloadTable" />
-  </n-card>
-</template>
-
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
-  import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, page as getPage } from '@/api/aigc/kb-doc';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { del, page as getPage } from '@/api/aigc/docs';
   import { columns, searchSchemas } from './columns';
-  import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
-  import Edit from './edit.vue';
+  import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
 
@@ -43,7 +13,6 @@
   const dialog = useDialog();
 
   const actionRef = ref();
-  const editRef = ref();
 
   const actionColumn = reactive({
     width: 150,
@@ -56,11 +25,6 @@
         style: 'text',
         actions: [
           {
-            type: 'info',
-            icon: EditOutlined,
-            onClick: handleEdit.bind(null, record),
-          },
-          {
             type: 'error',
             icon: DeleteOutlined,
             onClick: handleDelete.bind(null, record),
@@ -70,9 +34,10 @@
     },
   });
 
-  const [register, { getFieldsValue, setFieldsValue }] = useForm({
+  const [register, { getFieldsValue }] = useForm({
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
+    showAdvancedButton: false,
     schemas: searchSchemas,
   });
 
@@ -83,14 +48,6 @@
 
   function reloadTable() {
     actionRef.value.reload();
-  }
-
-  function handleAdd() {
-    editRef.value.show('');
-  }
-
-  function handleEdit(record: Recordable) {
-    editRef.value.show('', record.id);
   }
 
   function handleDelete(record: Recordable) {
@@ -112,5 +69,21 @@
     reloadTable();
   }
 </script>
+
+<template>
+  <n-card>
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+
+    <BasicTable
+      ref="actionRef"
+      :actionColumn="actionColumn"
+      :columns="columns"
+      :request="loadDataTable"
+      :row-key="(row:any) => row.id"
+      :single-line="false"
+      :size="'small'"
+    />
+  </n-card>
+</template>
 
 <style lang="less" scoped></style>

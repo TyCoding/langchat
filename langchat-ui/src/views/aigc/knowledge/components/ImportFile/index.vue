@@ -1,19 +1,3 @@
-<template>
-  <div>
-    <CheckCard
-      :data-source="dataSource"
-      :default-checked="checked"
-      :justify="'start'"
-      @on-checked="handleCheck"
-    />
-    <n-card class="mt-3">
-      <DocInput v-if="checked == 'doc-input'" />
-      <URLImport v-if="checked == 'url-import'" />
-      <DocImport v-if="checked == 'doc-import'" />
-      <QaImport v-if="checked == '2'" />
-    </n-card>
-  </div>
-</template>
 <script lang="ts" setup>
   import { ref } from 'vue';
   import CheckCard from '@/components/CheckCard';
@@ -51,4 +35,21 @@
     checked.value = item.key;
   }
 </script>
+
+<template>
+  <div>
+    <CheckCard
+      :data-source="dataSource"
+      :default-checked="checked"
+      :justify="'start'"
+      @on-checked="handleCheck"
+    />
+    <n-card class="mt-3">
+      <DocInput v-if="checked == 'doc-input'" />
+      <URLImport v-if="checked == 'url-import'" />
+      <DocImport v-if="checked == 'doc-import'" />
+      <QaImport v-if="checked == '2'" />
+    </n-card>
+  </div>
+</template>
 <style lang="less" scoped></style>

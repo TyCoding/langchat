@@ -1,10 +1,9 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { KbDoc } from '@/api/models/flow';
 import { h } from 'vue';
 import { formatToDate } from '@/utils/dateUtil';
 
-export const columns: BasicColumn<KbDoc>[] = [
+export const columns: BasicColumn[] = [
   {
     title: '文档描述',
     key: 'des',
@@ -17,7 +16,7 @@ export const columns: BasicColumn<KbDoc>[] = [
     title: '创建时间',
     key: 'createTime',
     width: 120,
-    render(row: KbDoc) {
+    render(row: any) {
       return h('span', {}, formatToDate(new Date(Number(row.createTime))));
     },
   },
@@ -25,11 +24,11 @@ export const columns: BasicColumn<KbDoc>[] = [
 
 export const searchSchemas: FormSchema[] = [
   {
-    field: 'des',
+    field: 'name',
     component: 'NInput',
-    label: '文档描述',
+    label: '文档名称',
     componentProps: {
-      placeholder: '请输入文档描述',
+      placeholder: '请输入文档名称',
     },
   },
 ];

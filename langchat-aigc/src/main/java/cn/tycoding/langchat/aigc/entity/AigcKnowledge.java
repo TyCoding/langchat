@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName(autoResultMap = true)
-public class AigcKb implements Serializable {
+public class AigcKnowledge implements Serializable {
     private static final long serialVersionUID = 548724967827903685L;
 
     /**
@@ -26,6 +26,11 @@ public class AigcKb implements Serializable {
      * 知识库名称
      */
     private String name;
+
+    /**
+     * 封面
+     */
+    private String cover;
 
     /**
      * 描述

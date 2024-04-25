@@ -1,26 +1,8 @@
-<template>
-  <n-space vertical>
-    <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
-    <n-upload :custom-request="handleImport" directory-dnd>
-      <n-upload-dragger>
-        <div style="margin-bottom: 12px">
-          <n-icon :depth="3" size="48">
-            <DownloadOutline />
-          </n-icon>
-        </div>
-        <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传</n-text>
-        <n-p depth="3" style="margin: 8px 0 0 0">
-          请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
-        </n-p>
-      </n-upload-dragger>
-    </n-upload>
-  </n-space>
-</template>
 <script lang="ts" setup>
   import { DownloadOutline } from '@vicons/ionicons5';
   import { useRouter } from 'vue-router';
   import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
-  import { upload } from '@/api/aigc/kb-file';
+  import { upload } from '@/api/aigc/slice';
   import { ref } from 'vue';
 
   const router = useRouter();
@@ -72,4 +54,24 @@
       });
   };
 </script>
+
+<template>
+  <n-space vertical>
+    <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
+    <n-upload :custom-request="handleImport" directory-dnd>
+      <n-upload-dragger>
+        <div style="margin-bottom: 12px">
+          <n-icon :depth="3" size="48">
+            <DownloadOutline />
+          </n-icon>
+        </div>
+        <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传</n-text>
+        <n-p depth="3" style="margin: 8px 0 0 0">
+          请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
+        </n-p>
+      </n-upload-dragger>
+    </n-upload>
+  </n-space>
+</template>
+
 <style lang="less" scoped></style>

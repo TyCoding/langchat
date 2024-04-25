@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.aigc.mapper;
 
-import cn.tycoding.langchat.aigc.entity.AigcKbFile;
+import cn.tycoding.langchat.aigc.entity.AigcKnowledge;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2024/4/15
  */
 @Mapper
-public interface AigcKbFileMapper extends BaseMapper<AigcKbFile> {
+public interface AigcKnowledgeMapper extends BaseMapper<AigcKnowledge> {
 
 }
 

@@ -1,47 +1,55 @@
-<template>
-  <div>
-    <n-space vertical>
-      <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
-      <n-divider dashed> <n-tag type="success">文档描述信息</n-tag> </n-divider>
-      <n-input v-model:value="des" placeholder="请输入文档描述信息" />
-      <n-divider dashed> <n-tag type="success">文档录入内容</n-tag> </n-divider>
-      <n-input
-        v-model:value="content"
-        placeholder="请输入需要录入的文档内容"
-        rows="20"
-        type="textarea"
-      />
-    </n-space>
-  </div>
-</template>
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { useMessage } from 'naive-ui';
   import { isNullOrWhitespace } from '@/utils/is';
-  import { add } from '@/api/aigc/kb-doc';
+  import { add } from '@/api/aigc/docs';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
-
   const message = useMessage();
-
-  const des = ref<string>('');
-  const content = ref<string>('');
+  const form = ref({
+    name: '',
+    content: '',
+  });
 
   async function handleSubmit() {
-    if (isNullOrWhitespace(content.value)) {
+    if (isNullOrWhitespace(form.value.content)) {
       message.warning('请输入文档内容');
       return;
     }
     const kbId = router.currentRoute.value.params.id;
     await add({
-      des: des.value,
-      content: content.value,
+      ...form.value,
       kbId: kbId,
     });
     message.success('文档录入成功，正在解析中...');
-    des.value = '';
-    content.value = '';
+    form.value = {
+      name: '',
+      content: '',
+    };
   }
 </script>
+
+<template>
+  <div class="flex flex-col gap-4">
+    <div>
+      <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
+    </div>
+
+    <n-form :model="form" label-placement="left" label-width="auto">
+      <n-form-item label="文件名称">
+        <n-input v-model:value="form.name" />
+      </n-form-item>
+      <n-form-item label="文档内容">
+        <n-input
+          v-model:value="form.content"
+          placeholder="请输入需要录入的文档内容"
+          rows="20"
+          type="textarea"
+        />
+      </n-form-item>
+    </n-form>
+  </div>
+</template>
+
 <style lang="less" scoped></style>

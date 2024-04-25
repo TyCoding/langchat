@@ -1,3 +1,7 @@
+<script setup lang="ts">
+  import { DownloadOutline } from '@vicons/ionicons5';
+</script>
+
 <template>
   <div>
     <n-upload
@@ -20,7 +24,5 @@
     </n-upload>
   </div>
 </template>
-<script setup lang="ts">
-  import { DownloadOutline } from '@vicons/ionicons5';
-</script>
+
 <style scoped lang="less"></style>

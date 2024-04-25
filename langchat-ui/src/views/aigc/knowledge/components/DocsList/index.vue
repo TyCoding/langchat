@@ -1,37 +1,22 @@
-<template>
-  <n-card>
-    <BasicForm
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="[...columns, ...embedColumn]"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      @register="register"
-      @reset="handleReset"
-      @submit="reloadTable"
-    />
-  </n-card>
-</template>
-
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
-  import { BasicColumn, TableAction } from '@/components/Table';
-  import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, page as getPage } from '@/api/aigc/kb-file';
+  import { BasicTable, TableAction } from '@/components/Table';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { del, page as getPage } from '@/api/aigc/docs';
   import { columns, searchSchemas } from './columns';
-  import { DeleteOutlined, EditOutlined } from '@vicons/antd';
-  import { NSwitch, useDialog, useMessage } from 'naive-ui';
+  import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
+  import Edit from './edit.vue';
+  import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
   const message = useMessage();
   const dialog = useDialog();
-
   const actionRef = ref();
   const editRef = ref();
 
   const actionColumn = reactive({
-    width: 100,
+    width: 150,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -58,43 +43,25 @@
   const [register, { getFieldsValue, setFieldsValue }] = useForm({
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
+    showAdvancedButton: false,
     schemas: searchSchemas,
   });
 
   const loadDataTable = async (res: any) => {
-    const kbId = router.currentRoute.value.params.id;
-    return await getPage({ ...getFieldsValue(), ...res, kbId });
+    const knowledgeId = router.currentRoute.value.params.id;
+    return await getPage({ ...getFieldsValue(), ...res, knowledgeId });
   };
 
   function reloadTable() {
     actionRef.value.reload();
   }
 
-  const embedColumn: BasicColumn[] = [
-    {
-      title: '是否Embed',
-      key: 'isEmbed',
-      align: 'center',
-      width: 100,
-      render(row) {
-        return h(NSwitch, {
-          size: 'small',
-          'v-model:value': row.isEmbed,
-          'onUpdate:value': (val) => embedHandler(val, row),
-        });
-      },
-    },
-  ];
-  function embedHandler(val: boolean, row: any) {
-    console.log('点击了', val, row);
-  }
-
   function handleAdd() {
-    editRef.value.show();
+    editRef.value.show('');
   }
 
   function handleEdit(record: Recordable) {
-    editRef.value.show(record.id);
+    editRef.value.show('', record.id);
   }
 
   function handleDelete(record: Recordable) {
@@ -116,5 +83,34 @@
     reloadTable();
   }
 </script>
+
+<template>
+  <n-card>
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+
+    <BasicTable
+      ref="actionRef"
+      :actionColumn="actionColumn"
+      :columns="columns"
+      :request="loadDataTable"
+      :row-key="(row:any) => row.id"
+      :single-line="false"
+      :size="'small'"
+    >
+      <template #tableTitle>
+        <n-button size="small" type="primary" @click="handleAdd">
+          <template #icon>
+            <n-icon>
+              <PlusOutlined />
+            </n-icon>
+          </template>
+          手动录入
+        </n-button>
+      </template>
+    </BasicTable>
+
+    <Edit ref="editRef" @reload="reloadTable" />
+  </n-card>
+</template>
 
 <style lang="less" scoped></style>

@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @since 2024/4/15
  */
 @Data
-public class AigcKbDoc implements Serializable {
-    private static final long serialVersionUID = 548724967827903685L;
+public class AigcDocsSlice implements Serializable {
+    private static final long serialVersionUID = -3093489071059867065L;
 
     /**
      * 主键
@@ -21,24 +21,33 @@ public class AigcKbDoc implements Serializable {
     private String id;
 
     /**
+     * 文档ID
+     */
+    private String docsId;
+
+    /**
      * 知识库ID
      */
-    private String kbId;
+    private String knowledgeId;
 
     /**
-     * 文档内容
+     * 文件名称
      */
-    private String content;
+    private String name;
 
     /**
-     * 文档描述
+     * 字符数量
      */
-    private String des;
+    private Integer wordNum;
+
+    /**
+     * 是否Embedding
+     */
+    private Boolean status = false;
 
     /**
      * 创建时间
      */
     private String createTime;
-
 }
 

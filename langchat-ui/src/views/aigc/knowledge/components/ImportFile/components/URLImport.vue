@@ -1,3 +1,13 @@
+<script setup lang="ts">
+  import { DownloadOutline } from '@vicons/ionicons5';
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
+
+  async function handleImport() {
+    const kbId = router.currentRoute.value.params.id;
+  }
+</script>
+
 <template>
   <div>
     <n-upload
@@ -20,13 +30,5 @@
     </n-upload>
   </div>
 </template>
-<script setup lang="ts">
-  import { DownloadOutline } from '@vicons/ionicons5';
-  import { useRouter } from 'vue-router';
-  const router = useRouter();
 
-  async function handleImport() {
-    const kbId = router.currentRoute.value.params.id;
-  }
-</script>
 <style scoped lang="less"></style>

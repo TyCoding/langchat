@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.aigc.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.aigc.entity.AigcKb;
-import cn.tycoding.langchat.aigc.service.AigcKbService;
+import cn.tycoding.langchat.aigc.entity.AigcKnowledge;
+import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -23,36 +23,36 @@ import java.util.List;
 @RequestMapping("/aigc/kb")
 public class AigcKbController {
 
-    private final AigcKbService kbService;
+    private final AigcKnowledgeService kbService;
 
     @GetMapping("/list")
-    public R<List<AigcKb>> list(AigcKb data) {
-        return R.ok(kbService.list(Wrappers.<AigcKb>lambdaQuery().orderByDesc(AigcKb::getCreateTime)));
+    public R<List<AigcKnowledge>> list(AigcKnowledge data) {
+        return R.ok(kbService.list(Wrappers.<AigcKnowledge>lambdaQuery().orderByDesc(AigcKnowledge::getCreateTime)));
     }
 
     @GetMapping("/page")
-    public R list(AigcKb data, QueryPage queryPage) {
-        Page<AigcKb> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        LambdaQueryWrapper<AigcKb> queryWrapper = Wrappers.<AigcKb>lambdaQuery()
-                .like(!StrUtil.isBlank(data.getName()), AigcKb::getName, data.getName())
-                .orderByDesc(AigcKb::getCreateTime);
+    public R list(AigcKnowledge data, QueryPage queryPage) {
+        Page<AigcKnowledge> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        LambdaQueryWrapper<AigcKnowledge> queryWrapper = Wrappers.<AigcKnowledge>lambdaQuery()
+                .like(!StrUtil.isBlank(data.getName()), AigcKnowledge::getName, data.getName())
+                .orderByDesc(AigcKnowledge::getCreateTime);
         return R.ok(MybatisUtil.getData(kbService.page(page, queryWrapper)));
     }
 
     @GetMapping("/{id}")
-    public R<AigcKb> findById(@PathVariable String id) {
+    public R<AigcKnowledge> findById(@PathVariable String id) {
         return R.ok(kbService.getById(id));
     }
 
     @PostMapping
-    public R add(@RequestBody AigcKb data) {
+    public R add(@RequestBody AigcKnowledge data) {
         data.setCreateTime(String.valueOf(System.currentTimeMillis()));
         kbService.save(data);
         return R.ok();
     }
 
     @PutMapping
-    public R update(@RequestBody AigcKb data) {
+    public R update(@RequestBody AigcKnowledge data) {
         kbService.updateById(data);
         return R.ok();
     }
