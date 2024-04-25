@@ -87,13 +87,18 @@
     </div>
 
     <n-spin :show="loading">
-      <ul class="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow bg-gray-50">
+      <ul class="mt-6 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
+        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow-sm border">
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
-              <n-avatar :size="48" round>
-                <PlusOutlined />
+              <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
+                <template #fallback>
+                  <div class="flex justify-center items-center w-full">
+                    {{ item.name.substring(0, 4) }}
+                  </div>
+                </template>
               </n-avatar>
+              <n-avatar v-else :size="48" round> {{ item.name.substring(0, 4) }} </n-avatar>
               <h2 class="text-gray-800 font-semibold">{{ item.name }}</h2>
             </div>
             <button
@@ -109,7 +114,7 @@
           <div class="p-4 pt-0">
             <p class="text-gray-600 text-sm">{{ item.des }}</p>
           </div>
-          <div class="py-5 px-4 border-t flex justify-between items-center">
+          <div class="py-3 px-4 border-t flex justify-between items-center">
             <div class="flex gap-1 items-center">
               <n-icon size="20"> <AntCloudOutlined /> </n-icon>
               <span>文件大小：20kb</span>

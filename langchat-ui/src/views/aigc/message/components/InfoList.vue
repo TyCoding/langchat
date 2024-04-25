@@ -1,13 +1,14 @@
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { getMessages } from '@/api/aigc/conversation';
+  import Message from '@/views/aigc/chat/components/message/Message.vue';
 
   const messageRef = ref();
   const contentRef = ref();
   const loading = ref(true);
   const showModel = ref(false);
-  const info = ref({});
-  const messages = ref([]);
+  const info = ref<any>({});
+  const messages = ref<any>([]);
 
   async function show(row: any) {
     showModel.value = true;
@@ -37,7 +38,7 @@
             :error="false"
             :inversion="item.role !== 'assistant'"
             :loading="loading"
-            :text="item.content"
+            :text="item.message"
             @delete="handleDelete(item)"
           />
         </n-scrollbar>

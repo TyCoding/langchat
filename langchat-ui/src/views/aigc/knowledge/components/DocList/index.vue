@@ -22,9 +22,9 @@
         </n-button>
       </template>
     </BasicTable>
-  </n-card>
 
-  <Edit ref="editRef" @reload="reloadTable" />
+    <Edit ref="editRef" @reload="reloadTable" />
+  </n-card>
 </template>
 
 <script lang="ts" setup>
@@ -86,11 +86,11 @@
   }
 
   function handleAdd() {
-    editRef.value.show(props.kbId);
+    editRef.value.show('');
   }
 
   function handleEdit(record: Recordable) {
-    editRef.value.show(props.kbId, record.id);
+    editRef.value.show('', record.id);
   }
 
   function handleDelete(record: Recordable) {

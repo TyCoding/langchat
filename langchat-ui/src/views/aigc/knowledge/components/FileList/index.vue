@@ -22,7 +22,6 @@
   import { DeleteOutlined, EditOutlined } from '@vicons/antd';
   import { NSwitch, useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
-  import { KbFile } from '@/api/models/flow';
 
   const router = useRouter();
   const message = useMessage();
@@ -71,7 +70,7 @@
     actionRef.value.reload();
   }
 
-  const embedColumn: BasicColumn<KbFile>[] = [
+  const embedColumn: BasicColumn[] = [
     {
       title: '是否Embed',
       key: 'isEmbed',
@@ -86,7 +85,7 @@
       },
     },
   ];
-  function embedHandler(val: boolean, row: KbFile) {
+  function embedHandler(val: boolean, row: any) {
     console.log('点击了', val, row);
   }
 
