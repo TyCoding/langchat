@@ -20,8 +20,8 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/aigc/kb")
-public class AigcKbController {
+@RequestMapping("/aigc/knowledge")
+public class AigcKnowledgeController {
 
     private final AigcKnowledgeService kbService;
 

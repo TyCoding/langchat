@@ -151,6 +151,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void docsEmbed(AigcOss req) {
-        langDocService.embedDoc(req);
+        langDocService.embedDoc(null);
     }
 }

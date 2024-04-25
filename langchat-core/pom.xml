@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-aigc</artifactId>
+            <artifactId>langchat-common</artifactId>
         </dependency>
 
         <dependency>

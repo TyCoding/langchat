@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.core.service.impl;
 
-import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.core.EmbedProvider;
 import cn.tycoding.langchat.core.ModelProvider;
@@ -55,7 +54,7 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public void embedDoc(AigcOss req) {
+    public void embedDoc(DocR req) {
         EmbeddingModel model = provider.embed();
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());

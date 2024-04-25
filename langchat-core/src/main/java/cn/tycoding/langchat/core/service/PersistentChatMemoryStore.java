@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.core.service;
 
-import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PersistentChatMemoryStore implements ChatMemoryStore {
 
-    private final AigcMessageService aigcMessageService;
+//    private final AigcMessageService aigcMessageService;
     private final List<ChatMessage> list = new ArrayList<>();
 
     @Override

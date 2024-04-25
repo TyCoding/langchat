@@ -11,16 +11,28 @@
     name: '',
     content: '',
   });
+  const rules = ref({
+    name: {
+      required: true,
+      message: '请输入文件名',
+      trigger: ['input', 'blur'],
+    },
+    content: {
+      required: true,
+      message: '请输入文件名',
+      trigger: ['input', 'blur'],
+    },
+  });
 
   async function handleSubmit() {
     if (isNullOrWhitespace(form.value.content)) {
       message.warning('请输入文档内容');
       return;
     }
-    const kbId = router.currentRoute.value.params.id;
+    const knowledgeId = router.currentRoute.value.params.id;
     await add({
       ...form.value,
-      kbId: kbId,
+      knowledgeId,
     });
     message.success('文档录入成功，正在解析中...');
     form.value = {
@@ -36,11 +48,11 @@
       <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
     </div>
 
-    <n-form :model="form" label-placement="left" label-width="auto">
-      <n-form-item label="文件名称">
+    <n-form :rules="rules" :model="form" label-placement="left" label-width="auto">
+      <n-form-item label="文件名称" path="name">
         <n-input v-model:value="form.name" />
       </n-form-item>
-      <n-form-item label="文档内容">
+      <n-form-item label="文档内容" path="content">
         <n-input
           v-model:value="form.content"
           placeholder="请输入需要录入的文档内容"

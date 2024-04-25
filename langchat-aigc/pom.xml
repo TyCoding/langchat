@@ -19,6 +19,10 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-core</artifactId>
+        </dependency>
 
         <!-- Spring -->
         <dependency>

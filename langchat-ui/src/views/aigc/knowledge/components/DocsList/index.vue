@@ -96,18 +96,7 @@
       :row-key="(row:any) => row.id"
       :single-line="false"
       :size="'small'"
-    >
-      <template #tableTitle>
-        <n-button size="small" type="primary" @click="handleAdd">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          手动录入
-        </n-button>
-      </template>
-    </BasicTable>
+    />
 
     <Edit ref="editRef" @reload="reloadTable" />
   </n-card>
