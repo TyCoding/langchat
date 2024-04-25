@@ -2,7 +2,7 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form';
-  import { del, page as getPage } from '@/api/aigc/docs';
+  import { del, page as getPage } from '@/api/aigc/slice';
   import { columns, searchSchemas } from './columns';
   import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';

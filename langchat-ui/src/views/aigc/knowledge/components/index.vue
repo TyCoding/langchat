@@ -53,38 +53,40 @@
 </script>
 
 <template>
-  <div class="n-layout-page-header">
-    <n-card :bordered="false" size="medium">
-      <template #header>
-        <n-space class="flex items-center">
-          <n-button dashed type="success" @click="handleReturn">
-            知识库列表
-            <template #icon>
-              <n-icon>
-                <ArrowUndoOutline />
-              </n-icon>
-            </template>
-          </n-button>
-          <span>
-            {{ kb.name }}
-          </span>
-        </n-space>
-      </template>
+  <div>
+    <div class="n-layout-page-header">
+      <n-card :bordered="false" size="medium">
+        <template #header>
+          <n-space class="flex items-center">
+            <n-button dashed type="success" @click="handleReturn">
+              知识库列表
+              <template #icon>
+                <n-icon>
+                  <ArrowUndoOutline />
+                </n-icon>
+              </template>
+            </n-button>
+            <span>
+              {{ kb.name }}
+            </span>
+          </n-space>
+        </template>
 
-      {{ kb.des }}
-    </n-card>
-  </div>
-  <div class="mt-2 h-full" style="height: calc(100vh - 242px) !important">
-    <n-grid :x-gap="10" class="h-full" cols="2 s:2 m:2 l:24 xl:24 2xl:24" responsive="screen">
-      <n-gi class="bg-white pt-2" span="3">
-        <n-menu v-model:value="menu" :options="menuOptions" @update:value="handleSelect" />
-      </n-gi>
-      <n-gi class="h-full overflow-y-auto" span="21">
-        <DocList v-if="menu == 'doc-list'" />
-        <ImportFile v-if="menu == 'import-file'" />
-        <FileList v-if="menu == 'slice-list'" />
-      </n-gi>
-    </n-grid>
+        {{ kb.des }}
+      </n-card>
+    </div>
+    <div class="mt-2 h-full" style="height: calc(100vh - 242px) !important">
+      <n-grid :x-gap="10" class="h-full" cols="2 s:2 m:2 l:24 xl:24 2xl:24" responsive="screen">
+        <n-gi class="bg-white pt-2" span="3">
+          <n-menu v-model:value="menu" :options="menuOptions" @update:value="handleSelect" />
+        </n-gi>
+        <n-gi class="h-full overflow-y-auto" span="21">
+          <DocList v-if="menu == 'doc-list'" />
+          <ImportFile v-if="menu == 'import-file'" />
+          <FileList v-if="menu == 'slice-list'" />
+        </n-gi>
+      </n-grid>
+    </div>
   </div>
 </template>
 

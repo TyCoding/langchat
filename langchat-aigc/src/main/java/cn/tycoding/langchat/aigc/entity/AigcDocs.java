@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author tycoding
@@ -43,12 +44,12 @@ public class AigcDocs implements Serializable {
     /**
      * 文件大小
      */
-    private String size;
+    private Integer size;
 
     /**
      * 切片数量
      */
-    private String sliceNum;
+    private Integer sliceNum;
 
     /**
      * 切片状态
@@ -63,7 +64,7 @@ public class AigcDocs implements Serializable {
     /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
 
 }
 

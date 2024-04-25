@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core;
+package cn.tycoding.langchat.core.provider;
 
 import cn.tycoding.langchat.core.properties.embed.EmbeddingProps;
 import dev.langchain4j.model.embedding.EmbeddingModel;

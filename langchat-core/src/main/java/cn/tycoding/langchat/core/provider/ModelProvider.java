@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core;
+package cn.tycoding.langchat.core.provider;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;

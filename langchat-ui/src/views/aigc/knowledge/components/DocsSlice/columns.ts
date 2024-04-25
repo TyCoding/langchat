@@ -1,7 +1,5 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { h } from 'vue';
-import { formatToDate } from '@/utils/dateUtil';
 
 export const columns: BasicColumn[] = [
   {
@@ -15,10 +13,7 @@ export const columns: BasicColumn[] = [
   {
     title: '创建时间',
     key: 'createTime',
-    width: 120,
-    render(row: any) {
-      return h('span', {}, formatToDate(new Date(Number(row.createTime))));
-    },
+    width: 160,
   },
 ];
 

@@ -1,11 +1,11 @@
 package cn.tycoding.langchat.core.service.impl;
 
 import cn.tycoding.langchat.common.dto.DocR;
-import cn.tycoding.langchat.core.EmbedProvider;
-import cn.tycoding.langchat.core.ModelProvider;
 import cn.tycoding.langchat.core.enums.ModelConst;
-import cn.tycoding.langchat.core.service.Assistant;
+import cn.tycoding.langchat.core.provider.EmbedProvider;
+import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.LangDocService;
+import cn.tycoding.langchat.core.service.Assistant;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
@@ -14,6 +14,7 @@ import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
@@ -48,13 +49,16 @@ public class LangDocServiceImpl implements LangDocService {
     private final MilvusEmbeddingStore milvusEmbeddingStore;
 
     @Override
-    public void embedText() {
-        TextSegment user1Info = TextSegment.from("My favorite color is green",
-                metadata("userId", "1"));
+    public void embeddingText(DocR req) {
+        TextSegment segment = TextSegment.from(req.getMessage(),
+                metadata("knowledgeId", req.getKnowledgeId()));
+        EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
+        Embedding embedding = embeddingModel.embed(segment).content();
+        milvusEmbeddingStore.add(embedding, segment);
     }
 
     @Override
-    public void embedDoc(DocR req) {
+    public void embeddingDocs(DocR req) {
         EmbeddingModel model = provider.embed();
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
@@ -68,6 +72,11 @@ public class LangDocServiceImpl implements LangDocService {
         List<TextSegment> segments = splitter.split(document);
         List<Embedding> embeddings = model.embedAll(segments).content();
         milvusEmbeddingStore.addAll(embeddings, segments);
+    }
+
+    @Override
+    public void embeddingExcel(DocR req) {
+
     }
 
     @Override

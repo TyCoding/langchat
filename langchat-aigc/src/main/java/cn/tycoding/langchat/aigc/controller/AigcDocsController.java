@@ -46,7 +46,6 @@ public class AigcDocsController {
 
     @PostMapping
     public R add(@RequestBody AigcDocs data) {
-        data.setCreateTime(String.valueOf(System.currentTimeMillis()));
         docsMapper.insert(data);
         return R.ok();
     }

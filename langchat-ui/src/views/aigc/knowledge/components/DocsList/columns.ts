@@ -1,24 +1,19 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { h } from 'vue';
-import { formatToDate } from '@/utils/dateUtil';
 
 export const columns: BasicColumn[] = [
   {
-    title: '文档描述',
-    key: 'des',
+    title: '文档名称',
+    key: 'name',
   },
   {
-    title: '文档内容',
+    title: '文档内容/链接',
     key: 'content',
   },
   {
     title: '创建时间',
     key: 'createTime',
-    width: 120,
-    render(row: any) {
-      return h('span', {}, formatToDate(new Date(Number(row.createTime))));
-    },
+    width: 160,
   },
 ];
 
@@ -41,24 +36,13 @@ export const formSchemas: FormSchema[] = [
     isHidden: true,
   },
   {
-    field: 'kbId',
-    label: 'KbId',
+    field: 'name',
     component: 'NInput',
-    isHidden: true,
-  },
-  {
-    field: 'des',
-    component: 'NInput',
-    label: '文档描述',
+    label: '文档名称',
     componentProps: {
-      placeholder: '请输入文档描述',
-      type: 'textarea',
-      autosize: {
-        minRows: 2,
-        maxRows: 4,
-      },
+      placeholder: '请输入文档名称',
     },
-    rules: [{ required: true, message: '请输入文档描述', trigger: ['blur'] }],
+    rules: [{ required: true, message: '请输入文档名称', trigger: ['blur'] }],
   },
   {
     field: 'content',
@@ -68,8 +52,8 @@ export const formSchemas: FormSchema[] = [
       placeholder: '请输入文档内容',
       type: 'textarea',
       autosize: {
-        minRows: 12,
-        maxRows: 20,
+        minRows: 8,
+        maxRows: 12,
       },
     },
     rules: [{ required: true, message: '请输入文档内容', trigger: ['blur'] }],

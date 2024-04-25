@@ -9,9 +9,20 @@ import dev.langchain4j.service.TokenStream;
  */
 public interface LangDocService {
 
-    void embedText();
+    /**
+     * 解析文本向量
+     */
+    void embeddingText(DocR req);
 
-    void embedDoc(DocR req);
+    /**
+     * 解析文本文件向量
+     */
+    void embeddingDocs(DocR req);
+
+    /**
+     * 解析结构化文件向量
+     */
+    void embeddingExcel(DocR req);
 
     TokenStream search(DocR req);
 

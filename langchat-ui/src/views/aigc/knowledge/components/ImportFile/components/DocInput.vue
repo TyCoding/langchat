@@ -2,7 +2,7 @@
   import { ref } from 'vue';
   import { useMessage } from 'naive-ui';
   import { isNullOrWhitespace } from '@/utils/is';
-  import { add } from '@/api/aigc/docs';
+  import { embeddingText } from '@/api/aigc/embedding';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -19,7 +19,7 @@
     },
     content: {
       required: true,
-      message: '请输入文件名',
+      message: '请输入文档内容',
       trigger: ['input', 'blur'],
     },
   });
@@ -30,7 +30,7 @@
       return;
     }
     const knowledgeId = router.currentRoute.value.params.id;
-    await add({
+    await embeddingText({
       ...form.value,
       knowledgeId,
     });

@@ -3,7 +3,7 @@ package cn.tycoding.langchat.core.service.impl;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.dto.TextR;
-import cn.tycoding.langchat.core.ModelProvider;
+import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.core.service.PersistentChatMemoryStore;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class LangChatServiceImpl implements LangChatService {
+public class AigcChatServiceImpl implements LangChatService {
 
     private final ModelProvider provider;
     private final PersistentChatMemoryStore chatMemoryStore;
