@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.core.service.impl;
 
 import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
@@ -49,12 +50,14 @@ public class LangDocServiceImpl implements LangDocService {
     private final MilvusEmbeddingStore milvusEmbeddingStore;
 
     @Override
-    public void embeddingText(DocR req) {
+    public EmbeddingR embeddingText(DocR req) {
         TextSegment segment = TextSegment.from(req.getMessage(),
                 metadata("knowledgeId", req.getKnowledgeId()));
         EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
         Embedding embedding = embeddingModel.embed(segment).content();
-        milvusEmbeddingStore.add(embedding, segment);
+
+        String id = milvusEmbeddingStore.add(embedding, segment);
+        return new EmbeddingR().setVectorId(id).setText(segment.text());
     }
 
     @Override

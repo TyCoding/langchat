@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.core.service;
 
 import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.EmbeddingR;
 import dev.langchain4j.service.TokenStream;
 
 /**
@@ -12,7 +13,7 @@ public interface LangDocService {
     /**
      * 解析文本向量
      */
-    void embeddingText(DocR req);
+    EmbeddingR embeddingText(DocR req);
 
     /**
      * 解析文本文件向量

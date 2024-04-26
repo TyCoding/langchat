@@ -3,14 +3,17 @@ package cn.tycoding.langchat.aigc.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author tycoding
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 public class AigcDocsSlice implements Serializable {
     private static final long serialVersionUID = -3093489071059867065L;
 
@@ -19,6 +22,11 @@ public class AigcDocsSlice implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
+
+    /**
+     * 向量库的ID
+     */
+    private String vectorId;
 
     /**
      * 文档ID
@@ -31,9 +39,14 @@ public class AigcDocsSlice implements Serializable {
     private String knowledgeId;
 
     /**
-     * 文件名称
+     * 文档名称
      */
     private String name;
+
+    /**
+     * 切片内容
+     */
+    private String content;
 
     /**
      * 字符数量
@@ -48,6 +61,6 @@ public class AigcDocsSlice implements Serializable {
     /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
 }
 

@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.aigc.service;
 
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
+import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.entity.AigcKnowledge;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,6 +11,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AigcKnowledgeService extends IService<AigcKnowledge> {
 
+    /**
+     * 添加文档数据
+     */
     void addDocs(AigcDocs data);
+
+    /**
+     * 在指定文档中添加Embedding后的切片数据
+     */
+    void addDocsSlice(AigcDocsSlice data);
 }
 
