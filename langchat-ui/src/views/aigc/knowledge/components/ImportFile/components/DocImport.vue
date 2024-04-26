@@ -2,23 +2,12 @@
   import { DownloadOutline } from '@vicons/ionicons5';
   import { useRouter } from 'vue-router';
   import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
-  import { upload } from '@/api/aigc/slice';
+  import { embeddingDocs } from '@/api/aigc/embedding';
   import { ref } from 'vue';
 
   const router = useRouter();
   const message = useMessage();
   const fileList = ref<any[]>([]);
-
-  async function handleSubmit() {
-    if (fileList.value.length == 0) {
-      message.success('已经提交到知识库');
-      return;
-    }
-    console.log(fileList);
-    for (const i of fileList.value) {
-      // await add(i);
-    }
-  }
 
   const handleImport = ({
     file,
@@ -31,7 +20,7 @@
     onProgress,
   }: UploadCustomRequestOptions) => {
     const kbId = router.currentRoute.value.params.id;
-    upload(
+    embeddingDocs(
       String(kbId),
       {
         file: file.file,
@@ -57,8 +46,11 @@
 
 <template>
   <n-space vertical>
-    <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
-    <n-upload :custom-request="handleImport" directory-dnd>
+    <n-upload
+      :custom-request="handleImport"
+      directory-dnd
+      accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf"
+    >
       <n-upload-dragger>
         <div style="margin-bottom: 12px">
           <n-icon :depth="3" size="48">
@@ -67,7 +59,8 @@
         </div>
         <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传</n-text>
         <n-p depth="3" style="margin: 8px 0 0 0">
-          请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
+          请上传文档文本类型的文件，文本类型文件将被单独处理和向量化，支持的文件格式有：.txt、 .md、
+          .docx、 .doc、.pdf
         </n-p>
       </n-upload-dragger>
     </n-upload>

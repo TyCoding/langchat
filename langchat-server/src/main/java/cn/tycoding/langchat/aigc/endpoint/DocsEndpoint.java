@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
-import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.common.component.AsyncFuture;
@@ -10,8 +9,11 @@ import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
@@ -36,14 +38,7 @@ public class DocsEndpoint {
         return emitter.get();
     }
 
-    @PostMapping("/upload")
-    public R upload(MultipartFile file) {
-        AigcOss oss = aigcOssService.upload(file);
-        asyncFuture.async(() -> {
-            chatService.docsEmbed(oss);
-        }, "111", oss.getId());
-        return R.ok(oss);
-    }
+
 
     @GetMapping("/task")
     public R task() {

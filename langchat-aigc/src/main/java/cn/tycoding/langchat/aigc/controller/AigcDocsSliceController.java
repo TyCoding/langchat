@@ -8,6 +8,7 @@ import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class AigcDocsSliceController {
 
     @PostMapping
     public R add(@RequestBody AigcDocsSlice data) {
-        data.setCreateTime(String.valueOf(System.currentTimeMillis()));
+        data.setCreateTime(new Date());
         docsSliceMapper.insert(data);
         return R.ok();
     }

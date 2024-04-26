@@ -1,21 +1,4 @@
 import { http } from '@/utils/http/axios';
-import { AxiosProgressEvent } from 'axios';
-
-export function upload(
-  id: string,
-  data: any,
-  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
-  return http.request({
-    url: `/aigc/oss/put/${id}`,
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    onUploadProgress,
-  });
-}
 
 export function list(params: any) {
   return http.request({

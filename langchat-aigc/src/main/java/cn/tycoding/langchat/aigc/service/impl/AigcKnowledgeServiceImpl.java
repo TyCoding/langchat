@@ -27,10 +27,15 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     @Override
     public void addDocs(AigcDocs data) {
         data.setCreateTime(new Date());
-        data.setSize(0);
+        data.setSize(0L);
         data.setSliceNum(0);
         data.setSliceStatus(false);
         aigcDocsMapper.insert(data);
+    }
+
+    @Override
+    public void updateDocs(AigcDocs data) {
+        aigcDocsMapper.updateById(data);
     }
 
     @Override
@@ -40,6 +45,11 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
                 .setStatus(true)
         ;
         aigcDocsSliceMapper.insert(data);
+    }
+
+    @Override
+    public void updateDocsSlice(AigcDocsSlice data) {
+        aigcDocsSliceMapper.updateById(data);
     }
 }
 

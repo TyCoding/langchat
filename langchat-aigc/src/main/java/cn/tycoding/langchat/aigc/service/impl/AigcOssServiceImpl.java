@@ -3,6 +3,7 @@ package cn.tycoding.langchat.aigc.service.impl;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.mapper.AigcOssMapper;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
+import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.common.dto.OssR;
 import cn.tycoding.langchat.common.properties.OssProps;
 import cn.tycoding.langchat.common.utils.OssUtil;
@@ -27,7 +28,7 @@ public class AigcOssServiceImpl extends ServiceImpl<AigcOssMapper, AigcOss> impl
         OssR ossR = OssUtil.transfer(ossProps, file);
         AigcOss oss = new AigcOss();
         BeanUtils.copyProperties(ossR, oss);
-        //TODO 增加userId
+        oss.setUserId(AigcAuthUtil.getUserId());
         this.save(oss);
         return oss;
     }

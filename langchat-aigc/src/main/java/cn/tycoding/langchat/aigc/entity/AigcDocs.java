@@ -6,12 +6,14 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import lombok.experimental.Accessors;
 
 /**
  * @author tycoding
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 public class AigcDocs implements Serializable {
     private static final long serialVersionUID = 548724967827903685L;
 
@@ -44,7 +46,7 @@ public class AigcDocs implements Serializable {
     /**
      * 文件大小
      */
-    private Integer size;
+    private Long size;
 
     /**
      * 切片数量

@@ -1,14 +1,55 @@
 <script setup lang="ts">
   import { DownloadOutline } from '@vicons/ionicons5';
+  import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
+  import { embeddingDocs } from '@/api/aigc/embedding';
+  import { useRouter } from 'vue-router';
+  import { ref } from 'vue';
+
+  const router = useRouter();
+  const message = useMessage();
+  const fileList = ref<any[]>([]);
+
+  const handleImport = ({
+    file,
+    data,
+    headers,
+    withCredentials,
+    action,
+    onFinish,
+    onError,
+    onProgress,
+  }: UploadCustomRequestOptions) => {
+    const kbId = router.currentRoute.value.params.id;
+    embeddingDocs(
+      String(kbId),
+      {
+        file: file.file,
+      },
+      (progressEvent) => {
+        onProgress({
+          percent: Math.round((progressEvent.loaded * 100) / Number(progressEvent.total)),
+        });
+      }
+    )
+      .then((res) => {
+        console.log(res);
+        fileList.value.push(res);
+        message.success('上传成功');
+        onFinish();
+      })
+      .catch((err) => {
+        message.error('上传失败');
+        onError();
+      });
+  };
 </script>
 
 <template>
   <div>
     <n-upload
-      multiple
+      :custom-request="handleImport"
       directory-dnd
-      action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-      :max="5"
+      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-exce"
     >
       <n-upload-dragger>
         <div style="margin-bottom: 12px">
@@ -18,7 +59,7 @@
         </div>
         <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传 </n-text>
         <n-p depth="3" style="margin: 8px 0 0 0">
-          请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
+          仅支持上传Excel文件，系统需要对Excel这种结构化文档数据单独处理和训练
         </n-p>
       </n-upload-dragger>
     </n-upload>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { h, reactive, ref } from 'vue';
+  import { h, onMounted, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form';
   import { del, page as getPage } from '@/api/aigc/slice';
@@ -7,15 +7,16 @@
   import { DeleteOutlined } from '@vicons/antd';
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
+  import { list } from '@/api/aigc/docs';
 
   const router = useRouter();
   const message = useMessage();
   const dialog = useDialog();
-
   const actionRef = ref();
+  const docsList = ref();
 
   const actionColumn = reactive({
-    width: 150,
+    width: 100,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -40,10 +41,13 @@
     showAdvancedButton: false,
     schemas: searchSchemas,
   });
+  onMounted(async () => {
+    docsList.value = await list({});
+  });
 
   const loadDataTable = async (res: any) => {
-    const kbId = router.currentRoute.value.params.id;
-    return await getPage({ ...getFieldsValue(), ...res, kbId });
+    const knowledgeId = router.currentRoute.value.params.id;
+    return await getPage({ ...getFieldsValue(), ...res, knowledgeId });
   };
 
   function reloadTable() {
@@ -68,11 +72,27 @@
   function handleReset(values: Recordable) {
     reloadTable();
   }
+  function handleSelectDocs(val: string) {
+    console.log(val);
+  }
 </script>
 
 <template>
   <n-card>
-    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable">
+      <template #docsSlot="{ model, field }">
+        <n-select
+          v-model:value="model[field]"
+          :options="docsList"
+          filterable
+          clearable
+          label-field="name"
+          value-field="id"
+          placeholder="请选择文档查询"
+          @update:value="handleSelectDocs"
+        />
+      </template>
+    </BasicForm>
 
     <BasicTable
       ref="actionRef"
