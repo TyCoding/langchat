@@ -14,6 +14,7 @@ import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.service.LangDocService;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.enums.CellExtraTypeEnum;
 import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -101,7 +102,8 @@ public class EmbeddingEndpoint {
 //                .setKnowledgeId(knowledgeId);
 //        aigcKnowledgeService.addDocs(data);
 
-
-        EasyExcel.read(file.getInputStream(), new StructExcelListener()).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), new StructExcelListener())
+                .extraRead(CellExtraTypeEnum.MERGE)
+                .sheet().doRead();
     }
 }

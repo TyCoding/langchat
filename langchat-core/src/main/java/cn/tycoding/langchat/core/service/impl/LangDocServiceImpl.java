@@ -86,7 +86,6 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public void embeddingStruct(DocR req) {
-
     }
 
     @Override
