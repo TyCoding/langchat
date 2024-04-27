@@ -22,9 +22,9 @@ public interface LangDocService {
     List<EmbeddingR> embeddingDocs(DocR req);
 
     /**
-     * 解析结构化文件向量
+     * 解析结构化文件
      */
-    void embeddingExcel(DocR req);
+    void embeddingStruct(DocR req);
 
     TokenStream search(DocR req);
 

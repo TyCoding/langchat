@@ -39,6 +39,13 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
+
+        <!-- Excel -->
+        <dependency>
+            <groupId>com.pig4cloud.excel</groupId>
+            <artifactId>excel-spring-boot-starter</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
 
 </project>

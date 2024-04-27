@@ -5,6 +5,7 @@ import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.enums.DocsTypeEnum;
+import cn.tycoding.langchat.aigc.listener.StructExcelListener;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.common.dto.DocR;
@@ -12,6 +13,8 @@ import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.service.LangDocService;
+import com.alibaba.excel.EasyExcel;
+import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -84,5 +87,21 @@ public class EmbeddingEndpoint {
 
         aigcKnowledgeService.updateDocs(new AigcDocs().setId(data.getId()).setSliceStatus(true).setSliceNum(list.size()));
         return R.ok();
+    }
+
+    @PostMapping("/struct/excel/{knowledgeId}")
+    public void structExcel(MultipartFile file, @PathVariable String knowledgeId)
+            throws IOException {
+//        AigcOss oss = aigcOssService.upload(file);
+//        AigcDocs data = new AigcDocs()
+//                .setName(oss.getFileName())
+//                .setSliceStatus(false)
+//                .setSize(oss.getSize())
+//                .setType(DocsTypeEnum.UPLOAD.name())
+//                .setKnowledgeId(knowledgeId);
+//        aigcKnowledgeService.addDocs(data);
+
+
+        EasyExcel.read(file.getInputStream(), new StructExcelListener()).sheet().doRead();
     }
 }

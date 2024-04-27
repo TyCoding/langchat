@@ -31,7 +31,7 @@ export function embeddingExcel(
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.request({
-    url: `/aigc/embedding/excel/${knowledgeId}`,
+    url: `/aigc/embedding/struct/excel/${knowledgeId}`,
     method: 'post',
     data,
     headers: {
