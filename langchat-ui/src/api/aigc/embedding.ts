@@ -24,3 +24,19 @@ export function embeddingDocs(
     onUploadProgress,
   });
 }
+
+export function embeddingExcel(
+  knowledgeId: string,
+  data: any,
+  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+) {
+  return http.request({
+    url: `/aigc/embedding/excel/${knowledgeId}`,
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    onUploadProgress,
+  });
+}

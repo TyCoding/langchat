@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { DownloadOutline } from '@vicons/ionicons5';
   import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
-  import { embeddingDocs } from '@/api/aigc/embedding';
+  import { embeddingExcel } from '@/api/aigc/embedding';
   import { useRouter } from 'vue-router';
   import { ref } from 'vue';
 
@@ -9,18 +9,9 @@
   const message = useMessage();
   const fileList = ref<any[]>([]);
 
-  const handleImport = ({
-    file,
-    data,
-    headers,
-    withCredentials,
-    action,
-    onFinish,
-    onError,
-    onProgress,
-  }: UploadCustomRequestOptions) => {
+  const handleImport = ({ file, onFinish, onError, onProgress }: UploadCustomRequestOptions) => {
     const kbId = router.currentRoute.value.params.id;
-    embeddingDocs(
+    embeddingExcel(
       String(kbId),
       {
         file: file.file,
@@ -32,7 +23,6 @@
       }
     )
       .then((res) => {
-        console.log(res);
         fileList.value.push(res);
         message.success('上传成功');
         onFinish();

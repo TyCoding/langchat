@@ -9,16 +9,7 @@
   const message = useMessage();
   const fileList = ref<any[]>([]);
 
-  const handleImport = ({
-    file,
-    data,
-    headers,
-    withCredentials,
-    action,
-    onFinish,
-    onError,
-    onProgress,
-  }: UploadCustomRequestOptions) => {
+  const handleImport = ({ file, onFinish, onError, onProgress }: UploadCustomRequestOptions) => {
     const kbId = router.currentRoute.value.params.id;
     embeddingDocs(
       String(kbId),
@@ -32,7 +23,6 @@
       }
     )
       .then((res) => {
-        console.log(res);
         fileList.value.push(res);
         message.success('上传成功');
         onFinish();
