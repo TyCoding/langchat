@@ -12,19 +12,19 @@ import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.core.service.AigcStructColService;
+import cn.tycoding.langchat.core.service.AigcStructRowService;
 import cn.tycoding.langchat.core.service.LangDocService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
-import java.io.IOException;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -38,6 +38,8 @@ public class EmbeddingEndpoint {
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final AigcOssService aigcOssService;
+    private final AigcStructColService structColService;
+    private final AigcStructRowService structRowService;
 
     @Async
     @PostMapping("/text")
@@ -91,18 +93,18 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/struct/excel/{knowledgeId}")
-    public void structExcel(MultipartFile file, @PathVariable String knowledgeId)
-            throws IOException {
-//        AigcOss oss = aigcOssService.upload(file);
-//        AigcDocs data = new AigcDocs()
-//                .setName(oss.getFileName())
-//                .setSliceStatus(false)
-//                .setSize(oss.getSize())
-//                .setType(DocsTypeEnum.UPLOAD.name())
-//                .setKnowledgeId(knowledgeId);
-//        aigcKnowledgeService.addDocs(data);
+    public void structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
+        byte[] bytes = file.getBytes();
+        AigcOss oss = aigcOssService.upload(file);
+        AigcDocs data = new AigcDocs()
+                .setName(oss.getFileName())
+                .setSliceStatus(false)
+                .setSize(oss.getSize())
+                .setType(DocsTypeEnum.UPLOAD.name())
+                .setKnowledgeId(knowledgeId);
+        aigcKnowledgeService.addDocs(data);
 
-        EasyExcel.read(file.getInputStream(), new StructExcelListener())
+        EasyExcel.read(new ByteArrayInputStream(bytes), new StructExcelListener(structColService, structRowService, knowledgeId, data.getId()))
                 .extraRead(CellExtraTypeEnum.MERGE)
                 .sheet().doRead();
     }

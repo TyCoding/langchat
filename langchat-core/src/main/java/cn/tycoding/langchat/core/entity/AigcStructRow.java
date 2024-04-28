@@ -2,9 +2,10 @@ package cn.tycoding.langchat.core.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * @author tycoding
@@ -18,7 +19,7 @@ public class AigcStructRow implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.INPUT)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
