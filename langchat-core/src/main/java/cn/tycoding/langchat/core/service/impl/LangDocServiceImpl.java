@@ -1,16 +1,15 @@
 package cn.tycoding.langchat.core.service.impl;
 
-import static dev.langchain4j.data.document.Metadata.metadata;
-import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
-import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
-
 import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
+import cn.tycoding.langchat.core.service.AigcStructColService;
+import cn.tycoding.langchat.core.service.AigcStructRowService;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangDocService;
+import cn.tycoding.langchat.core.tools.StructTools;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
@@ -29,12 +28,17 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import static dev.langchain4j.data.document.Metadata.metadata;
+import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
 /**
  * @author tycoding
@@ -48,6 +52,8 @@ public class LangDocServiceImpl implements LangDocService {
     private final EmbedProvider provider;
     private final ModelProvider modelProvider;
     private final MilvusEmbeddingStore milvusEmbeddingStore;
+    private final AigcStructColService structColService;
+    private final AigcStructRowService structRowService;
 
     @Override
     public EmbeddingR embeddingText(DocR req) {
@@ -103,6 +109,7 @@ public class LangDocServiceImpl implements LangDocService {
         Assistant assistant = AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(chatLanguageModel)
                 .contentRetriever(contentRetriever)
+                .tools(new StructTools(req, structColService, structRowService))
                 .build();
 
         return assistant.chat(req.getPrompt().toUserMessage());

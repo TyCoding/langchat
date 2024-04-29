@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class AigcChatServiceImpl implements LangChatService {
+public class LangChatServiceImpl implements LangChatService {
 
     private final ModelProvider provider;
     private final PersistentChatMemoryStore chatMemoryStore;
