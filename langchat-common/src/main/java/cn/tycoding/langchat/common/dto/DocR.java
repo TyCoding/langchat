@@ -17,6 +17,7 @@ public class DocR {
     private String id;
 
     private String knowledgeId;
+    private String docsId;
     private String path;
 
     private Prompt prompt;

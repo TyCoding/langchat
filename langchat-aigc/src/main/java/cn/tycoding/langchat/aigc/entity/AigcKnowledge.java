@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.aigc.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -42,5 +43,9 @@ public class AigcKnowledge implements Serializable {
      */
     private String createTime;
 
+    @TableField(exist = false)
+    private Integer docsNum = 0;
+    @TableField(exist = false)
+    private Long totalSize = 0L;
 }
 

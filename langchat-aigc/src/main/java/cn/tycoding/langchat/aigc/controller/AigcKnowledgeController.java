@@ -1,7 +1,9 @@
 package cn.tycoding.langchat.aigc.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcKnowledge;
+import cn.tycoding.langchat.aigc.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author tycoding
@@ -24,6 +28,7 @@ import java.util.List;
 public class AigcKnowledgeController {
 
     private final AigcKnowledgeService kbService;
+    private final AigcDocsMapper docsMapper;
 
     @GetMapping("/list")
     public R<List<AigcKnowledge>> list(AigcKnowledge data) {
@@ -36,7 +41,18 @@ public class AigcKnowledgeController {
         LambdaQueryWrapper<AigcKnowledge> queryWrapper = Wrappers.<AigcKnowledge>lambdaQuery()
                 .like(!StrUtil.isBlank(data.getName()), AigcKnowledge::getName, data.getName())
                 .orderByDesc(AigcKnowledge::getCreateTime);
-        return R.ok(MybatisUtil.getData(kbService.page(page, queryWrapper)));
+        Page<AigcKnowledge> iPage = kbService.page(page, queryWrapper);
+
+        Map<String, List<AigcDocs>> docsMap = docsMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
+        iPage.getRecords().forEach(i -> {
+            List<AigcDocs> docs = docsMap.get(i.getId());
+            if (docs != null) {
+                i.setDocsNum(docs.size());
+                i.setTotalSize(docs.stream().filter(d -> d.getSize() != null).mapToLong(AigcDocs::getSize).sum());
+            }
+        });
+
+        return R.ok(MybatisUtil.getData(iPage));
     }
 
     @GetMapping("/{id}")

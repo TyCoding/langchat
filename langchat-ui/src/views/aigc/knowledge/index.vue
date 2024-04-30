@@ -108,7 +108,7 @@
               <n-icon size="18">
                 <FolderOutlined />
               </n-icon>
-              <span>文档数：100</span>
+              <span>文档数：{{ item.docsNum }}</span>
             </button>
           </div>
           <div class="p-4 pt-0">
@@ -117,7 +117,7 @@
           <div class="py-3 px-4 border-t flex justify-between items-center">
             <div class="flex gap-1 items-center">
               <n-icon size="20"> <AntCloudOutlined /> </n-icon>
-              <span>文件大小：20kb</span>
+              <span>文件大小：{{ item.totalSize }}kb</span>
             </div>
             <div class="flex gap-3">
               <n-button @click="handleEdit(item)" text type="primary">

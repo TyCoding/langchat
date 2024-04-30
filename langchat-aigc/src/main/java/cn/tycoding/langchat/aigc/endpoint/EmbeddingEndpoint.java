@@ -71,7 +71,7 @@ public class EmbeddingEndpoint {
         AigcDocs data = new AigcDocs()
                 .setName(oss.getFileName())
                 .setSliceStatus(false)
-                .setSize(oss.getSize())
+                .setSize(file.getSize())
                 .setType(DocsTypeEnum.UPLOAD.name())
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
@@ -99,7 +99,7 @@ public class EmbeddingEndpoint {
         AigcDocs data = new AigcDocs()
                 .setName(oss.getFileName())
                 .setSliceStatus(false)
-                .setSize(oss.getSize())
+                .setSize(file.getSize())
                 .setType(DocsTypeEnum.UPLOAD.name())
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);

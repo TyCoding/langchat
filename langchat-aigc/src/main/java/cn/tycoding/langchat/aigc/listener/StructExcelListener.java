@@ -55,7 +55,12 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
         List<AigcStructRow> rows = new ArrayList<>();
         list.forEach(i -> {
             i.forEach((k,v) -> {
-                rows.add(new AigcStructRow().setValue(v).setColId(cols.get(k).getId()).setDocsId(docsId).setKnowledgeId(knowledgeId));
+                rows.add(new AigcStructRow()
+                        .setValue(v)
+                        .setColIndex(k)
+                        .setColId(cols.get(k).getId())
+                        .setDocsId(docsId)
+                        .setKnowledgeId(knowledgeId));
             });
         });
         structRowService.saveBatch(rows);

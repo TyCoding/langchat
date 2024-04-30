@@ -38,6 +38,11 @@ public class AigcStructRow implements Serializable {
     private String colId;
 
     /**
+     * 列索引
+     */
+    private Integer colIndex;
+
+    /**
      * 行值
      */
     private String value;
