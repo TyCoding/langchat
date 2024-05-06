@@ -109,6 +109,23 @@ public class LangDocServiceImpl implements LangDocService {
         Assistant assistant = AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(chatLanguageModel)
                 .contentRetriever(contentRetriever)
+                .build();
+
+        return assistant.chat(req.getPrompt().toUserMessage());
+    }
+
+    @Override
+    public TokenStream searchStruct(DocR req) {
+        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
+        EmbeddingModel model = provider.embed();
+
+        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+                .embeddingModel(model)
+                .build();
+
+        Assistant assistant = AiServices.builder(Assistant.class)
+                .streamingChatLanguageModel(chatLanguageModel)
+                .contentRetriever(contentRetriever)
                 .tools(new StructTools(req, structColService, structRowService))
                 .build();
 

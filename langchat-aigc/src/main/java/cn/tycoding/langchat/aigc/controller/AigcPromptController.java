@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -37,6 +38,17 @@ public class AigcPromptController {
             }
         });
         return R.ok(MybatisUtil.getData(iPage));
+    }
+
+    @GetMapping("/list")
+    public R list(AigcPrompt data) {
+        List<AigcPrompt> list = aigcPromptService.list();
+        list.forEach(i -> {
+            if (i.getPrompt() != null && i.getPrompt().length() >= 30) {
+                i.setPrompt(StrUtil.sub(i.getPrompt(), 0, 30) + "...");
+            }
+        });
+        return R.ok(list);
     }
 
     @GetMapping("/{id}")

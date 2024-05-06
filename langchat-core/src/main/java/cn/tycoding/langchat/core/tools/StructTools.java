@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.core.tools;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.core.entity.AigcStructCol;
 import cn.tycoding.langchat.core.entity.AigcStructRow;
@@ -31,8 +32,8 @@ public class StructTools {
     @Tool("Gets column name data in Data")
     List<String> getCols() {
         List<AigcStructCol> list = structColService.list(Wrappers.<AigcStructCol>lambdaQuery()
-                .eq(AigcStructCol::getKnowledgeId, req.getKnowledgeId())
-                .eq(AigcStructCol::getDocsId, req.getDocsId())
+                .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcStructCol::getKnowledgeId, req.getKnowledgeId())
+                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcStructCol::getDocsId, req.getDocsId())
         );
         return list.stream().map(AigcStructCol::getLabel).toList();
     }
@@ -40,8 +41,8 @@ public class StructTools {
     @Tool("Gets all the data for a column")
     List<String> getColData(int col) {
         List<AigcStructRow> list = structRowService.list(Wrappers.<AigcStructRow>lambdaQuery()
-                .eq(AigcStructRow::getKnowledgeId, req.getKnowledgeId())
-                .eq(AigcStructRow::getDocsId, req.getDocsId())
+                .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcStructRow::getKnowledgeId, req.getKnowledgeId())
+                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcStructRow::getDocsId, req.getDocsId())
                 .eq(AigcStructRow::getColIndex, col)
         );
         return list.stream().map(AigcStructRow::getValue).toList();

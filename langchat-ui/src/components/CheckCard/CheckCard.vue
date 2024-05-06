@@ -1,32 +1,33 @@
 <template>
   <n-space :justify="justify">
-    <div
-      @click="handleChecked(item)"
-      v-for="item in dataSource"
-      :key="item.key"
-      style="height: 96px"
-    >
-      <n-list :class="checked == item.key ? 'check-list-checked' : ''" class="check-list" bordered>
-        <n-list-item>
-          <template #prefix>
-            <n-avatar>
-              <n-icon>
-                <component :is="item.icon" />
+    <template v-for="item in dataSource" :key="item.key">
+      <div v-if="!item.isHidden" @click="handleChecked(item)" style="height: 96px">
+        <n-list
+          :class="checked == item.key ? 'check-list-checked' : ''"
+          class="check-list"
+          bordered
+        >
+          <n-list-item>
+            <template #prefix>
+              <n-avatar>
+                <n-icon>
+                  <component :is="item.icon" />
+                </n-icon>
+              </n-avatar>
+            </template>
+            <n-thing>
+              <template #header>{{ item.title }}</template>
+              <template #description>{{ item.label }}</template>
+            </n-thing>
+            <template #suffix>
+              <n-icon size="20" :color="checked == item.key ? '#18a058' : '#eee'">
+                <CheckmarkCircle />
               </n-icon>
-            </n-avatar>
-          </template>
-          <n-thing>
-            <template #header>{{ item.title }}</template>
-            <template #description>{{ item.label }}</template>
-          </n-thing>
-          <template #suffix>
-            <n-icon size="20" :color="checked == item.key ? '#18a058' : '#eee'">
-              <CheckmarkCircle />
-            </n-icon>
-          </template>
-        </n-list-item>
-      </n-list>
-    </div>
+            </template>
+          </n-list-item>
+        </n-list>
+      </div>
+    </template>
   </n-space>
 </template>
 <script lang="ts">
@@ -38,6 +39,7 @@
     icon: Component;
     title: string;
     label: string;
+    isHidden?: boolean | undefined;
   };
 
   const props = {

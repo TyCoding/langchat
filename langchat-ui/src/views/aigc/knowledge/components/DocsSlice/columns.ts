@@ -48,7 +48,7 @@ export const searchSchemas: FormSchema[] = [
   {
     field: 'docsId',
     component: 'NInput',
-    label: '文档',
+    label: '所属文档',
     slot: 'docsSlot',
     componentProps: {
       placeholder: '请选择文档',

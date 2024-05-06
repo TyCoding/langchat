@@ -36,10 +36,10 @@
     },
   ];
 
-  const kb = ref<any>({});
+  const knowledge = ref<any>({});
   onMounted(async () => {
     const id = router.currentRoute.value.params.id;
-    kb.value = await getById(String(id));
+    knowledge.value = await getById(String(id));
     menu.value = 'doc-list';
   });
 
@@ -67,23 +67,23 @@
               </template>
             </n-button>
             <span>
-              {{ kb.name }}
+              {{ knowledge.name }}
             </span>
           </n-space>
         </template>
 
-        {{ kb.des }}
+        {{ knowledge.des }}
       </n-card>
     </div>
-    <div class="mt-2 h-full" style="height: calc(100vh - 242px) !important">
+    <div class="mt-2 h-full mx-4" style="height: calc(100vh - 242px) !important">
       <n-grid :x-gap="10" class="h-full" cols="2 s:2 m:2 l:24 xl:24 2xl:24" responsive="screen">
         <n-gi class="bg-white pt-2" span="3">
           <n-menu v-model:value="menu" :options="menuOptions" @update:value="handleSelect" />
         </n-gi>
         <n-gi class="h-full overflow-y-auto" span="21">
           <DocList v-if="menu == 'doc-list'" />
-          <ImportFile v-if="menu == 'import-file'" />
           <FileList v-if="menu == 'slice-list'" />
+          <ImportFile :data="knowledge" v-if="menu == 'import-file'" />
         </n-gi>
       </n-grid>
     </div>

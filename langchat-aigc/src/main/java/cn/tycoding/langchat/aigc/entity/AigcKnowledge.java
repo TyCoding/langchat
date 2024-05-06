@@ -39,6 +39,11 @@ public class AigcKnowledge implements Serializable {
     private String des;
 
     /**
+     * 是否是结构化数据
+     */
+    private Boolean isStruct = false;
+
+    /**
      * 创建时间
      */
     private String createTime;

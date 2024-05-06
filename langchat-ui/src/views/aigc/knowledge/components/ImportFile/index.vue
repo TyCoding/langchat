@@ -13,6 +13,11 @@
   import URLImport from './components/URLImport.vue';
   import DocImport from './components/DocImport.vue';
 
+  interface Props {
+    data?: any;
+  }
+  const props = defineProps<Props>();
+
   const dataSource: CheckSource[] = [
     {
       key: 'doc-input',
@@ -30,6 +35,7 @@
       key: 'excel-import',
       icon: PodiumOutline,
       title: 'Excel文件导入',
+      isHidden: !props.data.isStruct,
       label: '处理excel结构化数据，支持对Excel行列数据读取',
     },
     {
@@ -47,8 +53,9 @@
 </script>
 
 <template>
-  <div>
+  <div v-if="data">
     <CheckCard
+      v-if="!data.isStruct"
       :data-source="dataSource"
       :default-checked="checked"
       :justify="'start'"

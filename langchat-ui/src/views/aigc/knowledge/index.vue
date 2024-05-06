@@ -2,6 +2,7 @@
   import { onMounted, ref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { del, page as getPage } from '@/api/aigc/knowledge';
+  import knowledgePng from '@/assets/images/knowledge.png';
   import { searchSchemas } from './columns';
   import {
     AntCloudOutlined,
@@ -93,12 +94,10 @@
             <div class="flex items-center gap-2">
               <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
                 <template #fallback>
-                  <div class="flex justify-center items-center w-full">
-                    {{ item.name.substring(0, 4) }}
-                  </div>
+                  <n-avatar :size="48" :src="knowledgePng" class="!bg-white" round />
                 </template>
               </n-avatar>
-              <n-avatar v-else :size="48" round> {{ item.name.substring(0, 4) }} </n-avatar>
+              <n-avatar v-else :size="48" :src="knowledgePng" class="!bg-white" round />
               <h2 class="text-gray-800 font-semibold">{{ item.name }}</h2>
             </div>
             <button
@@ -112,7 +111,11 @@
             </button>
           </div>
           <div class="p-4 pt-0">
-            <p class="text-gray-600 text-sm">{{ item.des }}</p>
+            <p class="text-gray-600 text-sm">
+              <n-ellipsis :line-clamp="2">
+                {{ item.des }}
+              </n-ellipsis>
+            </p>
           </div>
           <div class="py-3 px-4 border-t flex justify-between items-center">
             <div class="flex gap-1 items-center">

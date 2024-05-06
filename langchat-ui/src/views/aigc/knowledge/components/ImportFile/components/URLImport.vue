@@ -1,34 +1,59 @@
-<script setup lang="ts">
-  import { DownloadOutline } from '@vicons/ionicons5';
+<script lang="ts" setup>
+  import { ref } from 'vue';
+  import { useMessage } from 'naive-ui';
+  import { isNullOrWhitespace } from '@/utils/is';
+  import { embeddingText } from '@/api/aigc/embedding';
   import { useRouter } from 'vue-router';
-  const router = useRouter();
 
-  async function handleImport() {
-    const kbId = router.currentRoute.value.params.id;
+  const router = useRouter();
+  const message = useMessage();
+  const form = ref({
+    name: '',
+    content: '',
+  });
+  const rules = ref({
+    name: {
+      required: true,
+      message: '请输入文件名',
+      trigger: ['input', 'blur'],
+    },
+    content: {
+      required: true,
+      message: '请输入文档内容',
+      trigger: ['input', 'blur'],
+    },
+  });
+
+  async function handleSubmit() {
+    if (isNullOrWhitespace(form.value.content)) {
+      message.warning('请输入文档内容');
+      return;
+    }
+    const knowledgeId = router.currentRoute.value.params.id;
+    await embeddingText({
+      ...form.value,
+      knowledgeId,
+    });
+    message.success('文档录入成功，正在解析中...');
+    form.value = {
+      name: '',
+      content: '',
+    };
   }
 </script>
 
 <template>
-  <div>
-    <n-upload
-      multiple
-      directory-dnd
-      action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-      :max="5"
-    >
-      <n-upload-dragger>
-        <div style="margin-bottom: 12px">
-          <n-icon size="48" :depth="3">
-            <DownloadOutline />
-          </n-icon>
-        </div>
-        <n-text style="font-size: 16px"> 点击或者拖动文件到该区域来上传 </n-text>
-        <n-p depth="3" style="margin: 8px 0 0 0">
-          请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码
-        </n-p>
-      </n-upload-dragger>
-    </n-upload>
+  <div class="flex flex-col gap-4">
+    <div>
+      <n-button type="success" @click="handleSubmit">解析线上数据</n-button>
+    </div>
+
+    <n-form :rules="rules" :model="form" label-placement="left" label-width="auto">
+      <n-form-item label="文件URL地址" path="name">
+        <n-input v-model:value="form.name" />
+      </n-form-item>
+    </n-form>
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

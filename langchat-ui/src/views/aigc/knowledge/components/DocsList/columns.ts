@@ -11,6 +11,12 @@ export const columns: BasicColumn[] = [
     key: 'content',
   },
   {
+    title: '文件大小/kb',
+    key: 'size',
+    width: 100,
+    align: 'center',
+  },
+  {
     title: '创建时间',
     key: 'createTime',
     width: 160,

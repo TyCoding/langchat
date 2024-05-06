@@ -26,6 +26,14 @@ public interface LangDocService {
      */
     void embeddingStruct(DocR req);
 
+    /**
+     * 文本向量搜索
+     */
     TokenStream search(DocR req);
+
+    /**
+     * 结构化数据搜索
+     */
+    TokenStream searchStruct(DocR req);
 
 }
