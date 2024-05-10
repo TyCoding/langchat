@@ -9,6 +9,7 @@ export type UserInfoType = {
   id: string;
   username: string;
   realName: string;
+  avatar: string;
 };
 
 export interface IUserState {
@@ -93,6 +94,7 @@ export const useUserStore = defineStore({
         id: '',
         username: '',
         realName: '',
+        avatar: '',
       });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);

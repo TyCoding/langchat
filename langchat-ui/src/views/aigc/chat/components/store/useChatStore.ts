@@ -63,7 +63,7 @@ export const useChatStore = defineStore('chat-store', {
       this.messages.push({
         promptId: promptId,
         role: role,
-        content: message,
+        message: message,
         createTime: formatToDateTime(new Date()),
       });
       return true;
@@ -73,10 +73,10 @@ export const useChatStore = defineStore('chat-store', {
      * 更新消息
      * promptId 仅仅用于更新流式消息内容
      */
-    async updateMessage(promptId: string, content: string, isError?: boolean) {
+    async updateMessage(promptId: string, message: string, isError?: boolean) {
       const promptIndex = this.messages.findIndex((item) => item?.promptId == promptId);
       if (promptIndex !== -1) {
-        this.messages[promptIndex].content = content;
+        this.messages[promptIndex].message = message;
         this.messages[promptIndex].isError = isError;
       }
       console.log(this.messages);

@@ -27,7 +27,7 @@ public class KnowledgeChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage()));
-        req.setChatId(StpUtil.getLoginIdAsString());
+        req.setUserId(StpUtil.getLoginIdAsString());
 
         chatService.chat(req);
         return emitter.get();

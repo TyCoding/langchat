@@ -25,6 +25,8 @@ public class ChatReq {
 
     private String promptId;
 
+    private String role;
+
     private Prompt prompt;
 
     private StreamEmitter emitter;

@@ -101,8 +101,7 @@
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
-            <n-avatar round>
-              {{ username }}
+            <n-avatar :src="avatar" round>
               <template #icon>
                 <UserOutlined />
               </template>
@@ -140,6 +139,7 @@
   import { AsideMenu } from '@/layout/components/Menu';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
   import { websiteConfig } from '@/config/website.config';
+  import defaultAvatar from '@/assets/avatar.jpg';
 
   export default defineComponent({
     name: 'PageHeader',
@@ -159,12 +159,13 @@
       const dialog = useDialog();
       const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
 
-      const { realName } = userStore?.info || {};
+      const { realName, avatar } = userStore?.info || {};
 
       const drawerSetting = ref();
 
       const state = reactive({
         username: realName ?? '',
+        avatar: avatar ?? defaultAvatar,
         fullscreenIcon: 'FullscreenOutlined',
         navMode,
         navTheme,

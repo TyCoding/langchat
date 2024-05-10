@@ -8,7 +8,7 @@ export function chat(
     message?: string;
     role?: string;
     conversationId?: string;
-    appId?: string;
+    model?: string;
   },
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {

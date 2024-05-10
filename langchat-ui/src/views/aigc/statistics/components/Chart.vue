@@ -8,8 +8,8 @@
 
   onMounted(async () => {
     const data = await charts();
-    const xData: any = [];
-    const yData: any = [];
+    const xData: any = ['1', '2'];
+    const yData: any = [10, 39];
     data.forEach((i: any) => {
       xData.push(i.date);
       yData.push(i.tokens);

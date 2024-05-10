@@ -6,7 +6,11 @@ import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
-import cn.tycoding.langchat.common.dto.*;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ChatRes;
+import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.service.LangChatService;
@@ -39,6 +43,10 @@ public class ChatServiceImpl implements ChatService {
         long startTime = System.currentTimeMillis();
         StringBuilder text = new StringBuilder();
 
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req);
+
         try {
             langChatService.stream(req)
                     .onNext(e -> {
@@ -53,24 +61,25 @@ public class ChatServiceImpl implements ChatService {
                         // save message
                         if (StrUtil.isNotBlank(req.getConversationId())) {
                             req.setMessage(text.toString());
+                            req.setRole(RoleEnum.ASSISTANT.getName());
                             saveMessage(req);
                         }
                     })
                     .onError((e) -> {
                         emitter.error(e.getMessage());
+                        throw new RuntimeException(e.getMessage());
                     })
                     .start();
         } catch (Exception e) {
             e.printStackTrace();
             emitter.error(e.getMessage());
-            throw new RuntimeException("Ai Request Error");
+            throw new RuntimeException(e.getMessage());
         }
     }
 
     private void saveMessage(ChatReq req) {
         AigcMessage message = new AigcMessage();
         BeanUtils.copyProperties(req, message);
-        message.setRole(RoleEnum.ASSISTANT.getName());
         log.info("保存消息：{}", message);
         aigcMessageService.addMessage(message);
     }

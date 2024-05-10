@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import Chat from './components/Chat.vue';
   import { list as getKnowledgeList } from '@/api/aigc/knowledge';
   import { list as getPromptList } from '@/api/aigc/prompt';
+  import { modelList } from '@/api/models';
 
   const checked = ref();
   const list = ref();
@@ -11,6 +12,7 @@
   const promptList = ref();
   const value = ref();
   const loading = ref(true);
+  const model = ref('openai');
 
   onMounted(async () => {
     loading.value = true;
@@ -115,18 +117,28 @@
             <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
             <span>AI对话</span>
           </div>
-          <div>
+          <n-space align="center">
+            <n-select
+              size="small"
+              v-model:value="model"
+              :options="modelList"
+              class="!w-[200px] tracking-widest"
+            />
             <n-button size="small" type="success" secondary>
               <template #icon>
                 <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
               </template>
               清空聊天
             </n-button>
-          </div>
+          </n-space>
         </div>
         <div class="w-full h-full rounded-md p-2 flex items-center justify-center">
-          <Chat :id="checked.id" v-if="checked !== undefined && checked.id !== undefined" />
-          <n-empty v-else description="请先选中左侧的知识库或者提示词列表仅">
+          <Chat
+            :id="checked.id"
+            :model="model"
+            v-if="checked !== undefined && checked.id !== undefined"
+          />
+          <n-empty v-else description="请先选中左侧的知识库或者提示词列表开始聊天！">
             <template #extra>
               <n-button size="small" type="success"> 立即开始 </n-button>
             </template>

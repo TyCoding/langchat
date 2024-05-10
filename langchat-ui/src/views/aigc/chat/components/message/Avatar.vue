@@ -12,7 +12,7 @@
 
   const userStore = useUserStore();
 
-  const avatar = computed(() => userStore.getUserInfo.headerImg);
+  const avatar = computed(() => userStore.avatar);
 </script>
 
 <template>

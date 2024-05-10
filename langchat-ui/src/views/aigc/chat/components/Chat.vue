@@ -11,6 +11,7 @@
 
   const props = defineProps({
     id: String,
+    model: String,
   });
 
   const dialog = useDialog();
@@ -94,6 +95,7 @@
             conversationId: props.id,
             message,
             role: 'user',
+            model: props.model,
           },
           async ({ event }) => {
             const list = event.target.responseText.split('\n\n');
@@ -200,7 +202,7 @@
         <div
           v-else
           ref="scrollRef"
-          class="w-full max-w-screen-xl m-auto"
+          class="w-full max-w-screen-3xl m-auto pl-8 pr-8"
           :class="[isMobile ? 'p-2' : 'p-5']"
         >
           <Message
@@ -227,7 +229,7 @@
 
     <!-- 底部 -->
     <footer :class="footerClass">
-      <div class="w-full max-w-screen-xl m-auto pl-8 pr-8 pb-0">
+      <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-0">
         <div class="flex items-center justify-between space-x-2">
           <NInput
             ref="inputRef"
