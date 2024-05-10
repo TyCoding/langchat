@@ -2,7 +2,6 @@
   import { onMounted, ref } from 'vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { del, page as getPage } from '@/api/aigc/knowledge';
-  import knowledgePng from '@/assets/images/knowledge.png';
   import { searchSchemas } from './columns';
   import {
     AntCloudOutlined,
@@ -14,6 +13,7 @@
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
+  import SvgIcon from '@/components/SvgIcon/index.vue';
 
   const router = useRouter();
   const message = useMessage();
@@ -94,10 +94,10 @@
             <div class="flex items-center gap-2">
               <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
                 <template #fallback>
-                  <n-avatar :size="48" :src="knowledgePng" class="!bg-white" round />
+                  <SvgIcon class="text-3xl" icon="twemoji:open-book" />
                 </template>
               </n-avatar>
-              <n-avatar v-else :size="48" :src="knowledgePng" class="!bg-white" round />
+              <SvgIcon v-else class="text-3xl" icon="twemoji:open-book" />
               <h2 class="text-gray-800 font-semibold">{{ item.name }}</h2>
             </div>
             <button

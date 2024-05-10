@@ -19,6 +19,8 @@ public class ChatReq {
 
     private String conversationId;
 
+    private String userId;
+
     private String chatId;
 
     private String promptId;

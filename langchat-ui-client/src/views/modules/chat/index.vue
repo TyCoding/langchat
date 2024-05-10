@@ -6,18 +6,15 @@
   import { Message as AiMessage } from '@/typings/chat';
   import Message from './message/message.vue';
   import Sider from './sider/index.vue';
-  import { useDialog, useMessage } from 'naive-ui';
+  import { useDialog } from 'naive-ui';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
   import { useScroll } from './store/useScroll';
   import { useChatStore } from './store/useChatStore';
-  import { useRouter } from 'vue-router';
   import Header from './Header.vue';
   import { addMessage } from '@/api/conversation';
   import { t } from '@/locales';
 
-  const router = useRouter();
   const dialog = useDialog();
-  const ms = useMessage();
   const { isMobile } = useBasicLayout();
   const { scrollRef, contentRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
   const chatStore = useChatStore();

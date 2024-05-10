@@ -58,12 +58,10 @@ export const useChatStore = defineStore('chat-store', {
     async addMessage(
       message: string,
       role: 'user' | 'assistant' | 'system',
-      promptId: string,
-      parentRefId: string
+      promptId: string
     ): Promise<boolean> {
       this.messages.push({
         promptId: promptId,
-        parentRefId: parentRefId,
         role: role,
         content: message,
         createTime: formatToDateTime(new Date()),

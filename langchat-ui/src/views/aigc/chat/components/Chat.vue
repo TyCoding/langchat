@@ -2,17 +2,25 @@
   import Message from './message/Message.vue';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
   import { computed, ref } from 'vue';
+  import { v4 as uuidv4 } from 'uuid';
   import { useChatStore } from './store/useChatStore';
   import { useScroll } from './store/useScroll';
   import { useDialog } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
+  import { chat } from '@/api/aigc/chat';
+
+  const props = defineProps({
+    id: String,
+  });
 
   const dialog = useDialog();
   const chatStore = useChatStore();
-  const { scrollRef, contentRef, scrollToBottom } = useScroll();
+  const { scrollRef, contentRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
   const { isMobile } = useProjectSetting();
   const loading = ref<boolean>(false);
   const message = ref('');
+  const chatId = ref<string>('');
+  const aiChatId = ref<string>('');
   let controller = new AbortController();
 
   const footerClass = computed(() => {
@@ -50,7 +58,95 @@
       }
     }
   }
-  async function handleSubmit() {}
+  async function handleSubmit() {
+    const msg = message.value;
+    if (loading.value) {
+      return;
+    }
+    if (!msg || msg.trim() === '') {
+      return;
+    }
+    controller = new AbortController();
+
+    // user
+    chatId.value = uuidv4();
+    await chatStore.addMessage(msg, 'user', chatId.value);
+
+    loading.value = true;
+    message.value = '';
+
+    // ai
+    await scrollToBottom();
+    aiChatId.value = uuidv4();
+    await scrollToBottom();
+    await chatStore.addMessage('', 'assistant', aiChatId.value);
+    await scrollToBottomIfAtBottom();
+    await onChat(msg);
+  }
+
+  async function onChat(message: string) {
+    try {
+      // 定义接口
+      const fetchChatAPIOnce = async () => {
+        await chat(
+          {
+            chatId: chatId.value,
+            conversationId: props.id,
+            message,
+            role: 'user',
+          },
+          async ({ event }) => {
+            const list = event.target.responseText.split('\n\n');
+
+            let text = '';
+            let isRun = true;
+            list.forEach((i: any) => {
+              if (i.startsWith('data:Error')) {
+                isRun = false;
+                text += i.substring(5, i.length);
+                chatStore.updateMessage(aiChatId.value, text, true);
+                return;
+              }
+              if (!i.startsWith('data:{')) {
+                return;
+              }
+
+              const { done, message } = JSON.parse(i.substring(5, i.length));
+              if (done) {
+                return;
+              }
+              text += message;
+            });
+            if (!isRun) {
+              await scrollToBottomIfAtBottom();
+              return;
+            }
+            await chatStore.updateMessage(aiChatId.value, text, false);
+            await scrollToBottomIfAtBottom();
+          }
+        )
+          .catch((e: any) => {
+            loading.value = false;
+            if (e.message !== undefined) {
+              chatStore.updateMessage(aiChatId.value, e.message, true);
+              return;
+            }
+            if (e.startsWith('data:Error')) {
+              chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
+              return;
+            }
+          })
+          .finally(() => {
+            scrollToBottomIfAtBottom();
+          });
+      };
+
+      // 调用接口
+      await fetchChatAPIOnce();
+    } finally {
+      loading.value = false;
+    }
+  }
 
   function handleStop() {
     if (loading.value) {

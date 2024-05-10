@@ -2,16 +2,22 @@
   import { onMounted, ref } from 'vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import Chat from './components/Chat.vue';
-  import knowledgePng from '@/assets/images/knowledge.png';
   import { list as getKnowledgeList } from '@/api/aigc/knowledge';
   import { list as getPromptList } from '@/api/aigc/prompt';
 
   const checked = ref();
   const list = ref();
+  const knowledgeList = ref();
+  const promptList = ref();
   const value = ref();
   const loading = ref(true);
+
   onMounted(async () => {
-    await onUpdate('knowledge');
+    loading.value = true;
+    knowledgeList.value = await getKnowledgeList({});
+    promptList.value = await getPromptList({});
+    list.value = knowledgeList.value;
+    loading.value = false;
   });
   const options = [
     {
@@ -25,18 +31,15 @@
   ];
 
   function onCheck(item: any) {
-    checked.value = item.id;
+    checked.value = item;
   }
   async function onUpdate(val: string) {
-    loading.value = true;
-    console.log(val);
     if (val === 'knowledge') {
-      list.value = await getKnowledgeList({});
+      list.value = knowledgeList.value;
     }
     if (val === 'prompt') {
-      list.value = await getPromptList({});
+      list.value = promptList.value;
     }
-    loading.value = false;
   }
 </script>
 
@@ -50,20 +53,20 @@
         </n-tabs>
       </div>
       <n-spin :show="loading">
-        <div class="flex justify-center items-center m-4 mt-0 rounded overflow-y-auto">
+        <div class="flex justify-center items-center p-4 pt-0 rounded overflow-y-auto">
           <ul class="mt-2 space-y-3 w-full">
             <li v-for="(item, idx) in list" :key="idx" @click="onCheck(item)">
               <n-popselect
                 v-model:value="value"
                 :options="options"
                 placement="right"
-                :show="item.isStruct !== undefined && item.isStruct && item.id == checked"
+                :show="item.isStruct !== undefined && item.isStruct && item == checked"
               >
                 <label :for="item.name" class="block relative">
                   <input
                     :id="item.name"
                     type="radio"
-                    :checked="item.id == checked"
+                    :checked="item == checked"
                     name="payment"
                     class="sr-only peer"
                   />
@@ -71,7 +74,7 @@
                     class="w-full flex gap-x-3 items-start p-4 pb-2.5 cursor-pointer rounded-lg border bg-white shadow-sm ring-indigo-600 peer-checked:bg-indigo-50/75 peer-checked:ring-1 duration-200"
                   >
                     <div class="flex-none">
-                      <n-avatar :size="35" :src="knowledgePng" class="!bg-white" round />
+                      <SvgIcon class="text-3xl" icon="twemoji:open-book" />
                     </div>
                     <div>
                       <div class="leading-none text-gray-800 font-medium text-[15px] pr-3">
@@ -122,8 +125,8 @@
           </div>
         </div>
         <div class="w-full h-full rounded-md p-2 flex items-center justify-center">
-          <Chat v-if="checked !== null" />
-          <n-empty v-else description="在左侧输入图片描述，开始生成图片吧！">
+          <Chat :id="checked.id" v-if="checked !== undefined && checked.id !== undefined" />
+          <n-empty v-else description="请先选中左侧的知识库或者提示词列表仅">
             <template #extra>
               <n-button size="small" type="success"> 立即开始 </n-button>
             </template>
