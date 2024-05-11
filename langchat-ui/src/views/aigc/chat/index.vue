@@ -119,7 +119,15 @@
                     class="w-full flex gap-x-3 items-start p-4 pb-2.5 cursor-pointer rounded-lg border bg-white shadow-sm ring-indigo-600 peer-checked:bg-indigo-50/75 peer-checked:ring-1 duration-200"
                   >
                     <div class="flex-none">
-                      <SvgIcon class="text-3xl" icon="twemoji:open-book" />
+                      <SvgIcon
+                        v-if="activeTab === 'prompt'"
+                        class="text-3xl"
+                        icon="solar:document-bold-duotone"
+                      />
+                      <template v-if="activeTab === 'knowledge'">
+                        <n-avatar v-if="item.cover !== null" :src="item.cover" />
+                        <SvgIcon v-else class="text-3xl" icon="fa-solid:book" />
+                      </template>
                     </div>
                     <div>
                       <div class="leading-none text-gray-800 font-medium text-[15px] pr-3">
