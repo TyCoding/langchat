@@ -89,16 +89,20 @@
 
     <n-spin :show="loading">
       <ul class="mt-6 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
-        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow-sm border">
+        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg bg-gray-100">
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
               <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
                 <template #fallback>
-                  <SvgIcon class="text-3xl" icon="twemoji:open-book" />
+                  <SvgIcon class="text-4xl" icon="twemoji:open-book" />
                 </template>
               </n-avatar>
-              <SvgIcon v-else class="text-3xl" icon="twemoji:open-book" />
-              <h2 class="text-gray-800 font-semibold">{{ item.name }}</h2>
+              <SvgIcon v-else class="text-4xl" icon="twemoji:open-book" />
+              <h2
+                @click="handleInfo(item)"
+                class="text-gray-800 font-semibold cursor-pointer hover:text-blue-500"
+                >{{ item.name }}</h2
+              >
             </div>
             <button
               @click="handleInfo(item)"
