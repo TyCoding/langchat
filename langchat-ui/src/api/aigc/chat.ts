@@ -3,7 +3,6 @@ import { AxiosProgressEvent } from 'axios';
 
 export function chat(
   data: {
-    promptId?: string;
     chatId?: string;
     message?: string;
     role?: string;
@@ -12,17 +11,29 @@ export function chat(
   },
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
+  return http.request(
+    {
+      method: 'post',
+      url: '/aigc/chat/knowledge',
+      data,
+      onDownloadProgress: onDownloadProgress,
+    },
+    {
+      isReturnNativeResponse: true,
+    }
+  );
+}
+
+export function clean(conversationId: string) {
   return http.request({
-    method: 'post',
-    url: '/aigc/chat/knowledge',
-    data,
-    onDownloadProgress: onDownloadProgress,
+    url: `/aigc/chat/knowledge/cleanMessage/${conversationId}`,
+    method: 'delete',
   });
 }
 
-export function del(id: string) {
+export function getMessages(conversationId?: String) {
   return http.request({
-    url: `/aigc/chat/${id}`,
-    method: 'delete',
+    url: `/aigc/chat/knowledge/messages/${conversationId}`,
+    method: 'get',
   });
 }

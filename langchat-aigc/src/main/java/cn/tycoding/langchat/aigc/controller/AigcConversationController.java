@@ -1,13 +1,12 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.tycoding.langchat.aigc.entity.AigcConversation;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
-import jakarta.servlet.http.HttpServletRequest;
+import cn.tycoding.langchat.common.utils.ServletUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -89,9 +88,8 @@ public class AigcConversationController {
     }
 
     @PostMapping("/message")
-    public R addMessage(@RequestBody AigcMessage message, HttpServletRequest request) {
-        message.setIp(JakartaServletUtil.getClientIP(request));
-        message.setIp(JakartaServletUtil.getClientIP(request));
+    public R addMessage(@RequestBody AigcMessage message) {
+        message.setIp(ServletUtil.getIpAddr());
         return R.ok(aigcMessageService.addMessage(message));
     }
 }

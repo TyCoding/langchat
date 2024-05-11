@@ -130,5 +130,15 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
                 .orderByDesc(AigcMessage::getCreateTime)
         ).getRecords();
     }
+
+    @Override
+    public List<AigcMessage> getMessages(String conversationId, String userId) {
+        // 避免页面渲染压力大，只截取最新的100条数据
+        return baseMapper.selectPage(new Page<>(0, 100), Wrappers.<AigcMessage>lambdaQuery()
+                .eq(AigcMessage::getConversationId, conversationId)
+                .eq(AigcMessage::getUserId, userId)
+                .orderByAsc(AigcMessage::getCreateTime)
+        ).getRecords();
+    }
 }
 

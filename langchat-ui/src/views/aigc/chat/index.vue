@@ -1,18 +1,25 @@
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import Chat from './components/Chat.vue';
   import { list as getKnowledgeList } from '@/api/aigc/knowledge';
   import { list as getPromptList } from '@/api/aigc/prompt';
   import { modelList } from '@/api/models';
+  import { getMessages } from '@/api/aigc/chat';
+  import { useChatStore } from './components/store/useChatStore';
+  import { useDialog, useMessage } from 'naive-ui';
 
+  const dialog = useDialog();
+  const ms = useMessage();
   const checked = ref();
   const list = ref();
   const knowledgeList = ref();
   const promptList = ref();
   const value = ref();
   const loading = ref(true);
+  const chatLoading = ref(false);
   const model = ref('openai');
+  const userStore = useChatStore();
 
   onMounted(async () => {
     loading.value = true;
@@ -32,8 +39,12 @@
     },
   ];
 
-  function onCheck(item: any) {
+  async function onCheck(item: any) {
     checked.value = item;
+    chatLoading.value = true;
+    userStore.messages = [];
+    userStore.messages = await getMessages(item.id);
+    chatLoading.value = false;
   }
   async function onUpdate(val: string) {
     if (val === 'knowledge') {
@@ -42,6 +53,22 @@
     if (val === 'prompt') {
       list.value = promptList.value;
     }
+  }
+
+  // 清除
+  function handleClear() {
+    if (loading.value) {
+      return;
+    }
+    dialog.warning({
+      title: '清除聊天',
+      content: '确认清除聊天',
+      positiveText: '是',
+      negativeText: '否',
+      onPositiveClick: async () => {
+        ms.success('聊天记录清除成功');
+      },
+    });
   }
 </script>
 
@@ -118,13 +145,9 @@
             <span>AI对话</span>
           </div>
           <n-space align="center">
-            <n-select
-              size="small"
-              v-model:value="model"
-              :options="modelList"
-              class="!w-[200px] tracking-widest"
-            />
-            <n-button size="small" type="success" secondary>
+            <n-select size="small" v-model:value="model" :options="modelList" class="!w-[200px]" />
+
+            <n-button @click="handleClear" size="small" type="success" secondary>
               <template #icon>
                 <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
               </template>
@@ -133,16 +156,18 @@
           </n-space>
         </div>
         <div class="w-full h-full rounded-md p-2 flex items-center justify-center">
-          <Chat
-            :id="checked.id"
-            :model="model"
-            v-if="checked !== undefined && checked.id !== undefined"
-          />
-          <n-empty v-else description="请先选中左侧的知识库或者提示词列表开始聊天！">
-            <template #extra>
-              <n-button size="small" type="success"> 立即开始 </n-button>
-            </template>
-          </n-empty>
+          <n-spin :show="chatLoading">
+            <Chat
+              :id="checked.id"
+              :model="model"
+              v-if="checked !== undefined && checked.id !== undefined"
+            />
+            <n-empty v-else description="请先选中左侧的知识库或者提示词列表开始聊天！">
+              <template #extra>
+                <n-button size="small" type="success"> 立即开始 </n-button>
+              </template>
+            </n-empty>
+          </n-spin>
         </div>
       </div>
     </div>

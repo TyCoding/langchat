@@ -2,6 +2,7 @@ package cn.tycoding.langchat.aigc.endpoint;
 
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.ChatService;
+import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.common.dto.*;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
@@ -29,6 +30,8 @@ public class ChatEndpoint {
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
+        req.setUserId(AigcAuthUtil.getUserId());
+        req.setUsername(AigcAuthUtil.getUsername());
         req.setPrompt(PromptUtil.build(req.getMessage()));
 
         if (req.getModel().endsWith(ModelConst.IMAGE_SUFFIX)) {

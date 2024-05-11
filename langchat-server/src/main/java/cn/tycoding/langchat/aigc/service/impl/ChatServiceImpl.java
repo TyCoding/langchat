@@ -6,11 +6,8 @@ import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
-import cn.tycoding.langchat.common.dto.ChatReq;
-import cn.tycoding.langchat.common.dto.ChatRes;
-import cn.tycoding.langchat.common.dto.DocR;
-import cn.tycoding.langchat.common.dto.ImageR;
-import cn.tycoding.langchat.common.dto.TextR;
+import cn.tycoding.langchat.common.dto.*;
+import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.service.LangChatService;
@@ -45,7 +42,7 @@ public class ChatServiceImpl implements ChatService {
 
         // save user message
         req.setRole(RoleEnum.USER.getName());
-        saveMessage(req);
+        saveMessage(req, 0, 0);
 
         try {
             langChatService.stream(req)
@@ -62,7 +59,7 @@ public class ChatServiceImpl implements ChatService {
                         if (StrUtil.isNotBlank(req.getConversationId())) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req);
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {
@@ -77,10 +74,13 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    private void saveMessage(ChatReq req) {
+    private void saveMessage(ChatReq req, Integer inputToken, Integer outputToken) {
         AigcMessage message = new AigcMessage();
         BeanUtils.copyProperties(req, message);
-        log.info("保存消息：{}", message);
+        message.setIp(ServletUtil.getIpAddr());
+        message.setPromptTokens(inputToken);
+        message.setTokens(outputToken);
+        log.info(">>>> save chat message：{}", message);
         aigcMessageService.addMessage(message);
     }
 
@@ -108,7 +108,7 @@ public class ChatServiceImpl implements ChatService {
         } catch (Exception e) {
             e.printStackTrace();
             emitter.error(e.getMessage());
-            throw new RuntimeException("Ai Request Error");
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ public class ChatServiceImpl implements ChatService {
         } catch (Exception e) {
             e.printStackTrace();
             emitter.error(e.getMessage());
-            throw new RuntimeException("Ai Request Error");
+            throw new RuntimeException(e.getMessage());
         }
     }
 

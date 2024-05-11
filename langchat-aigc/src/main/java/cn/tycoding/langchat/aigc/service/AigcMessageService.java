@@ -44,5 +44,7 @@ public interface AigcMessageService extends IService<AigcMessage> {
     void clearMessage(String conversationId);
 
     List<AigcMessage> getMessages(String conversationId);
+
+    List<AigcMessage> getMessages(String conversationId, String userId);
 }
 

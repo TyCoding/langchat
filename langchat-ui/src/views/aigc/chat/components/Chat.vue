@@ -5,7 +5,7 @@
   import { v4 as uuidv4 } from 'uuid';
   import { useChatStore } from './store/useChatStore';
   import { useScroll } from './store/useScroll';
-  import { useDialog } from 'naive-ui';
+  import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { chat } from '@/api/aigc/chat';
 
@@ -15,6 +15,7 @@
   });
 
   const dialog = useDialog();
+  const ms = useMessage();
   const chatStore = useChatStore();
   const { scrollRef, contentRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
   const { isMobile } = useProjectSetting();
@@ -31,15 +32,11 @@
     }
     return classes;
   });
-  const chatIsLoading = computed(() => {
-    return chatStore.chatIsLoading;
-  });
   const buttonDisabled = computed(() => {
     return loading.value;
   });
 
   // 初始化加载数据
-  chatStore.loadData();
   const dataSources = computed(() => {
     // 获取当前聊天窗口的数据
     scrollToBottom();
@@ -65,6 +62,7 @@
       return;
     }
     if (!msg || msg.trim() === '') {
+      ms.error('请先输入消息内容');
       return;
     }
     controller = new AbortController();
@@ -87,64 +85,59 @@
 
   async function onChat(message: string) {
     try {
-      // 定义接口
-      const fetchChatAPIOnce = async () => {
-        await chat(
-          {
-            chatId: chatId.value,
-            conversationId: props.id,
-            message,
-            role: 'user',
-            model: props.model,
-          },
-          async ({ event }) => {
-            const list = event.target.responseText.split('\n\n');
+      await chat(
+        {
+          chatId: chatId.value,
+          conversationId: props.id,
+          message,
+          role: 'user',
+          model: props.model,
+        },
+        async ({ event }) => {
+          const list = event.target.responseText.split('\n\n');
 
-            let text = '';
-            let isRun = true;
-            list.forEach((i: any) => {
-              if (i.startsWith('data:Error')) {
-                isRun = false;
-                text += i.substring(5, i.length);
-                chatStore.updateMessage(aiChatId.value, text, true);
-                return;
-              }
-              if (!i.startsWith('data:{')) {
-                return;
-              }
+          let text = '';
+          let isRun = true;
+          list.forEach((i: any) => {
+            if (i.startsWith('data:Error')) {
+              isRun = false;
+              text += i.substring(5, i.length);
+              chatStore.updateMessage(aiChatId.value, text, true);
+              return;
+            }
+            if (!i.startsWith('data:{')) {
+              return;
+            }
 
-              const { done, message } = JSON.parse(i.substring(5, i.length));
-              if (done) {
-                return;
-              }
-              text += message;
-            });
-            if (!isRun) {
-              await scrollToBottomIfAtBottom();
+            const { done, message } = JSON.parse(i.substring(5, i.length));
+            if (done || message === null) {
               return;
             }
-            await chatStore.updateMessage(aiChatId.value, text, false);
-            await scrollToBottomIfAtBottom();
-          }
-        )
-          .catch((e: any) => {
-            loading.value = false;
-            if (e.message !== undefined) {
-              chatStore.updateMessage(aiChatId.value, e.message, true);
-              return;
-            }
-            if (e.startsWith('data:Error')) {
-              chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
-              return;
-            }
-          })
-          .finally(() => {
-            scrollToBottomIfAtBottom();
+            text += message;
           });
-      };
-
-      // 调用接口
-      await fetchChatAPIOnce();
+          if (!isRun) {
+            await scrollToBottomIfAtBottom();
+            return;
+          }
+          await chatStore.updateMessage(aiChatId.value, text, false);
+          await scrollToBottomIfAtBottom();
+        }
+      )
+        .catch((e: any) => {
+          loading.value = false;
+          console.error('chat error', e);
+          if (e.message !== undefined) {
+            chatStore.updateMessage(aiChatId.value, e.message, true);
+            return;
+          }
+          if (e.startsWith('data:Error')) {
+            chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
+            return;
+          }
+        })
+        .finally(() => {
+          scrollToBottomIfAtBottom();
+        });
     } finally {
       loading.value = false;
     }
@@ -173,22 +166,6 @@
       },
     });
   }
-
-  // 清除
-  function handleClear() {
-    if (loading.value) {
-      return;
-    }
-    dialog.warning({
-      title: '清除聊天',
-      content: '确认清除聊天',
-      positiveText: '是',
-      negativeText: '否',
-      onPositiveClick: async () => {
-        console.log('清除聊天');
-      },
-    });
-  }
 </script>
 
 <template>
@@ -196,11 +173,7 @@
     <!-- 聊天记录窗口 -->
     <main class="flex-1 overflow-hidden">
       <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto">
-        <div v-if="chatIsLoading" class="w-full h-full flex items-center justify-center">
-          <n-spin :show="chatIsLoading" size="large" />
-        </div>
         <div
-          v-else
           ref="scrollRef"
           class="w-full max-w-screen-3xl m-auto pl-8 pr-8"
           :class="[isMobile ? 'p-2' : 'p-5']"
