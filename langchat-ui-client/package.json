@@ -41,7 +41,7 @@
     "markmap-common": "^0.15.6",
     "markmap-lib": "^0.15.7",
     "markmap-view": "^0.15.6",
-    "naive-ui": "^2.34.3",
+    "naive-ui": "^2.38.2",
     "pinia": "^2.0.33",
     "pizzip": "^3.1.6",
     "pptxgenjs": "^3.12.0",

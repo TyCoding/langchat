@@ -3,12 +3,22 @@ import { formatToDateTime } from '@/utils/dateUtil';
 
 export interface ChatState {
   messages: any[];
+  model: string;
+  conversationId: string;
+  promptId: string | null;
+  promptText: string | null;
+  knowledgeId: string | null;
 }
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
+      model: 'openai',
+      conversationId: '',
       messages: [],
+      promptId: null,
+      promptText: null,
+      knowledgeId: null,
     },
 
   getters: {},
@@ -36,6 +46,7 @@ export const useChatStore = defineStore('chat-store', {
      * chatId 仅仅用于更新流式消息内容
      */
     async updateMessage(chatId: string, message: string, isError?: boolean) {
+      console.log('更新消息', chatId, message, isError);
       const index = this.messages.findIndex((item) => item?.chatId == chatId);
       if (index !== -1) {
         this.messages[index].message = message;

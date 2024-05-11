@@ -27,30 +27,17 @@ public class ChatReq {
 
     private String promptId;
 
+    private String promptText;
+
+    private String knowledgeId;
+
+    private String docsId;
+
+    private String path;
+
     private String role;
 
     private Prompt prompt;
 
     private StreamEmitter emitter;
-
-    public ChatReq() {
-    }
-
-    public ChatReq(StreamEmitter emitter) {
-        this.emitter = emitter;
-    }
-
-    public ChatReq(Prompt prompt) {
-        this.prompt = prompt;
-    }
-
-    public ChatReq(Prompt prompt, StreamEmitter emitter) {
-        this.prompt = prompt;
-        this.emitter = emitter;
-    }
-
-    public ChatReq(String message, StreamEmitter emitter) {
-        this.message = message;
-        this.emitter = emitter;
-    }
 }

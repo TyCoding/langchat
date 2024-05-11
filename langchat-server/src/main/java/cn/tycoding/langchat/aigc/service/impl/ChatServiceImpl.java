@@ -134,18 +134,32 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void docsChat(DocR req) {
+    public void docsChat(ChatReq req) {
         long startTime = System.currentTimeMillis();
         StreamEmitter emitter = req.getEmitter();
+        StringBuilder text = new StringBuilder();
+
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req, 0, 0);
+
         try {
             langDocService.search(req)
                     .onNext(e -> {
+                        text.append(e);
                         emitter.send(new ChatRes(e));
                     })
                     .onComplete(e -> {
                         TokenUsage tokenUsage = e.tokenUsage();
                         emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
                         emitter.complete();
+
+                        // save message
+                        if (StrUtil.isNotBlank(req.getConversationId())) {
+                            req.setMessage(text.toString());
+                            req.setRole(RoleEnum.ASSISTANT.getName());
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
+                        }
                     })
                     .onError((e) -> {
                         emitter.error(e.getMessage());

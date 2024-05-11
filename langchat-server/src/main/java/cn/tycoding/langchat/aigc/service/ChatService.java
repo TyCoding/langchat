@@ -2,7 +2,6 @@ package cn.tycoding.langchat.aigc.service;
 
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.common.dto.ChatReq;
-import cn.tycoding.langchat.common.dto.DocR;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.dto.TextR;
 
@@ -35,7 +34,7 @@ public interface ChatService {
     /**
      * 文档聊天
      */
-    void docsChat(DocR req);
+    void docsChat(ChatReq req);
 
     /**
      * 文档Embedding

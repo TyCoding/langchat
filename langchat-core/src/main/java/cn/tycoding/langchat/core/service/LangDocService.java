@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.core.service;
 
-import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import dev.langchain4j.service.TokenStream;
 import java.util.List;
@@ -14,26 +14,26 @@ public interface LangDocService {
     /**
      * 解析文本向量
      */
-    EmbeddingR embeddingText(DocR req);
+    EmbeddingR embeddingText(ChatReq req);
 
     /**
      * 解析文本文件向量
      */
-    List<EmbeddingR> embeddingDocs(DocR req);
+    List<EmbeddingR> embeddingDocs(ChatReq req);
 
     /**
      * 解析结构化文件
      */
-    void embeddingStruct(DocR req);
+    void embeddingStruct(ChatReq req);
 
     /**
      * 文本向量搜索
      */
-    TokenStream search(DocR req);
+    TokenStream search(ChatReq req);
 
     /**
      * 结构化数据搜索
      */
-    TokenStream searchStruct(DocR req);
+    TokenStream searchStruct(ChatReq req);
 
 }

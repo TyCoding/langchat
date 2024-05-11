@@ -57,8 +57,8 @@ dependencies:
     specifier: ^1.1.0
     version: 1.1.0
   naive-ui:
-    specifier: ^2.36.0
-    version: 2.38.1(vue@3.3.4)
+    specifier: ^2.38.2
+    version: 2.38.2(vue@3.3.4)
   pinia:
     specifier: ^2.1.6
     version: 2.1.6(typescript@4.9.5)(vue@3.3.4)
@@ -5801,8 +5801,8 @@ packages:
       thenify-all: 1.6.0
     dev: true
 
-  /naive-ui@2.38.1(vue@3.3.4):
-    resolution: {integrity: sha512-AnU1FQ7K/CbhguAX++V4kCFjk7h7RvWt4nvZPRjORMpq+fUIlzD+EcQ5Cv1VqDloNF8+eMv4Akc2Ogacc9S+5A==}
+  /naive-ui@2.38.2(vue@3.3.4):
+    resolution: {integrity: sha512-WhZ+6DW61aYSmFyfH7evcSGFmd2xR68Yq1mNRrVdJwBhZsnNdAUsMN9IeNCVEPMCND/jzYZghkStoNoR5Xa09g==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:

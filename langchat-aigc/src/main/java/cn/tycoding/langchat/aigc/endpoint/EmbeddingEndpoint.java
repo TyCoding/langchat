@@ -8,7 +8,7 @@ import cn.tycoding.langchat.aigc.enums.DocsTypeEnum;
 import cn.tycoding.langchat.aigc.listener.StructExcelListener;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
-import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
@@ -50,8 +50,8 @@ public class EmbeddingEndpoint {
         data.setType(DocsTypeEnum.INPUT.name()).setSliceStatus(false);
         aigcKnowledgeService.addDocs(data);
         EmbeddingR embeddingR = langDocService.embeddingText(
-                new DocR().setMessage(data.getContent())
-                        .setId(data.getId())
+                new ChatReq().setMessage(data.getContent())
+                        .setDocsId(data.getId())
                         .setKnowledgeId(data.getKnowledgeId()));
         aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
                 .setKnowledgeId(data.getKnowledgeId())
@@ -77,7 +77,7 @@ public class EmbeddingEndpoint {
         aigcKnowledgeService.addDocs(data);
 
         List<EmbeddingR> list = langDocService.embeddingDocs(
-                new DocR().setKnowledgeId(knowledgeId).setPath(oss.getPath()));
+                new ChatReq().setKnowledgeId(knowledgeId).setPath(oss.getPath()));
         list.forEach(i -> {
             aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
                     .setKnowledgeId(data.getKnowledgeId())

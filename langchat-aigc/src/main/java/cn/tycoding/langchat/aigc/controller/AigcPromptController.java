@@ -32,22 +32,12 @@ public class AigcPromptController {
                 .like(!StrUtil.isBlank(data.getName()), AigcPrompt::getName, data.getName())
                 .orderByDesc(AigcPrompt::getCreateTime);
         IPage<AigcPrompt> iPage = aigcPromptService.page(MybatisUtil.wrap(data, queryPage), queryWrapper);
-        iPage.getRecords().forEach(i -> {
-            if (i.getPrompt() != null && i.getPrompt().length() >= 50) {
-                i.setPrompt(StrUtil.sub(i.getPrompt(), 0, 50) + "...");
-            }
-        });
         return R.ok(MybatisUtil.getData(iPage));
     }
 
     @GetMapping("/list")
     public R list(AigcPrompt data) {
         List<AigcPrompt> list = aigcPromptService.list();
-        list.forEach(i -> {
-            if (i.getPrompt() != null && i.getPrompt().length() >= 30) {
-                i.setPrompt(StrUtil.sub(i.getPrompt(), 0, 30) + "...");
-            }
-        });
         return R.ok(list);
     }
 

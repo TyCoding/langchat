@@ -9,11 +9,6 @@
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { chat } from '@/api/aigc/chat';
 
-  const props = defineProps({
-    id: String,
-    model: String,
-  });
-
   const dialog = useDialog();
   const ms = useMessage();
   const chatStore = useChatStore();
@@ -88,10 +83,13 @@
       await chat(
         {
           chatId: chatId.value,
-          conversationId: props.id,
+          conversationId: chatStore.conversationId,
+          promptId: chatStore.promptId,
+          promptText: chatStore.promptText,
+          knowledgeId: chatStore.knowledgeId,
           message,
           role: 'user',
-          model: props.model,
+          model: chatStore.model,
         },
         async ({ event }) => {
           const list = event.target.responseText.split('\n\n');
@@ -127,7 +125,7 @@
           loading.value = false;
           console.error('chat error', e);
           if (e.message !== undefined) {
-            chatStore.updateMessage(aiChatId.value, e.message, true);
+            chatStore.updateMessage(aiChatId.value, e.message || 'chat error', true);
             return;
           }
           if (e.startsWith('data:Error')) {

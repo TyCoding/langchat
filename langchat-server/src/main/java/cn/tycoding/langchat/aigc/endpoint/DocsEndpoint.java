@@ -2,7 +2,7 @@ package cn.tycoding.langchat.aigc.endpoint;
 
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.common.component.AsyncFuture;
-import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.PromptConst;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
@@ -24,7 +24,7 @@ public class DocsEndpoint {
     private final AsyncFuture asyncFuture;
 
     @PostMapping("/chat")
-    public SseEmitter chat(@RequestBody DocR req) {
+    public SseEmitter chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.DOCUMENT));

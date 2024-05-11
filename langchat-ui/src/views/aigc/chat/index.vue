@@ -5,13 +5,14 @@
   import { list as getKnowledgeList } from '@/api/aigc/knowledge';
   import { list as getPromptList } from '@/api/aigc/prompt';
   import { modelList } from '@/api/models';
-  import { getMessages } from '@/api/aigc/chat';
+  import { getMessages, clean } from '@/api/aigc/chat';
   import { useChatStore } from './components/store/useChatStore';
   import { useDialog, useMessage } from 'naive-ui';
 
   const dialog = useDialog();
   const ms = useMessage();
   const checked = ref();
+  const activeTab = ref('knowledge');
   const list = ref();
   const knowledgeList = ref();
   const promptList = ref();
@@ -19,7 +20,7 @@
   const loading = ref(true);
   const chatLoading = ref(false);
   const model = ref('openai');
-  const userStore = useChatStore();
+  const chatStore = useChatStore();
 
   onMounted(async () => {
     loading.value = true;
@@ -42,11 +43,25 @@
   async function onCheck(item: any) {
     checked.value = item;
     chatLoading.value = true;
-    userStore.messages = [];
-    userStore.messages = await getMessages(item.id);
+    chatStore.messages = [];
+    chatStore.conversationId = item.id;
+    chatStore.knowledgeId = null;
+    chatStore.promptId = null;
+    chatStore.promptText = null;
+    chatStore.messages = await getMessages(item.id);
+
+    if (activeTab.value === 'knowledge') {
+      chatStore.knowledgeId = item.id;
+    }
+    if (activeTab.value === 'prompt') {
+      chatStore.promptId = item.id;
+      chatStore.promptText = item.prompt;
+    }
+
     chatLoading.value = false;
   }
   async function onUpdate(val: string) {
+    activeTab.value = val;
     if (val === 'knowledge') {
       list.value = knowledgeList.value;
     }
@@ -57,7 +72,7 @@
 
   // 清除
   function handleClear() {
-    if (loading.value) {
+    if (loading.value || chatStore.conversationId == null) {
       return;
     }
     dialog.warning({
@@ -66,6 +81,7 @@
       positiveText: '是',
       negativeText: '否',
       onPositiveClick: async () => {
+        await clean(chatStore.conversationId);
         ms.success('聊天记录清除成功');
       },
     });
@@ -110,7 +126,7 @@
                         {{ item.name }}
                       </div>
                       <p class="text-xs text-gray-600 mt-[9px]">
-                        <n-ellipsis :line-clamp="2">
+                        <n-ellipsis :line-clamp="2" :tooltip="false" expand-trigger="click">
                           {{ item.des == undefined ? item.prompt : item.des }}
                         </n-ellipsis>
                       </p>
@@ -145,7 +161,12 @@
             <span>AI对话</span>
           </div>
           <n-space align="center">
-            <n-select size="small" v-model:value="model" :options="modelList" class="!w-[200px]" />
+            <n-select
+              size="small"
+              v-model:value="chatStore.model"
+              :options="modelList"
+              class="!w-[200px]"
+            />
 
             <n-button @click="handleClear" size="small" type="success" secondary>
               <template #icon>
@@ -162,11 +183,13 @@
               :model="model"
               v-if="checked !== undefined && checked.id !== undefined"
             />
-            <n-empty v-else description="请先选中左侧的知识库或者提示词列表开始聊天！">
-              <template #extra>
-                <n-button size="small" type="success"> 立即开始 </n-button>
-              </template>
-            </n-empty>
+            <div v-else class="w-full h-full flex items-center justify-center">
+              <n-empty description="请先选中左侧的知识库或者提示词列表开始聊天！">
+                <template #extra>
+                  <n-button size="small" type="success"> 立即开始 </n-button>
+                </template>
+              </n-empty>
+            </div>
           </n-spin>
         </div>
       </div>

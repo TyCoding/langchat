@@ -1,16 +1,7 @@
 import { http } from '@/utils/http/axios';
 import { AxiosProgressEvent } from 'axios';
 
-export function chat(
-  data: {
-    chatId?: string;
-    message?: string;
-    role?: string;
-    conversationId?: string;
-    model?: string;
-  },
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
+export function chat(data: any, onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void) {
   return http.request(
     {
       method: 'post',

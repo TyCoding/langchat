@@ -1,8 +1,9 @@
 package cn.tycoding.langchat.common.utils;
 
-import java.io.Serializable;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
+
+import java.io.Serializable;
 
 /**
  * @author tycoding

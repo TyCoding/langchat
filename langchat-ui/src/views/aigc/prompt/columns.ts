@@ -1,38 +1,11 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { h } from 'vue';
-import { NTag } from 'naive-ui';
 
 export const columns: BasicColumn[] = [
   {
     title: '名称',
     key: 'name',
     width: 300,
-  },
-  {
-    title: '标签',
-    key: 'tags',
-    width: 200,
-    render(row: any) {
-      if (row.tags == undefined) {
-        return;
-      }
-      return row.tags.map((val: string) => {
-        return h(
-          NTag,
-          {
-            style: {
-              marginRight: '6px',
-            },
-            type: 'info',
-            bordered: false,
-          },
-          {
-            default: () => val,
-          }
-        );
-      });
-    },
   },
   {
     title: '提示词',

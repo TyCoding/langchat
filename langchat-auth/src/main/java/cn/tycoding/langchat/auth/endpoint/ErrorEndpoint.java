@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ErrorEndpoint implements ErrorController {
 
     @RequestMapping("/error")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R handleError() {
-        return R.fail(HttpStatus.NOT_FOUND);
+        return R.fail(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

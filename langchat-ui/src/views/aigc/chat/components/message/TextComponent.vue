@@ -107,7 +107,7 @@
 <template>
   <div class="text-black" :class="wrapClass">
     <div ref="textRef" class="leading-relaxed break-words">
-      <div v-if="!inversion">
+      <div v-if="!inversion" class="min-w-[80px]">
         <div v-if="!asRawText" class="markdown-body" v-html="text"></div>
         <div v-else class="whitespace-pre-wrap" v-text="text"></div>
       </div>

@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.core.tools;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.core.entity.AigcStructCol;
 import cn.tycoding.langchat.core.entity.AigcStructRow;
 import cn.tycoding.langchat.core.service.AigcStructColService;
@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class StructTools {
 
-    private final DocR req;
+    private final ChatReq req;
     private final AigcStructColService structColService;
     private final AigcStructRowService structRowService;
 
-    public StructTools(DocR req, AigcStructColService structColService, AigcStructRowService structRowService) {
+    public StructTools(ChatReq req, AigcStructColService structColService, AigcStructRowService structRowService) {
         this.req = req;
         this.structColService = structColService;
         this.structRowService = structRowService;

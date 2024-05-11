@@ -3,6 +3,7 @@ package cn.tycoding.langchat.common.utils;
 import cn.tycoding.langchat.common.dto.PromptConst;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
+
 import java.util.Map;
 
 /**
@@ -16,6 +17,10 @@ public class PromptUtil {
     }
 
     public static Prompt build(String message, String promptText) {
-        return new PromptTemplate(promptText).apply(Map.of(PromptConst.TMP, message));
+        return new PromptTemplate(promptText + PromptConst.EMPTY).apply(Map.of(PromptConst.QUESTION, message));
+    }
+
+    public static Prompt buildDocs(String message) {
+        return new PromptTemplate(PromptConst.DOCUMENT).apply(Map.of(PromptConst.QUESTION, message));
     }
 }

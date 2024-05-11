@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.core.service.impl;
 
-import cn.tycoding.langchat.common.dto.DocR;
+import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
@@ -56,7 +56,7 @@ public class LangDocServiceImpl implements LangDocService {
     private final AigcStructRowService structRowService;
 
     @Override
-    public EmbeddingR embeddingText(DocR req) {
+    public EmbeddingR embeddingText(ChatReq req) {
         TextSegment segment = TextSegment.from(req.getMessage(),
                 metadata("knowledgeId", req.getKnowledgeId()));
         EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
@@ -67,7 +67,7 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public List<EmbeddingR> embeddingDocs(DocR req) {
+    public List<EmbeddingR> embeddingDocs(ChatReq req) {
 //        EmbeddingModel model = provider.embed();
         EmbeddingModel model = new AllMiniLmL6V2EmbeddingModel();
 
@@ -91,14 +91,15 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public void embeddingStruct(DocR req) {
+    public void embeddingStruct(ChatReq req) {
     }
 
     @Override
-    public TokenStream search(DocR req) {
+    public TokenStream search(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
-        EmbeddingModel model = provider.embed();
-        Function<Query, Filter> filterByUserId = (query) -> metadataKey("id").isEqualTo(req.getId());
+//        EmbeddingModel model = provider.embed();
+        EmbeddingModel model = new AllMiniLmL6V2EmbeddingModel();
+        Function<Query, Filter> filterByUserId = (query) -> metadataKey("knowledgeId").isEqualTo(req.getKnowledgeId());
 
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(milvusEmbeddingStore)
@@ -115,7 +116,7 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public TokenStream searchStruct(DocR req) {
+    public TokenStream searchStruct(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
         EmbeddingModel model = provider.embed();
 

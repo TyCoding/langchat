@@ -2,18 +2,20 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, page as getPage } from '@/api/aigc/message';
+  import { del, page as getPage } from '@/api/aigc/conversation';
   import { columns, searchSchemas } from './columns';
-  import { DeleteOutlined } from '@vicons/antd';
+  import { DeleteOutlined, EyeOutlined } from '@vicons/antd';
+  import InfoList from './components/InfoList.vue';
   import { useDialog, useMessage } from 'naive-ui';
-  import ConversationList from './conversation/index.vue';
 
   const message = useMessage();
   const dialog = useDialog();
+
   const actionRef = ref();
+  const infoRef = ref();
 
   const actionColumn = reactive({
-    width: 70,
+    width: 80,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -22,6 +24,11 @@
       return h(TableAction as any, {
         style: 'text',
         actions: [
+          {
+            type: 'info',
+            icon: EyeOutlined,
+            onClick: handleShowInfo.bind(null, record),
+          },
           {
             type: 'error',
             icon: DeleteOutlined,
@@ -32,7 +39,7 @@
     },
   });
 
-  const [register, { getFieldsValue }] = useForm({
+  const [register, { getFieldsValue, setFieldsValue }] = useForm({
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
     schemas: searchSchemas,
@@ -45,6 +52,10 @@
 
   function reloadTable() {
     actionRef.value.reload();
+  }
+
+  function handleShowInfo(row: any) {
+    infoRef.value.show(row);
   }
 
   function handleDelete(record: Recordable) {
@@ -68,28 +79,21 @@
 </script>
 
 <template>
-  <n-card :bordered="false">
-    <n-tabs type="line" animated>
-      <n-tab-pane name="1" tab="会话消息列表">
-        <div class="mt-2">
-          <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+  <div class="mt-2">
+    <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
 
-          <BasicTable
-            ref="actionRef"
-            :actionColumn="actionColumn"
-            :columns="columns"
-            :request="loadDataTable"
-            :row-key="(row:any) => row.id"
-            :single-line="false"
-            :size="'small'"
-          />
-        </div>
-      </n-tab-pane>
-      <n-tab-pane name="2" tab="会话窗口列表">
-        <ConversationList />
-      </n-tab-pane>
-    </n-tabs>
-  </n-card>
+    <BasicTable
+      ref="actionRef"
+      :actionColumn="actionColumn"
+      :columns="columns"
+      :request="loadDataTable"
+      :row-key="(row:any) => row.id"
+      :single-line="false"
+      :size="'small'"
+    />
+
+    <InfoList ref="infoRef" />
+  </div>
 </template>
 
 <style lang="less" scoped></style>

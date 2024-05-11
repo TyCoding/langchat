@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.aigc.service.ChatService;
@@ -29,11 +30,17 @@ public class KnowledgeChatEndpoint {
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
-        req.setPrompt(PromptUtil.build(req.getMessage()));
         req.setUserId(String.valueOf(AuthUtil.getUserId()));
         req.setUsername(AuthUtil.getUsername());
 
-        chatService.chat(req);
+        if (StrUtil.isNotBlank(req.getKnowledgeId())) {
+            req.setPrompt(PromptUtil.buildDocs(req.getMessage()));
+            chatService.docsChat(req);
+        }
+        if (StrUtil.isNotBlank(req.getPromptId())) {
+            req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
+            chatService.chat(req);
+        }
         return emitter.get();
     }
 

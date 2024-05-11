@@ -28,6 +28,7 @@ public class AigcMessageController {
     @GetMapping("/page")
     public R list(AigcMessage data, QueryPage queryPage) {
         LambdaQueryWrapper<AigcMessage> queryWrapper = Wrappers.<AigcMessage>lambdaQuery()
+                .like(!StrUtil.isBlank(data.getMessage()), AigcMessage::getMessage, data.getMessage())
                 .like(!StrUtil.isBlank(data.getUsername()), AigcMessage::getUsername, data.getUsername())
                 .eq(!StrUtil.isBlank(data.getRole()), AigcMessage::getRole, data.getRole())
                 .orderByDesc(AigcMessage::getCreateTime);
