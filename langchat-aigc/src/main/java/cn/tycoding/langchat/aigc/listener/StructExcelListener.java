@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.listener;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.core.entity.AigcStructCol;
 import cn.tycoding.langchat.core.entity.AigcStructRow;
 import cn.tycoding.langchat.core.service.AigcStructColService;
@@ -29,10 +30,10 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
 
     private final AigcStructColService structColService;
     private final AigcStructRowService structRowService;
-    private final String knowledgeId;
-    private final String docsId;
+    private final Long knowledgeId;
+    private final Long docsId;
 
-    public StructExcelListener(AigcStructColService structColService, AigcStructRowService structRowService, String knowledgeId, String docsId) {
+    public StructExcelListener(AigcStructColService structColService, AigcStructRowService structRowService, Long knowledgeId, Long docsId) {
         this.structColService = structColService;
         this.structRowService = structRowService;
         this.knowledgeId = knowledgeId;
@@ -46,7 +47,6 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        //读取完成 填充合并过的单元格
         if (!cellExtraList.isEmpty()) {
             mergeExcelData(list, cellExtraList, HEAD_ROW_NUM);
         }
@@ -54,23 +54,22 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
         structColService.saveBatch(cols);
         List<AigcStructRow> rows = new ArrayList<>();
         list.forEach(i -> {
-            i.forEach((k,v) -> {
-                rows.add(new AigcStructRow()
-                        .setValue(v)
-                        .setColIndex(k)
-                        .setColId(cols.get(k).getId())
-                        .setDocsId(docsId)
-                        .setKnowledgeId(knowledgeId));
+            i.forEach((k, v) -> {
+                if (StrUtil.isNotBlank(v)) {
+                    rows.add(new AigcStructRow()
+                            .setValue(v)
+                            .setColIndex(k)
+                            .setDocsId(docsId)
+                            .setKnowledgeId(knowledgeId));
+                }
             });
         });
         structRowService.saveBatch(rows);
-
-        log.info("----");
     }
 
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
-        headMap.forEach((k,v) -> {
+        headMap.forEach((k, v) -> {
             cols.add(new AigcStructCol()
                     .setColIndex(v.getColumnIndex())
                     .setLabel(v.getStringValue())
@@ -110,42 +109,11 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
     private void setInitValueToList(Object filedValue, Integer rowIndex, Integer columnIndex, List<Map<Integer, String>> data) {
         Map<Integer, String> object = data.get(rowIndex);
         object.put(columnIndex, String.valueOf(filedValue));
-
-//        for (Field field : object.getClass().getDeclaredFields()) {
-//            field.setAccessible(true);
-//            ExcelProperty annotation = field.getAnnotation(ExcelProperty.class);
-//            if (annotation != null) {
-//                if (annotation.index() == columnIndex) {
-//                    try {
-//                        field.set(object, filedValue);
-//                        break;
-//                    } catch (IllegalAccessException e) {
-//                        log.error("设置合并单元格的值异常：{}", e.getMessage());
-//                    }
-//                }
-//            }
-//        }
     }
 
     private Object getInitValueFromList(Integer firstRowIndex, Integer firstColumnIndex, List<Map<Integer, String>> data) {
         Map<Integer, String> object = data.get(firstRowIndex);
         return object.get(firstColumnIndex);
-//        Object filedValue = null;
-//        for (Field field : object.getClass().getDeclaredFields()) {
-//            field.setAccessible(true);
-//            ExcelProperty annotation = field.getAnnotation(ExcelProperty.class);
-//            if (annotation != null) {
-//                if (annotation.index() == firstColumnIndex) {
-//                    try {
-//                        filedValue = field.get(object);
-//                        break;
-//                    } catch (IllegalAccessException e) {
-//                        log.error("设置合并单元格的初始值异常：{}", e.getMessage());
-//                    }
-//                }
-//            }
-//        }
-//        return filedValue;
     }
 
 }

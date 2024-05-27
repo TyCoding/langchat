@@ -84,9 +84,9 @@
         {
           chatId: chatId.value,
           conversationId: chatStore.conversationId,
-          promptId: chatStore.promptId,
-          promptText: chatStore.promptText,
-          knowledgeId: chatStore.knowledgeId,
+          promptId: chatStore.prompt.id,
+          promptText: chatStore.prompt.prompt,
+          knowledgeId: chatStore.knowledge.id,
           message,
           role: 'user',
           model: chatStore.model,

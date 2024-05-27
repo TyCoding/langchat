@@ -1,7 +1,7 @@
 <template>
   <n-space :justify="justify">
     <template v-for="item in dataSource" :key="item.key">
-      <div v-if="!item.isHidden" @click="handleChecked(item)" style="height: 96px">
+      <div @click="handleChecked(item)" style="height: 96px">
         <n-list
           :class="checked == item.key ? 'check-list-checked' : ''"
           class="check-list"

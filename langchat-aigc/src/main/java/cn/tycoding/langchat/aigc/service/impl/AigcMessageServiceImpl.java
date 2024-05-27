@@ -50,8 +50,8 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
                 .orderByDesc(AigcConversation::getCreateTime));
 
         if (!iPage.getRecords().isEmpty()) {
-            Map<String, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
-            Set<String> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
+            Map<Long, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
+            Set<Long> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
             List<AigcMessage> messages = baseMapper.selectList(Wrappers.<AigcMessage>lambdaQuery()
                     .in(AigcMessage::getConversationId, ids)
                     .orderByDesc(AigcMessage::getCreateTime));
@@ -102,7 +102,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
 
     @Override
     public AigcMessage addMessage(AigcMessage message) {
-        if (StrUtil.isBlank(message.getConversationId()) && RoleEnum.USER.getName()
+        if (message.getConversationId() != null && RoleEnum.USER.getName()
                 .equals(message.getRole())) {
             // create new conversation
             AigcConversation conversation = new AigcConversation();

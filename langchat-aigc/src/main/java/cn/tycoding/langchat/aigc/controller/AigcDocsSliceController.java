@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsSliceMapper;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -8,10 +7,10 @@ import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,8 +33,8 @@ public class AigcDocsSliceController {
     public R list(AigcDocsSlice data, QueryPage queryPage) {
         Page<AigcDocsSlice> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
         return R.ok(MybatisUtil.getData(docsSliceMapper.selectPage(page, Wrappers.<AigcDocsSlice>lambdaQuery()
-                .eq(!StrUtil.isBlank(data.getKnowledgeId()), AigcDocsSlice::getKnowledgeId, data.getKnowledgeId())
-                .eq(!StrUtil.isBlank(data.getDocsId()), AigcDocsSlice::getDocsId, data.getDocsId())
+                .eq(data.getKnowledgeId() != null, AigcDocsSlice::getKnowledgeId, data.getKnowledgeId())
+                .eq(data.getDocsId() != null, AigcDocsSlice::getDocsId, data.getDocsId())
                 .orderByDesc(AigcDocsSlice::getCreateTime)
         )));
     }

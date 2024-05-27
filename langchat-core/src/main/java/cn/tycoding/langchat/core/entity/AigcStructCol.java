@@ -19,8 +19,8 @@ public class AigcStructCol implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 列索引
@@ -30,12 +30,12 @@ public class AigcStructCol implements Serializable {
     /**
      * 知识库ID
      */
-    private String knowledgeId;
+    private Long knowledgeId;
 
     /**
      * 文档ID
      */
-    private String docsId;
+    private Long docsId;
 
     /**
      * 列名称

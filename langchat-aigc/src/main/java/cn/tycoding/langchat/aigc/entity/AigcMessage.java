@@ -23,23 +23,23 @@ public class AigcMessage implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 消息ID
      */
-    private String chatId;
+    private Long chatId;
 
     /**
      * 会话ID
      */
-    private String conversationId;
+    private Long conversationId;
 
     /**
      * 用户ID
      */
-    private String userId;
+    private Long userId;
     /**
      * 用户名
      */

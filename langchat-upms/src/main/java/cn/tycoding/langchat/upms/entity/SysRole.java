@@ -19,7 +19,7 @@ public class SysRole implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

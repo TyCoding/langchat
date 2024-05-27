@@ -32,13 +32,6 @@
       label: '支持导入word、txt、pdf、markdown等文本文件',
     },
     {
-      key: 'excel-import',
-      icon: PodiumOutline,
-      title: 'Excel文件导入',
-      isHidden: !props.data.isStruct,
-      label: '处理excel结构化数据，支持对Excel行列数据读取',
-    },
-    {
       key: 'url-import',
       icon: CloudDownloadOutline,
       title: '线上导入',
@@ -53,19 +46,25 @@
 </script>
 
 <template>
-  <div v-if="data">
-    <CheckCard
-      v-if="!data.isStruct"
-      :data-source="dataSource"
-      :default-checked="checked"
-      :justify="'start'"
-      @on-checked="handleCheck"
-    />
-    <n-card class="mt-3">
-      <DocInput v-if="checked == 'doc-input'" />
-      <URLImport v-if="checked == 'url-import'" />
-      <DocImport v-if="checked == 'doc-import'" />
-      <ExcelImport v-if="checked == 'excel-import'" />
+  <div v-if="data" class="flex flex-col gap-3">
+    <template v-if="!data.isStruct">
+      <CheckCard
+        :data-source="dataSource"
+        :default-checked="checked"
+        :justify="'start'"
+        @on-checked="handleCheck"
+      />
+    </template>
+
+    <n-card>
+      <template v-if="data.isStruct">
+        <ExcelImport />
+      </template>
+      <template v-else>
+        <DocInput v-if="checked == 'doc-input'" />
+        <URLImport v-if="checked == 'url-import'" />
+        <DocImport v-if="checked == 'doc-import'" />
+      </template>
     </n-card>
   </div>
 </template>

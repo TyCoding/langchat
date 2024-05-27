@@ -3,10 +3,10 @@ package cn.tycoding.langchat.aigc.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.experimental.Accessors;
 
 /**
  * @author tycoding
@@ -20,13 +20,13 @@ public class AigcDocs implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 知识库ID
      */
-    private String knowledgeId;
+    private Long knowledgeId;
 
     /**
      * 名称

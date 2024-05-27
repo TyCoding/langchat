@@ -18,6 +18,7 @@ import cn.tycoding.langchat.core.service.LangDocService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,7 @@ import java.util.List;
  * @author tycoding
  * @since 2024/4/25
  */
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/aigc/embedding")
@@ -66,7 +68,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/docs/{knowledgeId}")
-    public R docs(MultipartFile file, @PathVariable String knowledgeId) {
+    public R docs(MultipartFile file, @PathVariable Long knowledgeId) {
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()
                 .setName(oss.getFileName())
@@ -93,7 +95,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/struct/excel/{knowledgeId}")
-    public void structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
+    public R structExcel(MultipartFile file, @PathVariable Long knowledgeId) throws IOException {
         byte[] bytes = file.getBytes();
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()
@@ -104,8 +106,10 @@ public class EmbeddingEndpoint {
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
 
+        log.info("解析开始...");
         EasyExcel.read(new ByteArrayInputStream(bytes), new StructExcelListener(structColService, structRowService, knowledgeId, data.getId()))
                 .extraRead(CellExtraTypeEnum.MERGE)
                 .sheet().doRead();
+        return R.ok();
     }
 }

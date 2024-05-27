@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -20,8 +22,8 @@ public class AigcKnowledge implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 知识库名称
@@ -52,5 +54,7 @@ public class AigcKnowledge implements Serializable {
     private Integer docsNum = 0;
     @TableField(exist = false)
     private Long totalSize = 0L;
+    @TableField(exist = false)
+    private List<AigcDocs> docs = new ArrayList<>();
 }
 

@@ -67,7 +67,7 @@ public class AigcAuthUtil {
     /**
      * 获取登录用户ID
      */
-    public static String getUserId() {
+    public static Long getUserId() {
         AigcUserInfo userInfo = getUserInfo();
         if (userInfo == null) {
             return null;

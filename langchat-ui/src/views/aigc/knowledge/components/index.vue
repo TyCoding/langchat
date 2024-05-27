@@ -20,19 +20,14 @@
   const menu = ref();
   const menuOptions: MenuOption[] = [
     {
-      label: '文档管理',
-      key: 'doc-list',
-      icon: renderIcon(DocumentTextOutline),
-    },
-    {
-      label: '切片管理',
-      key: 'slice-list',
-      icon: renderIcon(AlbumsOutline),
-    },
-    {
       label: '数据导入',
       key: 'import-file',
       icon: renderIcon(CloudUploadOutline),
+    },
+    {
+      label: '文档管理',
+      key: 'doc-list',
+      icon: renderIcon(DocumentTextOutline),
     },
   ];
 
@@ -40,7 +35,14 @@
   onMounted(async () => {
     const id = router.currentRoute.value.params.id;
     knowledge.value = await getById(String(id));
-    menu.value = 'doc-list';
+    menu.value = menuOptions[0].key;
+    if (knowledge.value.isStruct) {
+      menuOptions.push({
+        label: '切片管理',
+        key: 'slice-list',
+        icon: renderIcon(AlbumsOutline),
+      });
+    }
   });
 
   function handleSelect(key: string, item: MenuOption) {

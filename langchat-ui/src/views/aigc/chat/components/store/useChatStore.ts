@@ -5,9 +5,8 @@ export interface ChatState {
   messages: any[];
   model: string;
   conversationId: string;
-  promptId: string | null;
-  promptText: string | null;
-  knowledgeId: string | null;
+  prompt: any;
+  knowledge: any;
 }
 
 export const useChatStore = defineStore('chat-store', {
@@ -16,9 +15,8 @@ export const useChatStore = defineStore('chat-store', {
       model: 'openai',
       conversationId: '',
       messages: [],
-      promptId: null,
-      promptText: null,
-      knowledgeId: null,
+      prompt: null,
+      knowledge: null,
     },
 
   getters: {},

@@ -19,23 +19,18 @@ public class AigcStructRow implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 知识库ID
      */
-    private String knowledgeId;
+    private Long knowledgeId;
 
     /**
      * 文档ID
      */
-    private String docsId;
-
-    /**
-     * 列ID
-     */
-    private String colId;
+    private Long docsId;
 
     /**
      * 列索引

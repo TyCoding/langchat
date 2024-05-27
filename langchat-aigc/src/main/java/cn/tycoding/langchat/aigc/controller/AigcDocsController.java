@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -33,7 +32,7 @@ public class AigcDocsController {
     public R list(AigcDocs data, QueryPage queryPage) {
         Page<AigcDocs> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
         return R.ok(MybatisUtil.getData(docsMapper.selectPage(page, Wrappers.<AigcDocs>lambdaQuery()
-                .eq(!StrUtil.isBlank(data.getKnowledgeId()), AigcDocs::getKnowledgeId, data.getKnowledgeId())
+                .eq(data.getKnowledgeId() != null, AigcDocs::getKnowledgeId, data.getKnowledgeId())
                 .eq(data.getSliceStatus() != null, AigcDocs::getSliceStatus, data.getSliceStatus())
                 .orderByDesc(AigcDocs::getCreateTime)
         )));

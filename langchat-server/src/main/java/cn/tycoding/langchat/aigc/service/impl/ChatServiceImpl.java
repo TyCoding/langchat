@@ -1,12 +1,14 @@
 package cn.tycoding.langchat.aigc.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
-import cn.tycoding.langchat.common.dto.*;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.dto.ChatRes;
+import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.enums.ModelConst;
@@ -56,7 +58,7 @@ public class ChatServiceImpl implements ChatService {
                         emitter.complete();
 
                         // save message
-                        if (StrUtil.isNotBlank(req.getConversationId())) {
+                        if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
                             saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
@@ -155,7 +157,7 @@ public class ChatServiceImpl implements ChatService {
                         emitter.complete();
 
                         // save message
-                        if (StrUtil.isNotBlank(req.getConversationId())) {
+                        if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
                             saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());

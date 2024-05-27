@@ -8,9 +8,12 @@
   const router = useRouter();
   const message = useMessage();
   const fileList = ref<any[]>([]);
+  const loading = ref(false);
 
   const handleImport = ({ file, onFinish, onError, onProgress }: UploadCustomRequestOptions) => {
+    message.info('数据解析中...');
     const kbId = router.currentRoute.value.params.id;
+    loading.value = true;
     embeddingExcel(
       String(kbId),
       {
@@ -24,19 +27,24 @@
     )
       .then((res) => {
         fileList.value.push(res);
-        message.success('上传成功');
+        message.success('数据解析成功...');
         onFinish();
       })
       .catch((err) => {
-        message.error('上传失败');
+        console.error(err);
+        message.error('数据解析失败...');
         onError();
+      })
+      .finally(() => {
+        loading.value = false;
       });
   };
 </script>
 
 <template>
-  <div>
+  <n-spin :show="loading">
     <n-upload
+      :disabled="loading"
       :custom-request="handleImport"
       directory-dnd
       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-exce"
@@ -53,7 +61,7 @@
         </n-p>
       </n-upload-dragger>
     </n-upload>
-  </div>
+  </n-spin>
 </template>
 
 <style scoped lang="less"></style>

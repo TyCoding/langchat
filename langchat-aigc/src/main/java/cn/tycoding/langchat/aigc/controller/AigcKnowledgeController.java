@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,7 +33,22 @@ public class AigcKnowledgeController {
 
     @GetMapping("/list")
     public R<List<AigcKnowledge>> list(AigcKnowledge data) {
-        return R.ok(kbService.list(Wrappers.<AigcKnowledge>lambdaQuery().orderByDesc(AigcKnowledge::getCreateTime)));
+        List<AigcKnowledge> list = kbService.list(Wrappers.<AigcKnowledge>lambdaQuery().orderByDesc(AigcKnowledge::getCreateTime));
+        List<Long> ids = list.stream().map(AigcKnowledge::getId).toList();
+        List<AigcDocs> docs = new ArrayList<>();
+        if (!ids.isEmpty()){
+            docs = docsMapper.selectList(Wrappers.<AigcDocs>lambdaQuery().in(AigcDocs::getKnowledgeId, ids));
+        }
+        Map<Long, List<AigcDocs>> docsMap = docs.stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
+        list.forEach(i -> {
+            List<AigcDocs> val = docsMap.get(i.getId());
+            if (val != null) {
+                i.setDocs(val);
+                i.setDocsNum(val.size());
+            }
+
+        });
+        return R.ok(list);
     }
 
     @GetMapping("/page")
@@ -43,7 +59,7 @@ public class AigcKnowledgeController {
                 .orderByDesc(AigcKnowledge::getCreateTime);
         Page<AigcKnowledge> iPage = kbService.page(page, queryWrapper);
 
-        Map<String, List<AigcDocs>> docsMap = docsMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
+        Map<Long, List<AigcDocs>> docsMap = docsMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
         iPage.getRecords().forEach(i -> {
             List<AigcDocs> docs = docsMap.get(i.getId());
             if (docs != null) {
