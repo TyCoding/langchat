@@ -30,12 +30,6 @@ public class ModelConst {
     public static final String AZUREOPENAI_TEXT = AZUREOPENAI + TEXT_SUFFIX;
     public static final String AZUREOPENAI_EMBED = AZUREOPENAI + EMBED_SUFFIX;
 
-    public static final String QIANFAN = "qianfan";
-    public static final String QIANFAN_TEXT = QIANFAN + TEXT_SUFFIX;
-
-    public static final String CHATGLM = "chatglm";
-    public static final String CHATGLM_TEXT = CHATGLM + TEXT_SUFFIX;
-
     public static final String PGVECTOR = "pgvector";
     public static final String MILVUS = "milvus";
 

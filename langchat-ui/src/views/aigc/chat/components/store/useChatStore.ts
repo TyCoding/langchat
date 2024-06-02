@@ -12,7 +12,7 @@ export interface ChatState {
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: 'openai',
+      model: 'gpt-4',
       conversationId: '',
       messages: [],
       prompt: null,

@@ -20,7 +20,7 @@
   const value = ref('');
   const loading = ref(true);
   const chatLoading = ref(false);
-  const model = ref('openai');
+  const model = ref('gpt-4');
   const chatStore = useChatStore();
 
   onMounted(async () => {
@@ -177,7 +177,8 @@
                   size="small"
                   v-model:value="chatStore.model"
                   :options="modelList"
-                  class="!w-[200px]"
+                  :consistent-menu-width="false"
+                  class="!w-auto"
                 />
 
                 <n-button @click="handleClear" size="small" type="success" secondary>
