@@ -52,7 +52,7 @@ public class ChatServiceImpl implements ChatService {
                         text.append(e);
                         emitter.send(new ChatRes(e));
                     })
-                    .onComplete(e -> {
+                    .onComplete((e) -> {
                         TokenUsage tokenUsage = e.tokenUsage();
                         emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
                         emitter.complete();

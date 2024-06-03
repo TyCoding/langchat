@@ -1,25 +1,24 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.aigc.dto.DocsTypeEnum;
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
-import cn.tycoding.langchat.aigc.enums.DocsTypeEnum;
 import cn.tycoding.langchat.aigc.listener.StructExcelListener;
+import cn.tycoding.langchat.aigc.service.AigcExcelColService;
+import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
-import cn.tycoding.langchat.core.service.AigcStructColService;
-import cn.tycoding.langchat.core.service.AigcStructRowService;
 import cn.tycoding.langchat.core.service.LangDocService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,10 +39,9 @@ public class EmbeddingEndpoint {
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final AigcOssService aigcOssService;
-    private final AigcStructColService structColService;
-    private final AigcStructRowService structRowService;
+    private final AigcExcelColService structColService;
+    private final AigcExcelRowService structRowService;
 
-    @Async
     @PostMapping("/text")
     public R text(@RequestBody AigcDocs data) {
         if (StrUtil.isBlankIfStr(data.getContent())) {

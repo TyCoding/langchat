@@ -18,6 +18,10 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-aigc</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>dev.langchain4j</groupId>

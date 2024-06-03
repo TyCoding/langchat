@@ -11,7 +11,7 @@ public class StreamEmitter {
     private final SseEmitter emitter;
 
     public StreamEmitter() {
-        emitter = new SseEmitter(10 * 1000L);
+        emitter = new SseEmitter(60 * 1000L);
     }
 
     public StreamEmitter(Long timeout) {

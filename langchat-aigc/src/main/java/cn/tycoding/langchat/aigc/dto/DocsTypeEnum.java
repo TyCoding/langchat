@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.aigc.enums;
+package cn.tycoding.langchat.aigc.dto;
 
 /**
  * @author tycoding

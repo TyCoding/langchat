@@ -1,10 +1,10 @@
 package cn.tycoding.langchat.core.tools;
 
+import cn.tycoding.langchat.aigc.entity.AigcExcelCol;
+import cn.tycoding.langchat.aigc.entity.AigcExcelRow;
+import cn.tycoding.langchat.aigc.service.AigcExcelColService;
+import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
-import cn.tycoding.langchat.core.entity.AigcStructCol;
-import cn.tycoding.langchat.core.entity.AigcStructRow;
-import cn.tycoding.langchat.core.service.AigcStructColService;
-import cn.tycoding.langchat.core.service.AigcStructRowService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import dev.langchain4j.agent.tool.Tool;
 
@@ -19,33 +19,33 @@ import java.util.List;
 public class StructTools {
 
     private final ChatReq req;
-    private final AigcStructColService structColService;
-    private final AigcStructRowService structRowService;
+    private final AigcExcelColService excelColService;
+    private final AigcExcelRowService excelRowService;
 
-    public StructTools(ChatReq req, AigcStructColService structColService, AigcStructRowService structRowService) {
+    public StructTools(ChatReq req, AigcExcelColService excelColService, AigcExcelRowService excelRowService) {
         this.req = req;
-        this.structColService = structColService;
-        this.structRowService = structRowService;
+        this.excelColService = excelColService;
+        this.excelRowService = excelRowService;
     }
 
     @Tool("Gets column name data in Data")
     List<String> getCols() {
-        List<AigcStructCol> list = structColService.list(Wrappers.<AigcStructCol>lambdaQuery()
-                .eq(req.getKnowledgeId() != null, AigcStructCol::getKnowledgeId, req.getKnowledgeId())
-                .eq(req.getDocsId() != null, AigcStructCol::getDocsId, req.getDocsId())
-                .select(AigcStructCol::getLabel)
+        List<AigcExcelCol> list = excelColService.list(Wrappers.<AigcExcelCol>lambdaQuery()
+                .eq(req.getKnowledgeId() != null, AigcExcelCol::getKnowledgeId, req.getKnowledgeId())
+                .eq(req.getDocsId() != null, AigcExcelCol::getDocsId, req.getDocsId())
+                .select(AigcExcelCol::getLabel)
         );
-        return list.stream().map(AigcStructCol::getLabel).toList();
+        return list.stream().map(AigcExcelCol::getLabel).toList();
     }
 
     @Tool("Gets all the data for a column")
     List<String> getColData(int col) {
-        List<AigcStructRow> list = structRowService.list(Wrappers.<AigcStructRow>lambdaQuery()
-                .eq(req.getKnowledgeId() != null, AigcStructRow::getKnowledgeId, req.getKnowledgeId())
-                .eq(req.getDocsId() != null, AigcStructRow::getDocsId, req.getDocsId())
-                .eq(AigcStructRow::getColIndex, col)
-                .select(AigcStructRow::getValue)
+        List<AigcExcelRow> list = excelRowService.list(Wrappers.<AigcExcelRow>lambdaQuery()
+                .eq(req.getKnowledgeId() != null, AigcExcelRow::getKnowledgeId, req.getKnowledgeId())
+                .eq(req.getDocsId() != null, AigcExcelRow::getDocsId, req.getDocsId())
+                .eq(AigcExcelRow::getColIndex, col)
+                .select(AigcExcelRow::getValue)
         );
-        return list.stream().map(AigcStructRow::getValue).toList();
+        return list.stream().map(AigcExcelRow::getValue).toList();
     }
 }

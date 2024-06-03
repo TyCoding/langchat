@@ -1,12 +1,12 @@
 package cn.tycoding.langchat.core.service.impl;
 
+import cn.tycoding.langchat.aigc.service.AigcExcelColService;
+import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
-import cn.tycoding.langchat.core.service.AigcStructColService;
-import cn.tycoding.langchat.core.service.AigcStructRowService;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangDocService;
 import cn.tycoding.langchat.core.tools.StructTools;
@@ -52,8 +52,8 @@ public class LangDocServiceImpl implements LangDocService {
     private final EmbedProvider provider;
     private final ModelProvider modelProvider;
     private final MilvusEmbeddingStore milvusEmbeddingStore;
-    private final AigcStructColService structColService;
-    private final AigcStructRowService structRowService;
+    private final AigcExcelColService excelColService;
+    private final AigcExcelRowService excelRowService;
 
     @Override
     public EmbeddingR embeddingText(ChatReq req) {
@@ -127,7 +127,7 @@ public class LangDocServiceImpl implements LangDocService {
         Assistant assistant = AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(chatLanguageModel)
                 .contentRetriever(contentRetriever)
-                .tools(new StructTools(req, structColService, structRowService))
+                .tools(new StructTools(req, excelColService, excelRowService))
                 .build();
 
         return assistant.chat(req.getPrompt().toUserMessage());

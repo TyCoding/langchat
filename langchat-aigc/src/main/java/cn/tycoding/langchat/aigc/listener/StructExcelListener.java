@@ -1,10 +1,10 @@
 package cn.tycoding.langchat.aigc.listener;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.core.entity.AigcStructCol;
-import cn.tycoding.langchat.core.entity.AigcStructRow;
-import cn.tycoding.langchat.core.service.AigcStructColService;
-import cn.tycoding.langchat.core.service.AigcStructRowService;
+import cn.tycoding.langchat.aigc.entity.AigcExcelCol;
+import cn.tycoding.langchat.aigc.entity.AigcExcelRow;
+import cn.tycoding.langchat.aigc.service.AigcExcelColService;
+import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.event.AnalysisEventListener;
@@ -24,16 +24,16 @@ import java.util.Map;
 public class StructExcelListener extends AnalysisEventListener<Map<Integer, String>> {
 
     private static final int HEAD_ROW_NUM = 1;
-    private final List<AigcStructCol> cols = new ArrayList<>();
+    private final List<AigcExcelCol> cols = new ArrayList<>();
     private final List<CellExtra> cellExtraList = new ArrayList<>();
     private final List<Map<Integer, String>> list = new ArrayList<>();
 
-    private final AigcStructColService structColService;
-    private final AigcStructRowService structRowService;
+    private final AigcExcelColService structColService;
+    private final AigcExcelRowService structRowService;
     private final Long knowledgeId;
     private final Long docsId;
 
-    public StructExcelListener(AigcStructColService structColService, AigcStructRowService structRowService, Long knowledgeId, Long docsId) {
+    public StructExcelListener(AigcExcelColService structColService, AigcExcelRowService structRowService, Long knowledgeId, Long docsId) {
         this.structColService = structColService;
         this.structRowService = structRowService;
         this.knowledgeId = knowledgeId;
@@ -52,11 +52,11 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
         }
 
         structColService.saveBatch(cols);
-        List<AigcStructRow> rows = new ArrayList<>();
+        List<AigcExcelRow> rows = new ArrayList<>();
         list.forEach(i -> {
             i.forEach((k, v) -> {
                 if (StrUtil.isNotBlank(v)) {
-                    rows.add(new AigcStructRow()
+                    rows.add(new AigcExcelRow()
                             .setValue(v)
                             .setColIndex(k)
                             .setDocsId(docsId)
@@ -70,7 +70,7 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
         headMap.forEach((k, v) -> {
-            cols.add(new AigcStructCol()
+            cols.add(new AigcExcelCol()
                     .setColIndex(v.getColumnIndex())
                     .setLabel(v.getStringValue())
                     .setKnowledgeId(knowledgeId)

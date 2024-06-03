@@ -1,4 +1,4 @@
-package cn.tycoding.langchat.core.entity;
+package cn.tycoding.langchat.aigc.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class AigcStructRow implements Serializable {
+public class AigcExcelRow implements Serializable {
     private static final long serialVersionUID = 548724967827903685L;
 
     /**
