@@ -75,6 +75,7 @@
     await scrollToBottom();
     await chatStore.addMessage('', 'assistant', aiChatId.value);
     await scrollToBottomIfAtBottom();
+
     await onChat(msg);
   }
 
@@ -84,9 +85,9 @@
         {
           chatId: chatId.value,
           conversationId: chatStore.conversationId,
-          promptId: chatStore.prompt.id,
-          promptText: chatStore.prompt.prompt,
-          knowledgeId: chatStore.knowledge.id,
+          promptId: chatStore.prompt?.id,
+          promptText: chatStore.prompt?.prompt,
+          knowledgeId: chatStore.knowledge?.id,
           message,
           role: 'user',
           model: chatStore.model,

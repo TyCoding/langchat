@@ -8,7 +8,6 @@ import cn.tycoding.langchat.aigc.mapper.AigcConversationMapper;
 import cn.tycoding.langchat.aigc.mapper.AigcMessageMapper;
 import cn.tycoding.langchat.aigc.mapper.AigcUserMapper;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
-import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -75,12 +74,6 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
 
     @Override
     public AigcConversation addConversation(AigcConversation conversation) {
-        String title = conversation.getTitle();
-        if (StrUtil.isBlank(title)) {
-            Long count = aigcConversationMapper.selectCount(Wrappers.lambdaQuery());
-            title = "New Chat" + (count == 0 ? "" : count);
-        }
-//        conversation.setTitle(title).setUserId(AuthUtil.getUserId()).setCreateTime(new Date());
         aigcConversationMapper.insert(conversation);
         return conversation;
     }
@@ -102,14 +95,6 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
 
     @Override
     public AigcMessage addMessage(AigcMessage message) {
-        if (message.getConversationId() != null && RoleEnum.USER.getName()
-                .equals(message.getRole())) {
-            // create new conversation
-            AigcConversation conversation = new AigcConversation();
-            addConversation(conversation);
-            message.setConversationId(conversation.getId());
-        }
-
         message.setCreateTime(new Date());
         baseMapper.insert(message);
         return message;

@@ -24,5 +24,5 @@ public class OllamaProps {
     private Integer numPredict;
     private List<String> stop;
     private String format;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
 }

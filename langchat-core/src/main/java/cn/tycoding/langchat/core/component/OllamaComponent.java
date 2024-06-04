@@ -1,7 +1,7 @@
 package cn.tycoding.langchat.core.component;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.core.enums.ModelConst;
+import cn.tycoding.langchat.core.consts.ModelConst;
 import cn.tycoding.langchat.core.properties.LangChatProps;
 import cn.tycoding.langchat.core.properties.chat.OllamaProps;
 import cn.tycoding.langchat.core.properties.embed.OllamaEmbedProps;

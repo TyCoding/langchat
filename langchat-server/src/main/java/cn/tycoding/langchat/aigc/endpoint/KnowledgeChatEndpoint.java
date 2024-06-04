@@ -35,9 +35,11 @@ public class KnowledgeChatEndpoint {
         if (req.getKnowledgeId() != null) {
             req.setPrompt(PromptUtil.buildDocs(req.getMessage()));
             chatService.docsChat(req);
-        }
-        if (req.getPromptId() != null) {
+        } else if (req.getPromptId() != null) {
             req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
+            chatService.chat(req);
+        } else {
+            req.setPrompt(PromptUtil.build(req.getMessage()));
             chatService.chat(req);
         }
         return emitter.get();

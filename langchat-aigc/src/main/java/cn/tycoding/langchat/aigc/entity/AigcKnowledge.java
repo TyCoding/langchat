@@ -43,7 +43,7 @@ public class AigcKnowledge implements Serializable {
     /**
      * 是否是结构化数据
      */
-    private Boolean isStruct = false;
+    private Boolean isExcel = false;
 
     /**
      * 创建时间

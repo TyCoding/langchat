@@ -11,7 +11,7 @@ import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
-import cn.tycoding.langchat.core.enums.ModelConst;
+import cn.tycoding.langchat.core.consts.ModelConst;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.core.service.LangDocService;
 import dev.langchain4j.data.image.Image;
@@ -91,7 +91,7 @@ public class ChatServiceImpl implements ChatService {
     public void stream(TextR req) {
         StreamEmitter emitter = req.getEmitter();
         long startTime = System.currentTimeMillis();
-        ChatReq chat = new ChatReq().setModel(ModelConst.OPENAI).setPrompt(req.getPrompt());
+        ChatReq chat = new ChatReq().setModel(req.getModel()).setPrompt(req.getPrompt());
 
         try {
             langChatService.stream(chat)

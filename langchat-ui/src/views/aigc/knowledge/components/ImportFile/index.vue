@@ -47,7 +47,7 @@
 
 <template>
   <div v-if="data" class="flex flex-col gap-3">
-    <template v-if="!data.isStruct">
+    <template v-if="!data.isExcel">
       <CheckCard
         :data-source="dataSource"
         :default-checked="checked"
@@ -57,7 +57,7 @@
     </template>
 
     <n-card>
-      <template v-if="data.isStruct">
+      <template v-if="data.isExcel">
         <ExcelImport />
       </template>
       <template v-else>

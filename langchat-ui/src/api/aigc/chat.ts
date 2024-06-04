@@ -15,7 +15,7 @@ export function chat(data: any, onDownloadProgress?: (progressEvent: AxiosProgre
   );
 }
 
-export function clean(conversationId: string) {
+export function clean(conversationId: string | null) {
   return http.request({
     url: `/aigc/chat/knowledge/cleanMessage/${conversationId}`,
     method: 'delete',

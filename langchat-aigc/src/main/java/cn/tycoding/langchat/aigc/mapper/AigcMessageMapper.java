@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.aigc.mapper;
 
-import cn.tycoding.langchat.aigc.dto.MsgChartDto;
+import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,6 +28,6 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
         ORDER BY
             date DESC;
     """)
-    List<MsgChartDto> charts();
+    List<Dict> charts();
 }
 

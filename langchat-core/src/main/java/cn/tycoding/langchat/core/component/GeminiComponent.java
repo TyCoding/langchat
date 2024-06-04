@@ -1,15 +1,17 @@
 package cn.tycoding.langchat.core.component;
 
-import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.properties.LangChatProps;
-import cn.tycoding.langchat.core.properties.chat.GeminiProps;
+import com.alibaba.fastjson2.JSON;
 import dev.langchain4j.model.vertexai.VertexAiGeminiChatModel;
 import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static cn.tycoding.langchat.core.consts.ModelConst.*;
+import static cn.tycoding.langchat.core.consts.PropConst.GEMINI_CON;
 
 /**
  * @author tycoding
@@ -21,51 +23,43 @@ public class GeminiComponent {
 
     private final LangChatProps props;
 
-    @Bean(ModelConst.GEMINI)
-    @ConditionalOnProperty(value = "langchat.gemini.project", matchIfMissing = false)
-    public VertexAiGeminiStreamingChatModel vertexAiGeminiStreamingChatModel() {
-        GeminiProps prop = props.getGemini();
-        return VertexAiGeminiStreamingChatModel.builder()
-                .project(prop.getProject())
-                .project(prop.getProject())
-                .location(prop.getLocation())
-                .modelName(prop.getModelName())
-                .temperature(prop.getTemperature())
-                .maxOutputTokens(prop.getMaxOutputTokens())
-                .topK(prop.getTopK())
-                .topP(prop.getTopP())
-                .build();
+    @Bean(GEMINI_F)
+    @ConditionalOnProperty(GEMINI_CON)
+    public VertexAiGeminiStreamingChatModel vertexAiGeminiStreamingChatModel_f() {
+        VertexAiGeminiStreamingChatModel.VertexAiGeminiStreamingChatModelBuilder builder =
+                JSON.parseObject(JSON.toJSONString(props.getOpenai()), VertexAiGeminiStreamingChatModel.VertexAiGeminiStreamingChatModelBuilder.class);
+        BeanUtils.copyProperties(props.getGemini(), builder);
+        builder.modelName(GEMINI_F);
+        return builder.build();
     }
 
-    @Bean(ModelConst.GEMINI_TEXT)
-    @ConditionalOnProperty(value = "langchat.gemini.project", matchIfMissing = false)
-    public VertexAiGeminiChatModel vertexAiGeminiChatModel() {
-        GeminiProps prop = props.getGemini();
-        return VertexAiGeminiChatModel.builder()
-                .project(prop.getProject())
-                .project(prop.getProject())
-                .location(prop.getLocation())
-                .modelName(prop.getModelName())
-                .temperature(prop.getTemperature())
-                .maxOutputTokens(prop.getMaxOutputTokens())
-                .topK(prop.getTopK())
-                .topP(prop.getTopP())
-                .build();
+    @Bean(GEMINI_P)
+    @ConditionalOnProperty(GEMINI_CON)
+    public VertexAiGeminiStreamingChatModel vertexAiGeminiStreamingChatModel_p() {
+        VertexAiGeminiStreamingChatModel.VertexAiGeminiStreamingChatModelBuilder builder =
+                JSON.parseObject(JSON.toJSONString(props.getOpenai()), VertexAiGeminiStreamingChatModel.VertexAiGeminiStreamingChatModelBuilder.class);
+        BeanUtils.copyProperties(props.getGemini(), builder);
+        builder.modelName(GEMINI_P);
+        return builder.build();
     }
 
-    @Bean(ModelConst.GEMINI_IMAGE)
-    @ConditionalOnProperty(value = "langchat.gemini.project", matchIfMissing = false)
-    public VertexAiGeminiChatModel vertexAiGeminiImageChatModel() {
-        GeminiProps prop = props.getGemini();
-        return VertexAiGeminiChatModel.builder()
-                .project(prop.getProject())
-                .project(prop.getProject())
-                .location(prop.getLocation())
-                .modelName(StrUtil.isNotBlank(prop.getModelName()) ? prop.getModelName() : "gemini-pro-vision")
-                .temperature(prop.getTemperature())
-                .maxOutputTokens(prop.getMaxOutputTokens())
-                .topK(prop.getTopK())
-                .topP(prop.getTopP())
-                .build();
+    @Bean(GEMINI_F + TEXT_SUFFIX)
+    @ConditionalOnProperty(GEMINI_CON)
+    public VertexAiGeminiChatModel vertexAiGeminiChatModel_f() {
+        VertexAiGeminiChatModel.VertexAiGeminiChatModelBuilder builder =
+                JSON.parseObject(JSON.toJSONString(props.getOpenai()), VertexAiGeminiChatModel.VertexAiGeminiChatModelBuilder.class);
+        BeanUtils.copyProperties(props.getGemini(), builder);
+        builder.modelName(GEMINI_F);
+        return builder.build();
+    }
+
+    @Bean(GEMINI_P + TEXT_SUFFIX)
+    @ConditionalOnProperty(GEMINI_CON)
+    public VertexAiGeminiChatModel vertexAiGeminiChatModel_p() {
+        VertexAiGeminiChatModel.VertexAiGeminiChatModelBuilder builder =
+                JSON.parseObject(JSON.toJSONString(props.getOpenai()), VertexAiGeminiChatModel.VertexAiGeminiChatModelBuilder.class);
+        BeanUtils.copyProperties(props.getGemini(), builder);
+        builder.modelName(GEMINI_P);
+        return builder.build();
     }
 }

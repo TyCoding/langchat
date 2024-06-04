@@ -14,6 +14,6 @@ public class OllamaEmbedProps {
 
     private String baseUrl;
     private String modelName;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
     private Integer maxRetries;
 }

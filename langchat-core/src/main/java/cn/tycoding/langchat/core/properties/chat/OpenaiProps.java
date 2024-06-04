@@ -34,7 +34,7 @@ public class OpenaiProps {
     private String responseFormat;
     private Integer seed;
     private String user;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
     private Proxy proxy;
     private Boolean logRequests;
     private Boolean logResponses;

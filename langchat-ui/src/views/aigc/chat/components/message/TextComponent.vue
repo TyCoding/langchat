@@ -40,7 +40,6 @@
   const wrapClass = computed(() => {
     return [
       'text-wrap',
-      'min-w-[20px]',
       'rounded-md',
       isMobile.value ? 'p-2' : 'px-3 py-2',
       props.inversion ? 'bg-[#d2f9d1]' : 'bg-[#f4f6f8]',
@@ -107,7 +106,7 @@
 <template>
   <div class="text-black" :class="wrapClass">
     <div ref="textRef" class="leading-relaxed break-words">
-      <div v-if="!inversion" class="min-w-[80px]">
+      <div v-if="!inversion">
         <div v-if="!asRawText" class="markdown-body" v-html="text"></div>
         <div v-else class="whitespace-pre-wrap" v-text="text"></div>
       </div>

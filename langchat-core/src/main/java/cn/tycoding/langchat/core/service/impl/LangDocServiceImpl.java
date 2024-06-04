@@ -4,7 +4,6 @@ import cn.tycoding.langchat.aigc.service.AigcExcelColService;
 import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
-import cn.tycoding.langchat.core.enums.ModelConst;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.Assistant;
@@ -96,7 +95,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public TokenStream search(ChatReq req) {
-        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
+        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
 //        EmbeddingModel model = provider.embed();
         EmbeddingModel model = new AllMiniLmL6V2EmbeddingModel();
         Function<Query, Filter> filterByUserId = (query) -> metadataKey("knowledgeId").isEqualTo(req.getKnowledgeId());
@@ -117,8 +116,8 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public TokenStream searchStruct(ChatReq req) {
-        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(ModelConst.OPENAI);
-        EmbeddingModel model = provider.embed();
+        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
+        EmbeddingModel model = provider.embed(req.getModel());
 
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingModel(model)

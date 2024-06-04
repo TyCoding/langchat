@@ -7,7 +7,7 @@ import cn.tycoding.langchat.common.dto.*;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
-import cn.tycoding.langchat.core.enums.ModelConst;
+import cn.tycoding.langchat.core.consts.ModelConst;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

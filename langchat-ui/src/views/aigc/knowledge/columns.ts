@@ -72,7 +72,7 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入知识库名称', trigger: ['blur'] }],
   },
   {
-    field: 'isStruct',
+    field: 'isExcel',
     component: 'NRadioGroup',
     label: '结构化文档',
     labelMessage: '是否填充的结构化文档数据',

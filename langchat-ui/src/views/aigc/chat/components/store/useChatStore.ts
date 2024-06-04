@@ -1,19 +1,12 @@
 import { defineStore } from 'pinia';
 import { formatToDateTime } from '@/utils/dateUtil';
-
-export interface ChatState {
-  messages: any[];
-  model: string;
-  conversationId: string;
-  prompt: any;
-  knowledge: any;
-}
+import { ChatState } from '@/views/aigc/chat/components/store/chat';
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
       model: 'gpt-4',
-      conversationId: '',
+      conversationId: null,
       messages: [],
       prompt: null,
       knowledge: null,

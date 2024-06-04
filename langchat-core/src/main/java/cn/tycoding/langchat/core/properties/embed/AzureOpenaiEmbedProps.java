@@ -17,7 +17,7 @@ public class AzureOpenaiEmbedProps {
     private String serviceVersion;
     private String apiKey;
     private String deploymentName;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
     private Integer maxRetries;
     private ProxyOptions proxyOptions;
     private boolean logRequestsAndResponses;

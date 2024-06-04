@@ -1,10 +1,11 @@
 package cn.tycoding.langchat.core.properties.image;
 
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.net.Proxy;
 import java.nio.file.Path;
 import java.time.Duration;
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author tycoding
@@ -23,7 +24,7 @@ public class OpenaiImageProps {
     private String style;
     private String user;
     private String responseFormat;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
     private Integer maxRetries;
     private Proxy proxy;
     private Boolean logRequests;

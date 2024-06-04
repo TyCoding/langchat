@@ -6,7 +6,6 @@ import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangChatService;
-import cn.tycoding.langchat.core.service.PersistentChatMemoryStore;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
@@ -31,16 +30,16 @@ import org.springframework.stereotype.Service;
 public class LangChatServiceImpl implements LangChatService {
 
     private final ModelProvider provider;
-    private final PersistentChatMemoryStore chatMemoryStore;
+    private final ChatMemoryService chatMemoryService;
 
     @Override
     public TokenStream stream(ChatReq req) {
         StreamingChatLanguageModel model = provider.stream(req.getModel());
 
-        ChatMemoryProvider chatMemoryProvider = memoryId -> MessageWindowChatMemory.builder()
-                .id(memoryId)
+        ChatMemoryProvider chatMemoryProvider = (memoryId) -> MessageWindowChatMemory.builder()
+                .id(req.getConversationId() == null ? memoryId : req.getConversationId())
                 .maxMessages(10)
-                .chatMemoryStore(chatMemoryStore)
+                .chatMemoryStore(chatMemoryService)
                 .build();
 
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);

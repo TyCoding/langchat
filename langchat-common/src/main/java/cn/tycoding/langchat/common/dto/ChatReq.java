@@ -23,7 +23,7 @@ public class ChatReq {
 
     private String username;
 
-    private Long chatId;
+    private String chatId;
 
     private Long promptId;
 

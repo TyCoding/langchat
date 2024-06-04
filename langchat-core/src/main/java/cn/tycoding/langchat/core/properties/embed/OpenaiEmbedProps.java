@@ -19,7 +19,7 @@ public class OpenaiEmbedProps {
     private String modelName;
     private Integer dimensions;
     private String user;
-    private Duration timeout;
+    private Duration timeout = Duration.ofSeconds(600);
     private Integer maxRetries;
     private Proxy proxy;
     private Boolean logRequests;

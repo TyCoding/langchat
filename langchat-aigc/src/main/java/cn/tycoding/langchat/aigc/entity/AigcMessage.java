@@ -29,7 +29,7 @@ public class AigcMessage implements Serializable {
     /**
      * 消息ID
      */
-    private Long chatId;
+    private String chatId;
 
     /**
      * 会话ID

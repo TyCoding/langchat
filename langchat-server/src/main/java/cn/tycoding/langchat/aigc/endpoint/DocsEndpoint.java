@@ -27,8 +27,14 @@ public class DocsEndpoint {
     public SseEmitter chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
-        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.DOCUMENT));
-        chatService.docsChat(req);
+
+        if (req.getConversationId() == null && req.getDocsId() == null) {
+            req.setPrompt(PromptUtil.build(req.getMessage()));
+            chatService.chat(req);
+        } else {
+            req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.DOCUMENT));
+            chatService.docsChat(req);
+        }
         return emitter.get();
     }
 

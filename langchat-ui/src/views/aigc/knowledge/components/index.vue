@@ -36,7 +36,7 @@
     const id = router.currentRoute.value.params.id;
     knowledge.value = await getById(String(id));
     menu.value = menuOptions[0].key;
-    if (knowledge.value.isStruct) {
+    if (knowledge.value.isExcel) {
       menuOptions.push({
         label: '切片管理',
         key: 'slice-list',
