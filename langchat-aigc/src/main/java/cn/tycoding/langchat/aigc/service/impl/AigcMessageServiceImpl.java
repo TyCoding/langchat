@@ -49,8 +49,8 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
                 .orderByDesc(AigcConversation::getCreateTime));
 
         if (!iPage.getRecords().isEmpty()) {
-            Map<Long, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
-            Set<Long> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
+            Map<String, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
+            Set<String> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
             List<AigcMessage> messages = baseMapper.selectList(Wrappers.<AigcMessage>lambdaQuery()
                     .in(AigcMessage::getConversationId, ids)
                     .orderByDesc(AigcMessage::getCreateTime));

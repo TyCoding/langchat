@@ -23,8 +23,8 @@ public class AigcMessage implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 消息ID
@@ -34,12 +34,12 @@ public class AigcMessage implements Serializable {
     /**
      * 会话ID
      */
-    private Long conversationId;
+    private String conversationId;
 
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
     /**
      * 用户名
      */

@@ -97,7 +97,7 @@
         :size="'small'"
       >
         <template #tableTitle>
-          <n-button size="small" type="primary" @click="handleAdd">
+          <n-button type="primary" @click="handleAdd">
             <template #icon>
               <n-icon>
                 <PlusOutlined />

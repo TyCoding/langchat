@@ -66,7 +66,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/docs/{knowledgeId}")
-    public R docs(MultipartFile file, @PathVariable Long knowledgeId) {
+    public R docs(MultipartFile file, @PathVariable String knowledgeId) {
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()
                 .setName(oss.getFileName())
@@ -93,7 +93,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/struct/excel/{knowledgeId}")
-    public R structExcel(MultipartFile file, @PathVariable Long knowledgeId) throws IOException {
+    public R structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
         byte[] bytes = file.getBytes();
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()

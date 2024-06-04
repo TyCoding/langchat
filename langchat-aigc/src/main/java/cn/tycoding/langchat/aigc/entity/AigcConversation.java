@@ -22,18 +22,18 @@ public class AigcConversation implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 提示词ID
      */
-    private Long promptId;
+    private String promptId;
 
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 会话标题

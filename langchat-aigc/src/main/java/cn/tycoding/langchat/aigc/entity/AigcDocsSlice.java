@@ -20,8 +20,8 @@ public class AigcDocsSlice implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 向量库的ID
@@ -31,12 +31,12 @@ public class AigcDocsSlice implements Serializable {
     /**
      * 文档ID
      */
-    private Long docsId;
+    private String docsId;
 
     /**
      * 知识库ID
      */
-    private Long knowledgeId;
+    private String knowledgeId;
 
     /**
      * 文档名称

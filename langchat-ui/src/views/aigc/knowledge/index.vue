@@ -83,11 +83,13 @@
             <PlusOutlined />
           </n-icon>
         </template>
-        新建
+        新增知识库
       </n-button>
     </div>
 
     <n-spin :show="loading">
+      <n-empty v-if="list == null || list.length == 0" class="mt-10" />
+
       <ul class="mt-6 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
         <li v-for="(item, idx) in list" :key="idx" class="rounded-lg bg-gray-100">
           <div class="flex items-center justify-between p-4">

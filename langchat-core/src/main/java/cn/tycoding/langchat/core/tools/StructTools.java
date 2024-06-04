@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.core.tools;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcExcelCol;
 import cn.tycoding.langchat.aigc.entity.AigcExcelRow;
 import cn.tycoding.langchat.aigc.service.AigcExcelColService;
@@ -31,8 +32,8 @@ public class StructTools {
     @Tool("Gets column name data in Data")
     List<String> getCols() {
         List<AigcExcelCol> list = excelColService.list(Wrappers.<AigcExcelCol>lambdaQuery()
-                .eq(req.getKnowledgeId() != null, AigcExcelCol::getKnowledgeId, req.getKnowledgeId())
-                .eq(req.getDocsId() != null, AigcExcelCol::getDocsId, req.getDocsId())
+                .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcExcelCol::getKnowledgeId, req.getKnowledgeId())
+                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcExcelCol::getDocsId, StrUtil.isNotBlank(req.getDocsId()))
                 .select(AigcExcelCol::getLabel)
         );
         return list.stream().map(AigcExcelCol::getLabel).toList();
@@ -41,8 +42,8 @@ public class StructTools {
     @Tool("Gets all the data for a column")
     List<String> getColData(int col) {
         List<AigcExcelRow> list = excelRowService.list(Wrappers.<AigcExcelRow>lambdaQuery()
-                .eq(req.getKnowledgeId() != null, AigcExcelRow::getKnowledgeId, req.getKnowledgeId())
-                .eq(req.getDocsId() != null, AigcExcelRow::getDocsId, req.getDocsId())
+                .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcExcelRow::getKnowledgeId, req.getKnowledgeId())
+                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcExcelRow::getDocsId, StrUtil.isNotBlank(req.getDocsId()))
                 .eq(AigcExcelRow::getColIndex, col)
                 .select(AigcExcelRow::getValue)
         );

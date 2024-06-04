@@ -20,13 +20,13 @@ public class AigcDocs implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 知识库ID
      */
-    private Long knowledgeId;
+    private String knowledgeId;
 
     /**
      * 名称

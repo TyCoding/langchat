@@ -42,7 +42,7 @@
 </script>
 
 <template>
-  <n-card class="p-6 pt-2 w-full h-full mb-2">
+  <n-card class="p-4 pt-1 w-full h-full">
     <div class="mb-2 flex flex-wrap justify-between items-center">
       <div class="font-bold flex justify-center items-center flex-wrap gap-2">
         <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
@@ -54,10 +54,10 @@
           v-model:value="chatStore.model"
           :options="modelList"
           :consistent-menu-width="false"
-          class="!w-auto"
+          class="!w-32"
         />
 
-        <n-button @click="handleClear" size="small" type="success" secondary>
+        <n-button @click="handleClear" size="small" type="warning" secondary>
           <template #icon>
             <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
           </template>
@@ -65,7 +65,7 @@
         </n-button>
       </n-space>
     </div>
-    <div style="height: calc(100vh - 200px)" class="flex flex-col w-full overflow-hidden">
+    <div style="height: calc(100vh - 180px)" class="flex flex-col w-full overflow-hidden">
       <main ref="contentRef" class="flex-1 overflow-hidden overflow-y-auto">
         <n-spin :show="chatLoading" class="min-h-full flex-1 py-4" description="Loading...">
           <Chat />

@@ -19,8 +19,8 @@ public class AigcExcelCol implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 列索引
@@ -30,12 +30,12 @@ public class AigcExcelCol implements Serializable {
     /**
      * 知识库ID
      */
-    private Long knowledgeId;
+    private String knowledgeId;
 
     /**
      * 文档ID
      */
-    private Long docsId;
+    private String docsId;
 
     /**
      * 列名称

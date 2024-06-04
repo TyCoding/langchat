@@ -42,7 +42,7 @@
       'text-wrap',
       'rounded-md',
       isMobile.value ? 'p-2' : 'px-3 py-2',
-      props.inversion ? 'bg-[#d2f9d1]' : 'bg-[#f4f6f8]',
+      props.inversion ? 'bg-[#70c0e829]' : 'bg-[#f4f6f8]',
       // 黑色模式下，左边是黑色1e1e20，右边是绿色a1dc95
       // props.inversion ? 'dark:bg-[#a1dc95]' : 'dark:bg-[#1e1e20]',
       props.inversion ? 'message-request' : 'message-reply',

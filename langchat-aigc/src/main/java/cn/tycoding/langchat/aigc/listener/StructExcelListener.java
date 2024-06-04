@@ -30,10 +30,10 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
 
     private final AigcExcelColService structColService;
     private final AigcExcelRowService structRowService;
-    private final Long knowledgeId;
-    private final Long docsId;
+    private final String knowledgeId;
+    private final String docsId;
 
-    public StructExcelListener(AigcExcelColService structColService, AigcExcelRowService structRowService, Long knowledgeId, Long docsId) {
+    public StructExcelListener(AigcExcelColService structColService, AigcExcelRowService structRowService, String knowledgeId, String docsId) {
         this.structColService = structColService;
         this.structRowService = structRowService;
         this.knowledgeId = knowledgeId;

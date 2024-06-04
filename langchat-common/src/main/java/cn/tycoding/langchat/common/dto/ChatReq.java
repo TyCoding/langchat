@@ -17,21 +17,21 @@ public class ChatReq {
 
     private String message;
 
-    private Long conversationId;
+    private String conversationId;
 
-    private Long userId;
+    private String userId;
 
     private String username;
 
     private String chatId;
 
-    private Long promptId;
+    private String promptId;
 
     private String promptText;
 
-    private Long knowledgeId;
+    private String knowledgeId;
 
-    private Long docsId;
+    private String docsId;
 
     private String path;
 

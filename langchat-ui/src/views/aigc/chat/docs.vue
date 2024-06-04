@@ -94,7 +94,9 @@
           <n-tab-pane name="prompt" tab="提示词库" />
         </n-tabs>
       </div>
+
       <n-spin :show="loading">
+        <n-empty v-if="list == null || list.length == 0" class="mt-10" />
         <div class="flex justify-center items-center p-4 pt-0 rounded overflow-y-auto">
           <ul class="mt-2 space-y-3 w-full">
             <li v-for="(item, idx) in list" :key="idx" @click="onCheck(item)">
@@ -171,10 +173,10 @@
                   v-model:value="chatStore.model"
                   :options="modelList"
                   :consistent-menu-width="false"
-                  class="!w-auto"
+                  class="!w-32"
                 />
 
-                <n-button @click="handleClear" size="small" type="success" secondary>
+                <n-button @click="handleClear" size="small" type="warning" secondary>
                   <template #icon>
                     <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
                   </template>

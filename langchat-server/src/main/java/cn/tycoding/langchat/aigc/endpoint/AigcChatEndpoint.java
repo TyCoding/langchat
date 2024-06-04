@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/aigc/chat")
 @RestController
 @AllArgsConstructor
-public class ChatEndpoint {
+public class AigcChatEndpoint {
 
     private final ChatService chatService;
 

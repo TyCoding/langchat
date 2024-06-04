@@ -19,18 +19,18 @@ public class AigcExcelRow implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 知识库ID
      */
-    private Long knowledgeId;
+    private String knowledgeId;
 
     /**
      * 文档ID
      */
-    private Long docsId;
+    private String docsId;
 
     /**
      * 列索引

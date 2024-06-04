@@ -97,13 +97,13 @@
         :size="'small'"
       >
         <template #tableTitle>
-          <n-button size="small" type="primary" @click="handleAdd">
+          <n-button type="primary" @click="handleAdd">
             <template #icon>
               <n-icon>
                 <PlusOutlined />
               </n-icon>
             </template>
-            新建
+            新增提示词
           </n-button>
         </template>
       </BasicTable>
