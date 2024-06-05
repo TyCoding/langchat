@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80300 (8.3.0)
+ Source Server Version : 80029 (8.0.29)
  Source Host           : localhost:3306
  Source Schema         : langchat
 
  Target Server Type    : MySQL
- Target Server Version : 80300 (8.3.0)
+ Target Server Version : 80029 (8.0.29)
  File Encoding         : 65001
 
- Date: 04/06/2024 14:33:57
+ Date: 05/06/2024 22:47:57
 */
 
 SET NAMES utf8mb4;
@@ -22,13 +22,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_conversation`;
 CREATE TABLE `aigc_conversation` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
-  `prompt_id` bigint DEFAULT NULL COMMENT '提示词ID',
+  `id` varchar(50) NOT NULL COMMENT '主键',
+  `user_id` varchar(50) DEFAULT NULL COMMENT '用户ID',
+  `prompt_id` varchar(50) DEFAULT NULL COMMENT '提示词ID',
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '标题',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='对话窗口表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='对话窗口表';
 
 -- ----------------------------
 -- Records of aigc_conversation
@@ -41,8 +41,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_docs`;
 CREATE TABLE `aigc_docs` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `knowledge_id` bigint NOT NULL COMMENT '知识库ID',
+  `id` varchar(50) NOT NULL COMMENT '主键',
+  `knowledge_id` varchar(50) NOT NULL COMMENT '知识库ID',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `type` varchar(50) DEFAULT NULL COMMENT '类型',
   `origin` varchar(50) DEFAULT NULL COMMENT '来源',
@@ -52,7 +52,7 @@ CREATE TABLE `aigc_docs` (
   `slice_status` tinyint(1) DEFAULT NULL COMMENT '切片状态',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文档表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文档表';
 
 -- ----------------------------
 -- Records of aigc_docs
@@ -65,10 +65,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_docs_slice`;
 CREATE TABLE `aigc_docs_slice` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `vector_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '向量库的ID',
-  `docs_id` bigint NOT NULL COMMENT '文档ID',
-  `knowledge_id` bigint NOT NULL COMMENT '知识库ID',
+  `docs_id` varchar(50) NOT NULL COMMENT '文档ID',
+  `knowledge_id` varchar(50) NOT NULL COMMENT '知识库ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '文档名称',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '切片内容',
   `word_num` int DEFAULT NULL COMMENT '字符数',
@@ -88,13 +88,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_excel_col`;
 CREATE TABLE `aigc_excel_col` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `col_index` bigint DEFAULT NULL COMMENT '列索引',
   `label` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '列名称',
-  `knowledge_id` bigint DEFAULT NULL COMMENT '知识库ID',
-  `docs_id` bigint DEFAULT NULL COMMENT '文档ID',
+  `knowledge_id` varchar(50) DEFAULT NULL COMMENT '知识库ID',
+  `docs_id` varchar(50) DEFAULT NULL COMMENT '文档ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='excel列表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='excel列表';
 
 -- ----------------------------
 -- Records of aigc_excel_col
@@ -107,13 +107,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_excel_row`;
 CREATE TABLE `aigc_excel_row` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `value` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '行值',
-  `knowledge_id` bigint DEFAULT NULL COMMENT '知识库ID',
-  `docs_id` bigint DEFAULT NULL COMMENT '文档ID',
-  `col_index` bigint DEFAULT NULL COMMENT '列索引',
+  `knowledge_id` varchar(50) DEFAULT NULL COMMENT '知识库ID',
+  `docs_id` varchar(50) DEFAULT NULL COMMENT '文档ID',
+  `col_index` varchar(50) DEFAULT NULL COMMENT '列索引',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='excel行表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='excel行表';
 
 -- ----------------------------
 -- Records of aigc_excel_row
@@ -126,22 +126,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_knowledge`;
 CREATE TABLE `aigc_knowledge` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '知识库名称',
   `des` varchar(255) DEFAULT NULL COMMENT '描述',
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '封面',
   `is_excel` tinyint(1) DEFAULT NULL COMMENT '是否结构化数据',
   `create_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='知识库表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='知识库表';
 
 -- ----------------------------
 -- Records of aigc_knowledge
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_knowledge` (`id`, `name`, `des`, `cover`, `is_excel`, `create_time`) VALUES (1, '结构化的文档', 'xxx', NULL, 1, '1716358576913');
-INSERT INTO `aigc_knowledge` (`id`, `name`, `des`, `cover`, `is_excel`, `create_time`) VALUES (2, 'Java面试八股文', '基于JavaGuide项目训练', NULL, NULL, '1694423077482');
-INSERT INTO `aigc_knowledge` (`id`, `name`, `des`, `cover`, `is_excel`, `create_time`) VALUES (3, '555', '2222', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -149,10 +146,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_message`;
 CREATE TABLE `aigc_message` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
-  `conversation_id` bigint DEFAULT NULL COMMENT '会话ID',
-  `prompt_id` bigint DEFAULT NULL COMMENT '应用ID',
+  `id` varchar(50) NOT NULL COMMENT '主键',
+  `user_id` varchar(50) DEFAULT NULL COMMENT '用户ID',
+  `conversation_id` varchar(50) DEFAULT NULL COMMENT '会话ID',
+  `prompt_id` varchar(50) DEFAULT NULL COMMENT '应用ID',
   `chat_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '消息的ID',
   `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户名',
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'IP地址',
@@ -165,42 +162,25 @@ CREATE TABLE `aigc_message` (
   PRIMARY KEY (`id`),
   KEY `conversation_id` (`conversation_id`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='对话消息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='对话消息表';
 
 -- ----------------------------
 -- Records of aigc_message
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (1, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-04 11:08:04');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (2, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-04 13:57:32');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (3, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', 'AssistantMessage { name = null contents = [TextContent { text = \"在的，有什么可以帮助您的吗？\" }] }', 35, 28, '2024-06-04 13:57:35');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (4, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗2', 0, 0, '2024-06-04 13:59:54');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (5, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', '作为一个人工智能，我始终在线，能随时为您服务。有什么可以帮助您的吗？', 37, 29, '2024-06-04 13:59:57');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (6, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你好', 0, 0, '2024-06-04 14:00:20');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (7, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！有什么我可以帮你的吗？', 16, 53, '2024-06-04 14:00:22');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (8, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', 'hi', 0, 0, '2024-06-04 14:01:00');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (9, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！有什么我可以帮你的吗？', 16, 76, '2024-06-04 14:01:01');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (10, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-04 14:03:42');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (11, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', '当然在，有什么可以帮助你的吗？', 18, 101, '2024-06-04 14:03:45');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (12, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '你好啊', 0, 0, '2024-06-04 14:03:47');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (13, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', 'AssistantMessage { name = null contents = [TextContent { text = \"你好，有什么可以帮助你的吗？\" }] }', 35, 127, '2024-06-04 14:03:50');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (14, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你是谁', 0, 0, '2024-06-04 14:03:57');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (15, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！我是一个人工智能助手，有什么我可以帮助你的吗？', 30, 153, '2024-06-04 14:03:58');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (16, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你好', 0, 0, '2024-06-04 14:04:04');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (17, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！有什么我可以帮忙的吗？', 17, 177, '2024-06-04 14:04:05');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (18, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', '写一个Java helloworld', 0, 0, '2024-06-04 14:04:11');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (19, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！当然可以，这里是一个简单的 Java \"Hello, World!\" 程序：\n\n```java\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}\n```\n\n你可以将以上代码复制到一个文件中，文件名为 `HelloWorld.java`，然后在终端或命令提示符中编译和运行它：\n\n```sh\njavac HelloWorld.java\njava HelloWorld\n```\n\n当你运行 `java HelloWorld` 时，你应该会看到以下输出：\n\n```\nHello, World!\n```\n\n如果你有任何其他问题或需要进一步的帮助，请告诉我！', 163, 204, '2024-06-04 14:04:13');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (20, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4o', '换成c语言', 0, 0, '2024-06-04 14:04:19');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (21, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4o', '好的，这是用C语言编写的“Hello, World!”程序：\n\n```c\n#include <stdio.h>\n\nint main() {\n    printf(\"Hello, World!\\n\");\n    return 0;\n}\n```\n\n这个程序使用了标准输入输出库`<stdio.h>`，并在`main`函数中调用`printf`函数来输出“Hello, World!”。', 86, 231, '2024-06-04 14:04:21');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (22, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '用php', 0, 0, '2024-06-04 14:09:13');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (23, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', 'PHP版本的Hello World代码如下：\n\n```php\n<?php\necho \"Hello, World!\";\n?>\n```', 23, 255, '2024-06-04 14:09:16');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (24, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', '用Java', 0, 0, '2024-06-04 14:10:18');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (25, 1, 1, NULL, NULL, 'administrator', 'unknown', 'assistant', 'gpt-4', '这是一个在编程中可能出现的消息对象。在Java中，一个对象是一个包含状态和行为的实体。在这个例子中，\"UserMessage\"是一个对象，具有两个属性：name和contents。\"name\"属性值为null，表示此属性目前没有值。\"contents\"是一个数组，包含一个TextContent对象，其中的\"text\"属性的值为\"用Java\"。这可能是一个用户发送消息的简化表示，其中\"name\"代表用户的名称，\"contents\"代表消息的内容。', 130, 27, '2024-06-04 14:10:25');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (26, 1, 1, NULL, NULL, 'administrator', '127.0.0.1', 'user', 'gpt-4', 'hi', 0, 0, '2024-06-04 14:12:01');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (27, 1, 1, NULL, 'c2cb661f-3954-4e43-9933-b082012ee03e', 'administrator', '127.0.0.1', 'user', 'gpt-4', 'hi', 0, 0, '2024-06-04 14:12:20');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (28, 1, 1, NULL, 'c2cb661f-3954-4e43-9933-b082012ee03e', 'administrator', 'unknown', 'assistant', 'gpt-4', 'Hello! How can I assist you today?', 9, 26, '2024-06-04 14:12:21');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (29, 1, 1, NULL, 'c41b8776-ffe3-4ae2-95c2-56a1ce9452ce', 'administrator', '127.0.0.1', 'user', 'gpt-4', '你好啊', 0, 0, '2024-06-04 14:14:28');
-INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES (30, 1, 1, NULL, 'c41b8776-ffe3-4ae2-95c2-56a1ce9452ce', 'administrator', 'unknown', 'assistant', 'gpt-4', 'UserMessage {name = null, contents = [TextContent {text = \"Hello, how can I assist you today?\"}]}', 27, 52, '2024-06-04 14:14:30');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('1a8daf1596ea6717da49a90ea8a01c0c', '1', '1', NULL, '3036cb92-2415-4951-93ba-59d9c56bcc1a', 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你好', 0, 0, '2024-06-05 22:46:23');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('2d7d914fdbff4afea89bea6e40f4ab3b', '1', '1', NULL, '1f370c34-7c30-44f4-9a8d-62759fdb8147', 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-05 22:46:11');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('334095f2d2d70a2b2fadffe2c49d378a', '1', '1', NULL, '5537b43f-0f1a-4187-b261-7a47a2c1fe4b', 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！我是一个人工智能助手，可以回答你的问题、提供信息或帮助你解决问题。有什么我可以帮你的吗？', 50, 103, '2024-06-05 22:46:33');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('38cd04e28b4406d033a08092e4cff8f2', '1', '1', NULL, '9c1939a6-40a1-4f81-b54e-6a6157da34ab', 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！我是基于OpenAI的GPT-4模型。有什么我可以帮你的吗？', 30, 83, '2024-06-04 22:45:21');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('645823d7f6d73c69f152f9ed4d380129', '1', '1', NULL, '3036cb92-2415-4951-93ba-59d9c56bcc1a', 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！有什么我可以帮忙的吗？', 17, 77, '2024-06-05 22:46:25');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('78ec3240d1824799b0359d13a9ce5306', '1', '1', NULL, 'b0c30dee-8c6b-42ed-a0d0-0cab7851c907', 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你的模型版本', 0, 0, '2024-06-04 22:45:09');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('8abdaed25609a5943be1a8016620badc', '1', '1', NULL, '9c1939a6-40a1-4f81-b54e-6a6157da34ab', 'administrator', '127.0.0.1', 'user', 'gpt-4o', '模型版本是多少', 0, 0, '2024-06-04 22:45:20');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('9ef8b2e0e2689e98612047ce848b97ce', '1', '1', NULL, 'b0c30dee-8c6b-42ed-a0d0-0cab7851c907', 'administrator', 'unknown', 'assistant', 'gpt-4o', '你好！我是一个由OpenAI开发的AI助手，使用的是ChatGPT模型。请问有什么我可以帮助你的吗？', 43, 55, '2024-06-04 22:45:11');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('bb0d6cae80a5127d26ec7ffc5a2b2a27', '1', '1', NULL, 'a764fd3b-2576-4bac-bd9c-a568abbb60a9', 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-05 22:46:00');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('c1d09111217524e9812c1f945c52dcfa', '1', '1', NULL, 'ffb726ef-f992-4671-8632-d0c398e7ca56', 'administrator', 'unknown', 'assistant', 'gpt-4', 'AssistantMessage { name = null contents = [TextContent { text = \"您好！我在的，有什么可以帮您的吗？\" }] }', 37, 28, '2024-06-04 22:41:32');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('dbf806441a91686258c0f9bfcc9d7c50', '1', '1', NULL, '5537b43f-0f1a-4187-b261-7a47a2c1fe4b', 'administrator', '127.0.0.1', 'user', 'gpt-4o', '你是谁', 0, 0, '2024-06-05 22:46:31');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('fa423a797e0c119daedf6dee419c0035', '1', '1', NULL, '1f370c34-7c30-44f4-9a8d-62759fdb8147', 'administrator', 'unknown', 'assistant', 'gpt-4', 'AssistantMessage { name = null contents = [TextContent { text = \"在的，有什么可以帮助您的吗?\" }] }', 34, 53, '2024-06-05 22:46:17');
+INSERT INTO `aigc_message` (`id`, `user_id`, `conversation_id`, `prompt_id`, `chat_id`, `username`, `ip`, `role`, `model`, `message`, `tokens`, `prompt_tokens`, `create_time`) VALUES ('fe4ae1e276684bf7812c34ca2d6bdaa7', '1', '1', NULL, 'ffb726ef-f992-4671-8632-d0c398e7ca56', 'administrator', '127.0.0.1', 'user', 'gpt-4', '在吗', 0, 0, '2024-06-04 22:41:26');
 COMMIT;
 
 -- ----------------------------
@@ -208,7 +188,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_oss`;
 CREATE TABLE `aigc_oss` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `file_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '原始文件名称',
   `target_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '文件存储名称',
   `bucket` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '桶路径',
@@ -218,14 +198,12 @@ CREATE TABLE `aigc_oss` (
   `size` bigint DEFAULT NULL COMMENT '文件大小',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='资源文件表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='资源文件表';
 
 -- ----------------------------
 -- Records of aigc_oss
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_oss` (`id`, `file_name`, `target_name`, `bucket`, `url`, `path`, `type`, `size`, `create_time`) VALUES (1, 'data', '54cd2f45de0edd4b85c1dd22f918d29b.xlsx', '/20240522', 'http://127.0.0.1/20240522/54cd2f45de0edd4b85c1dd22f918d29b.xlsx', '/opt/homebrew/var/www/20240522/54cd2f45de0edd4b85c1dd22f918d29b.xlsx', 'xlsx', 4715, '2024-05-22 15:34:10');
-INSERT INTO `aigc_oss` (`id`, `file_name`, `target_name`, `bucket`, `url`, `path`, `type`, `size`, `create_time`) VALUES (2, 'data', '83a84289b34177244bc9f3cdcd29fc61.xlsx', '/20240522', 'http://127.0.0.1/20240522/83a84289b34177244bc9f3cdcd29fc61.xlsx', '/opt/homebrew/var/www/20240522/83a84289b34177244bc9f3cdcd29fc61.xlsx', 'xlsx', 4715, '2024-05-22 15:41:24');
 COMMIT;
 
 -- ----------------------------
@@ -233,20 +211,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_prompt`;
 CREATE TABLE `aigc_prompt` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` varchar(50) NOT NULL COMMENT '主键',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
   `prompt` text,
   `icon` varchar(100) DEFAULT NULL COMMENT '图标',
   `des` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='提示词表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='提示词表';
 
 -- ----------------------------
 -- Records of aigc_prompt
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_prompt` (`id`, `name`, `prompt`, `icon`, `des`, `create_time`) VALUES (1, 'Act as a JavaScript Console', 'I want you to act as a javascript console. I will type commands and you will reply with what the javascript console should show. I want you to only reply with the terminal output inside one unique code block, and nothing else. do not write explanations. do not type commands unless I instruct you to do so. when I need to tell you something in english', NULL, NULL, '2024-05-11 16:04:32');
 COMMIT;
 
 -- ----------------------------
@@ -254,24 +231,24 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `aigc_user`;
 CREATE TABLE `aigc_user` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `id` varchar(50) NOT NULL COMMENT '用户ID',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(100) NOT NULL COMMENT '密码',
-  `nickname` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '昵称',
+  `nickname` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL COMMENT '昵称',
   `phone` varchar(20) DEFAULT NULL COMMENT '手机',
-  `email` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '邮箱',
+  `email` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL COMMENT '邮箱',
   `avatar` varchar(100) DEFAULT NULL COMMENT '头像',
   `chat_limit` int DEFAULT NULL COMMENT '会话次数',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态 0锁定 1有效',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1737855609581137922 DEFAULT CHARSET=utf8mb3 COMMENT='用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of aigc_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_user` (`id`, `username`, `password`, `nickname`, `phone`, `email`, `avatar`, `chat_limit`, `status`, `create_time`) VALUES (1, 'langchat@outlook.com', '48kQD0O/A69LENSbk/+FxA==', '测试1号', '18278982390', 'langchat@outlook.com', '/default.png', 0, 1, '2023-12-21 23:20:40');
+INSERT INTO `aigc_user` (`id`, `username`, `password`, `nickname`, `phone`, `email`, `avatar`, `chat_limit`, `status`, `create_time`) VALUES ('1', 'langchat@outlook.com', '48kQD0O/A69LENSbk/+FxA==', '测试1号', '18278982390', 'langchat@outlook.com', '/default.png', 0, 1, '2023-12-21 23:20:40');
 COMMIT;
 
 -- ----------------------------
