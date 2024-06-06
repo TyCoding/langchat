@@ -44,8 +44,9 @@
 
 <template>
   <div class="flex flex-col gap-4">
-    <div>
-      <n-button type="success" @click="handleSubmit">解析线上数据</n-button>
+    <div class="flex items-center gap-3">
+      <n-button type="success" disabled @click="handleSubmit">解析线上数据</n-button>
+      <n-tag type="warning">后续将会支持更多解析方式...</n-tag>
     </div>
 
     <n-form :rules="rules" :model="form" label-placement="left" label-width="auto">

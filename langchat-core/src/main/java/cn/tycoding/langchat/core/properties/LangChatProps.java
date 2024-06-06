@@ -5,6 +5,7 @@ import cn.tycoding.langchat.core.properties.chat.GeminiProps;
 import cn.tycoding.langchat.core.properties.chat.OllamaProps;
 import cn.tycoding.langchat.core.properties.chat.OpenaiProps;
 import cn.tycoding.langchat.core.properties.embed.EmbeddingProps;
+import cn.tycoding.langchat.core.properties.search.WebSearchProps;
 import cn.tycoding.langchat.core.properties.vectorstore.VectorProps;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,4 +29,6 @@ public class LangChatProps {
     private EmbeddingProps embedding = new EmbeddingProps();
 
     private VectorProps vectorstore = new VectorProps();
+
+    private WebSearchProps webSearch = new WebSearchProps();
 }

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import DocList from './DocsList/index.vue';
-  import FileList from './DocsSlice/index.vue';
+  import DocsSlice from './DocsSlice/index.vue';
+  import DocsSliceSearch from './DocsSliceSearch/index.vue';
   import ImportFile from './ImportFile/index.vue';
   import { onMounted, ref } from 'vue';
   import type { MenuOption } from 'naive-ui';
@@ -12,13 +13,14 @@
     CloudUploadOutline,
     DocumentTextOutline,
     AlbumsOutline,
+    SearchOutline,
   } from '@vicons/ionicons5';
   import { getById } from '@/api/aigc/knowledge';
 
   const router = useRouter();
 
   const menu = ref();
-  const menuOptions: MenuOption[] = [
+  const menuOptions = ref([
     {
       label: '数据导入',
       key: 'import-file',
@@ -29,19 +31,27 @@
       key: 'doc-list',
       icon: renderIcon(DocumentTextOutline),
     },
-  ];
+  ]);
 
   const knowledge = ref<any>({});
   onMounted(async () => {
     const id = router.currentRoute.value.params.id;
     knowledge.value = await getById(String(id));
-    menu.value = menuOptions[0].key;
-    if (knowledge.value.isExcel) {
-      menuOptions.push({
-        label: '切片管理',
-        key: 'slice-list',
-        icon: renderIcon(AlbumsOutline),
-      });
+    menu.value = menuOptions.value[0].key;
+    console.log(!knowledge.value.isExcel);
+    if (!knowledge.value.isExcel) {
+      menuOptions.value.push(
+        {
+          label: '切片管理',
+          key: 'slice-list',
+          icon: renderIcon(AlbumsOutline),
+        },
+        {
+          label: '向量搜索',
+          key: 'slice-search',
+          icon: renderIcon(SearchOutline),
+        }
+      );
     }
   });
 
@@ -84,7 +94,8 @@
         </n-gi>
         <n-gi class="h-full overflow-y-auto" span="21">
           <DocList v-if="menu == 'doc-list'" />
-          <FileList v-if="menu == 'slice-list'" />
+          <DocsSlice v-if="menu == 'slice-list'" />
+          <DocsSliceSearch v-if="menu == 'slice-search'" />
           <ImportFile :data="knowledge" v-if="menu == 'import-file'" />
         </n-gi>
       </n-grid>

@@ -13,6 +13,7 @@
   const dialog = useDialog();
   const ms = useMessage();
   const checked = ref();
+  const showSelect = ref();
   const activeTab = ref('knowledge');
   const list = ref();
   const knowledgeList = ref();
@@ -83,6 +84,14 @@
       },
     });
   }
+
+  function onShowSelect(item: any) {
+    if (showSelect.value == item) {
+      showSelect.value = undefined;
+    } else {
+      showSelect.value = item;
+    }
+  }
 </script>
 
 <template>
@@ -98,51 +107,45 @@
       <n-spin :show="loading">
         <n-empty v-if="list == null || list.length == 0" class="mt-10" />
         <div class="flex justify-center items-center p-4 pt-0 rounded overflow-y-auto">
-          <ul class="mt-2 space-y-3 w-full">
-            <li v-for="(item, idx) in list" :key="idx" @click="onCheck(item)">
+          <div class="mt-2 space-y-3 w-full">
+            <template v-for="item in list" :key="item.id">
               <n-popselect
                 v-model:value="value"
                 :options="item.docs"
                 placement="right"
-                :show="item.isExcel !== undefined && item.isExcel && item == checked"
+                :show="item == showSelect"
               >
-                <label :for="item.name" class="block relative">
-                  <input
-                    :id="item.name"
-                    type="radio"
-                    :checked="item == checked"
-                    name="payment"
-                    class="sr-only peer"
-                  />
-                  <div
-                    class="w-full flex gap-x-3 items-start p-4 pb-2.5 cursor-pointer rounded-lg border bg-white shadow-sm ring-indigo-600 peer-checked:bg-indigo-50/75 peer-checked:ring-1 duration-200"
-                  >
-                    <div class="flex-none">
-                      <SvgIcon
-                        v-if="activeTab === 'prompt'"
-                        class="text-3xl"
-                        icon="solar:document-bold-duotone"
-                      />
-                      <template v-if="activeTab === 'knowledge'">
-                        <n-avatar v-if="item.cover !== null" :src="item.cover" />
-                        <SvgIcon v-else class="text-3xl" icon="fa-solid:book" />
-                      </template>
+                <n-alert
+                  @click="onCheck(item)"
+                  :type="checked == item ? 'success' : ''"
+                  class="rounded-lg cursor-pointer !gap-6"
+                >
+                  <template #header>
+                    <div class="flex items-center justify-between">
+                      <div>{{ item.name }}</div>
+                      <n-button
+                        @click="onShowSelect(item)"
+                        v-if="item.isExcel"
+                        type="success"
+                        dashed
+                        size="tiny"
+                      >
+                        Select
+                      </n-button>
                     </div>
-                    <div>
-                      <div class="leading-none text-gray-800 font-medium text-[15px] pr-3">
-                        {{ item.name }}
-                      </div>
-                      <p class="text-xs text-gray-600 mt-[9px]">
-                        <n-ellipsis :line-clamp="2" :tooltip="false" expand-trigger="click">
-                          {{ item.des == undefined ? item.prompt : item.des }}
-                        </n-ellipsis>
-                      </p>
-                    </div>
-                  </div>
-                </label>
+                  </template>
+                  <template #icon>
+                    <n-icon>
+                      <SvgIcon class="text-4xl" icon="solar:document-bold-duotone" />
+                    </n-icon>
+                  </template>
+                  <n-ellipsis expand-trigger="click">
+                    {{ item.des == undefined ? item.prompt : item.des }}
+                  </n-ellipsis>
+                </n-alert>
               </n-popselect>
-            </li>
-          </ul>
+            </template>
+          </div>
         </div>
       </n-spin>
     </n-layout-sider>
@@ -206,5 +209,11 @@
 <style scoped lang="less">
   ::v-deep(.n-tabs.n-tabs--top .n-tab-pane) {
     padding: 0 !important;
+  }
+  ::v-deep(.n-alert-body) {
+    padding-left: 50px !important;
+  }
+  ::v-deep(.n-alert__icon) {
+    padding-right: 10px !important;
   }
 </style>

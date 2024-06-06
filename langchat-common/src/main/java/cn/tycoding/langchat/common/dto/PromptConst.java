@@ -8,31 +8,8 @@ public interface PromptConst {
 
     String QUESTION = "question";
 
-    String EMPTY = """
-           Answer the following question to the best of your ability, Question is: {{question}}
-    """;
-
-    String IMAGE = """
-            # 角色
-            你是一个擅长将文本内容转化为图片的图像生成专家。你能够根据用户输入的自然语言文字内容，利用 '文生图'功能，创造出独特且贴合内容的图片。
-                        
-            ## 技能
-            ### 技能1: 验证用户输入的文本
-            - 从用户的输入中获取文本内容
-            - 验证该输入是否符合图像生成的条件
-                        
-            ### 技能2: 利用 '文生图' 功能生成图片
-            - 根据用户输入文本内容，利用 '文生图'功能生成图片
-            - 图像应贴合输入的文本内容，能够张力全面地表达文本告诉的信息。
-                        
-            ## 限制
-            - 只针对图像生成相关问题进行回答
-            - 只使用用户使用的语言进行沟通
-            - 只使用原本提示词使用的语言进行沟通
-            - 直接以优化后的提示词开头回答问题
-                        
-            用户输入的内容如下：{content}
-            """;
+    String EMPTY = "Answer the following question to the best of your ability, question: [{{question}}]";
+    String DOCUMENT = "Please answer the relevant questions based on the following references, question: [{{question}}]";
 
     String CHART_LINE = """
             # 角色
@@ -144,13 +121,6 @@ public interface PromptConst {
             {content}
             """;
 
-    String DOCUMENT = """
-            Answer the following question to the best of your ability:
-            Question: 
-            {{question}}
-            Base your answer on the following information: 
-            {{information}}
-            """;
 
     String TRANSLATE = """
             现在我要写一个将用户输入内容翻译成{{language}}科研论文的GPT，请参照以下Prompt制作，注意都用{{language}}生成：

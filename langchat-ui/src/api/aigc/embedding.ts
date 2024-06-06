@@ -9,6 +9,14 @@ export function embeddingText(params: any) {
   });
 }
 
+export function embeddingSearch(data: any) {
+  return http.request({
+    url: '/aigc/embedding/search',
+    method: 'post',
+    data,
+  });
+}
+
 export function embeddingDocs(
   knowledgeId: string,
   data: any,

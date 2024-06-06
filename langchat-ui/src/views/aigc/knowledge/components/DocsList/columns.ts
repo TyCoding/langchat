@@ -1,5 +1,7 @@
 import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
+import { h } from 'vue';
+import { NTag } from 'naive-ui';
 
 export const columns: BasicColumn[] = [
   {
@@ -11,15 +13,60 @@ export const columns: BasicColumn[] = [
     key: 'content',
   },
   {
-    title: '文件大小/kb',
+    title: '文档来源',
+    key: 'sliceNum',
+    width: 90,
+    align: 'center',
+    render(row) {
+      return h(
+        NTag,
+        {
+          size: 'small',
+          type: row.type == 'UPLOAD' ? 'success' : 'info',
+        },
+        {
+          default: () => (row.type == 'UPLOAD' ? '上传' : '录入'),
+        }
+      );
+    },
+  },
+  {
+    title: '切片数量',
+    key: 'sliceNum',
+    width: 90,
+    align: 'center',
+  },
+  {
+    title: '切片状态',
+    key: 'status',
+    width: 100,
+    align: 'center',
+    render(row) {
+      return h(
+        NTag,
+        {
+          size: 'small',
+          type: row.sliceStatus == true ? 'success' : 'info',
+        },
+        {
+          default: () => (row.sliceStatus == true ? '已训练' : '未训练'),
+        }
+      );
+    },
+  },
+  {
+    title: '文件大小',
     key: 'size',
     width: 100,
     align: 'center',
+    render(rowData) {
+      return (Number(rowData.size) / 1000).toFixed(2) + ' MB';
+    },
   },
   {
     title: '创建时间',
     key: 'createTime',
-    width: 160,
+    width: 120,
   },
 ];
 

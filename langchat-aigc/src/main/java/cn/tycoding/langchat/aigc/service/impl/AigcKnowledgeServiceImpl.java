@@ -27,9 +27,6 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     @Override
     public void addDocs(AigcDocs data) {
         data.setCreateTime(new Date());
-        data.setSize(0L);
-        data.setSliceNum(0);
-        data.setSliceStatus(false);
         aigcDocsMapper.insert(data);
     }
 

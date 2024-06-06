@@ -84,7 +84,7 @@ export const formSchemas: FormSchema[] = [
           value: false,
         },
         {
-          label: '是结构化数据',
+          label: '结构化数据',
           value: true,
         },
       ],

@@ -7,6 +7,7 @@
 
   const router = useRouter();
   const message = useMessage();
+  const loading = ref(false);
   const form = ref({
     name: '',
     content: '',
@@ -29,10 +30,13 @@
       message.warning('请输入文档内容');
       return;
     }
+    loading.value = true;
     const knowledgeId = router.currentRoute.value.params.id;
     await embeddingText({
       ...form.value,
       knowledgeId,
+    }).finally(() => {
+      loading.value = false;
     });
     message.success('文档录入成功，正在解析中...');
     form.value = {
@@ -45,7 +49,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <n-button type="success" @click="handleSubmit">提交到知识库学习</n-button>
+      <n-button :loading="loading" type="success" @click="handleSubmit">提交到知识库学习</n-button>
     </div>
 
     <n-form :rules="rules" :model="form" label-placement="left" label-width="auto">

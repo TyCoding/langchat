@@ -17,7 +17,6 @@ import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
-import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
@@ -35,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
+import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
 import static dev.langchain4j.data.document.Metadata.metadata;
 import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
 import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
@@ -48,7 +49,7 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
 @AllArgsConstructor
 public class LangDocServiceImpl implements LangDocService {
 
-    private final EmbedProvider provider;
+    private final EmbedProvider embedProvider;
     private final ModelProvider modelProvider;
     private final MilvusEmbeddingStore milvusEmbeddingStore;
     private final AigcExcelColService excelColService;
@@ -57,8 +58,8 @@ public class LangDocServiceImpl implements LangDocService {
     @Override
     public EmbeddingR embeddingText(ChatReq req) {
         TextSegment segment = TextSegment.from(req.getMessage(),
-                metadata("knowledgeId", req.getKnowledgeId()));
-        EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
+                metadata(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName()));
+        EmbeddingModel embeddingModel = embedProvider.embed();
         Embedding embedding = embeddingModel.embed(segment).content();
 
         String id = milvusEmbeddingStore.add(embedding, segment);
@@ -67,11 +68,10 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
-//        EmbeddingModel model = provider.embed();
-        EmbeddingModel model = new AllMiniLmL6V2EmbeddingModel();
+        EmbeddingModel model = embedProvider.embed();
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
-        document.metadata().add("knowledgeId", req.getKnowledgeId());
+        document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());
 
         DocumentSplitter splitter = DocumentSplitters.recursive(
                 100,
@@ -96,9 +96,8 @@ public class LangDocServiceImpl implements LangDocService {
     @Override
     public TokenStream search(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
-//        EmbeddingModel model = provider.embed();
-        EmbeddingModel model = new AllMiniLmL6V2EmbeddingModel();
-        Function<Query, Filter> filterByUserId = (query) -> metadataKey("knowledgeId").isEqualTo(req.getKnowledgeId());
+        EmbeddingModel model = embedProvider.embed();
+        Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
 
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(milvusEmbeddingStore)
@@ -117,7 +116,7 @@ public class LangDocServiceImpl implements LangDocService {
     @Override
     public TokenStream searchStruct(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
-        EmbeddingModel model = provider.embed(req.getModel());
+        EmbeddingModel model = embedProvider.embed();
 
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingModel(model)

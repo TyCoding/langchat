@@ -6,10 +6,7 @@ import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.listener.StructExcelListener;
-import cn.tycoding.langchat.aigc.service.AigcExcelColService;
-import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
-import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
-import cn.tycoding.langchat.aigc.service.AigcOssService;
+import cn.tycoding.langchat.aigc.service.*;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author tycoding
@@ -41,6 +37,7 @@ public class EmbeddingEndpoint {
     private final AigcOssService aigcOssService;
     private final AigcExcelColService structColService;
     private final AigcExcelRowService structRowService;
+    private final EmbeddingService embeddingService;
 
     @PostMapping("/text")
     public R text(@RequestBody AigcDocs data) {
@@ -51,8 +48,10 @@ public class EmbeddingEndpoint {
         aigcKnowledgeService.addDocs(data);
         EmbeddingR embeddingR = langDocService.embeddingText(
                 new ChatReq().setMessage(data.getContent())
+                        .setDocsName(data.getType())
                         .setDocsId(data.getId())
                         .setKnowledgeId(data.getKnowledgeId()));
+
         aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
                 .setKnowledgeId(data.getKnowledgeId())
                 .setDocsId(data.getId())
@@ -76,19 +75,8 @@ public class EmbeddingEndpoint {
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
 
-        List<EmbeddingR> list = langDocService.embeddingDocs(
-                new ChatReq().setKnowledgeId(knowledgeId).setPath(oss.getPath()));
-        list.forEach(i -> {
-            aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
-                    .setKnowledgeId(data.getKnowledgeId())
-                    .setDocsId(data.getId())
-                    .setVectorId(i.getVectorId())
-                    .setName(data.getName())
-                    .setContent(i.getText())
-            );
-        });
-
-        aigcKnowledgeService.updateDocs(new AigcDocs().setId(data.getId()).setSliceStatus(true).setSliceNum(list.size()));
+        // embedding docs
+        embeddingService.embedDocsSlice(data, oss.getPath());
         return R.ok();
     }
 
@@ -109,5 +97,10 @@ public class EmbeddingEndpoint {
                 .extraRead(CellExtraTypeEnum.MERGE)
                 .sheet().doRead();
         return R.ok();
+    }
+
+    @PostMapping("/search")
+    public R search(@RequestBody AigcDocs data) {
+        return R.ok(embeddingService.search(data));
     }
 }

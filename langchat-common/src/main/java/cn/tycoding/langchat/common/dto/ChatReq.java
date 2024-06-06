@@ -29,6 +29,8 @@ public class ChatReq {
 
     private String promptText;
 
+    private String docsName;
+
     private String knowledgeId;
 
     private String docsId;
@@ -36,6 +38,8 @@ public class ChatReq {
     private String path;
 
     private String role;
+
+    private Boolean isGoogleSearch = false;
 
     private Prompt prompt;
 

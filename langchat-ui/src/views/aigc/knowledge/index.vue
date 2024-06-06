@@ -4,7 +4,7 @@
   import { del, page as getPage } from '@/api/aigc/knowledge';
   import { searchSchemas } from './columns';
   import {
-    AntCloudOutlined,
+    CloudOutlined,
     DeleteOutlined,
     EditOutlined,
     FolderOutlined,
@@ -91,7 +91,7 @@
       <n-empty v-if="list == null || list.length == 0" class="mt-10" />
 
       <ul class="mt-6 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
-        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg bg-gray-100">
+        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow-lg shadow-neutral-200">
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
               <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
@@ -103,8 +103,9 @@
               <h2
                 @click="handleInfo(item)"
                 class="text-gray-800 font-semibold cursor-pointer hover:text-blue-500"
-                >{{ item.name }}</h2
               >
+                {{ item.name }}
+              </h2>
             </div>
             <button
               @click="handleInfo(item)"
@@ -116,17 +117,17 @@
               <span>文档数：{{ item.docsNum }}</span>
             </button>
           </div>
-          <div class="p-4 pt-0">
+          <div class="p-4 pt-2">
             <p class="text-gray-600 text-sm">
-              <n-ellipsis :line-clamp="2">
+              <n-ellipsis class="w-full max-w-full">
                 {{ item.des }}
               </n-ellipsis>
             </p>
           </div>
           <div class="py-3 px-4 border-t flex justify-between items-center">
             <div class="flex gap-1 items-center">
-              <n-icon size="20"> <AntCloudOutlined /> </n-icon>
-              <span>文件大小：{{ item.totalSize }}kb</span>
+              <n-icon size="20"> <CloudOutlined /> </n-icon>
+              <span>文件大小：{{ (Number(item.totalSize) / 1000).toFixed(2) }} MB</span>
             </div>
             <div class="flex gap-3">
               <n-button @click="handleEdit(item)" text type="primary">

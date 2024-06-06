@@ -1,8 +1,9 @@
 import { BasicColumn } from '@/components/Table';
+import { Log } from '@/api/models/auth';
 import { h } from 'vue';
 import { NTag } from 'naive-ui';
 
-export const columns: BasicColumn[] = [
+export const columns: BasicColumn<Log>[] = [
   {
     title: '操作用户',
     key: 'username',

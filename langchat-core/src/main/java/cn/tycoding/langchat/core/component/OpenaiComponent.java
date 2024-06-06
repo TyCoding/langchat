@@ -32,8 +32,7 @@ public class OpenaiComponent {
     public OpenAiStreamingChatModel openAiStreamingChatModel_3t() {
         OpenAiStreamingChatModel.OpenAiStreamingChatModelBuilder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), OpenAiStreamingChatModel.OpenAiStreamingChatModelBuilder.class);
-        OpenaiProps openai = props.getOpenai();
-        BeanUtil.copyProperties(openai, builder);
+        BeanUtil.copyProperties(props.getOpenai(), builder);
         builder.modelName(OPENAI_GPT_3T);
         return builder.build();
     }

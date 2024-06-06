@@ -24,10 +24,11 @@
     )
       .then((res) => {
         fileList.value.push(res);
-        message.success('上传成功');
+        message.success('上传成功，文档解析中...');
         onFinish();
       })
       .catch((err) => {
+        console.error(err);
         message.error('上传失败');
         onError();
       });

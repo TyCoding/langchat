@@ -15,4 +15,6 @@ public interface Assistant {
             Respond in the language of the user's question,
             """)
     TokenStream chat(@UserMessage ChatMessage messages);
+
+    String chat(String message);
 }

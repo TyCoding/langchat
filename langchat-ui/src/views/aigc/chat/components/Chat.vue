@@ -17,6 +17,7 @@
   const loading = ref<boolean>(false);
   const message = ref('');
   const chatId = ref<string>('');
+  const isGoogleSearch = ref<boolean>(false);
   const aiChatId = ref<string>('');
   let controller = new AbortController();
 
@@ -90,6 +91,7 @@
           knowledgeId: chatStore.knowledge?.id,
           message,
           role: 'user',
+          isGoogleSearch: isGoogleSearch.value,
           model: chatStore.model,
         },
         async ({ event }) => {
@@ -201,7 +203,21 @@
 
     <!-- 底部 -->
     <footer :class="footerClass">
-      <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-0">
+      <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-0 relative">
+        <div class="flex items-center justify-center relative bottom-10">
+          <div
+            class="my-2 p-1.5 px-6 border border-b-gray-200 rounded-2xl absolute flex items-center"
+          >
+            <n-checkbox v-model:checked="isGoogleSearch"> Google Search </n-checkbox>
+            <n-divider vertical />
+            <n-button size="small" type="warning" secondary>
+              <template #icon>
+                <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
+              </template>
+              Clean
+            </n-button>
+          </div>
+        </div>
         <div class="flex items-center justify-between space-x-2">
           <NInput
             ref="inputRef"

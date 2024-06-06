@@ -20,16 +20,16 @@
 
   const dataSource: CheckSource[] = [
     {
-      key: 'doc-input',
-      icon: CreateOutline,
-      title: '手动录入文档',
-      label: '手动输入文档文本内容，文档内容过多时请上传文件',
-    },
-    {
       key: 'doc-import',
       icon: CloudUploadOutline,
       title: '导入文档',
       label: '支持导入word、txt、pdf、markdown等文本文件',
+    },
+    {
+      key: 'doc-input',
+      icon: CreateOutline,
+      title: '手动录入文档',
+      label: '手动输入文档文本内容，文档内容过多时请上传文件',
     },
     {
       key: 'url-import',
@@ -38,7 +38,7 @@
       label: '解析线上文件URL地址，自动下载并解析文档内容',
     },
   ];
-  const checked = ref<string>('doc-input');
+  const checked = ref<string>('doc-import');
 
   function handleCheck(item: CheckSource) {
     checked.value = item.key;
@@ -58,6 +58,9 @@
 
     <n-card>
       <template v-if="data.isExcel">
+        <n-tag type="warning" class="mb-2" :bordered="false">
+          仅支持上传Excel文件，后期将会考虑支持更多的结构化数据
+        </n-tag>
         <ExcelImport />
       </template>
       <template v-else>

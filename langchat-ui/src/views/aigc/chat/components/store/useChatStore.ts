@@ -5,7 +5,7 @@ import { ChatState } from '@/views/aigc/chat/components/store/chat';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: 'gpt-4',
+      model: 'gpt-4o',
       conversationId: null,
       messages: [],
       prompt: null,
@@ -37,7 +37,6 @@ export const useChatStore = defineStore('chat-store', {
      * chatId 仅仅用于更新流式消息内容
      */
     async updateMessage(chatId: string, message: string, isError?: boolean) {
-      console.log('更新消息', chatId, message, isError);
       const index = this.messages.findIndex((item) => item?.chatId == chatId);
       if (index !== -1) {
         this.messages[index].message = message;

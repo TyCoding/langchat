@@ -1,6 +1,21 @@
 package cn.tycoding.langchat;
 
+import cn.tycoding.langchat.core.properties.chat.OpenaiProps;
+import cn.tycoding.langchat.core.properties.search.WebSearchProps;
+import cn.tycoding.langchat.core.service.Assistant;
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.rag.DefaultRetrievalAugmentor;
+import dev.langchain4j.rag.RetrievalAugmentor;
+import dev.langchain4j.rag.content.retriever.ContentRetriever;
+import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
+import dev.langchain4j.rag.query.router.DefaultQueryRouter;
+import dev.langchain4j.rag.query.router.QueryRouter;
+import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.web.search.WebSearchRequest;
+import dev.langchain4j.web.search.WebSearchResults;
+import dev.langchain4j.web.search.google.customsearch.GoogleCustomWebSearchEngine;
 import io.milvus.client.MilvusServiceClient;
 import io.milvus.grpc.DescribeCollectionResponse;
 import io.milvus.grpc.GetCollectionStatisticsResponse;
@@ -29,6 +44,13 @@ public class AppTest {
 
     @Autowired
     private MilvusServiceClient milvusClient;
+
+    @Autowired
+    private GoogleCustomWebSearchEngine googleCustomWebSearchEngine;
+    @Autowired
+    private WebSearchProps props;
+    @Autowired
+    private OpenaiProps openaiProps;
 
     @Test
     public void t1() {
@@ -59,5 +81,39 @@ public class AppTest {
         R<SearchResults> search = milvusClient.search(searchParam);
 
         System.out.println("-----");
+    }
+
+    @Test
+    public void t2() {
+        WebSearchResults results = googleCustomWebSearchEngine.search(WebSearchRequest.builder()
+                        .maxResults(3)
+                .searchTerms("hi").build());
+    }
+
+    @Test
+    public void t3() throws InterruptedException {
+        ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
+                .webSearchEngine(googleCustomWebSearchEngine)
+                .maxResults(3)
+                .build();
+        QueryRouter queryRouter = new DefaultQueryRouter(webSearchContentRetriever);
+
+        RetrievalAugmentor retrievalAugmentor = DefaultRetrievalAugmentor.builder()
+                .queryRouter(queryRouter)
+                .build();
+
+        Assistant assistant = AiServices.builder(Assistant.class)
+//                .chatLanguageModel(OpenAiChatModel.withApiKey(openaiProps.getApiKey()))
+                .streamingChatLanguageModel(OpenAiStreamingChatModel.withApiKey(openaiProps.getApiKey()))
+                .retrievalAugmentor(retrievalAugmentor)
+                .build();
+//        String s = assistant.chat("今天几号");
+//        System.out.println(s);
+
+        assistant.chat(new UserMessage("今天几号")).onNext(s -> {
+            System.out.println(s);
+        });
+
+        Thread.sleep(10 * 1000);
     }
 }

@@ -16,7 +16,7 @@
   const docsList = ref();
 
   const actionColumn = reactive({
-    width: 80,
+    width: 70,
     title: '操作',
     key: 'action',
     fixed: 'right',

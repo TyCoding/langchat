@@ -82,10 +82,8 @@ public class ChatServiceImpl implements ChatService {
         message.setIp(ServletUtil.getIpAddr());
         message.setPromptTokens(inputToken);
         message.setTokens(outputToken);
-        log.info(">>>> save chat message：{}", message);
         aigcMessageService.addMessage(message);
     }
-
 
     @Override
     public void stream(TextR req) {
