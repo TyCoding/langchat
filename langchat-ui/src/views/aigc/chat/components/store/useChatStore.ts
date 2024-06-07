@@ -7,9 +7,13 @@ export const useChatStore = defineStore('chat-store', {
     <ChatState>{
       model: 'gpt-4o',
       conversationId: null,
+      docsId: null,
       messages: [],
       prompt: null,
       knowledge: null,
+      isGoogleSearch: false,
+      selectExcelId: undefined,
+      selectExcelData: {},
     },
 
   getters: {},

@@ -14,7 +14,7 @@ import dev.langchain4j.service.TokenStream;
  */
 public interface LangChatService {
 
-    TokenStream stream(ChatReq req);
+    TokenStream chat(ChatReq req);
 
     Response<AiMessage> text(TextR req);
 

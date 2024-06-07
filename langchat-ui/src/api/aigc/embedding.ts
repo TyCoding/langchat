@@ -17,6 +17,13 @@ export function embeddingSearch(data: any) {
   });
 }
 
+export function getExcelRows(docsId: any) {
+  return http.request({
+    url: `/aigc/embedding/struct/excel/rows/${docsId}`,
+    method: 'get',
+  });
+}
+
 export function embeddingDocs(
   knowledgeId: string,
   data: any,

@@ -9,6 +9,7 @@ import cn.tycoding.langchat.common.dto.ChatReq;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import dev.langchain4j.agent.tool.Tool;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,17 +30,20 @@ public class StructTools {
         this.excelRowService = excelRowService;
     }
 
-    @Tool("Gets column name data in Data")
+    @Tool("Get the total number of columns")
     List<String> getCols() {
         List<AigcExcelCol> list = excelColService.list(Wrappers.<AigcExcelCol>lambdaQuery()
                 .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcExcelCol::getKnowledgeId, req.getKnowledgeId())
-                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcExcelCol::getDocsId, StrUtil.isNotBlank(req.getDocsId()))
+                .eq(StrUtil.isNotBlank(req.getDocsId()), AigcExcelCol::getDocsId, req.getDocsId())
                 .select(AigcExcelCol::getLabel)
         );
+        if (list.isEmpty()) {
+            return new ArrayList<>();
+        }
         return list.stream().map(AigcExcelCol::getLabel).toList();
     }
 
-    @Tool("Gets all the data for a column")
+    @Tool("Gets data for a column")
     List<String> getColData(int col) {
         List<AigcExcelRow> list = excelRowService.list(Wrappers.<AigcExcelRow>lambdaQuery()
                 .eq(StrUtil.isNotBlank(req.getKnowledgeId()), AigcExcelRow::getKnowledgeId, req.getKnowledgeId())
@@ -47,6 +51,9 @@ public class StructTools {
                 .eq(AigcExcelRow::getColIndex, col)
                 .select(AigcExcelRow::getValue)
         );
+        if (list.isEmpty()) {
+            return new ArrayList<>();
+        }
         return list.stream().map(AigcExcelRow::getValue).toList();
     }
 }

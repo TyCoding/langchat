@@ -47,7 +47,7 @@ public class ChatServiceImpl implements ChatService {
         saveMessage(req, 0, 0);
 
         try {
-            langChatService.stream(req)
+            langChatService.chat(req)
                     .onNext(e -> {
                         text.append(e);
                         emitter.send(new ChatRes(e));
@@ -76,6 +76,46 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
+    @Override
+    public void docsChat(ChatReq req) {
+        long startTime = System.currentTimeMillis();
+        StreamEmitter emitter = req.getEmitter();
+        StringBuilder text = new StringBuilder();
+
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req, 0, 0);
+
+        try {
+            langDocService.chat(req)
+                    .onNext(e -> {
+                        text.append(e);
+                        emitter.send(new ChatRes(e));
+                    })
+                    .onComplete(e -> {
+                        TokenUsage tokenUsage = e.tokenUsage();
+                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
+                        emitter.complete();
+
+                        // save message
+                        if (req.getConversationId() != null) {
+                            req.setMessage(text.toString());
+                            req.setRole(RoleEnum.ASSISTANT.getName());
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
+                        }
+                    })
+                    .onError((e) -> {
+                        e.printStackTrace();
+                        emitter.error(e.getMessage());
+                    })
+                    .start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            emitter.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     private void saveMessage(ChatReq req, Integer inputToken, Integer outputToken) {
         AigcMessage message = new AigcMessage();
         BeanUtils.copyProperties(req, message);
@@ -86,13 +126,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void stream(TextR req) {
+    public void singleChat(TextR req) {
         StreamEmitter emitter = req.getEmitter();
         long startTime = System.currentTimeMillis();
         ChatReq chat = new ChatReq().setModel(req.getModel()).setPrompt(req.getPrompt());
 
         try {
-            langChatService.stream(chat)
+            langChatService.chat(chat)
                     .onNext(e -> {
                         emitter.send(new ChatRes(e));
                     })
@@ -133,47 +173,5 @@ public class ChatServiceImpl implements ChatService {
         return oss;
     }
 
-    @Override
-    public void docsChat(ChatReq req) {
-        long startTime = System.currentTimeMillis();
-        StreamEmitter emitter = req.getEmitter();
-        StringBuilder text = new StringBuilder();
 
-        // save user message
-        req.setRole(RoleEnum.USER.getName());
-        saveMessage(req, 0, 0);
-
-        try {
-            langDocService.search(req)
-                    .onNext(e -> {
-                        text.append(e);
-                        emitter.send(new ChatRes(e));
-                    })
-                    .onComplete(e -> {
-                        TokenUsage tokenUsage = e.tokenUsage();
-                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
-                        emitter.complete();
-
-                        // save message
-                        if (req.getConversationId() != null) {
-                            req.setMessage(text.toString());
-                            req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
-                        }
-                    })
-                    .onError((e) -> {
-                        emitter.error(e.getMessage());
-                    })
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
-            emitter.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void docsEmbed(AigcOss req) {
-        langDocService.embeddingDocs(null);
-    }
 }

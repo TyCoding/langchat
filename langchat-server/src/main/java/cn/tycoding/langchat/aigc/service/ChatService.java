@@ -19,7 +19,7 @@ public interface ChatService {
     /**
      * 流式请求
      */
-    void stream(TextR req);
+    void singleChat(TextR req);
 
     /**
      * 文本请求
@@ -36,8 +36,4 @@ public interface ChatService {
      */
     void docsChat(ChatReq req);
 
-    /**
-     * 文档Embedding
-     */
-    void docsEmbed(AigcOss req);
 }

@@ -79,8 +79,6 @@ public class EmbeddingServiceImpl implements EmbeddingService {
             map.put("text", embedded.text());
             result.add(map);
         });
-
-        System.out.println("----");
         return result;
     }
 }

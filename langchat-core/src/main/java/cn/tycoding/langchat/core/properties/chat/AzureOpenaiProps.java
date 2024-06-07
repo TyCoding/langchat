@@ -29,7 +29,7 @@ public class AzureOpenaiProps {
     private List<String> stop;
     private Double presencePenalty;
     private Double frequencyPenalty;
-    private Duration timeout = Duration.ofSeconds(600);
+    private Duration timeout = Duration.ofSeconds(3 * 60);
     private Long seed;
     private Integer maxRetries;
     private ProxyOptions proxyOptions;

@@ -1,10 +1,9 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.dto.DocsTypeEnum;
-import cn.tycoding.langchat.aigc.entity.AigcDocs;
-import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
-import cn.tycoding.langchat.aigc.entity.AigcOss;
+import cn.tycoding.langchat.aigc.entity.*;
 import cn.tycoding.langchat.aigc.listener.StructExcelListener;
 import cn.tycoding.langchat.aigc.service.*;
 import cn.tycoding.langchat.common.dto.ChatReq;
@@ -14,6 +13,7 @@ import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.service.LangDocService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -35,8 +36,9 @@ public class EmbeddingEndpoint {
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final AigcOssService aigcOssService;
-    private final AigcExcelColService structColService;
-    private final AigcExcelRowService structRowService;
+    private final AigcExcelColService excelColService;
+    private final AigcExcelRowService excelRowService;
+    private final AigcExcelDataService excelDataService;
     private final EmbeddingService embeddingService;
 
     @PostMapping("/text")
@@ -86,17 +88,30 @@ public class EmbeddingEndpoint {
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()
                 .setName(oss.getFileName())
-                .setSliceStatus(false)
+                .setSliceStatus(true)
                 .setSize(file.getSize())
                 .setType(DocsTypeEnum.UPLOAD.name())
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
 
-        log.info("解析开始...");
-        EasyExcel.read(new ByteArrayInputStream(bytes), new StructExcelListener(structColService, structRowService, knowledgeId, data.getId()))
+        EasyExcel.read(new ByteArrayInputStream(bytes), new StructExcelListener(excelDataService, excelColService, excelRowService, knowledgeId, data.getId()))
                 .extraRead(CellExtraTypeEnum.MERGE)
-                .sheet().doRead();
+                .sheet()
+                .doRead();
         return R.ok();
+    }
+
+    @GetMapping("/struct/excel/rows/{docsId}")
+    public R getExcelRows(@PathVariable String docsId) {
+        List<List<String>> rows = excelDataService.list(Wrappers.<AigcExcelData>lambdaQuery()
+                .eq(AigcExcelData::getDocsId, docsId).orderByAsc(AigcExcelData::getRowIndex)
+        ).stream().map(AigcExcelData::getData).toList();
+
+        List<String> cols = excelColService.list(Wrappers.<AigcExcelCol>lambdaQuery()
+                        .eq(AigcExcelCol::getDocsId, docsId)
+                        .orderByAsc(AigcExcelCol::getColIndex))
+                .stream().map(AigcExcelCol::getLabel).toList();
+        return R.ok(Dict.create().set("cols", cols).set("rows", rows));
     }
 
     @PostMapping("/search")

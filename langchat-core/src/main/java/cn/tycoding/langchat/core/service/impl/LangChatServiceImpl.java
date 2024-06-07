@@ -8,7 +8,6 @@ import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangChatService;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
@@ -37,18 +36,11 @@ import org.springframework.stereotype.Service;
 public class LangChatServiceImpl implements LangChatService {
 
     private final ModelProvider provider;
-    private final ChatMemoryService chatMemoryService;
     private final GoogleCustomWebSearchEngine googleCustomWebSearchEngine;
 
     @Override
-    public TokenStream stream(ChatReq req) {
+    public TokenStream chat(ChatReq req) {
         StreamingChatLanguageModel model = provider.stream(req.getModel());
-
-        ChatMemoryProvider chatMemoryProvider = (memoryId) -> MessageWindowChatMemory.builder()
-                .id(req.getConversationId() == null ? memoryId : req.getConversationId())
-                .maxMessages(10)
-                .chatMemoryStore(chatMemoryService)
-                .build();
 
         Assistant assistant;
         if (req.getIsGoogleSearch()) {
@@ -63,15 +55,15 @@ public class LangChatServiceImpl implements LangChatService {
             assistant = AiServices.builder(Assistant.class)
                     .streamingChatLanguageModel(model)
                     .retrievalAugmentor(retrievalAugmentor)
-                    .chatMemoryProvider(chatMemoryProvider)
+                    .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
                     .build();
         } else {
             assistant = AiServices.builder(Assistant.class)
                     .streamingChatLanguageModel(model)
-                    .chatMemoryProvider(chatMemoryProvider)
+                    .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
                     .build();
         }
-        return assistant.chat(req.getPrompt().toUserMessage());
+        return assistant.stream(req.getMessage());
     }
 
     @Override

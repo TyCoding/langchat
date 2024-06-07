@@ -60,7 +60,7 @@ export const columns: BasicColumn[] = [
     width: 100,
     align: 'center',
     render(rowData) {
-      return (Number(rowData.size) / 1000).toFixed(2) + ' MB';
+      return (Number(rowData.size) / 1000000).toFixed(2) + ' MB';
     },
   },
   {

@@ -22,18 +22,8 @@ public interface LangDocService {
     List<EmbeddingR> embeddingDocs(ChatReq req);
 
     /**
-     * 解析结构化文件
-     */
-    void embeddingStruct(ChatReq req);
-
-    /**
      * 文本向量搜索
      */
-    TokenStream search(ChatReq req);
-
-    /**
-     * 结构化数据搜索
-     */
-    TokenStream searchStruct(ChatReq req);
+    TokenStream chat(ChatReq req);
 
 }

@@ -49,7 +49,7 @@ public class AigcChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.TRANSLATE));
-        chatService.stream(req);
+        chatService.singleChat(req);
         return emitter.get();
     }
 
@@ -58,7 +58,7 @@ public class AigcChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.CHART_LINE));
-        chatService.stream(req);
+        chatService.singleChat(req);
         return emitter.get();
     }
 
@@ -73,7 +73,7 @@ public class AigcChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.MERMAID));
-        chatService.stream(req);
+        chatService.singleChat(req);
         return emitter.get();
     }
 

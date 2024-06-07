@@ -14,4 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class WebSearchProps {
 
     private GoogleProps google = new GoogleProps();
+
+    private TavilyProps tavily = new TavilyProps();
 }

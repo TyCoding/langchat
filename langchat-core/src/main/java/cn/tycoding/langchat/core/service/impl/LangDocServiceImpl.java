@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.core.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.service.AigcExcelColService;
 import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
@@ -16,6 +17,7 @@ import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
@@ -90,44 +92,27 @@ public class LangDocServiceImpl implements LangDocService {
     }
 
     @Override
-    public void embeddingStruct(ChatReq req) {
-    }
-
-    @Override
-    public TokenStream search(ChatReq req) {
+    public TokenStream chat(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
-        EmbeddingModel model = embedProvider.embed();
-        Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
+        AiServices<Assistant> aiServices = AiServices.builder(Assistant.class)
+                .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
+                .streamingChatLanguageModel(chatLanguageModel);
 
-        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-                .embeddingStore(milvusEmbeddingStore)
-                .embeddingModel(model)
-                .dynamicFilter(filterByUserId)
-                .build();
+        if (StrUtil.isNotBlank(req.getDocsId())) {
+            // for excel, add function tool
+            aiServices.tools(new StructTools(req, excelColService, excelRowService));
+        } else {
+            EmbeddingModel model = embedProvider.embed();
+            Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
+            ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+                    .embeddingStore(milvusEmbeddingStore)
+                    .embeddingModel(model)
+                    .dynamicFilter(filterByUserId)
+                    .build();
+            aiServices.contentRetriever(contentRetriever);
+        }
 
-        Assistant assistant = AiServices.builder(Assistant.class)
-                .streamingChatLanguageModel(chatLanguageModel)
-                .contentRetriever(contentRetriever)
-                .build();
-
-        return assistant.chat(req.getPrompt().toUserMessage());
-    }
-
-    @Override
-    public TokenStream searchStruct(ChatReq req) {
-        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
-        EmbeddingModel model = embedProvider.embed();
-
-        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-                .embeddingModel(model)
-                .build();
-
-        Assistant assistant = AiServices.builder(Assistant.class)
-                .streamingChatLanguageModel(chatLanguageModel)
-                .contentRetriever(contentRetriever)
-                .tools(new StructTools(req, excelColService, excelRowService))
-                .build();
-
-        return assistant.chat(req.getPrompt().toUserMessage());
+        Assistant assistant = aiServices.build();
+        return assistant.stream(req.getMessage());
     }
 }

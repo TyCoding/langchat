@@ -2,8 +2,10 @@ package cn.tycoding.langchat.aigc.listener;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcExcelCol;
+import cn.tycoding.langchat.aigc.entity.AigcExcelData;
 import cn.tycoding.langchat.aigc.entity.AigcExcelRow;
 import cn.tycoding.langchat.aigc.service.AigcExcelColService;
+import cn.tycoding.langchat.aigc.service.AigcExcelDataService;
 import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
@@ -27,15 +29,18 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
     private final List<AigcExcelCol> cols = new ArrayList<>();
     private final List<CellExtra> cellExtraList = new ArrayList<>();
     private final List<Map<Integer, String>> list = new ArrayList<>();
+    private final List<AigcExcelData> rowsData = new ArrayList<>();
 
-    private final AigcExcelColService structColService;
-    private final AigcExcelRowService structRowService;
+    private final AigcExcelColService excelColService;
+    private final AigcExcelRowService excelRowService;
+    private final AigcExcelDataService excelDataService;
     private final String knowledgeId;
     private final String docsId;
 
-    public StructExcelListener(AigcExcelColService structColService, AigcExcelRowService structRowService, String knowledgeId, String docsId) {
-        this.structColService = structColService;
-        this.structRowService = structRowService;
+    public StructExcelListener(AigcExcelDataService excelDataService, AigcExcelColService excelColService, AigcExcelRowService excelRowService, String knowledgeId, String docsId) {
+        this.excelDataService = excelDataService;
+        this.excelColService = excelColService;
+        this.excelRowService = excelRowService;
         this.knowledgeId = knowledgeId;
         this.docsId = docsId;
     }
@@ -43,6 +48,7 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext analysisContext) {
         list.add(data);
+        rowsData.add(new AigcExcelData().setRowIndex(list.size()).setData(data.values().stream().toList()).setDocsId(docsId).setKnowledgeId(knowledgeId));
     }
 
     @Override
@@ -51,27 +57,29 @@ public class StructExcelListener extends AnalysisEventListener<Map<Integer, Stri
             mergeExcelData(list, cellExtraList, HEAD_ROW_NUM);
         }
 
-        structColService.saveBatch(cols);
+        excelColService.saveBatch(cols);
+        excelDataService.saveBatch(rowsData);
         List<AigcExcelRow> rows = new ArrayList<>();
+
         list.forEach(i -> {
             i.forEach((k, v) -> {
                 if (StrUtil.isNotBlank(v)) {
                     rows.add(new AigcExcelRow()
                             .setValue(v)
-                            .setColIndex(k)
+                            .setColIndex(k + 1)
                             .setDocsId(docsId)
                             .setKnowledgeId(knowledgeId));
                 }
             });
         });
-        structRowService.saveBatch(rows);
+        excelRowService.saveBatch(rows);
     }
 
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
         headMap.forEach((k, v) -> {
             cols.add(new AigcExcelCol()
-                    .setColIndex(v.getColumnIndex())
+                    .setColIndex(v.getColumnIndex() + 1)
                     .setLabel(v.getStringValue())
                     .setKnowledgeId(knowledgeId)
                     .setDocsId(docsId)

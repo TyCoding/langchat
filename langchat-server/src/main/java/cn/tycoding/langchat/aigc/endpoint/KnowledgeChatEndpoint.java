@@ -9,15 +9,10 @@ import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
-import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author tycoding
@@ -38,7 +33,7 @@ public class KnowledgeChatEndpoint {
         req.setUserId(String.valueOf(AuthUtil.getUserId()));
         req.setUsername(AuthUtil.getUsername());
 
-        if (StrUtil.isNotBlank(req.getKnowledgeId())) {
+        if (StrUtil.isNotBlank(req.getKnowledgeId()) || StrUtil.isNotBlank(req.getDocsId())) {
             req.setPrompt(PromptUtil.buildDocs(req.getMessage()));
             chatService.docsChat(req);
         } else if (StrUtil.isNotBlank(req.getPromptId())) {

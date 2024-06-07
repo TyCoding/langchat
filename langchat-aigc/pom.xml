@@ -41,6 +41,12 @@
             <groupId>com.pig4cloud.excel</groupId>
             <artifactId>excel-spring-boot-starter</artifactId>
             <version>3.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>poi-ooxml-schemas</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

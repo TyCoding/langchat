@@ -2,20 +2,11 @@ package cn.tycoding.langchat;
 
 import cn.tycoding.langchat.core.properties.chat.OpenaiProps;
 import cn.tycoding.langchat.core.properties.search.WebSearchProps;
-import cn.tycoding.langchat.core.service.Assistant;
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
-import dev.langchain4j.rag.DefaultRetrievalAugmentor;
-import dev.langchain4j.rag.RetrievalAugmentor;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
-import dev.langchain4j.rag.query.router.DefaultQueryRouter;
-import dev.langchain4j.rag.query.router.QueryRouter;
-import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.web.search.WebSearchRequest;
 import dev.langchain4j.web.search.WebSearchResults;
 import dev.langchain4j.web.search.google.customsearch.GoogleCustomWebSearchEngine;
+import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import io.milvus.client.MilvusServiceClient;
 import io.milvus.grpc.DescribeCollectionResponse;
 import io.milvus.grpc.GetCollectionStatisticsResponse;
@@ -26,6 +17,7 @@ import io.milvus.param.collection.DescribeCollectionParam;
 import io.milvus.param.collection.GetCollectionStatisticsParam;
 import io.milvus.param.collection.ShowCollectionsParam;
 import io.milvus.param.dml.SearchParam;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +30,7 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
  * @author tycoding
  * @since 2024/4/4
  */
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AppTest {
@@ -47,6 +40,8 @@ public class AppTest {
 
     @Autowired
     private GoogleCustomWebSearchEngine googleCustomWebSearchEngine;
+    @Autowired
+    private TavilyWebSearchEngine tavilyWebSearchEngine;
     @Autowired
     private WebSearchProps props;
     @Autowired
@@ -85,35 +80,10 @@ public class AppTest {
 
     @Test
     public void t2() {
-        WebSearchResults results = googleCustomWebSearchEngine.search(WebSearchRequest.builder()
+        WebSearchResults results = tavilyWebSearchEngine.search(WebSearchRequest.builder()
                         .maxResults(3)
-                .searchTerms("hi").build());
+                .searchTerms("What's the date today?").build());
+        log.info("result: {}", results);
     }
 
-    @Test
-    public void t3() throws InterruptedException {
-        ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
-                .webSearchEngine(googleCustomWebSearchEngine)
-                .maxResults(3)
-                .build();
-        QueryRouter queryRouter = new DefaultQueryRouter(webSearchContentRetriever);
-
-        RetrievalAugmentor retrievalAugmentor = DefaultRetrievalAugmentor.builder()
-                .queryRouter(queryRouter)
-                .build();
-
-        Assistant assistant = AiServices.builder(Assistant.class)
-//                .chatLanguageModel(OpenAiChatModel.withApiKey(openaiProps.getApiKey()))
-                .streamingChatLanguageModel(OpenAiStreamingChatModel.withApiKey(openaiProps.getApiKey()))
-                .retrievalAugmentor(retrievalAugmentor)
-                .build();
-//        String s = assistant.chat("今天几号");
-//        System.out.println(s);
-
-        assistant.chat(new UserMessage("今天几号")).onNext(s -> {
-            System.out.println(s);
-        });
-
-        Thread.sleep(10 * 1000);
-    }
 }
