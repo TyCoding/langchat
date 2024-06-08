@@ -13,4 +13,6 @@ public interface PropConst {
     String AZUREOPENAI_CON = "langchat.azureopenai.api-key";
 
     String GOOGLE_CON = "langchat.web-search.google.api-key";
+
+    String TAVILY_CON = "langchat.web-search.tavily.api-key";
 }

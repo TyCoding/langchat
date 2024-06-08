@@ -1,5 +1,8 @@
 package cn.tycoding.langchat.core.component;
 
+import static cn.tycoding.langchat.core.consts.PropConst.GOOGLE_CON;
+import static cn.tycoding.langchat.core.consts.PropConst.TAVILY_CON;
+
 import cn.tycoding.langchat.core.properties.search.GoogleProps;
 import cn.tycoding.langchat.core.properties.search.TavilyProps;
 import cn.tycoding.langchat.core.properties.search.WebSearchProps;
@@ -9,8 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static cn.tycoding.langchat.core.consts.PropConst.GOOGLE_CON;
 
 /**
  * @author tycoding
@@ -40,7 +41,7 @@ public class WebSearchComponent {
     }
 
     @Bean
-    @ConditionalOnProperty(GOOGLE_CON)
+    @ConditionalOnProperty(TAVILY_CON)
     public TavilyWebSearchEngine tavilyWebSearchEngine() {
         TavilyProps tavily = props.getTavily();
         return TavilyWebSearchEngine

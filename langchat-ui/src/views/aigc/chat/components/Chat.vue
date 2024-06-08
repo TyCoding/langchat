@@ -8,6 +8,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { chat } from '@/api/aigc/chat';
+  import { AttachOutline, SparklesOutline } from '@vicons/ionicons5';
 
   const dialog = useDialog();
   const ms = useMessage();
@@ -20,15 +21,18 @@
   const aiChatId = ref<string>('');
   let controller = new AbortController();
 
+  const menuOptions = ref([
+    {
+      label: 'Upload File',
+      value: 'Upload File',
+    },
+  ]);
   const footerClass = computed(() => {
     let classes = ['p-4'];
     if (isMobile.value) {
       classes = ['sticky', 'left-0', 'bottom-0', 'right-0', 'p-2', 'pr-3', 'overflow-hidden'];
     }
     return classes;
-  });
-  const buttonDisabled = computed(() => {
-    return loading.value;
   });
 
   // 初始化加载数据
@@ -205,35 +209,33 @@
     <footer :class="footerClass">
       <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-6 relative">
         <div class="flex items-center justify-between space-x-2">
-          <NInput
+          <n-input
             ref="inputRef"
             v-model:value="message"
             type="textarea"
-            :autosize="{ minRows: 3, maxRows: isMobile ? 4 : 8 }"
             @keypress="handleEnter"
-            class="custom-input"
+            :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
+            class="!rounded-full px-2 py-1"
+            placeholder="搜索"
+            size="large"
           >
-            <template #suffix>
-              <div class="flex items-center gap-2">
-                <NButton
-                  type="default"
-                  size="small"
-                  :disabled="buttonDisabled"
-                  @click="handleSubmit"
-                >
-                  <SvgIcon icon="ph:file-plus-duotone" />
-                </NButton>
-                <NButton
-                  type="primary"
-                  size="small"
-                  :disabled="buttonDisabled"
-                  @click="handleSubmit"
-                >
-                  <SvgIcon icon="ri:send-plane-fill" />
-                </NButton>
-              </div>
+            <template #prefix>
+              <n-popselect placement="top" :options="menuOptions" trigger="click">
+                <n-button text class="!mr-2">
+                  <template #icon>
+                    <n-icon class="text-2xl" :component="AttachOutline" />
+                  </template>
+                </n-button>
+              </n-popselect>
             </template>
-          </NInput>
+            <template #suffix>
+              <n-button text :loading="loading" @click="handleSubmit">
+                <template #icon>
+                  <n-icon :component="SparklesOutline" />
+                </template>
+              </n-button>
+            </template>
+          </n-input>
         </div>
       </div>
     </footer>

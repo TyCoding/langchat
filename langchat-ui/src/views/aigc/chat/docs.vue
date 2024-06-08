@@ -161,7 +161,7 @@
         </template>
 
         <template #2>
-          <div class="p-8 pt-6 w-full h-full mb-2">
+          <div class="p-7 pt-6 w-full h-full mb-2">
             <Header title="AI智能助手" />
             <div class="w-full h-full rounded-md p-2 flex items-center justify-center">
               <n-spin :show="chatLoading">
