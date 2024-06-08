@@ -12,11 +12,6 @@ public interface CommonConst {
     String UTF_8 = "utf-8";
 
     /**
-     * JSON 请求响应格式
-     */
-    String CONTENT_TYPE = "application/json; charset=utf-8";
-
-    /**
      * 菜单类型：menu
      */
     String MENU_TYPE_MENU = "menu";

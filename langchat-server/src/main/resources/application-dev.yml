@@ -27,6 +27,5 @@ langchat:
   auth:
     admin-name: administrator
     admin-pass: 123456
-  log:
-    api-enable: false
+    is-demo-env: true
 

@@ -9,9 +9,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.tycoding.langchat.auth.event.LogEvent;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.entity.SysLog;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -71,9 +73,9 @@ public class AuthConfiguration {
     private void hasAuth() {
         StpUtil.checkLogin();
 
-//        // 演示环境禁用操作
-//        if (authProps.getIsDemoEnv() && AuthUtil.getRoleNames().contains(AuthUtil.DEMO_ENV)) {
-//            throw new ServiceException("演示环境，请勿操作");
-//        }
+        // 演示环境禁用操作
+        if (authProps.getIsDemoEnv() && AuthUtil.getRoleNames().contains(AuthUtil.DEMO_ENV)) {
+            throw new ServiceException("演示环境，请勿操作");
+        }
     }
 }

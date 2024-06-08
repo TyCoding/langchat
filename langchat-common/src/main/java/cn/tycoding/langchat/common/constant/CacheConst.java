@@ -26,6 +26,9 @@ public interface CacheConst {
      */
     String AUTH_USER_INFO_KEY = "USER_INFO";
 
+    /**
+     * Auth Token缓存变量前缀
+     */
     String AUTH_TOKEN_INFO_KEY = "TOKEN_INFO";
 
     /**
