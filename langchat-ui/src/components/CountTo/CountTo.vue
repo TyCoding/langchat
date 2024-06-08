@@ -84,9 +84,6 @@
       }
 
       function formatNumber(num: number | string) {
-        if (!num) {
-          return '';
-        }
         const { decimals, decimal, separator, suffix, prefix } = props;
         num = Number(num).toFixed(decimals);
         num += '';

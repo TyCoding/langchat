@@ -19,7 +19,7 @@ public interface CacheConst {
     /**
      * Auth Session缓存前缀
      */
-    String AUTH_SESSION_PREFIX = REDIS_KEY_PREFIX + "auth:session:";
+    String AUTH_SESSION_PREFIX = AUTH_PREFIX + "session:";
 
     /**
      * Auth Session缓存变量前缀

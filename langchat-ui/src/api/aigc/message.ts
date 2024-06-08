@@ -38,10 +38,3 @@ export function del(id: string) {
     method: 'delete',
   });
 }
-
-export function charts() {
-  return http.request({
-    url: `/aigc/message/charts`,
-    method: 'get',
-  });
-}

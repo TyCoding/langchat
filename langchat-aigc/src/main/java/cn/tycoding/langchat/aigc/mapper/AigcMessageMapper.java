@@ -23,11 +23,64 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             aigc_message
         WHERE
             create_time >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+            AND role = 'assistant'
         GROUP BY
             date
         ORDER BY
             date DESC;
     """)
-    List<Dict> charts();
+    List<Dict> getReqChartBy30();
+
+    @Select("""
+        SELECT
+            DATE_FORMAT(create_time, '%Y-%m') as month,
+            COUNT(*) as count
+        FROM
+            aigc_message
+        WHERE
+            create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            AND role = 'assistant'
+        GROUP BY
+            month
+        ORDER BY
+            month DESC;
+    """)
+    List<Dict> getReqChart();
+
+    @Select("""
+        SELECT
+            DATE_FORMAT(create_time, '%Y-%m') as month,
+            SUM(tokens) as count
+        FROM
+            aigc_message
+        WHERE
+            create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            AND role = 'assistant'
+        GROUP BY
+            month
+        ORDER BY
+            month DESC;
+    """)
+    List<Dict> getTokenChart();
+
+    @Select("""
+        SELECT
+            COUNT(*) AS totalReq,
+            SUM( CASE WHEN DATE ( create_time ) = CURDATE() THEN 1 ELSE 0 END ) AS curReq
+        FROM
+            aigc_message
+        WHERE
+            role = 'assistant'
+    """)
+    Dict getCount();
+
+    @Select("""
+        SELECT
+            SUM( tokens ) AS totalToken,
+            SUM( CASE WHEN DATE ( create_time ) = CURDATE() THEN tokens ELSE 0 END ) AS curToken
+        FROM
+            aigc_message
+    """)
+    Dict getTotalSum();
 }
 

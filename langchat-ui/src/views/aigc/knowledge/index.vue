@@ -127,7 +127,7 @@
           <div class="py-3 px-4 border-t flex justify-between items-center">
             <div class="flex gap-1 items-center">
               <n-icon size="20"> <CloudOutlined /> </n-icon>
-              <span>文件大小：{{ (Number(item.totalSize) / 1000000).toFixed(2) }} MB</span>
+              <span class="text-sm"> {{ (Number(item.totalSize) / 1000000).toFixed(2) }} MB </span>
             </div>
             <div class="flex gap-3">
               <n-button @click="handleEdit(item)" text type="primary">

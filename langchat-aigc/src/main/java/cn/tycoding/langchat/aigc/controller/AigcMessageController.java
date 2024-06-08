@@ -2,7 +2,6 @@ package cn.tycoding.langchat.aigc.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
-import cn.tycoding.langchat.aigc.mapper.AigcMessageMapper;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -11,7 +10,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author tycoding
@@ -23,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class AigcMessageController {
 
     private final AigcMessageService aigcMessageService;
-    private final AigcMessageMapper aigcMessageMapper;
 
     @GetMapping("/page")
     public R list(AigcMessage data, QueryPage queryPage) {
@@ -46,8 +48,4 @@ public class AigcMessageController {
         return R.ok(aigcMessageService.removeById(id));
     }
 
-    @GetMapping("/charts")
-    public R charts() {
-        return R.ok(aigcMessageMapper.charts());
-    }
 }

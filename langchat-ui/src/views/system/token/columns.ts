@@ -1,20 +1,20 @@
 import { BasicColumn } from '@/components/Table';
-import { Token } from '@/api/models/auth';
-import { h } from 'vue';
 
-export const columns: BasicColumn<Token>[] = [
+export const columns: BasicColumn<any>[] = [
   {
     title: '令牌',
-    key: 'value',
+    key: 'token',
     align: 'center',
   },
   {
     title: '账户',
     key: 'username',
     align: 'center',
-    render: (row) => {
-      return h('span', row.principal.username);
-    },
+  },
+  {
+    title: '姓名',
+    key: 'realName',
+    align: 'center',
   },
   {
     title: '过期时间',

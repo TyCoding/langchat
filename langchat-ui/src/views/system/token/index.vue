@@ -26,7 +26,6 @@
   import { DeleteOutlined, EyeOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
-  import { Token } from '@/api/models/auth';
   const message = useMessage();
   const dialog = useDialog();
 
@@ -70,18 +69,18 @@
     actionRef.value.reload();
   }
 
-  function handleEdit(record: Token) {
+  function handleEdit(record: any) {
     editRef.value.show(record);
   }
 
-  function handleDelete(record: Token) {
+  function handleDelete(record: any) {
     dialog.info({
       title: '提示',
-      content: `您确定强制下线 ${record.principal.username} 账户？`,
+      content: `您确定强制下线 ${record.username} 账户？`,
       positiveText: '确定',
       negativeText: '取消',
       onPositiveClick: async () => {
-        await del(record.value);
+        await del(record.token);
         message.success('下线成功');
         reloadTable();
       },

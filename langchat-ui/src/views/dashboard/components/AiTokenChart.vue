@@ -1,19 +1,18 @@
+<template>
+  <div ref="chartRef" class="w-full" style="height: calc(100vh - 400px)"></div>
+</template>
 <script lang="ts" setup>
   import { onMounted, ref, Ref } from 'vue';
   import { useECharts } from '@/hooks/web/useECharts';
-  import { getReqChartBy30 } from '@/api/aigc/statictic';
+  import { getTokenChart } from '@/api/aigc/statictic';
 
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   onMounted(async () => {
-    const data = await getReqChartBy30();
-    const xData: any = [];
-    const yData: any = [];
-    data.forEach((i: any) => {
-      xData.push(i.date);
-      yData.push(i.tokens);
-    });
+    const list = await getTokenChart();
+    const xData = list.map((i) => i.month);
+    const yData = list.map((i) => Number(i.count));
 
     setOptions({
       tooltip: {
@@ -44,7 +43,6 @@
       yAxis: [
         {
           type: 'value',
-          splitNumber: 4,
           axisTick: {
             show: false,
           },
@@ -71,10 +69,3 @@
     });
   });
 </script>
-
-<template>
-  <div>
-    <h3 class="my-2 mb-6 text-lg">近30天请求汇总</h3>
-    <div ref="chartRef" class="w-full h-60"></div>
-  </div>
-</template>

@@ -1,43 +1,118 @@
 <script lang="ts" setup>
-  import avatar from '@/assets/avatar.jpg';
+  import { ref, onMounted } from 'vue';
+  import VisiTab from './components/VisiTab.vue';
+  import { CountTo } from '@/components/CountTo';
+  import { CaretUpOutlined } from '@vicons/antd';
+  import { getHomeData, getReqChart } from '@/api/aigc/statictic';
+
+  const loading = ref(true);
+  const list = ref([
+    {
+      key: 'req',
+      label: 'AI请求量',
+      value: 0,
+      totalLabel: 'AI总请求量',
+      totalValue: 0,
+      category: '日',
+      type: 'success',
+    },
+    {
+      key: 'token',
+      label: 'Token消耗量',
+      value: 0,
+      totalLabel: 'AI总消耗Token量',
+      totalValue: 0,
+      category: '日',
+      type: 'primary',
+    },
+    {
+      key: 'user',
+      label: '用户增长量',
+      value: 0,
+      totalLabel: '平台用户总量',
+      totalValue: 0,
+      category: '月',
+      type: 'warning',
+    },
+    {
+      key: 'knowledge',
+      label: 'AI知识库数量',
+      value: 0,
+      totalLabel: 'Prompt提示词数量',
+      totalValue: 0,
+      category: '合',
+      type: 'error',
+    },
+  ]);
+
+  onMounted(async () => {
+    const {
+      totalReq,
+      curReq,
+      totalToken,
+      curToken,
+      totalUser,
+      curUser,
+      totalKnowledge,
+      totalPrompt,
+    } = await getHomeData();
+    list.value.forEach((i) => {
+      if (i.key === 'req') {
+        i.value = Number(curReq);
+        i.totalValue = Number(totalReq);
+      }
+      if (i.key === 'token') {
+        i.value = Number(curToken);
+        i.totalValue = Number(totalToken);
+      }
+      if (i.key === 'user') {
+        i.value = Number(curUser);
+        i.totalValue = Number(totalUser);
+      }
+      if (i.key === 'knowledge') {
+        i.value = Number(totalKnowledge);
+        i.totalValue = Number(totalPrompt);
+      }
+    });
+    loading.value = false;
+  });
 </script>
 
 <template>
-  <div>
-    <div class="n-layout-page-header">
-      <n-card :bordered="false" title="工作台">
-        <n-grid cols="2 s:1 m:1 l:2 xl:2 2xl:2" responsive="screen">
-          <n-gi>
-            <div class="flex items-center">
-              <div>
-                <n-avatar circle :size="64" :src="avatar" />
-              </div>
-              <div>
-                <p class="px-4 text-xl">早安，Ah jung，开始您一天的工作吧！</p>
-                <p class="px-4 text-gray-400">今日阴转大雨，15℃ - 25℃，出门记得带伞哦。</p>
-              </div>
+  <div class="h-full overflow-y-auto">
+    <!--数据卡片-->
+    <n-grid cols="1 s:2 m:3 l:4 xl:4 2xl:4" responsive="screen" :x-gap="12" :y-gap="8">
+      <n-grid-item v-for="item in list" :key="item.key">
+        <NCard
+          :title="item.label"
+          :segmented="{ content: true, footer: true }"
+          size="small"
+          :bordered="false"
+        >
+          <template #header-extra>
+            <n-tag :type="item.type" :bordered="false">{{ item.category }}</n-tag>
+          </template>
+          <div class="flex justify-between px-1 py-1">
+            <n-skeleton v-if="loading" :width="100" size="medium" />
+            <CountTo v-else :startVal="0" :endVal="item.value" class="text-2xl" />
+          </div>
+          <div class="flex justify-between px-1 py-1">
+            <div class="text-gray-600">
+              <n-skeleton v-if="loading" :width="100" size="medium" />
+              <template v-else>
+                {{ item.totalLabel }}
+                <CountTo :startVal="0" suffix=" " :endVal="item.totalValue" />
+                <n-icon size="12" color="#00ff6f">
+                  <CaretUpOutlined />
+                </n-icon>
+              </template>
             </div>
-          </n-gi>
-          <n-gi>
-            <div class="flex justify-end w-full">
-              <div class="flex flex-col justify-center flex-1 text-right">
-                <span class="text-secondary">项目数</span>
-                <span class="text-2xl">16</span>
-              </div>
-              <div class="flex flex-col justify-center flex-1 text-right">
-                <span class="text-secondary">待办</span>
-                <span class="text-2xl">3/15</span>
-              </div>
-              <div class="flex flex-col justify-center flex-1 text-right">
-                <span class="text-secondary">消息</span>
-                <span class="text-2xl">35</span>
-              </div>
-            </div>
-          </n-gi>
-        </n-grid>
-      </n-card>
-    </div>
-    <div style="width: 200px"> </div>
+          </div>
+        </NCard>
+      </n-grid-item>
+    </n-grid>
+
+    <VisiTab />
   </div>
 </template>
 

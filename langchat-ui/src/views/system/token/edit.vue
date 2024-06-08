@@ -1,6 +1,6 @@
 <template>
   <n-drawer v-model:show="isShow" width="40%" placement="right">
-    <n-drawer-content :title="info.principal.username" closable>
+    <n-drawer-content :title="info.username" closable>
       <n-descriptions
         label-placement="left"
         size="small"
@@ -8,15 +8,22 @@
         bordered
         label-style="width: 110px"
       >
-        <n-descriptions-item label="账户ID">{{ info.principal.id }}</n-descriptions-item>
-        <n-descriptions-item label="账户名">{{ info.principal.username }}</n-descriptions-item>
-        <n-descriptions-item label="令牌">{{ info.value }}</n-descriptions-item>
-        <n-descriptions-item label="刷新令牌">{{ info.refreshToken }}</n-descriptions-item>
+        <n-descriptions-item label="账户ID">{{ info.id }}</n-descriptions-item>
+        <n-descriptions-item label="账户名">{{ info.username }}</n-descriptions-item>
+        <n-descriptions-item label="用户名">{{ info.realName }}</n-descriptions-item>
+        <n-descriptions-item label="令牌">{{ info.token }}</n-descriptions-item>
         <n-descriptions-item label="失效时间">{{ info.expiration }}</n-descriptions-item>
+        <n-descriptions-item label="角色列表">
+          <n-space>
+            <n-tag v-for="item in info.roles" :key="item" size="small" type="success">
+              {{ item.name }}
+            </n-tag>
+          </n-space>
+        </n-descriptions-item>
         <n-descriptions-item label="权限列表">
           <n-space>
-            <n-tag v-for="item in info.principal.authorities" :key="item">
-              {{ item.authority }}
+            <n-tag v-for="item in info.perms" :key="item" size="small" type="info">
+              {{ item }}
             </n-tag>
           </n-space>
         </n-descriptions-item>
@@ -26,13 +33,10 @@
 </template>
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { useMessage } from 'naive-ui';
-  import { Token } from '@/api/models/auth';
 
   const emit = defineEmits(['reload']);
-  const message = useMessage();
   const isShow = ref(false);
-  let info: Token = {
+  let info: any = {
     value: '',
     tokenType: '',
     expiration: '',
@@ -47,7 +51,7 @@
     },
   };
 
-  async function show(token: Token) {
+  async function show(token: any) {
     info = token;
     isShow.value = true;
   }
