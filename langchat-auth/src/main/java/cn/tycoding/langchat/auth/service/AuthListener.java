@@ -16,7 +16,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
-        System.out.println("---------- 自定义侦听器实现 doLogin");
     }
 
     /**
@@ -24,7 +23,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doLogout(String loginType, Object loginId, String tokenValue) {
-        System.out.println("---------- 自定义侦听器实现 doLogout");
     }
 
     /**
@@ -32,7 +30,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doKickout(String loginType, Object loginId, String tokenValue) {
-        System.out.println("---------- 自定义侦听器实现 doKickout");
     }
 
     /**
@@ -40,7 +37,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doReplaced(String loginType, Object loginId, String tokenValue) {
-        System.out.println("---------- 自定义侦听器实现 doReplaced");
     }
 
     /**
@@ -48,7 +44,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doDisable(String loginType, Object loginId, String service, int level, long disableTime) {
-        System.out.println("---------- 自定义侦听器实现 doDisable");
     }
 
     /**
@@ -56,7 +51,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doUntieDisable(String loginType, Object loginId, String service) {
-        System.out.println("---------- 自定义侦听器实现 doUntieDisable");
     }
 
     /**
@@ -64,7 +58,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doOpenSafe(String loginType, String tokenValue, String service, long safeTime) {
-        System.out.println("---------- 自定义侦听器实现 doOpenSafe");
     }
 
     /**
@@ -72,7 +65,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doCloseSafe(String loginType, String tokenValue, String service) {
-        System.out.println("---------- 自定义侦听器实现 doCloseSafe");
     }
 
     /**
@@ -80,7 +72,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doCreateSession(String id) {
-        System.out.println("---------- 自定义侦听器实现 doCreateSession");
     }
 
     /**
@@ -88,7 +79,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doLogoutSession(String id) {
-        System.out.println("---------- 自定义侦听器实现 doLogoutSession");
     }
 
     /**
@@ -96,7 +86,6 @@ public class AuthListener implements SaTokenListener {
      */
     @Override
     public void doRenewTimeout(String tokenValue, Object loginId, long timeout) {
-        System.out.println("---------- 自定义侦听器实现 doRenewTimeout");
     }
 
 }
