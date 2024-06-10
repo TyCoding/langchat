@@ -1,55 +1,54 @@
 import { http } from '@/utils/request';
-import { Conversation } from '@/typings/chat';
 
 export function page(params: any) {
   return http.get({
-    url: '/langchat/conversation/page',
+    url: '/aigc/conversation/page',
     params,
   });
 }
 
-export function list(params: any) {
+export function list(data: any) {
   return http.get({
-    url: '/langchat/conversation/list',
-    params,
+    url: '/aigc/conversation/list',
+    data,
   });
 }
 
-export function add(params: any) {
+export function add(data: any) {
   return http.post({
-    url: '/langchat/conversation',
-    params,
+    url: '/aigc/conversation',
+    data,
   });
 }
 
-export function update(params: Partial<Conversation>) {
+export function update(data: any) {
   return http.put({
-    url: '/langchat/conversation',
-    data: params,
+    url: '/aigc/conversation',
+    data,
   });
 }
 
 export function del(conversationId: string) {
   return http.delete({
-    url: `/langchat/conversation/${conversationId}`,
+    url: `/aigc/conversation/${conversationId}`,
   });
 }
 
 export function clearMessage(conversationId: string | undefined) {
   return http.delete({
-    url: `/langchat/conversation/message/${conversationId}`,
+    url: `/aigc/conversation/message/${conversationId}`,
   });
 }
 
 export function getMessages(conversationId: string) {
   return http.get({
-    url: `/langchat/conversation/messages/${conversationId}`,
+    url: `/aigc/conversation/messages/${conversationId}`,
   });
 }
 
 export function addMessage(data: any) {
   return http.post({
-    url: `/langchat/conversation/message`,
+    url: `/aigc/conversation/message`,
     data,
   });
 }

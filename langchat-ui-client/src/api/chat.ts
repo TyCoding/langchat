@@ -10,7 +10,7 @@ export function chat(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: '/langchat/chat',
+    url: '/aigc/chat',
     data,
     onDownloadProgress: onDownloadProgress,
   });
@@ -24,7 +24,7 @@ export function genTranslate(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: `/langchat/chat/translate`,
+    url: `/aigc/chat/translate`,
     data: data,
     onDownloadProgress: onDownloadProgress,
   });
@@ -38,7 +38,7 @@ export function genWrite(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: `/langchat/chat/write`,
+    url: `/aigc/chat/write`,
     data: data,
     onDownloadProgress: onDownloadProgress,
   });
@@ -59,7 +59,7 @@ export function genMindMap(data: ChatR) {
  */
 export function genChart(data: ChatR) {
   return http.post({
-    url: '/langchat/chat/chart',
+    url: '/aigc/chat/chart',
     data: data,
   });
 }
@@ -69,7 +69,7 @@ export function genChart(data: ChatR) {
  */
 export function genImage(data: ImageR): Promise<Oss> {
   return http.post({
-    url: '/langchat/chat/image',
+    url: '/aigc/chat/image',
     data: data,
   });
 }
@@ -82,7 +82,7 @@ export function genMermaid(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: '/langchat/chat/mermaid',
+    url: '/aigc/chat/mermaid',
     data: data,
     onDownloadProgress: onDownloadProgress,
   });

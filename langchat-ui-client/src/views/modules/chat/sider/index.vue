@@ -2,7 +2,7 @@
   import type { CSSProperties } from 'vue';
   import { computed, watch } from 'vue';
   import { SvgIcon } from '@/components/common';
-  import { NButton, NLayoutSider, useMessage } from 'naive-ui';
+  import { NButton, NLayoutSider } from 'naive-ui';
   import { useChatStore } from '../store/useChatStore';
   import { useBasicLayout } from '../store/useBasicLayout';
   import List from './List.vue';
@@ -11,7 +11,6 @@
 
   const chatStore = useChatStore();
   const { isMobile } = useBasicLayout();
-  const ms = useMessage();
 
   const loading = computed(() => {
     return chatStore.sideIsLoading;
@@ -53,7 +52,11 @@
   );
 
   async function onAddConversation() {
-    await addConversation({});
+    chatStore.sideIsLoading = true;
+    console.log('xxx');
+    await addConversation({
+      title: 'New Chat' + Number(chatStore.conversations.length + 1),
+    });
     await chatStore.loadData();
   }
 </script>
@@ -76,22 +79,10 @@
       </div>
       <main v-else class="flex flex-col flex-1 min-h-0">
         <div class="p-4 pt-3 flex justify-between items-center gap-2">
-          <n-popover trigger="hover">
-            <template #trigger>
-              <n-button @click="onAddConversation" size="small" type="success" secondary>
-                <SvgIcon icon="ic:round-plus" />
-              </n-button>
-            </template>
+          <n-button @click="onAddConversation" block size="" type="success" secondary>
+            <SvgIcon icon="ic:round-plus" />
             <span>{{ t('chat.newChatButton') }}</span>
-          </n-popover>
-          <n-popover trigger="hover">
-            <template #trigger>
-              <n-button @click="onAddConversation" size="small" type="success" secondary>
-                <SvgIcon icon="material-symbols:refresh" />
-              </n-button>
-            </template>
-            <span>{{ t('chat.newChatButton') }}</span>
-          </n-popover>
+          </n-button>
         </div>
         <div class="flex-1 min-h-0 pb-4 overflow-hidden">
           <List />

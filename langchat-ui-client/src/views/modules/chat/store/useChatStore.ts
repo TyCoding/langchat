@@ -15,7 +15,7 @@ import { toRaw } from 'vue';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: '',
+      model: 'gpt-4o',
       active: '',
       isEdit: '',
       siderCollapsed: true,
@@ -56,7 +56,7 @@ export const useChatStore = defineStore('chat-store', {
         } else {
           this.active = '';
           this.conversations = [];
-          await router.replace({ path: router.currentRoute.value.path, query: {} });
+          await router.replace({ path: '/chat', query: {} });
         }
       } finally {
         this.sideIsLoading = false;
@@ -104,11 +104,11 @@ export const useChatStore = defineStore('chat-store', {
       }
       const { id, promptId } = this.curConversation;
       // replace url path
-      const query: any = { conversationId: id };
+      const query: any = {};
       if (promptId) {
         query.promptId = promptId;
       }
-      await router.replace({ path: router.currentRoute.value.path, query });
+      await router.replace({ path: `/chat/${id}`, query });
     },
 
     /**

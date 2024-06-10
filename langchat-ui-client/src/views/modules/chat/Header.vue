@@ -7,23 +7,14 @@
   import { t } from '@/locales';
   import { clearMessage } from '@/api/conversation';
   import html2canvas from 'html2canvas';
-  import { getList } from '@/api/model';
+  import { modelList } from '@/api/models/index.d.ts';
 
   const { isMobile } = useBasicLayout();
   const chatStore = useChatStore();
   const dialog = useDialog();
   const ms = useMessage();
   const isShow = ref(true);
-  const model = ref('gemma:2b');
-  const modelList = ref<
-    {
-      label: string;
-      value: string;
-    }[]
-  >([]);
   onMounted(async () => {
-    modelList.value = await getList();
-    chatStore.model = modelList.value[0].value;
     isShow.value = false;
   });
 
@@ -91,6 +82,7 @@
             <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
           </n-button>
           <n-select
+            size="small"
             v-model:value="chatStore.model"
             :options="modelList"
             class="!w-[200px] tracking-widest"

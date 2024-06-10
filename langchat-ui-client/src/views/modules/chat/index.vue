@@ -24,7 +24,7 @@
   const prompt = ref<string>('');
   const chatId = ref<string>('');
   const aiChatId = ref<string>('');
-  const inputRef = ref<Ref | null>(null);
+  const inputRef = ref();
 
   const dataSources = computed(() => {
     // 获取当前聊天窗口的数据
@@ -174,12 +174,15 @@
     }
   }
 
-  const buttonDisabled = computed(() => {
-    return loading.value;
-  });
+  const menuOptions = ref([
+    {
+      label: 'Upload File',
+      value: 'Upload File',
+    },
+  ]);
 
   const footerClass = computed(() => {
-    let classes = ['p-8 pt-0'];
+    let classes = ['p-4'];
     if (isMobile.value) {
       classes = ['sticky', 'left-0', 'bottom-0', 'right-0', 'p-2', 'pr-3', 'overflow-hidden'];
     }
@@ -231,7 +234,12 @@
               <div v-if="chatIsLoading" class="w-full h-full flex items-center justify-center">
                 <n-spin :show="chatIsLoading" size="large" />
               </div>
-              <div v-else ref="scrollRef" :class="[isMobile ? 'p-2' : 'p-8']" class="w-full m-auto">
+              <div
+                v-else
+                ref="scrollRef"
+                class="max-w-screen-3xl m-auto px-10"
+                :class="[isMobile ? 'p-2' : 'p-5']"
+              >
                 <Message
                   v-for="(item, index) of dataSources"
                   :key="index"
@@ -255,51 +263,33 @@
           </main>
 
           <footer :class="footerClass">
-            <div class="w-full m-auto">
-              <div class="flex items-center justify-between space-x-2 w-full">
+            <div class="w-full max-w-screen-3xl m-auto px-8 pb-6 relative">
+              <div class="flex items-center justify-between">
                 <n-input
                   ref="inputRef"
                   v-model:value="prompt"
-                  :autosize="{ minRows: 3, maxRows: isMobile ? 4 : 8 }"
-                  :placeholder="t('chat.placeholder')"
                   type="textarea"
                   @keypress="handleEnter"
+                  :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
+                  class="!rounded-full px-2 py-1"
+                  :placeholder="t('chat.placeholder')"
+                  size="large"
                 >
-                  <template #suffix>
-                    <div
-                      class="flex justify-end align-center absolute w-full bottom-0 left-0 p-2 gap-2"
-                    >
-                      <n-popover trigger="hover">
-                        <template #trigger>
-                          <n-button
-                            :disabled="buttonDisabled"
-                            class="z-10"
-                            secondary
-                            size="small"
-                            type="info"
-                            @click="handleSubmit"
-                          >
-                            <template #icon>
-                              <SvgIcon icon="ic:round-plus" />
-                            </template>
-                          </n-button>
-                        </template>
-                        <span>{{ t('chat.filePlaceholder') }}</span>
-                      </n-popover>
-
-                      <n-button
-                        :disabled="buttonDisabled"
-                        class="z-10"
-                        secondary
-                        size="small"
-                        type="primary"
-                        @click="handleSubmit"
-                      >
+                  <template #prefix>
+                    <n-popselect placement="top" :options="menuOptions" trigger="click">
+                      <n-button text class="!mr-2" size="large">
                         <template #icon>
-                          <SvgIcon icon="ri:send-plane-fill" />
+                          <SvgIcon icon="ion:attach" />
                         </template>
                       </n-button>
-                    </div>
+                    </n-popselect>
+                  </template>
+                  <template #suffix>
+                    <n-button text :loading="loading" @click="handleSubmit">
+                      <template #icon>
+                        <SvgIcon icon="mdi:sparkles-outline" />
+                      </template>
+                    </n-button>
                   </template>
                 </n-input>
               </div>
@@ -311,12 +301,4 @@
   </div>
 </template>
 
-<style lang="less" scoped>
-  ::v-deep(.n-input__textarea) {
-    height: calc(100% - 30px);
-  }
-
-  ::v-deep(.n-scrollbar-rail) {
-    height: calc(100% - 33px);
-  }
-</style>
+<style lang="less" scoped></style>

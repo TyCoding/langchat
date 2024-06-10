@@ -67,3 +67,50 @@ export interface ImageR {
   size?: string;
   style?: string;
 }
+
+export const modelList = [
+  {
+    label: 'OpenAI',
+    key: 'OpenAI',
+    type: 'group',
+    children: [
+      {
+        label: 'GPT-4o',
+        value: 'gpt-4o',
+      },
+      {
+        label: 'GPT-4 Turbo',
+        value: 'gpt-4-turbo',
+      },
+      {
+        label: 'GPT-4',
+        value: 'gpt-4',
+      },
+      {
+        label: 'GPT-3.5 Turbo',
+        value: 'gpt-3.5-turbo',
+      },
+    ],
+  },
+  {
+    label: 'Google Gemini',
+    value: 'gemini',
+    type: 'group',
+    children: [
+      {
+        label: 'Gemini 1.5 Flash',
+        value: 'gemini-1.5-flash',
+      },
+      {
+        label: 'Gemini 1.5 Pro',
+        value: 'gemini-1.5-pro',
+      },
+    ],
+  },
+  {
+    label: 'Ollama',
+    value: 'ollama',
+    type: 'group',
+    children: [],
+  },
+];
