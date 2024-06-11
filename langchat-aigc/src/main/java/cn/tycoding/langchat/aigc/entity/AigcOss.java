@@ -26,9 +26,4 @@ public class AigcOss extends OssR {
      * 用户ID
      */
     private String userId;
-
-    /**
-     * 文件描述
-     */
-    private String des;
 }

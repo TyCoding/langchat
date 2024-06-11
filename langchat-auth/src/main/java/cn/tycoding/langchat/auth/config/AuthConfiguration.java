@@ -31,12 +31,10 @@ public class AuthConfiguration {
     private final AuthProps authProps;
     private final String[] skipUrl = new String[]{
             "/auth/login",
-            "/client/auth/login",
-            "/client/auth/register/email",
-            "/client/auth/code/email",
-            "/client/prompt/**",
-            "/upload/**",
-            "/**",
+            "/aigc/conversation/list",
+            "/aigc/file/list",
+            "/aigc/prompt/page",
+            "/aigc/auth/**",
     };
 
     @Bean
@@ -56,8 +54,6 @@ public class AuthConfiguration {
     }
 
     private String handleError(Throwable e) {
-        System.out.println("---------- 进入Sa-Token异常处理 -----------");
-
         if (e instanceof NotPermissionException || e instanceof NotRoleException) {
             SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_FAIL, HttpStatus.UNAUTHORIZED.getReasonPhrase(), null, null);
             SpringContextHolder.publishEvent(new LogEvent(sysLog));

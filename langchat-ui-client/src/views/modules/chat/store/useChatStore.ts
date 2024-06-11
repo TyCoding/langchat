@@ -94,7 +94,7 @@ export const useChatStore = defineStore('chat-store', {
       await this.setActive(params.id);
       await this.setEdit('');
       this.curConversation = params;
-
+      this.chatIsLoading = false;
       await this.replaceUrl();
     },
 

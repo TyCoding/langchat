@@ -56,6 +56,9 @@
       await chatStore.loadData();
     }
 
+    // add conversation
+    await chatStore.addConversation({});
+
     // ai
     await scrollToBottom();
     const { conversationId } = await addMessage(data);
@@ -237,7 +240,7 @@
               <div
                 v-else
                 ref="scrollRef"
-                class="max-w-screen-3xl m-auto px-10"
+                class="max-w-screen-2xl m-auto px-10"
                 :class="[isMobile ? 'p-2' : 'p-5']"
               >
                 <Message
@@ -263,7 +266,7 @@
           </main>
 
           <footer :class="footerClass">
-            <div class="w-full max-w-screen-3xl m-auto px-8 pb-6 relative">
+            <div class="w-full max-w-screen-2xl m-auto px-20 pb-10 relative">
               <div class="flex items-center justify-between">
                 <n-input
                   ref="inputRef"

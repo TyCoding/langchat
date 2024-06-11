@@ -1,106 +1,178 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, toRaw } from 'vue';
+  import { t } from '@/locales';
   import { useMessage } from 'naive-ui';
-  import { useUserStore } from '@/store/modules/user';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
+  import { forget, getEmailCode } from '@/api/auth';
+  import { rules } from '@/views/login/data';
 
-  interface FormState {
-    username: string;
-    password: string;
-  }
-
+  const isLogin = ref(true);
   const formRef = ref();
   const message = useMessage();
   const loading = ref(false);
-  const LOGIN_NAME = 'Login';
-
+  const router = useRouter();
+  const codeLoading = ref(false);
+  const countdownRef = ref();
   const form = reactive({
-    username: 'administrator',
-    password: '123456',
-    isCaptcha: true,
+    email: '',
+    password: '',
+    code: '',
   });
 
-  const rules = {
-    username: { required: true, message: '请输入用户名', trigger: 'blur' },
-    password: { required: true, message: '请输入密码', trigger: 'blur' },
-  };
-
-  const userStore = useUserStore();
-
-  const router = useRouter();
-  const route = useRoute();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    formRef.value.validate(async (errors) => {
+    formRef.value.validate(async (errors: any) => {
       if (!errors) {
-        const { username, password } = form;
-        message.loading('登录中...');
         loading.value = true;
 
-        const params: FormState = {
-          username,
-          password,
-        };
-
-        try {
-          const response = await userStore.login(params);
-          message.destroyAll();
-          if (response.access_token !== undefined) {
-            const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
-            message.success('登录成功，即将进入系统');
-            if (route.name === LOGIN_NAME) {
-              router.replace('/');
-            } else router.replace(toPath);
-          } else {
-            message.info(response.message || '登录失败');
-          }
-        } finally {
-          loading.value = false;
-        }
-      } else {
-        message.error('请填写完整信息，并且进行验证码校验');
+        forget(toRaw(form))
+          .then(async () => {
+            message.success(t('login.forgetSubmitSuccess'));
+            await router.replace('/login');
+          })
+          .catch(() => {
+            loading.value = false;
+          });
       }
     });
   };
+
+  async function onGetCode() {
+    formRef.value?.validate(
+      async (errors: any) => {
+        if (!errors) {
+          codeLoading.value = true;
+          getEmailCode(form.email)
+            .then(() => {
+              message.success(t('login.codeSendSuccess'));
+            })
+            .catch(() => {
+              message.error(t('login.codeSendFail'));
+              countdownRef.value?.reset();
+            });
+        }
+      },
+      (rule: any) => {
+        return rule?.key === 'email';
+      }
+    );
+  }
 </script>
 
 <template>
-  <div class="mt-4 login-content-form">
-    <n-form ref="formRef" label-placement="left" size="large" :model="form" :rules="rules">
-      <n-form-item path="username" class="login-animation1">
-        <n-input v-model:value="form.username" placeholder="请输入用户名">
-          <template #prefix>
-            <n-icon size="18" color="#808695">
-              <SvgIcon icon="material-symbols:person-outline" />
-            </n-icon>
+  <div class="account-root">
+    <div class="account-root-item root-left-item">
+      <div class="root-left-logo">
+        <img src="@/assets/login/logo.png" alt="" />
+        <div class="stand-title ml-1">{{ t('app') }}</div>
+      </div>
+      <div class="root-left-title">{{ t('login.slogan') }}</div>
+      <div class="root-left-desc" v-html="t('login.des')"> </div>
+      <div class="coding-img">
+        <img src="@/assets/login/login_bg.svg" alt="" />
+      </div>
+    </div>
+    <div class="account-root-item root-right-item">
+      <div class="account-form">
+        <div class="account-top">
+          <div class="user-account">{{ t('login.forget') }}</div>
+          <div class="user-register">
+            <span>{{ t('login.noAccount') }}</span>
+            <n-button @click="isLogin = false" type="success" text>
+              {{ t('login.toRegister') }}
+            </n-button>
+          </div>
+        </div>
+
+        <div class="mt-4 login-content-form">
+          <n-form ref="formRef" label-placement="left" size="large" :model="form" :rules="rules">
+            <n-form-item path="username" class="login-animation1">
+              <n-input v-model:value="form.email" :placeholder="t('login.emailPlaceholder')">
+                <template #prefix>
+                  <n-icon size="18" color="#808695">
+                    <SvgIcon icon="material-symbols:person-outline" />
+                  </n-icon>
+                </template>
+              </n-input>
+            </n-form-item>
+            <n-form-item path="code" class="login-animation2">
+              <n-input v-model:value="form.code" :placeholder="t('login.codePlaceholder')">
+                <template #prefix>
+                  <n-icon size="18" color="#808695">
+                    <SvgIcon icon="ph:key" />
+                  </n-icon>
+                </template>
+                <template #suffix>
+                  <n-button @click="onGetCode()" :disabled="codeLoading" text type="success">
+                    <n-countdown
+                      v-if="codeLoading"
+                      :active="codeLoading"
+                      @finish="codeLoading = false"
+                      :duration="59000"
+                      :render="({ seconds }) => `${String(seconds) + t('login.codeExp')}`"
+                    />
+                    <template v-else>{{ t('login.getCode') }}</template>
+                  </n-button>
+                </template>
+              </n-input>
+            </n-form-item>
+            <n-form-item path="password" class="login-animation2">
+              <n-input
+                v-model:value="form.password"
+                type="password"
+                showPasswordOn="click"
+                :placeholder="t('login.forgetPassPlaceholder')"
+              >
+                <template #prefix>
+                  <n-icon size="18" color="#808695">
+                    <SvgIcon icon="mdi:lock-outline" />
+                  </n-icon>
+                </template>
+              </n-input>
+            </n-form-item>
+            <n-form-item class="login-animation3">
+              <n-space vertical class="w-full">
+                <n-button type="primary" @click="handleSubmit" :loading="loading" block secondary>
+                  {{ t('login.forgetSubmit') }}
+                </n-button>
+              </n-space>
+            </n-form-item>
+          </n-form>
+        </div>
+
+        <n-divider>
+          <template #default>
+            <span class="social">{{ t('login.otherType') }}</span>
           </template>
-        </n-input>
-      </n-form-item>
-      <n-form-item path="password" class="login-animation2">
-        <n-input
-          v-model:value="form.password"
-          type="password"
-          showPasswordOn="click"
-          placeholder="请输入密码"
-        >
-          <template #prefix>
-            <n-icon size="18" color="#808695">
-              <SvgIcon icon="mdi:lock-outline" />
-            </n-icon>
-          </template>
-        </n-input>
-      </n-form-item>
-      <n-form-item class="login-animation3">
-        <n-space vertical class="w-full">
-          <n-button type="primary" @click="handleSubmit" :loading="loading" block secondary>
-            登录
-          </n-button>
-        </n-space>
-      </n-form-item>
-    </n-form>
+        </n-divider>
+        <div class="pb-8">
+          <n-space vertical>
+            <n-button dashed block round>
+              <template #icon>
+                <SvgIcon icon="uiw:weixin" />
+              </template>
+              {{ t('login.wxType') }}
+            </n-button>
+            <n-button block round dashed>
+              <template #icon>
+                <SvgIcon icon="ri:google-fill" />
+              </template>
+              {{ t('login.googleType') }}
+            </n-button>
+            <n-button block round dashed>
+              <template #icon>
+                <SvgIcon icon="ri:github-fill" />
+              </template>
+              {{ t('login.githubType') }}
+            </n-button>
+          </n-space>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less">
+  @import '@/styles/login';
+</style>

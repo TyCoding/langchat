@@ -21,6 +21,11 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-aigc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
 
 </project>

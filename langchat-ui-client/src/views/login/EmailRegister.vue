@@ -6,6 +6,8 @@
   import { useRouter } from 'vue-router';
   import { getEmailCode, emailRegister } from '@/api/auth';
   import { isBlank } from '@/utils/is';
+  import { t } from '@/locales';
+  import { rules } from '@/views/login/data';
 
   const router = useRouter();
   const userStore = useUserStore();
@@ -21,51 +23,6 @@
     code: '',
   });
 
-  const rules = {
-    email: {
-      key: 'email',
-      required: true,
-      trigger: ['blur'],
-      validator: (rule: any, value: string) => {
-        if (isBlank(value)) {
-          return new Error('请输入邮箱');
-        }
-        if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)) {
-          return new Error('邮箱格式错误');
-        }
-        return;
-      },
-    },
-    code: {
-      key: 'code',
-      required: true,
-      trigger: ['blur'],
-      validator: (rule: any, value: string) => {
-        if (isBlank(value)) {
-          return new Error('请输入验证码');
-        }
-        if (String(value).length !== 6) {
-          return new Error('验证码格式错误');
-        }
-        return true;
-      },
-    },
-    password: {
-      key: 'password',
-      required: true,
-      trigger: ['blur'],
-      validator: (rule: any, value: string) => {
-        if (isBlank(value)) {
-          return new Error('请输入密码');
-        }
-        if (value.length < 6) {
-          return new Error('密码长度至少为六位');
-        }
-        return true;
-      },
-    },
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
     formRef.value.validate(async (errors: any) => {
@@ -74,7 +31,7 @@
 
         try {
           await emailRegister(toRaw(form));
-          message.loading('注册成功，登录中...');
+          message.loading(t('login.regSuccess'));
 
           const response = await userStore.login({
             username: form.email,
@@ -83,13 +40,11 @@
           if (response.token !== undefined) {
             await router.replace('/');
           } else {
-            message.error(response.message || '登录失败');
+            message.error(response.message || t('login.error'));
           }
         } finally {
           loading.value = false;
         }
-      } else {
-        message.error('请完善表单信息');
       }
     });
   };
@@ -101,10 +56,10 @@
           codeLoading.value = true;
           getEmailCode(form.email)
             .then(() => {
-              message.success('验证码已成功发送，请检查邮箱');
+              message.success(t('login.codeSendSuccess'));
             })
             .catch(() => {
-              message.error('验证码发送失败，请稍后重试');
+              message.error(t('login.codeSendFail'));
               countdownRef.value?.reset();
             });
         }
@@ -122,7 +77,7 @@
       <n-form-item path="email" class="login-animation1">
         <n-input
           v-model:value="form.email"
-          placeholder="请输入邮箱"
+          :placeholder="t('login.namePlaceholder')"
           :input-props="{ type: 'email' }"
         >
           <template #prefix>
@@ -133,7 +88,7 @@
         </n-input>
       </n-form-item>
       <n-form-item path="code" class="login-animation2">
-        <n-input v-model:value="form.code" placeholder="请输入验证码">
+        <n-input v-model:value="form.code" :placeholder="t('login.codePlaceholder')">
           <template #prefix>
             <n-icon size="18" color="#808695">
               <SvgIcon icon="ph:key" />
@@ -146,9 +101,9 @@
                 :active="codeLoading"
                 @finish="codeLoading = false"
                 :duration="59000"
-                :render="({ seconds }) => `${String(seconds)}秒后重新获取`"
+                :render="({ seconds }) => `${String(seconds) + t('login.codeExp')}`"
               />
-              <template v-else>获取验证码</template>
+              <template v-else>{{ t('login.getCode') }}</template>
             </n-button>
           </template>
         </n-input>
@@ -158,7 +113,7 @@
           v-model:value="form.password"
           type="password"
           showPasswordOn="click"
-          placeholder="请输入密码"
+          :placeholder="t('login.passPlaceholder')"
         >
           <template #prefix>
             <n-icon size="18" color="#808695">
@@ -170,7 +125,7 @@
       <n-form-item class="login-animation3">
         <n-space vertical class="w-full">
           <n-button type="primary" @click="onSubmit" :loading="loading" block secondary>
-            注册
+            {{ t('login.register') }}
           </n-button>
         </n-space>
       </n-form-item>

@@ -118,6 +118,11 @@ const baseRoutes: RouteRecordRaw[] = [
     name: 'Login',
     component: () => import('@/views/login/index.vue'),
   },
+  {
+    path: '/forget',
+    name: 'Forget',
+    component: () => import('@/views/login/Forget.vue'),
+  },
 
   {
     path: '/404',

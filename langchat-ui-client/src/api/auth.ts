@@ -1,12 +1,12 @@
 import { http } from '@/utils/request';
-import { TokenInfo, User } from '@/api/models/index';
+import { TokenInfo, User } from '@/api/models';
 
 /**
  * @description: 获取邮箱验证码
  */
 export function getEmailCode(email: string) {
   return http.get({
-    url: `/client/auth/code/email?email=${email}`,
+    url: `/aigc/auth/email/code?email=${email}`,
   });
 }
 
@@ -15,7 +15,7 @@ export function getEmailCode(email: string) {
  */
 export function emailRegister(data: any) {
   return http.post({
-    url: `/client/auth/register/email`,
+    url: `/aigc/auth/email/register`,
     data,
   });
 }
@@ -25,7 +25,7 @@ export function emailRegister(data: any) {
  */
 export function login(data: any): Promise<TokenInfo> {
   return http.post({
-    url: `/client/auth/login`,
+    url: `/aigc/auth/login`,
     data,
   });
 }
@@ -35,16 +35,13 @@ export function login(data: any): Promise<TokenInfo> {
  */
 export function info(): Promise<User> {
   return http.get({
-    url: `/client/auth/info`,
+    url: `/aigc/auth/info`,
   });
 }
 
-/**
- * @description: 用户修改密码
- */
-export function changePassword(data: any, uid: any) {
+export function forget(data: any) {
   return http.post({
-    url: `/user/u${uid}/changepw`,
+    url: `/aigc/auth/forget`,
     method: 'POST',
     data,
   });
@@ -55,6 +52,6 @@ export function changePassword(data: any, uid: any) {
  */
 export function logout() {
   return http.delete({
-    url: '/client/auth/logout',
+    url: '/aigc/auth/logout',
   });
 }

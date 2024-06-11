@@ -8,6 +8,7 @@ import cn.tycoding.langchat.aigc.mapper.AigcConversationMapper;
 import cn.tycoding.langchat.aigc.mapper.AigcMessageMapper;
 import cn.tycoding.langchat.aigc.mapper.AigcUserMapper;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
+import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -35,9 +36,9 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
 
     @Override
     public List<AigcConversation> conversations() {
-        //TODO 只获取当前用户下的会话
         return aigcConversationMapper.selectList(
                 Wrappers.<AigcConversation>lambdaQuery()
+                        .eq(AigcConversation::getUserId, AigcAuthUtil.getUserId())
                         .orderByDesc(AigcConversation::getCreateTime));
     }
 

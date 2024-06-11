@@ -2,6 +2,7 @@ package cn.tycoding.langchat.aigc.utils;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,9 +46,9 @@ public class AigcAuthUtil {
     /**
      * 获取用户数据
      */
-    public static AigcUserInfo getUserInfo() {
+    public static AigcUser getUserInfo() {
         try {
-            return (AigcUserInfo) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
+            return (AigcUser) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
             return null;
         }
@@ -57,7 +58,7 @@ public class AigcAuthUtil {
      * 获取用户名
      */
     public static String getUsername() {
-        AigcUserInfo userInfo = getUserInfo();
+        AigcUser userInfo = getUserInfo();
         if (userInfo == null) {
             return null;
         }
@@ -68,7 +69,7 @@ public class AigcAuthUtil {
      * 获取登录用户ID
      */
     public static String getUserId() {
-        AigcUserInfo userInfo = getUserInfo();
+        AigcUser userInfo = getUserInfo();
         if (userInfo == null) {
             return null;
         }

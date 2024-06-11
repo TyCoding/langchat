@@ -4,11 +4,11 @@ import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.aigc.service.AigcUserService;
 import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
-import cn.tycoding.langchat.aigc.utils.AigcUserInfo;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +26,8 @@ public class AigcUserController {
     private final AigcUserService userService;
 
     @GetMapping("/info")
-    public R<AigcUserInfo> info() {
-        AigcUserInfo userInfo = userService.info(AigcAuthUtil.getUsername());
+    public R<AigcUser> info() {
+        AigcUser userInfo = userService.info(AigcAuthUtil.getUsername());
         userInfo.setPassword(null);
         return R.ok(userInfo);
     }
@@ -38,8 +38,8 @@ public class AigcUserController {
     }
 
     @GetMapping("/list")
-    public R<List<AigcUserInfo>> list(AigcUser data) {
-        return R.ok(userService.list(data));
+    public R<List<AigcUser>> list(AigcUser data) {
+        return R.ok(userService.list(Wrappers.lambdaQuery()));
     }
 
     @GetMapping("/page")
@@ -48,8 +48,8 @@ public class AigcUserController {
     }
 
     @GetMapping("/{id}")
-    public R<AigcUserInfo> findById(@PathVariable Long id) {
-        return R.ok(userService.findById(id));
+    public R<AigcUser> findById(@PathVariable Long id) {
+        return R.ok(userService.getById(id));
     }
 
     @PostMapping
@@ -62,7 +62,6 @@ public class AigcUserController {
 
     @PutMapping
     @ApiLog("修改用户")
-//    @PreAuthorize("@auth.hasAuth('upms:user:update')")
     public R update(@RequestBody AigcUser data) {
         userService.updateById(data);
         return R.ok();
@@ -70,7 +69,6 @@ public class AigcUserController {
 
     @DeleteMapping("/{id}")
     @ApiLog("删除用户")
-//    @PreAuthorize("@auth.hasAuth('upms:user:delete')")
     public R delete(@PathVariable Long id) {
         AigcUser user = userService.getById(id);
         if (user != null) {

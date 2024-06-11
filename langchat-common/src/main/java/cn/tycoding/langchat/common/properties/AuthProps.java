@@ -19,6 +19,8 @@ public class AuthProps {
      */
     private List<String> skipUrl = new ArrayList();
 
+    private EmailProps email = new EmailProps();
+
     /**
      * password
      */

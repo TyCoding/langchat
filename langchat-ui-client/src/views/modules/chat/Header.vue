@@ -13,10 +13,6 @@
   const chatStore = useChatStore();
   const dialog = useDialog();
   const ms = useMessage();
-  const isShow = ref(true);
-  onMounted(async () => {
-    isShow.value = false;
-  });
 
   function onClear() {
     dialog.warning({
@@ -71,45 +67,33 @@
 
 <template>
   <header
-    class="sticky pl-4 pr-6 z-30 border-b dark:border-neutral-800 bg-white/80 dark:bg-black/20 backdrop-blur"
+    class="sticky px-6 z-30 border-b dark:border-neutral-800 bg-white/80 dark:bg-black/20 backdrop-blur"
   >
-    <n-spin :show="isShow">
-      <div
-        class="relative flex items-center justify-between min-w-0 overflow-hidden h-14 ml-2 mr-2"
-      >
-        <div class="flex items-center gap-2">
-          <n-button v-if="isMobile" text @click="chatStore.setSiderCollapsed(false)">
-            <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
-          </n-button>
-          <n-select
-            size="small"
-            v-model:value="chatStore.model"
-            :options="modelList"
-            class="!w-[200px] tracking-widest"
-          />
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <n-popover trigger="hover">
-            <template #trigger>
-              <n-button text @click="onClear">
-                <SvgIcon class="text-lg" icon="fluent:delete-28-regular" />
-              </n-button>
-            </template>
-            <span>{{ t('chat.clearChat') }}</span>
-          </n-popover>
-
-          <n-popover trigger="hover">
-            <template #trigger>
-              <n-button text @click="handleExport">
-                <SvgIcon class="text-xl" icon="material-symbols:download" />
-              </n-button>
-            </template>
-            <span>{{ t('chat.exportImage') }}</span>
-          </n-popover>
-        </div>
+    <div class="relative flex items-center justify-between min-w-0 overflow-hidden h-14 ml-2 mr-2">
+      <div class="flex items-center gap-2">
+        <n-button v-if="isMobile" text @click="chatStore.setSiderCollapsed(false)">
+          <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
+        </n-button>
+        <n-select
+          size="small"
+          v-model:value="chatStore.model"
+          :options="modelList"
+          class="!w-[200px] tracking-widest"
+        />
       </div>
-    </n-spin>
+
+      <div class="flex items-center space-x-2">
+        <n-button type="warning" tertiary round @click="onClear">
+          <SvgIcon class="text-lg" icon="fluent:delete-28-regular" />
+          <span>{{ t('chat.clearChat') }}</span>
+        </n-button>
+
+        <n-button type="info" tertiary round @click="handleExport">
+          <SvgIcon class="text-xl" icon="material-symbols:download" />
+          <span>{{ t('chat.exportImage') }}</span>
+        </n-button>
+      </div>
+    </div>
   </header>
 </template>
 
