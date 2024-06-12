@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia';
-import { Oss } from '@/api/models';
 import { toRaw } from 'vue';
+import { getMessages } from '@/api/conversation';
 
 export interface DocState {
-  file: Oss | any;
+  file: any;
   messages:
     | {
         id: string;
         list: any[];
       }[]
     | any[];
-  curMessage: any[];
 }
 
 export const useDocStore = defineStore({
@@ -18,19 +17,13 @@ export const useDocStore = defineStore({
   state: (): DocState => ({
     file: {},
     messages: [],
-    curMessage: [],
   }),
 
   actions: {
-    onSelect(item: Oss) {
+    async onSelect(item: any) {
+      // get messages
+      this.messages = await getMessages(item.id);
       this.file = item;
-      const list = this.messages.filter((i) => i.id == this.file.id);
-      if (list.length > 0) {
-        this.curMessage = list[0].list;
-      } else {
-        this.curMessage = [];
-      }
-      console.log(this.curMessage);
     },
     addMessage(item: any) {
       const list = this.messages.filter((i) => i.id == this.file.id);

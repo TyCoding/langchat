@@ -80,7 +80,7 @@ public class AigcConversationController {
      * 获取指定会话下的聊天记录
      */
     @GetMapping("/messages/{conversationId}")
-    public R messages(@PathVariable String conversationId) {
+    public R getMessages(@PathVariable String conversationId) {
         List<AigcMessage> list = aigcMessageService.getMessages(conversationId);
 
         //TODO 处理会话

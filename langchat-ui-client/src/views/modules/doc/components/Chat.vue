@@ -25,7 +25,8 @@
   const docStore = useDocStore();
 
   function init() {
-    messages.value = docStore.curMessage;
+    messages.value = docStore.messages as any;
+    console.log('xxx', message.value);
   }
 
   function handleFocus() {
@@ -53,11 +54,11 @@
   const messages = ref<
     {
       id: string;
-      inversion: boolean;
+      role: 'role' | 'assistant';
       error: boolean;
       message: string;
-      time?: number;
-      usedToken?: number;
+      createTime?: any;
+      tokens?: number;
     }[]
   >([]);
 
@@ -74,17 +75,17 @@
       const userChat = {
         id: uuid(),
         error: false,
-        inversion: false,
+        role: 'user',
         message: message.value,
       };
       docStore.addMessage(userChat);
       messages.value.push(userChat, {
         id: id,
         error: false,
-        inversion: true,
+        role: 'assistant',
         message: '',
-        usedToken: 0,
-        time: 0,
+        tokens: 0,
+        createTime: 0,
       });
       const items = messages.value.filter((i) => i.id == id);
       await chat(
@@ -104,8 +105,8 @@
             }
             const { usedToken, done, message, time } = JSON.parse(i.substring(5, i.length));
             if (done) {
-              items[0].usedToken = usedToken;
-              items[0].time = time;
+              items[0].tokens = usedToken;
+              items[0].createTime = time;
               docStore.addMessage(items[0]);
             } else {
               text += message;
@@ -169,7 +170,11 @@
     </header>
     <Message ref="messageRef" :messages="messages" />
 
-    <div v-if="docStore.file.id" class="pt-2 left-0 w-full z-10">
+    <div
+      v-if="docStore.file.id"
+      class="pt-2 left-0 w-full z-10"
+      :class="isMobile ? 'mb-2' : 'mb-6'"
+    >
       <div class="px-8 flex justify-center items-center space-x-2 w-full">
         <n-input
           :disabled="loading"
@@ -178,7 +183,7 @@
           @focus="handleFocus"
           @keypress="handleEnter"
           :autosize="{ minRows: 1, maxRows: 3 }"
-          class="!rounded-full px-2 py-1 mb-2"
+          class="!rounded-full px-2 py-1"
           :placeholder="t('chat.placeholder')"
         >
           <template #suffix>

@@ -10,8 +10,8 @@
   const chatRef = ref();
   const docStore = useDocStore();
 
-  function onSelect(item: Oss) {
-    docStore.onSelect(item);
+  async function onSelect(item: Oss) {
+    await docStore.onSelect(item);
     chatRef.value.init();
   }
 </script>

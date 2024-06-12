@@ -7,11 +7,11 @@
 
   interface Props {
     messages: {
-      inversion: boolean;
+      role: 'user' | 'assistant';
       error: boolean;
       message: string;
-      time?: number;
-      usedToken?: number;
+      createTime?: number;
+      tokens?: number;
     }[];
   }
   const message = useMessage();
@@ -89,13 +89,13 @@
       <div class="h-full w-full flex flex-col space-y-3 relative px-5 pt-0">
         <template v-for="item in messages" :key="item">
           <div
-            v-if="!item.inversion"
+            v-if="item.role === 'user'"
             class="flex justify-end p-2 pl-3 pr-3 rounded select-text self-end bg-[#d2f9d1]"
           >
             {{ item.message }}
           </div>
           <div
-            v-if="item.inversion"
+            v-if="item.role === 'assistant'"
             class="flex justify-start items-center rounded-md self-start min-w-[40px] min-h-[33px] bg-[#f4f6f8]"
           >
             <div v-if="item.message == ''" class="flex justify-center items-center w-[55px]">
@@ -105,16 +105,16 @@
               <div v-if="item.error" class="text-red-400" v-text="item.message"></div>
               <div v-else class="markdown-body pb-2" v-html="item.message"></div>
               <div
-                v-if="item.time !== 0"
+                v-if="item.createTime !== 0"
                 class="border-t border-gray-200 pt-2 text-xs text-gray-400 flex flex-row justify-between items-center min-w-[200px]"
               >
                 <div class="flex items-center">
                   <n-button text type="success">
                     <SvgIcon icon="mdi:success" />
                   </n-button>
-                  <span>{{ Number(Number(item.time) / 1000).toFixed(1) }}s</span>
+                  <span>{{ Number(Number(item.createTime) / 1000).toFixed(1) }}s</span>
                   <n-divider class="ml-1 mr-1" vertical />
-                  <span>{{ item.usedToken }} Token</span>
+                  <span>{{ item.tokens }} Token</span>
                 </div>
                 <div class="flex items-center">
                   <n-popover class="custom-popover">

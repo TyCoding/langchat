@@ -115,7 +115,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
         // 避免页面渲染压力大，只截取最新的20条数据
         return baseMapper.selectPage(new Page<>(0, 20), Wrappers.<AigcMessage>lambdaQuery()
                 .eq(AigcMessage::getConversationId, conversationId)
-                .orderByDesc(AigcMessage::getCreateTime)
+                .orderByAsc(AigcMessage::getCreateTime)
         ).getRecords();
     }
 
