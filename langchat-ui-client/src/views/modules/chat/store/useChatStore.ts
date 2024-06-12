@@ -59,22 +59,21 @@ export const useChatStore = defineStore('chat-store', {
      * 选择会话窗口
      */
     async selectConversation(params: any) {
-      console.log('选择窗口');
+      console.log('选择窗口', params);
       this.chatIsLoading = true;
       this.messages = [];
       if (params.id == undefined) {
         return;
       }
-      if (this.active !== '') {
-        getMessages(params.id)
-          .then((res: any) => {
-            this.messages = res.reverse();
-          })
-          .finally(() => {
-            this.chatIsLoading = false;
-          });
-      }
       await this.setActive(params.id);
+      getMessages(params.id)
+        .then((res: any) => {
+          this.messages = res.reverse();
+        })
+        .finally(() => {
+          this.chatIsLoading = false;
+        });
+
       await this.setEdit('');
       this.curConversation = params;
       this.chatIsLoading = false;
