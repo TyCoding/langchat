@@ -26,10 +26,5 @@ public interface CommonConst {
      */
     String MENU_ICON = "alert";
 
-    /**
-     * 默认用户头像路径
-     */
-    String DEFAULT_AVATAR = "/default.png";
-
     String LAYOUT = "LAYOUT";
 }

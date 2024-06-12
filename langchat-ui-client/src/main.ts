@@ -5,7 +5,6 @@ import { setupAssets, setupScrollbarStyle } from './plugins';
 import { setupStore } from './store';
 import { setupRouter } from './router';
 import { setupNaive } from '@/plugins/naive';
-import FileViewer from '@flyfish-group/file-viewer3';
 
 async function bootstrap() {
   const app = createApp(App);
@@ -21,8 +20,6 @@ async function bootstrap() {
   setupNaive(app);
 
   await setupRouter(app);
-
-  app.use(FileViewer);
 
   app.mount('#app');
 }

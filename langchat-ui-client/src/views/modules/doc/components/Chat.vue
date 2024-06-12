@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-  import { onMounted, ref, watch } from 'vue';
+  import { ref } from 'vue';
   import { chat } from '@/api/docs';
   import { v4 as uuid } from 'uuid';
-  import { useRouter } from 'vue-router';
   import MarkdownIt from 'markdown-it';
   import hljs from 'highlight.js';
   import mila from 'markdown-it-link-attributes';
@@ -10,11 +9,18 @@
   import Message from './Message.vue';
   import { SvgIcon } from '@/components/common';
   import { useDocStore } from '@/views/modules/doc/store';
+  import { t } from '@/locales';
+  import Header from '@/views/modules/chat/Header.vue';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
+  // @ts-ignore
+  import { modelList } from '@/api/models/index.d.ts';
 
+  const { isMobile } = useBasicLayout();
   const emits = defineEmits(['focus-active']);
   const messageRef = ref();
-  const router = useRouter();
+  const model = ref('gpt-4o');
   const message = ref('');
+  const isGoogleSearch = ref(false);
   const loading = ref(false);
   const docStore = useDocStore();
 
@@ -82,9 +88,12 @@
       });
       const items = messages.value.filter((i) => i.id == id);
       await chat(
+        docStore.file?.id,
         {
-          id: docStore.file?.id,
+          conversationId: docStore.file?.id,
           message: message.value,
+          model: model.value,
+          isGoogleSearch: isGoogleSearch.value,
         },
         ({ event }) => {
           const list = event.target.responseText.split('\n\n');
@@ -135,26 +144,47 @@
 </script>
 
 <template>
-  <div class="container relative h-full card-shadow rounded-xl mb-2">
+  <div class="container relative h-full card-shadow rounded-xl mb-2 flex flex-col">
+    <header
+      class="sticky z-30 border-b dark:border-neutral-800 border-l-0 bg-white/80 dark:bg-black/20 backdrop-blur"
+      :class="isMobile ? 'px-1' : 'px-2'"
+    >
+      <div
+        class="relative flex items-center justify-between min-w-0 overflow-hidden h-12 ml-2 mr-2 gap-2"
+      >
+        <n-select size="small" v-model:value="model" :options="modelList" class="!w-[160px]" />
+        <n-tag
+          checkable
+          v-model:checked="isGoogleSearch"
+          :bordered="false"
+          type="primary"
+          class="border"
+        >
+          <div class="text-sm flex items-center gap-1">
+            <SvgIcon icon="devicon:google" />
+            <div>Google Search</div>
+          </div>
+        </n-tag>
+      </div>
+    </header>
     <Message ref="messageRef" :messages="messages" />
 
-    <div class="bottom absolute bottom-2 pt-5 left-0 w-full h-[60px] z-10">
+    <div v-if="docStore.file.id" class="pt-2 left-0 w-full z-10">
       <div class="px-8 flex justify-center items-center space-x-2 w-full">
         <n-input
-          v-model:value="message"
-          :autosize="{ minRows: 1, maxRows: 5 }"
           :disabled="loading"
-          class="w-full ]text-xs rounded-md"
+          v-model:value="message"
           type="textarea"
           @focus="handleFocus"
           @keypress="handleEnter"
+          :autosize="{ minRows: 1, maxRows: 3 }"
+          class="!rounded-full px-2 py-1 mb-2"
+          :placeholder="t('chat.placeholder')"
         >
           <template #suffix>
-            <n-button :loading="loading" size="small" text @click="handleSubmit">
+            <n-button text :loading="loading" @click="handleSubmit">
               <template #icon>
-                <n-icon color="#18a058">
-                  <SvgIcon icon="mingcute:send-line" />
-                </n-icon>
+                <SvgIcon icon="mdi:sparkles-outline" />
               </template>
             </n-button>
           </template>

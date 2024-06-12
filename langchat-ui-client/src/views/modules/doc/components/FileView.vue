@@ -1,51 +1,25 @@
 <script setup lang="ts">
-  import '@flyfish-group/file-viewer3/dist/style.css';
-  defineProps({
+  const props = defineProps({
     url: {
       type: String,
     },
   });
+
+  // 在生产环境下使用微软的office在线预览方式，导入支持office和word导入，在线预览不支持开发环境
+  const path =
+    process.env.NODE_ENV === 'development'
+      ? props.url
+      : `http://view.officeapps.live.com/op/view.aspx?src=${props.url}`;
 </script>
 
 <template>
-  <file-viewer :url="url" />
+  <iframe
+    :src="path"
+    width="100%"
+    height="100%"
+    frameborder="0"
+    class="!z-0 !pointer-events-none"
+  ></iframe>
 </template>
 
-<style scoped lang="less">
-  ::v-deep(.name) {
-    display: none !important;
-  }
-  ::v-deep(.pdf_down) {
-    display: none !important;
-  }
-  ::v-deep(.docx) {
-    color: #343639;
-    //background: #f2f2f2 !important;
-  }
-  ::v-deep(.docx span) {
-    font-size: medium !important;
-  }
-  ::v-deep(.docx-wrapper) {
-    padding: 20px !important;
-    background: transparent !important;
-    .docx {
-      box-shadow: none !important;
-      width: auto !important;
-      padding: 10pt 15pt !important;
-      //background: #f2f2f2 !important;
-    }
-  }
-  ::v-deep(.code-area) {
-    width: auto !important;
-    background: none !important;
-    color: #101014 !important;
-    padding: 10px 17px;
-    font-size: medium;
-    font-family: normal !important;
-    padding-bottom: 30px;
-  }
-  ::v-deep(.code-area:is(.dark *)) {
-    background: #101014 !important;
-    color: white !important;
-  }
-</style>
+<style scoped lang="less"></style>

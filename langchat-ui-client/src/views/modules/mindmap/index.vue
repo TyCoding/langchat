@@ -6,22 +6,29 @@
   import { genMindMap } from '@/api/chat';
   import { isBlank } from '@/utils/is';
   import { t } from '@/locales';
+  // @ts-ignore
+  import { modelList } from '@/api/models/index.d.ts';
 
+  const model = ref('gpt-4o');
   const ms = useMessage();
   const loading = ref(false);
   const genText = ref('');
+
   async function onGenerate(text: string) {
     if (isBlank(text)) {
       ms.warning(t('common.emptyTips'));
       return;
     }
     loading.value = true;
-    const { message } = await genMindMap({
-      message: text,
-    });
-    genText.value = message;
-
-    loading.value = false;
+    try {
+      const { message } = await genMindMap({
+        message: text,
+        model: model.value,
+      });
+      genText.value = message;
+    } finally {
+      loading.value = false;
+    }
   }
 
   function onCase(text: string) {
@@ -39,6 +46,10 @@
       collapse-mode="width"
       show-trigger="arrow-circle"
     >
+      <div class="px-4 pt-2 flex items-center justify-between">
+        <div>{{ t('mindmap.des') }}</div>
+        <n-select size="small" v-model:value="model" :options="modelList" class="!w-[140px]" />
+      </div>
       <Sider :genText="genText" :loading="loading" @case="onCase" @generate="onGenerate" />
     </n-layout-sider>
 

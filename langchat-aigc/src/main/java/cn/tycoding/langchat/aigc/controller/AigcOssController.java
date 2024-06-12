@@ -2,6 +2,7 @@ package cn.tycoding.langchat.aigc.controller;
 
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
+import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class AigcOssController {
     @GetMapping("/list")
     public R list() {
         List<AigcOss> list = aigcOssService.list(Wrappers.<AigcOss>lambdaQuery()
+                .eq(AigcOss::getUserId, AigcAuthUtil.getUserId())
                 .orderByDesc(AigcOss::getCreateTime)
         );
         return R.ok(list);

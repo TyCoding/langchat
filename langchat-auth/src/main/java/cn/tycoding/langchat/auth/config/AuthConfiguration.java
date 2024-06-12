@@ -31,9 +31,6 @@ public class AuthConfiguration {
     private final AuthProps authProps;
     private final String[] skipUrl = new String[]{
             "/auth/login",
-            "/aigc/conversation/list",
-            "/aigc/file/list",
-            "/aigc/prompt/page",
             "/aigc/auth/**",
     };
 

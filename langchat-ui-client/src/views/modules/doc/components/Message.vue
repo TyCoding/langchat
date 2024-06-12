@@ -76,7 +76,7 @@
 </script>
 
 <template>
-  <div ref="textRef" class="middle absolute top-6 left-0 w-full bottom-[65px] z-0 overflow-y-auto">
+  <div ref="textRef" class="middle w-full flex-1 py-3 z-0 overflow-y-auto">
     <div v-if="messages.length == 0" class="flex-1 flex h-full justify-center">
       <div class="w-1/2 flex flex-col justify-center text-xs items-center gap-2">
         <n-icon color="#e4e4e7" size="70">
@@ -112,7 +112,7 @@
                   <n-button text type="success">
                     <SvgIcon icon="mdi:success" />
                   </n-button>
-                  <span>{{ (item.time / 1000).toFixed(1) }}s</span>
+                  <span>{{ Number(Number(item.time) / 1000).toFixed(1) }}s</span>
                   <n-divider class="ml-1 mr-1" vertical />
                   <span>{{ item.usedToken }} Token</span>
                 </div>

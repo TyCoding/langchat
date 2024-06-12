@@ -8,8 +8,6 @@ import {
 } from '@/api/conversation';
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
-import { Conversation, Message } from '@/typings/chat';
-import { router } from '@/router';
 import { toRaw } from 'vue';
 
 export const useChatStore = defineStore('chat-store', {
@@ -18,6 +16,7 @@ export const useChatStore = defineStore('chat-store', {
       model: 'gpt-4o',
       active: '',
       isEdit: '',
+      isGoogleSearch: false,
       siderCollapsed: true,
       sideIsLoading: true,
       chatIsLoading: true,
@@ -45,18 +44,10 @@ export const useChatStore = defineStore('chat-store', {
     async loadData() {
       try {
         const data = await getConversations({});
-        const conversationId = router.currentRoute.value.query.conversationId as string;
-        if (conversationId !== undefined && conversationId !== null) {
-          this.active = conversationId;
-          await this.selectConversation({ id: conversationId });
-        }
         if (data && data.length > 0) {
           this.conversations = data;
           this.curConversation = data[0];
-        } else {
-          this.active = '';
-          this.conversations = [];
-          await router.replace({ path: '/chat', query: {} });
+          await this.selectConversation({ id: data[0].id });
         }
       } finally {
         this.sideIsLoading = false;
@@ -65,17 +56,10 @@ export const useChatStore = defineStore('chat-store', {
     },
 
     /**
-     * 设置当前会话窗口数据
-     */
-    setConversation(params: Conversation) {
-      this.curConversation = params;
-    },
-
-    /**
      * 选择会话窗口
      */
-    async selectConversation(params: Conversation) {
-      console.log('点击开始');
+    async selectConversation(params: any) {
+      console.log('选择窗口');
       this.chatIsLoading = true;
       this.messages = [];
       if (params.id == undefined) {
@@ -84,7 +68,6 @@ export const useChatStore = defineStore('chat-store', {
       if (this.active !== '') {
         getMessages(params.id)
           .then((res: any) => {
-            console.log('ge', res);
             this.messages = res.reverse();
           })
           .finally(() => {
@@ -95,26 +78,12 @@ export const useChatStore = defineStore('chat-store', {
       await this.setEdit('');
       this.curConversation = params;
       this.chatIsLoading = false;
-      await this.replaceUrl();
-    },
-
-    async replaceUrl() {
-      if (this.curConversation == undefined) {
-        return;
-      }
-      const { id, promptId } = this.curConversation;
-      // replace url path
-      const query: any = {};
-      if (promptId) {
-        query.promptId = promptId;
-      }
-      await router.replace({ path: `/chat/${id}`, query });
     },
 
     /**
      * 添加会话窗口
      */
-    async addConversation(params: Partial<Conversation>) {
+    async addConversation(params: any) {
       await addConversations(params);
       await this.loadData();
     },
@@ -122,7 +91,7 @@ export const useChatStore = defineStore('chat-store', {
     /**
      * 更新会话信息
      */
-    async updateConversation(params: Partial<Conversation>) {
+    async updateConversation(params: any) {
       await updateConversations(toRaw(params));
       await this.setEdit('');
       await this.loadData();
@@ -167,7 +136,7 @@ export const useChatStore = defineStore('chat-store', {
     /**
      * 删除消息
      */
-    async delMessage(item: Message) {
+    async delMessage(item: any) {
       this.messages = this.messages.filter((i) => i.chatId !== item.chatId);
     },
   },

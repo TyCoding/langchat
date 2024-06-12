@@ -2,8 +2,7 @@
   import { SvgIcon } from '@/components/common';
   import { Transformer } from 'markmap-lib';
   import { Markmap } from 'markmap-view';
-  import { onMounted, ref, watch } from 'vue';
-  import html2canvas from 'html2canvas';
+  import { onMounted, watch } from 'vue';
   import { t } from '@/locales';
   import { downloadPdf, downloadPng, downloadSvg } from '@/utils/downloadFile';
 
@@ -50,7 +49,7 @@
 
 <template>
   <div class="dot-bg w-full h-full" :class="genText == '' ? 'overflow-hidden' : ''">
-    <div v-if="genText !== ''" class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
+    <div class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
       <n-button @click="onZoomIn" text>
         <SvgIcon class="text-2xl" icon="basil:zoom-in-outline" />
       </n-button>
@@ -84,7 +83,6 @@
       <SvgIcon class="text-6xl" icon="ri:mind-map" />
       <div class="text-2xl font-bold">{{ t('mindmap.title') }}</div>
       <div class="text-gray-400">{{ t('mindmap.titleDes') }}</div>
-      <n-button type="success">{{ t('mindmap.begin') }}</n-button>
     </div>
 
     <div class="h-full w-full" id="mindmap-view">

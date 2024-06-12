@@ -16,23 +16,6 @@ export function chat(
   });
 }
 
-/**
- * @description: 翻译
- */
-export function genTranslate(
-  data: ChatR,
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
-  return http.post({
-    url: `/aigc/chat/translate`,
-    data: data,
-    onDownloadProgress: onDownloadProgress,
-  });
-}
-
-/**
- * @description: 生成文章
- */
 export function genWrite(
   data: ChatR,
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
@@ -44,19 +27,6 @@ export function genWrite(
   });
 }
 
-/**
- * @description: 生成思维导图
- */
-export function genMindMap(data: ChatR) {
-  return http.post({
-    url: '/langchat/chat/mindmap',
-    data: data,
-  });
-}
-
-/**
- * @description: 生成思维导图
- */
 export function genChart(data: ChatR) {
   return http.post({
     url: '/aigc/chat/chart',
@@ -75,15 +45,11 @@ export function genImage(data: ImageR): Promise<Oss> {
 }
 
 /**
- * @description: generate Mermaid
+ * @description: 生成思维导图
  */
-export function genMermaid(
-  data: ChatR,
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
+export function genMindMap(data: ChatR) {
   return http.post({
-    url: '/aigc/chat/mermaid',
+    url: '/aigc/chat/mindmap',
     data: data,
-    onDownloadProgress: onDownloadProgress,
   });
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { genImage } from '@/api/chat';
-  import { ref } from 'vue';
+  import { ref, toRaw } from 'vue';
   import { isBlank } from '@/utils/is';
   import { useMessage } from 'naive-ui';
   import { ImageR } from '@/api/models';
@@ -11,8 +11,7 @@
   const ms = useMessage();
   const message = ref('');
   const form = ref<ImageR>({
-    message: '',
-    model: 'dall-e-2',
+    model: 'dall-e-3',
     quality: 'standard',
     size: '1024x1024',
     style: 'vivid',
@@ -27,6 +26,7 @@
     ms.success('图片生成中，请稍后...');
     const data = await genImage({
       message: message.value,
+      ...toRaw(form.value),
     })
       .catch(() => {
         ms.error('图片生成失败');
@@ -85,7 +85,7 @@
       <div class="flex justify-start gap-2">
         <n-button
           v-for="item in modelList"
-          :key="item"
+          :key="item.label"
           :type="form.model == item.value ? 'success' : 'default'"
           secondary
           size="small"

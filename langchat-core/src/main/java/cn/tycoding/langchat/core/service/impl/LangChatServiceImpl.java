@@ -2,12 +2,10 @@ package cn.tycoding.langchat.core.service.impl;
 
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
-import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangChatService;
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
@@ -55,22 +53,22 @@ public class LangChatServiceImpl implements LangChatService {
             assistant = AiServices.builder(Assistant.class)
                     .streamingChatLanguageModel(model)
                     .retrievalAugmentor(retrievalAugmentor)
-                    .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
+                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
                     .build();
         } else {
             assistant = AiServices.builder(Assistant.class)
                     .streamingChatLanguageModel(model)
-                    .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
+                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
                     .build();
         }
-        return assistant.stream(req.getMessage());
+        return assistant.stream(req.getConversationId(), req.getPrompt().text());
     }
 
     @Override
-    public Response<AiMessage> text(TextR req) {
+    public String text(ChatReq req) {
         try {
             ChatLanguageModel model = provider.text(req.getModel());
-            return model.generate(req.getPrompt().toUserMessage());
+            return model.generate(req.getPrompt().text());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -82,17 +80,6 @@ public class LangChatServiceImpl implements LangChatService {
         try {
             ImageModel model = provider.image(req.getModel());
             return model.generate(req.getPrompt().text());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public Response<AiMessage> textImage(TextR req) {
-        try {
-            ChatLanguageModel model = provider.text(req.getModel());
-            return model.generate(req.getPrompt().toUserMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -1,5 +1,11 @@
 package cn.tycoding.langchat.core.service.impl;
 
+import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
+import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
+import static dev.langchain4j.data.document.Metadata.metadata;
+import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
+
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.service.AigcExcelColService;
 import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
@@ -28,19 +34,12 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
-import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
-import static dev.langchain4j.data.document.Metadata.metadata;
-import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
-import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * @author tycoding
@@ -95,7 +94,7 @@ public class LangDocServiceImpl implements LangDocService {
     public TokenStream chat(ChatReq req) {
         StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
         AiServices<Assistant> aiServices = AiServices.builder(Assistant.class)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(5))
+                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
                 .streamingChatLanguageModel(chatLanguageModel);
 
         if (StrUtil.isNotBlank(req.getDocsId())) {
@@ -113,6 +112,6 @@ public class LangDocServiceImpl implements LangDocService {
         }
 
         Assistant assistant = aiServices.build();
-        return assistant.stream(req.getMessage());
+        return assistant.stream(req.getConversationId(), req.getMessage());
     }
 }

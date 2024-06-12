@@ -2,11 +2,11 @@
   import { SvgIcon } from '@/components/common';
   import { ref } from 'vue';
   import DALL from './component/DALL.vue';
-  import { Oss } from '@/api/models';
   import { downloadByUrl } from '@/utils/downloadFile';
+  import { t } from '@/locales';
 
   const image = ref<string>('');
-  function onOk(data: Oss) {
+  function onOk(data: any) {
     if (data.url !== undefined) {
       image.value = data.url;
     }
@@ -31,12 +31,14 @@
           <n-tab-pane name="chap1" tab="OpenAI DALL·E" display-directive="show">
             <DALL @ok="onOk" />
           </n-tab-pane>
-          <n-tab-pane name="chap2" tab="More" display-directive="show" />
+          <n-tab-pane name="chap2" tab="Mj & More..." display-directive="show">
+            <n-empty description="更多文生图模型后续即将支持..." />
+          </n-tab-pane>
         </n-tabs>
       </div>
     </n-layout-sider>
 
-    <div class="flex justify-center items-center w-full mt-4">
+    <div class="flex justify-center items-center w-full mt-4 dot-bg">
       <div class="p-8 w-full h-full mb-14">
         <div class="mb-2 flex flex-wrap justify-between items-center">
           <div class="font-bold flex justify-center items-center flex-wrap gap-2">
@@ -60,11 +62,11 @@
           >
             <img :src="image" class="max-w-full max-h-full" />
           </div>
-          <n-empty v-else description="在左侧输入图片描述，开始生成图片吧！">
-            <template #extra>
-              <n-button size="small" type="success"> 立即开始 </n-button>
-            </template>
-          </n-empty>
+          <div class="h-full w-full flex flex-col justify-center items-center gap-3" v-else>
+            <SvgIcon class="text-6xl" icon="ri:mind-map" />
+            <div class="text-2xl font-bold">{{ t('mindmap.title') }}</div>
+            <div class="text-gray-400">{{ t('mindmap.titleDes') }}</div>
+          </div>
         </div>
       </div>
     </div>

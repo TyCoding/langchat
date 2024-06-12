@@ -6,42 +6,51 @@
   import { genMermaid } from '@/api/chat';
   import { isBlank } from '@/utils/is';
   import { t } from '@/locales';
+  // @ts-ignore
+  import { modelList } from '@/api/models/index.d.ts';
 
   const ms = useMessage();
+  const model = ref('gpt-4o');
   const loading = ref(false);
-  const genText = ref('');
-  async function onGenerate(text: string) {
-    if (isBlank(text)) {
+  const mermaidText = ref('');
+  async function onGenerate(val: string) {
+    if (isBlank(val)) {
       ms.warning(t('common.emptyTips'));
       return;
     }
-    genText.value = '';
+    let text = '';
     loading.value = true;
-    await genMermaid(
-      {
-        message: text,
-      },
-      ({ event }) => {
-        const list = event.target.responseText.split('\n\n');
-        list.forEach((i: any) => {
-          if (!i.startsWith('data:{')) {
-            return;
-          }
-          const { usedToken, done, message, time } = JSON.parse(i.substring(5, i.length));
-          if (done || message == null) {
-            loading.value = false;
-          } else {
-            genText.value += message;
-          }
-        });
-      }
-    ).finally(() => {
+    try {
+      await genMermaid(
+        {
+          message: val,
+          model: model.value,
+        },
+        ({ event }) => {
+          const list = event.target.responseText.split('\n\n');
+          list.forEach((i: any) => {
+            if (!i.startsWith('data:{')) {
+              return;
+            }
+
+            const { done, message } = JSON.parse(i.substring(5, i.length));
+            if (done || message == null) {
+              loading.value = false;
+              mermaidText.value = text;
+              return;
+            }
+            text += message;
+            console.log('现在的消息', text);
+          });
+        }
+      );
+    } finally {
       loading.value = false;
-    });
+    }
   }
 
   function onCase(text: string) {
-    genText.value = text;
+    mermaidText.value = text;
   }
 </script>
 
@@ -55,10 +64,14 @@
       collapse-mode="width"
       show-trigger="arrow-circle"
     >
-      <Sider :genText="genText" :loading="loading" @case="onCase" @generate="onGenerate" />
+      <div class="px-4 pt-2 flex items-center justify-between">
+        <div>{{ t('mermaid.des') }}</div>
+        <n-select size="small" v-model:value="model" :options="modelList" class="!w-[140px]" />
+      </div>
+      <Sider :mermaidText="mermaidText" :loading="loading" @case="onCase" @generate="onGenerate" />
     </n-layout-sider>
 
-    <Mermaid :genText="genText" :loading="loading" />
+    <Mermaid :text="mermaidText" :loading="loading" />
   </n-layout>
 </template>
 

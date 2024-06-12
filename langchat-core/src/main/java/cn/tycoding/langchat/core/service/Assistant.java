@@ -1,6 +1,8 @@
 package cn.tycoding.langchat.core.service;
 
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.UserMessage;
 
 /**
  * @author tycoding
@@ -8,7 +10,5 @@ import dev.langchain4j.service.TokenStream;
  */
 public interface Assistant {
 
-    TokenStream stream(String message);
-
-    String chat(String message);
+    TokenStream stream(@MemoryId String id, @UserMessage String message);
 }

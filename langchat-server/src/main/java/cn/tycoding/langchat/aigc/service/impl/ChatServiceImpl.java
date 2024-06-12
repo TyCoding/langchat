@@ -8,14 +8,11 @@ import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
 import cn.tycoding.langchat.common.dto.ImageR;
-import cn.tycoding.langchat.common.dto.TextR;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
-import cn.tycoding.langchat.core.consts.ModelConst;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.core.service.LangDocService;
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.model.output.TokenUsage;
 import lombok.AllArgsConstructor;
@@ -61,7 +58,8 @@ public class ChatServiceImpl implements ChatService {
                         if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
+                            saveMessage(req, tokenUsage.inputTokenCount(),
+                                    tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {
@@ -101,7 +99,8 @@ public class ChatServiceImpl implements ChatService {
                         if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
+                            saveMessage(req, tokenUsage.inputTokenCount(),
+                                    tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {
@@ -126,13 +125,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void singleChat(TextR req) {
+    public void singleChat(ChatReq req) {
         StreamEmitter emitter = req.getEmitter();
         long startTime = System.currentTimeMillis();
-        ChatReq chat = new ChatReq().setModel(req.getModel()).setPrompt(req.getPrompt());
-
         try {
-            langChatService.chat(chat)
+            langChatService.chat(req)
                     .onNext(e -> {
                         emitter.send(new ChatRes(e));
                     })
@@ -153,23 +150,24 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public String text(TextR req) {
-        return langChatService.text(req).content().text();
+    public String text(ChatReq req) {
+        String text;
+        try {
+            text = langChatService.text(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+        return text;
     }
 
     @Override
     public AigcOss image(ImageR req) {
-        if (req.getModel().equals(ModelConst.GEMINI_IMAGE)) {
-            Response<AiMessage> text = langChatService.textImage(
-                    new TextR().setPrompt(req.getPrompt()).setModel(req.getModel()));
-            log.info("生成图片：{}", text);
-        } else {
-            Response<Image> image = langChatService.image(req);
-            log.info("生成图片：{}", image);
-        }
+        Response<Image> res = langChatService.image(req);
 
+        String path = res.content().url().toString();
         AigcOss oss = new AigcOss();
-//        ossMapper.insert(oss);
+        oss.setUrl(path);
         return oss;
     }
 

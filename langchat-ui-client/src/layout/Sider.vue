@@ -7,6 +7,7 @@
   import { useAppStore, useUserStore } from '@/store';
   import type { Language } from '@/store/modules/app/helper';
   import { t } from '@/locales';
+  import defaultAvatar from '@/assets/avatar.jpg';
 
   const appStore = useAppStore();
   const dialog = useDialog();
@@ -131,6 +132,7 @@
               @click="router.push({ name: 'Profile' })"
               class="cursor-pointer"
               :src="user.avatar ?? '/avatar.jpg'"
+              :fallback-src="defaultAvatar"
               round
             />
           </template>

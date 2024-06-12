@@ -112,7 +112,7 @@ export default {
     user: '用户中心',
   },
   chat: {
-    placeholder: '请输入您的问题...（Shift + Enter 换行，按下 Enter 发送）',
+    placeholder: '请输入您的问题）',
     placeholderMobile: '来说点什么...',
     copy: '复制',
     copied: '复制成功',

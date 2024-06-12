@@ -4,12 +4,12 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.common.constant.CacheConst;
+import cn.tycoding.langchat.common.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Objects;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.Objects;
 
 /**
  * 权限相关方法
@@ -50,7 +50,7 @@ public class AigcAuthUtil {
         try {
             return (AigcUser) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
-            return null;
+            throw new AuthException();
         }
     }
 

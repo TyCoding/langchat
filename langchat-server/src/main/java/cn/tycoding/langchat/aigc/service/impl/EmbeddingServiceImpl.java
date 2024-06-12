@@ -1,5 +1,8 @@
 package cn.tycoding.langchat.aigc.service.impl;
 
+import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
+
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
@@ -15,17 +18,13 @@ import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
-import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
 /**
  * @author tycoding
@@ -40,6 +39,12 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final MilvusEmbeddingStore embeddingStore;
+
+    @Async
+    @Override
+    public void embedDocs(ChatReq data) {
+        langDocService.embeddingDocs(data);
+    }
 
     @Async
     @Override
@@ -80,5 +85,11 @@ public class EmbeddingServiceImpl implements EmbeddingService {
             result.add(map);
         });
         return result;
+    }
+
+    @Override
+    public void deleteVector(String knowledgeId) {
+        Filter filter = metadataKey(KNOWLEDGE).isEqualTo(knowledgeId);
+        embeddingStore.removeAll(filter);
     }
 }

@@ -26,13 +26,29 @@
   const aiChatId = ref<string>('');
   const inputRef = ref();
 
+  onMounted(async () => {
+    if (inputRef.value && !isMobile.value) {
+      inputRef.value?.focus();
+    }
+    await chatStore.loadData();
+    if (chatStore.conversations.length == 0) {
+      await chatStore.addConversation({ title: 'New Chat' });
+      await chatStore.loadData();
+    }
+  });
+  onUnmounted(() => {
+    if (loading.value) {
+      controller.abort();
+    }
+  });
+  onUpdated(() => {
+    scrollToBottomIfAtBottom();
+  });
+
   const dataSources = computed(() => {
     // 获取当前聊天窗口的数据
     scrollToBottom();
     return chatStore.messages;
-  });
-  onUpdated(() => {
-    chatStore.replaceUrl();
   });
 
   async function handleSubmit() {
@@ -52,13 +68,6 @@
     loading.value = true;
     prompt.value = '';
 
-    if (chatStore.conversations.length == 0) {
-      await chatStore.loadData();
-    }
-
-    // add conversation
-    await chatStore.addConversation({});
-
     // ai
     await scrollToBottom();
     const { conversationId } = await addMessage(data);
@@ -71,68 +80,62 @@
 
   async function onChat(message: string, conversationId?: string) {
     try {
-      // 定义接口
-      const fetchChatAPIOnce = async () => {
-        await chat(
-          {
-            chatId: chatId.value,
-            message,
-            role: 'user',
-            model: chatStore.model,
-            conversationId: conversationId,
-          },
-          async ({ event }) => {
-            const list = event.target.responseText.split('\n\n');
+      await chat(
+        {
+          chatId: chatId.value,
+          message,
+          role: 'user',
+          model: chatStore.model,
+          conversationId: conversationId,
+        },
+        async ({ event }) => {
+          const list = event.target.responseText.split('\n\n');
 
-            let text = '';
-            let isRun = true;
-            list.forEach((i: any) => {
-              if (i.startsWith('data:Error')) {
-                isRun = false;
-                text += i.substring(5, i.length);
-                chatStore.updateMessage(aiChatId.value, text, true);
-                return;
-              }
-              if (!i.startsWith('data:{')) {
-                return;
-              }
+          let text = '';
+          let isRun = true;
+          list.forEach((i: any) => {
+            if (i.startsWith('data:Error')) {
+              isRun = false;
+              text += i.substring(5, i.length);
+              chatStore.updateMessage(aiChatId.value, text, true);
+              return;
+            }
+            if (!i.startsWith('data:{')) {
+              return;
+            }
 
-              const { done, message } = JSON.parse(i.substring(5, i.length));
-              if (done) {
-                if (chatStore.curConversation?.id == undefined) {
-                  chatStore.curConversation = { id: String(conversationId) };
-                  chatStore.selectConversation({ id: conversationId });
-                }
-                return;
+            const { done, message } = JSON.parse(i.substring(5, i.length));
+            if (done) {
+              if (chatStore.curConversation?.id == undefined) {
+                chatStore.curConversation = { id: String(conversationId) };
+                chatStore.selectConversation({ id: conversationId });
               }
-              text += message;
-            });
-            if (!isRun) {
-              await scrollToBottomIfAtBottom();
               return;
             }
-            await chatStore.updateMessage(aiChatId.value, text, false);
-            await scrollToBottomIfAtBottom();
-          }
-        )
-          .catch((e: any) => {
-            loading.value = false;
-            if (e.message !== undefined) {
-              chatStore.updateMessage(aiChatId.value, e.message, true);
-              return;
-            }
-            if (e.startsWith('data:Error')) {
-              chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
-              return;
-            }
-          })
-          .finally(() => {
-            scrollToBottomIfAtBottom();
+            text += message;
           });
-      };
-
-      // 调用接口
-      await fetchChatAPIOnce();
+          if (!isRun) {
+            await scrollToBottomIfAtBottom();
+            return;
+          }
+          await chatStore.updateMessage(aiChatId.value, text, false);
+          await scrollToBottomIfAtBottom();
+        }
+      )
+        .catch((e: any) => {
+          loading.value = false;
+          if (e.message !== undefined) {
+            chatStore.updateMessage(aiChatId.value, e.message, true);
+            return;
+          }
+          if (e.startsWith('data:Error')) {
+            chatStore.updateMessage(aiChatId.value, e.substring(5, e.length), true);
+            return;
+          }
+        })
+        .finally(() => {
+          scrollToBottomIfAtBottom();
+        });
     } finally {
       loading.value = false;
     }
@@ -201,23 +204,6 @@
   const getContainerClass = computed(() => {
     return ['h-full', { 'pl-[260px]': !isMobile.value && !collapsed.value }];
   });
-
-  onMounted(() => {
-    chatStore.loadData();
-    if (inputRef.value && !isMobile.value) {
-      inputRef.value?.focus();
-    }
-  });
-
-  onUnmounted(() => {
-    if (loading.value) {
-      controller.abort();
-    }
-  });
-
-  onUpdated(() => {
-    scrollToBottomIfAtBottom();
-  });
 </script>
 
 <template>
@@ -240,8 +226,8 @@
               <div
                 v-else
                 ref="scrollRef"
-                class="max-w-screen-2xl m-auto px-10"
-                :class="[isMobile ? 'p-2' : 'p-5']"
+                class="max-w-screen-2xl m-auto"
+                :class="[isMobile ? 'p-2' : 'p-5 !px-12']"
               >
                 <Message
                   v-for="(item, index) of dataSources"
@@ -266,7 +252,10 @@
           </main>
 
           <footer :class="footerClass">
-            <div class="w-full max-w-screen-2xl m-auto px-20 pb-10 relative">
+            <div
+              class="w-full max-w-screen-2xl m-auto relative"
+              :class="isMobile ? 'pb-2' : ' px-20 pb-10 '"
+            >
               <div class="flex items-center justify-between">
                 <n-input
                   ref="inputRef"

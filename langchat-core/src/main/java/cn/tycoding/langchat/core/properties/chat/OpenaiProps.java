@@ -24,12 +24,12 @@ public class OpenaiProps {
     private String apiKey;
     private String organizationId;
     private String modelName;
-    private Double temperature;
-    private Double topP;
+    private Double temperature = 1.0;
+    private Double topP = 1.0;
     private List<String> stop;
-    private Integer maxTokens;
-    private Double presencePenalty;
-    private Double frequencyPenalty;
+    private Integer maxTokens = 4096;
+    private Double presencePenalty = 0.0;
+    private Double frequencyPenalty = 0.0;
     private Map<String, Integer> logitBias;
     private String responseFormat;
     private Integer seed;

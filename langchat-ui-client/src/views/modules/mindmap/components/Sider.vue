@@ -60,7 +60,6 @@
 
 <template>
   <div class="p-4">
-    <div class="pb-2">{{ t('mindmap.des') }}</div>
     <n-input
       :disabled="loading"
       v-model:value="text"

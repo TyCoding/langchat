@@ -33,10 +33,9 @@
           <div class="w-full h-full">
             <div
               v-if="docStore.file.fileName"
-              class="text-gray-700 text-[17px] border-b px-4 font-bold h-12 flex justify-between items-center dark:text-white"
+              class="text-gray-700 text-[17px] border-b px-2 font-bold h-12 flex justify-between items-center dark:text-white"
             >
               <div>{{ docStore.file.fileName }}.{{ docStore.file.type }}</div>
-              <div>OpenAI</div>
             </div>
             <n-empty
               v-if="docStore.file.url === undefined"

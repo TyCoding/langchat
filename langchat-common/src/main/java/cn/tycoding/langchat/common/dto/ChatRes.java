@@ -19,8 +19,8 @@ public class ChatRes {
 
     private long time;
 
-    public ChatRes(String content) {
-        this.message = content;
+    public ChatRes(String message) {
+        this.message = message;
     }
 
     public ChatRes(Integer usedToken, long startTime) {

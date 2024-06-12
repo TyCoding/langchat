@@ -22,8 +22,7 @@ public interface LangDocService {
     List<EmbeddingR> embeddingDocs(ChatReq req);
 
     /**
-     * 文本向量搜索
+     * 文档对话
      */
     TokenStream chat(ChatReq req);
-
 }

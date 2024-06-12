@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { SvgIcon } from '@/components/common';
-  import { UploadCustomRequestOptions, useMessage, type UploadFileInfo } from 'naive-ui';
+  import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
   import { list, upload, del, update, task as getTask } from '@/api/docs';
   import { onMounted, ref } from 'vue';
   import { Oss } from '@/api/models';
@@ -45,7 +45,7 @@
         ms.success(t('common.importSuccess'));
         onFinish();
         fetchData();
-        startTask();
+        // startTask();
       })
       .catch(() => {
         ms.error(t('common.wrong'));
@@ -98,7 +98,7 @@
       <n-upload
         :show-file-list="false"
         :custom-request="onUpload"
-        :accept="'application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.xls,.xlsx,.csv,application/excel,application/vnd.ms-excel,application/vnd.msexcel,text/plain,.md'"
+        :accept="'application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'"
         :trigger-style="{ width: '100%' }"
       >
         <n-button dashed type="success" block>{{ t('doc.upload') }}</n-button>

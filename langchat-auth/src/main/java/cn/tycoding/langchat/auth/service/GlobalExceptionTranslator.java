@@ -2,6 +2,7 @@ package cn.tycoding.langchat.auth.service;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.SaTokenException;
+import cn.tycoding.langchat.common.exception.AuthException;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,14 @@ public class GlobalExceptionTranslator {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R handleError(ServiceException e) {
         log.error("----------业务异常----------");
+        e.printStackTrace();
+        return R.fail(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler({AuthException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public R handleError(AuthException e) {
+        log.error("----------授权错误----------");
         e.printStackTrace();
         return R.fail(e.getCode(), e.getMessage());
     }

@@ -76,6 +76,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     @Override
     public AigcConversation addConversation(AigcConversation conversation) {
         conversation.setCreateTime(new Date());
+        conversation.setUserId(AigcAuthUtil.getUserId());
         aigcConversationMapper.insert(conversation);
         return conversation;
     }

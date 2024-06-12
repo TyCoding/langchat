@@ -108,7 +108,7 @@
         <div class="flex flex-row justify-start items-start gap-1">
           <n-popover
             v-for="item in options"
-            :key="item"
+            :key="item.key"
             :trigger="isMobile ? 'click' : 'hover'"
             class="custom-popover"
             placement="bottom"

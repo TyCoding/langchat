@@ -7,7 +7,7 @@ import { AxiosProgressEvent } from 'axios';
  */
 export function upload(data: any, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
   return http.post({
-    url: `/aigc/docs/upload`,
+    url: `/aigc/chat/docs/upload`,
     data,
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -20,15 +20,13 @@ export function upload(data: any, onUploadProgress?: (progressEvent: AxiosProgre
  * @description: Doc聊天
  */
 export function chat(
-  data: {
-    id: string;
-    message: string;
-  },
+  knowledgeId: string,
+  data: any,
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: `/aigc/docs/chat`,
-    data: data,
+    url: `/aigc/chat/docs/${knowledgeId}`,
+    data,
     onDownloadProgress: onDownloadProgress,
   });
 }
@@ -48,7 +46,7 @@ export function update(data: Oss) {
 
 export function del(id?: number) {
   return http.delete({
-    url: `/aigc/file/${id}`,
+    url: `/aigc/chat/docs/${id}`,
   });
 }
 

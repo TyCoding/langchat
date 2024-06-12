@@ -48,6 +48,7 @@ function axios<T = any>({
 
     if (res.data.code === 401) {
       const message = res.data.message ?? '没有操作权限';
+      $message?.destroyAll();
       $message!.error(message);
       return Promise.reject(res.data);
     }
@@ -64,18 +65,9 @@ function axios<T = any>({
 
   const failHandler = (error: any) => {
     console.error(error);
-    const $dialog = window['$dialog'];
     const { status } = error.response;
     if (status === 401) {
-      $dialog!.warning({
-        title: '提示',
-        content: '您还没有登陆或者登陆已失效',
-        positiveText: '去登录',
-        negativeText: '取消',
-        onPositiveClick: async () => {
-          await router.push({ name: 'Login' });
-        },
-      });
+      router.push({ name: 'Login' });
       return;
     }
 

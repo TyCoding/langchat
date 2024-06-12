@@ -2,30 +2,36 @@ package cn.tycoding.langchat.upms.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
-import cn.tycoding.langchat.common.constant.CommonConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.upms.dto.UserInfo;
-import cn.tycoding.langchat.upms.entity.*;
+import cn.tycoding.langchat.upms.entity.SysDept;
+import cn.tycoding.langchat.upms.entity.SysMenu;
+import cn.tycoding.langchat.upms.entity.SysRole;
+import cn.tycoding.langchat.upms.entity.SysUser;
+import cn.tycoding.langchat.upms.entity.SysUserRole;
 import cn.tycoding.langchat.upms.mapper.SysUserMapper;
-import cn.tycoding.langchat.upms.service.*;
+import cn.tycoding.langchat.upms.service.SysDeptService;
+import cn.tycoding.langchat.upms.service.SysMenuService;
+import cn.tycoding.langchat.upms.service.SysRoleService;
+import cn.tycoding.langchat.upms.service.SysUserRoleService;
+import cn.tycoding.langchat.upms.service.SysUserService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 用户表(User)表服务实现类
@@ -139,11 +145,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setCreateTime(new Date());
         user.setPassword(AuthUtil.encode(authProps.getSaltKey(), user.getPassword()));
 
-        // 设置默认头像
-        if (StringUtils.isEmpty(user.getAvatar())) {
-            user.setAvatar(CommonConst.DEFAULT_AVATAR);
-        }
-
         // 设置角色
         if (user.getRoleIds() == null || user.getRoleIds().isEmpty()) {
             throw new ServiceException("用户角色不能为空");
@@ -172,11 +173,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void update(UserInfo user) {
         if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
-        }
-
-        // 设置默认头像
-        if (StringUtils.isEmpty(user.getAvatar())) {
-            user.setAvatar(CommonConst.DEFAULT_AVATAR);
         }
         user.setPassword(null);
         baseMapper.updateById(user);

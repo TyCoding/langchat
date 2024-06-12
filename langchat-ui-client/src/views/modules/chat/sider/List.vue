@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, nextTick } from 'vue';
+  import { computed } from 'vue';
   import { NInput, NPopconfirm, NScrollbar } from 'naive-ui';
   import { SvgIcon } from '@/components/common';
   import { useChatStore } from '../store/useChatStore';
@@ -13,17 +13,17 @@
   });
 
   async function handleSelect(item: Conversation) {
-    if (isActive(item.id)) return;
+    if (isActive(item.id!)) return;
     await chatStore.selectConversation(item);
   }
 
   function handleEdit({ id }: Conversation, isEdit: boolean, event?: MouseEvent) {
-    chatStore.setEdit(id);
+    chatStore.setEdit(id!);
     event?.stopPropagation();
   }
 
   async function handleDelete(item: Conversation, event?: MouseEvent | TouchEvent) {
-    await chatStore.delConversation(item.id);
+    await chatStore.delConversation(item.id!);
     event?.stopPropagation();
   }
 

@@ -3,7 +3,6 @@ package cn.tycoding.langchat.aigc.service;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
-import cn.tycoding.langchat.common.dto.TextR;
 
 /**
  * @author tycoding
@@ -19,12 +18,12 @@ public interface ChatService {
     /**
      * 流式请求
      */
-    void singleChat(TextR req);
+    void singleChat(ChatReq req);
 
     /**
      * 文本请求
      */
-    String text(TextR req);
+    String text(ChatReq req);
 
     /**
      * 文生图

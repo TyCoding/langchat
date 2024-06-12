@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import { SvgIcon } from '@/components/common';
-  import { onMounted, ref, watch } from 'vue';
+  import { ref, watch } from 'vue';
   import { t } from '@/locales';
   import { VueMermaidRender } from 'vue-mermaid-render';
   import { downloadPdf, downloadPng, downloadSvg } from '@/utils/downloadFile';
 
   const props = defineProps<{
-    genText: string;
+    text: string;
   }>();
   const width = ref(80);
 
   watch(
-    () => props.genText,
+    () => props.text,
     (val) => {}
   );
 
@@ -38,7 +38,7 @@
 </script>
 
 <template>
-  <div class="dot-bg w-full h-full" :class="genText == '' ? 'overflow-hidden' : ''">
+  <div class="dot-bg w-full h-full" :class="text == '' ? 'overflow-hidden' : ''">
     <div class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
       <n-button @click="onZoomIn" text>
         <SvgIcon class="text-2xl" icon="basil:zoom-in-outline" />
@@ -69,7 +69,7 @@
       </n-button>
     </div>
 
-    <div class="h-full w-full flex flex-col justify-center items-center gap-3" v-if="genText == ''">
+    <div class="h-full w-full flex flex-col justify-center items-center gap-3" v-if="text == ''">
       <SvgIcon class="text-6xl" icon="flowbite:chart-mixed-outline" />
       <div class="text-2xl font-bold">{{ t('mermaid.title') }}</div>
       <div class="text-gray-400">{{ t('mermaid.titleDes') }}</div>
@@ -78,7 +78,7 @@
 
     <div class="h-full w-full flex justify-center items-center">
       <div :style="'width: ' + width + 'vh'" id="mermaid-view">
-        <VueMermaidRender :content="props.genText" :config="{}" />
+        <VueMermaidRender :content="props.text" :config="{}" />
       </div>
     </div>
   </div>

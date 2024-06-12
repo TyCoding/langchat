@@ -53,7 +53,6 @@
 
   async function onAddConversation() {
     chatStore.sideIsLoading = true;
-    console.log('xxx');
     await addConversation({
       title: 'New Chat' + Number(chatStore.conversations.length + 1),
     });
@@ -79,7 +78,7 @@
       </div>
       <main v-else class="flex flex-col flex-1 min-h-0">
         <div class="p-4 pt-3 flex justify-between items-center gap-2">
-          <n-button @click="onAddConversation" block size="" type="success" secondary>
+          <n-button @click="onAddConversation" block type="success" secondary>
             <SvgIcon icon="ic:round-plus" />
             <span>{{ t('chat.newChatButton') }}</span>
           </n-button>
