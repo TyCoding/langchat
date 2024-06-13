@@ -67,15 +67,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/modules/chart/index.vue'),
       },
       {
-        path: '/ppt',
-        name: 'PPT',
-        meta: {
-          label: t('menu.ppt'),
-          icon: 'bi:filetype-ppt',
-        },
-        component: () => import('@/views/modules/ppt/index.vue'),
-      },
-      {
         path: '/mindmap',
         name: 'MindMap',
         meta: {
