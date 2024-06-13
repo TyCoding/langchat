@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.aigc.service.ChatService;
@@ -42,7 +43,12 @@ public class AigcChatEndpoint {
         req.setEmitter(emitter);
         req.setUserId(AigcAuthUtil.getUserId());
         req.setUsername(AigcAuthUtil.getUsername());
-        req.setPrompt(PromptUtil.build(req.getMessage()));
+
+        if (StrUtil.isBlank(req.getPromptId())) {
+            req.setPrompt(PromptUtil.build(req.getMessage()));
+        } else {
+            req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
+        }
 
         if (req.getModel().endsWith(ModelConst.IMAGE_SUFFIX)) {
             AigcOss oss = chatService.image(

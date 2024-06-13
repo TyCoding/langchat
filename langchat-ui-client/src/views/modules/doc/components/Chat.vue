@@ -53,8 +53,8 @@
 
   const messages = ref<
     {
-      id: string;
-      role: 'role' | 'assistant';
+      id: any;
+      role: 'user' | 'assistant';
       error: boolean;
       message: string;
       createTime?: any;

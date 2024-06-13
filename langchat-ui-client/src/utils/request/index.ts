@@ -65,13 +65,14 @@ function axios<T = any>({
 
   const failHandler = (error: any) => {
     console.error(error);
+
+    const $message = window['$message'];
     const { status } = error.response;
     if (status === 401) {
+      $message!.error('Login failed, please login again');
       router.push({ name: 'Login' });
       return;
     }
-
-    const $message = window['$message'];
 
     if (error.response !== undefined && error.response.data != undefined) {
       $message!.error(error.response.data.message ?? '接口请求异常');

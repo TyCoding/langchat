@@ -80,6 +80,14 @@
 
   async function onChat(message: string, conversationId?: string) {
     try {
+      let promptText = undefined;
+      if (chatStore.selectPromptId !== null && chatStore.selectPromptId !== '') {
+        const arr = chatStore.prompts.filter((i) => i.id === chatStore.selectPromptId);
+        if (arr.length) {
+          promptText = arr[0].prompt;
+        }
+      }
+
       await chat(
         {
           chatId: chatId.value,
@@ -87,6 +95,8 @@
           role: 'user',
           model: chatStore.model,
           conversationId: conversationId,
+          promptId: chatStore.selectPromptId,
+          promptText,
         },
         async ({ event }) => {
           const list = event.target.responseText.split('\n\n');
@@ -188,7 +198,7 @@
   ]);
 
   const footerClass = computed(() => {
-    let classes = ['p-4'];
+    let classes = ['p-4 pt-0'];
     if (isMobile.value) {
       classes = ['sticky', 'left-0', 'bottom-0', 'right-0', 'p-2', 'pr-3', 'overflow-hidden'];
     }
@@ -227,7 +237,7 @@
                 v-else
                 ref="scrollRef"
                 class="max-w-screen-2xl m-auto"
-                :class="[isMobile ? 'p-2' : 'p-5 !px-12']"
+                :class="[isMobile ? 'p-2' : 'p-5 py-8 !px-12']"
               >
                 <Message
                   v-for="(item, index) of dataSources"

@@ -4,17 +4,12 @@
   import Typed from 'typed.js';
   import CardList from './components/CardList.vue';
   import { Bot } from '@/api/models';
-  import { getBotPage } from '@/api/prompt';
+  import { getPrompts } from '@/api/prompt';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
 
   const router = useRouter();
-  const pageInfo = {
-    page: 1,
-    limit: 20,
-    total: 0,
-  };
-  const botList = ref<Bot[]>([]);
+  const prompts = ref<Bot[]>([]);
   const loading = ref(true);
   const title = ref('');
 
@@ -31,9 +26,7 @@
   });
 
   async function fetchData() {
-    const data = await getBotPage({ ...pageInfo, title: title.value });
-    botList.value = data.rows;
-    pageInfo.total = data.total;
+    prompts.value = await getPrompts({ title: title.value });
     loading.value = false;
   }
 </script>
@@ -88,7 +81,7 @@
         </n-input>
 
         <n-spin size="large" :show="loading">
-          <CardList :list="botList" />
+          <CardList :list="prompts" />
         </n-spin>
       </div>
     </div>

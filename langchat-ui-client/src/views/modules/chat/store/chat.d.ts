@@ -9,4 +9,6 @@ export interface ChatState {
   conversations: any[]; //左侧会话窗口列表
   curConversation: any; //当前选中的会话窗口
   messages: any[]; //当前选中的消息内容
+  prompts: any[];
+  selectPromptId: any;
 }

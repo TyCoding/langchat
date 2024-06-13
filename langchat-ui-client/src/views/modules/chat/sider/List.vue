@@ -43,7 +43,7 @@
 </script>
 
 <template>
-  <NScrollbar class="px-4">
+  <NScrollbar class="px-4 flex-1">
     <div class="flex flex-col gap-2 text-sm">
       <template v-if="!dataSources.length">
         <div

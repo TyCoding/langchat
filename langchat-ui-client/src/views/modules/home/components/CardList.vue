@@ -5,8 +5,6 @@
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
-  import { add as addConversation } from '@/api/conversation';
-  import { Conversation } from '@/typings/chat';
 
   interface Props {
     list: Array<Bot>;
@@ -16,13 +14,8 @@
   const router = useRouter();
 
   async function onUse(id: string) {
-    const data = (await addConversation({ promptId: id })) as Conversation;
-    chatStore.curConversation = data;
-    await router.push({
-      name: 'Chat',
-      query: { conversationId: data.id, promptId: data.id },
-    });
-    chatStore.active = '';
+    chatStore.selectPromptId = id;
+    await router.push('/chat');
   }
 </script>
 

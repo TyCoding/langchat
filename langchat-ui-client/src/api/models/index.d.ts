@@ -38,6 +38,7 @@ export interface ChatR {
   conversationId?: string;
   message?: string;
   promptId?: string;
+  promptText?: string;
   role?: 'user' | 'assistant' | 'system';
   createTime?: string;
   type?: string;

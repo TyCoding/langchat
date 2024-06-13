@@ -9,6 +9,7 @@ import {
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
 import { toRaw } from 'vue';
+import { getPrompts } from '@/api/prompt';
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
@@ -23,6 +24,8 @@ export const useChatStore = defineStore('chat-store', {
       conversations: [],
       curConversation: undefined,
       messages: [],
+      prompts: [],
+      selectPromptId: undefined,
     },
 
   getters: {},
@@ -49,6 +52,8 @@ export const useChatStore = defineStore('chat-store', {
           this.curConversation = data[0];
           await this.selectConversation({ id: data[0].id });
         }
+
+        this.prompts = await getPrompts({});
       } finally {
         this.sideIsLoading = false;
         this.chatIsLoading = false;
@@ -59,7 +64,6 @@ export const useChatStore = defineStore('chat-store', {
      * 选择会话窗口
      */
     async selectConversation(params: any) {
-      console.log('选择窗口', params);
       this.chatIsLoading = true;
       this.messages = [];
       if (params.id == undefined) {
@@ -68,7 +72,7 @@ export const useChatStore = defineStore('chat-store', {
       await this.setActive(params.id);
       getMessages(params.id)
         .then((res: any) => {
-          this.messages = res.reverse();
+          this.messages = res;
         })
         .finally(() => {
           this.chatIsLoading = false;

@@ -82,8 +82,6 @@ public class AigcConversationController {
     @GetMapping("/messages/{conversationId}")
     public R getMessages(@PathVariable String conversationId) {
         List<AigcMessage> list = aigcMessageService.getMessages(conversationId);
-
-        //TODO 处理会话
         return R.ok(list);
     }
 

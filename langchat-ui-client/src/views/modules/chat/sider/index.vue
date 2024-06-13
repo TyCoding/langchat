@@ -83,8 +83,16 @@
             <span>{{ t('chat.newChatButton') }}</span>
           </n-button>
         </div>
-        <div class="flex-1 min-h-0 pb-4 overflow-hidden">
+        <div class="flex-1 min-h-0 pb-4 overflow-hidden flex flex-col gap-2">
           <List />
+          <div class="pb-2 px-4">
+            <n-select
+              :options="chatStore.prompts"
+              :label-field="'name'"
+              :value-field="'id'"
+              v-model:value="chatStore.selectPromptId"
+            />
+          </div>
         </div>
       </main>
     </div>

@@ -1,8 +1,8 @@
 import { http } from '@/utils/request';
 
-export function getBotPage(data: any) {
+export function getPrompts(data: any) {
   return http.get({
-    url: '/aigc/prompt/page',
+    url: '/aigc/prompt/list',
     data: data,
   });
 }

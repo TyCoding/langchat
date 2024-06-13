@@ -37,7 +37,7 @@ public class AigcPromptController {
 
     @GetMapping("/list")
     public R list(AigcPrompt data) {
-        List<AigcPrompt> list = aigcPromptService.list();
+        List<AigcPrompt> list = aigcPromptService.list(Wrappers.<AigcPrompt>lambdaQuery().orderByDesc(AigcPrompt::getCreateTime));
         return R.ok(list);
     }
 
