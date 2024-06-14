@@ -23,13 +23,11 @@ public class RedisConfiguration {
 
     private final RedisConnectionFactory connectionFactory;
 
-    @Bean(name = {"redisTemplate"})
+    @Bean
     public RedisTemplate<String, Object> redisTemplate() {
-        // 指定相应的序列化方案
         StringRedisSerializer keySerializer = new StringRedisSerializer();
         GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
 
-        // 构建RedisTemplate
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(keySerializer);
@@ -40,9 +38,8 @@ public class RedisConfiguration {
         return redisTemplate;
     }
 
-    @Bean(name = {"stringRedisTemplate"})
+    @Bean
     public StringRedisTemplate stringRedisTemplate() {
-        // 构建StringRedisTemplate
         StringRedisTemplate stringTemplate = new StringRedisTemplate();
         stringTemplate.setConnectionFactory(connectionFactory);
         stringTemplate.afterPropertiesSet();

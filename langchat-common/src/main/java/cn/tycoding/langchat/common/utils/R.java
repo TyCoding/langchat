@@ -1,9 +1,8 @@
 package cn.tycoding.langchat.common.utils;
 
+import java.io.Serializable;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-
-import java.io.Serializable;
 
 /**
  * @author tycoding
@@ -78,8 +77,8 @@ public class R<T> implements Serializable {
         return new R<>(code, message);
     }
 
-    public static <T> R<T> fail(HttpStatus httpStatus) {
-        return new R<>(httpStatus);
+    public static <T> R<T> fail(HttpStatus status) {
+        return new R<>(status.value(), status.getReasonPhrase());
     }
 
     public static <T> R<T> fail(Throwable e) {

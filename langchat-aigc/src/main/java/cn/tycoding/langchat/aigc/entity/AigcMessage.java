@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author tycoding
@@ -59,7 +58,7 @@ public class AigcMessage implements Serializable {
     private Integer promptTokens;
 
     /**
-     * 角色，user、assistant、system
+     * 角色，user、assistant
      */
     private String role;
 

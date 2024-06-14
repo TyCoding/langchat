@@ -1,4 +1,7 @@
-export function checkStatus(status: number, msg: string): void {
+export function checkStatus(status: number, msg: string | undefined): void {
+  if (msg === '') {
+    msg = undefined;
+  }
   const $message = window['$message'];
   switch (status) {
     case 400:
