@@ -1,5 +1,4 @@
 import { http } from '@/utils/http/axios';
-import { Role } from '@/api/models/upms';
 
 export function list(params: any) {
   return http.request({
@@ -17,7 +16,7 @@ export function page(params: any) {
   });
 }
 
-export function getById(id: string): Promise<Role> {
+export function getById(id: string) {
   return http.request({
     url: `/upms/role/${id}`,
     method: 'get',

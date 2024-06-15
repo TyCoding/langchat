@@ -25,7 +25,6 @@ public class CaptchaInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("验证码拦截器");
         if ("/oauth/token".equals(request.getRequestURI())) {
             String headerKey = request.getHeader(AuthUtil.CAPTCHA_HEADER_KEY);
             if (headerKey == null) {

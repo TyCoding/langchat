@@ -2,10 +2,10 @@
   <div class="layout-header">
     <!--顶部菜单-->
     <div
-      class="layout-header-left"
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
+      class="layout-header-left"
     >
-      <div class="logo" v-if="navMode === 'horizontal'">
+      <div v-if="navMode === 'horizontal'" class="logo">
         <img :src="websiteConfig.logo" alt="" />
         <h2 v-show="!collapsed" class="title">{{ websiteConfig.title }}</h2>
       </div>
@@ -17,23 +17,23 @@
       />
     </div>
     <!--左侧菜单-->
-    <div class="layout-header-left" v-else>
+    <div v-else class="layout-header-left">
       <!-- 菜单收起 -->
       <div
         class="ml-1 layout-header-trigger layout-header-trigger-min"
         @click="() => $emit('update:collapsed', !collapsed)"
       >
-        <n-icon size="18" v-if="collapsed">
+        <n-icon v-if="collapsed" size="18">
           <MenuUnfoldOutlined />
         </n-icon>
-        <n-icon size="18" v-else>
+        <n-icon v-else size="18">
           <MenuFoldOutlined />
         </n-icon>
       </div>
       <!-- 刷新 -->
       <div
-        class="mr-1 layout-header-trigger layout-header-trigger-min"
         v-if="headerSetting.isReload"
+        class="mr-1 layout-header-trigger layout-header-trigger-min"
         @click="reloadPage"
       >
         <n-icon size="18">
@@ -54,16 +54,16 @@
             >
               <span class="link-text">
                 <component
-                  v-if="crumbsSetting.showIcon && routeItem.meta.icon"
                   :is="routeItem.meta.icon"
+                  v-if="crumbsSetting.showIcon && routeItem.meta.icon"
                 />
                 {{ routeItem.meta.title }}
               </span>
             </n-dropdown>
-            <span class="link-text" v-else>
+            <span v-else class="link-text">
               <component
-                v-if="crumbsSetting.showIcon && routeItem.meta.icon"
                 :is="routeItem.meta.icon"
+                v-if="crumbsSetting.showIcon && routeItem.meta.icon"
               />
               {{ routeItem.meta.title }}
             </span>
@@ -73,9 +73,9 @@
     </div>
     <div class="layout-header-right">
       <div
-        class="layout-header-trigger layout-header-trigger-min"
         v-for="item in iconList"
         :key="item.icon"
+        class="layout-header-trigger layout-header-trigger-min"
       >
         <n-tooltip placement="bottom">
           <template #trigger>
@@ -99,7 +99,7 @@
       </div>
       <!-- 个人中心 -->
       <div class="layout-header-trigger layout-header-trigger-min">
-        <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
+        <n-dropdown :options="avatarOptions" trigger="hover" @select="avatarSelect">
           <div class="avatar">
             <n-avatar :src="avatar" round>
               <template #icon>
@@ -110,26 +110,26 @@
         </n-dropdown>
       </div>
       <!--设置-->
-      <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
-        <n-tooltip placement="bottom-end">
-          <template #trigger>
-            <n-icon size="18" style="font-weight: bold">
-              <SettingOutlined />
-            </n-icon>
-          </template>
-          <span>项目配置</span>
-        </n-tooltip>
-      </div>
+      <!--      <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">-->
+      <!--        <n-tooltip placement="bottom-end">-->
+      <!--          <template #trigger>-->
+      <!--            <n-icon size="18" style="font-weight: bold">-->
+      <!--              <SettingOutlined />-->
+      <!--            </n-icon>-->
+      <!--          </template>-->
+      <!--          <span>项目配置</span>-->
+      <!--        </n-tooltip>-->
+      <!--      </div>-->
     </div>
 
     <!--项目配置-->
-    <ProjectSetting ref="drawerSetting" />
+    <!--    <ProjectSetting ref="drawerSetting" />-->
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, ref, computed, unref } from 'vue';
-  import { useRouter, useRoute } from 'vue-router';
+  import { computed, defineComponent, reactive, ref, toRefs, unref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
   import components from './components';
   import { NDialogProvider, useDialog, useMessage } from 'naive-ui';
   import { TABS_ROUTES } from '@/store/mutation-types';
@@ -308,7 +308,7 @@
       const avatarSelect = (key) => {
         switch (key) {
           case 1:
-            router.push({ name: 'Setting' });
+            router.push('/profile');
             break;
           case 2:
             doLogout();

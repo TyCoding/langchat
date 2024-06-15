@@ -180,3 +180,30 @@ export const formSchemas: FormSchema[] = [
     },
   },
 ];
+
+export const passFormSchemas: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'ID',
+    component: 'NInput',
+    isHidden: true,
+  },
+  {
+    field: 'password',
+    label: '新密码',
+    component: 'NInput',
+    componentProps: {
+      placeholder: '请输入新密码',
+    },
+    rules: [{ required: true, message: '请输入新密码', trigger: ['blur'] }],
+  },
+  {
+    field: 'repass',
+    label: '确认密码',
+    component: 'NInput',
+    componentProps: {
+      placeholder: '请确认新密码',
+    },
+    rules: [{ required: true, message: '请确认新密码', trigger: ['blur'] }],
+  },
+];

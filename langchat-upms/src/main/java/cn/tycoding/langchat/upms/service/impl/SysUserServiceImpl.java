@@ -171,8 +171,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#user.username")
     public void update(UserInfo user) {
+        if (user.getUsername().equals(AuthUtil.ADMINISTRATOR)) {
+            throw new ServiceException("The Administrator user cannot be edited");
+        }
         if (!checkName(user)) {
-            throw new ServiceException("该用户名已存在，请重新输入！");
+            throw new ServiceException("The user name already exists, please re-enter!");
         }
         user.setPassword(null);
         baseMapper.updateById(user);
@@ -183,6 +186,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public void delete(Long id, String username) {
+        if (username.equals(AuthUtil.ADMINISTRATOR)) {
+            throw new ServiceException("The Administrator user cannot be deleted");
+        }
         baseMapper.deleteById(id);
         sysUserRoleService.deleteUserRolesByUserId(id);
     }
@@ -191,6 +197,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public void reset(Long id, String password, String username) {
+        if (username.equals(AuthUtil.ADMINISTRATOR)) {
+            throw new ServiceException("The Administrator user cannot reset the password");
+        }
         SysUser user = new SysUser();
         user.setId(id);
         user.setPassword(AuthUtil.encode(authProps.getSaltKey(), password));

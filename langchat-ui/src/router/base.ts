@@ -65,6 +65,26 @@ export const BaseRoute: Array<any> = [
     ],
   },
   {
+    path: '/profile',
+    name: 'profile',
+    component: 'LAYOUT',
+    show: false,
+    meta: {
+      title: '个人中心',
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'profile_index',
+        component: '/base/profile/index',
+        show: false,
+        meta: {
+          title: '个人中心',
+        },
+      },
+    ],
+  },
+  {
     path: '/aigc',
     name: 'aigc',
     component: 'LAYOUT',

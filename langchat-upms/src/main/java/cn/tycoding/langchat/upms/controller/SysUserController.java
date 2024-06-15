@@ -2,6 +2,8 @@ package cn.tycoding.langchat.upms.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.common.annotation.ApiLog;
+import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -9,10 +11,16 @@ import cn.tycoding.langchat.upms.dto.UserInfo;
 import cn.tycoding.langchat.upms.entity.SysUser;
 import cn.tycoding.langchat.upms.service.SysUserService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户表(User)表控制层
@@ -26,6 +34,7 @@ import java.util.List;
 public class SysUserController {
 
     private final SysUserService sysUserService;
+    private final AuthProps authProps;
 
     @GetMapping("/info")
     public R<UserInfo> info() {
@@ -81,14 +90,24 @@ public class SysUserController {
         return R.ok();
     }
 
-    @GetMapping("/reset")
+    @PutMapping("/resetPass")
     @ApiLog("重置密码")
-//    @PreAuthorize("@auth.hasAuth('upms:user:reset')")
-    public R reset(@RequestParam Long id, String password) {
-        SysUser user = sysUserService.getById(id);
+    public R resetPass(@RequestBody UserInfo data) {
+        SysUser user = sysUserService.getById(data.getId());
         if (user != null) {
-            sysUserService.reset(id, password, user.getUsername());
+            sysUserService.reset(data.getId(), data.getPassword(), user.getUsername());
         }
+        return R.ok();
+    }
+
+    @PutMapping("/updatePass")
+    @ApiLog("修改密码")
+    public R updatePass(@RequestBody UserInfo data) {
+        SysUser user = sysUserService.getById(data.getId());
+        if (user == null || !AuthUtil.decrypt(authProps.getSaltKey(), user.getPassword()).equals(data.getPassword())) {
+            throw new ServiceException("Old password entered incorrectly, please re-enter");
+        }
+        user.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
         return R.ok();
     }
 }

@@ -23,22 +23,6 @@ export function login(data: any) {
 }
 
 /**
- * @description: 用户修改密码
- */
-export function changePassword(params, uid) {
-  return http.request(
-    {
-      url: `/user/u${uid}/changepw`,
-      method: 'POST',
-      params,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
-}
-
-/**
  * @description: 用户登出
  */
 export function logout() {
@@ -63,7 +47,7 @@ export function getMenus() {
 /**
  * 分页获取Token
  */
-export function page(params: any) {
+export function getTokens(params: any) {
   return http.request({
     url: '/auth/token/page',
     method: 'get',
@@ -74,7 +58,7 @@ export function page(params: any) {
 /**
  * 删除Token
  */
-export function del(id?: String) {
+export function delToken(id?: String) {
   return http.request({
     url: `/auth/token/${id}`,
     method: 'delete',

@@ -4,18 +4,24 @@
   import { BasicForm, useForm } from '@/components/Form/index';
   import { del, page as getPage } from '@/api/upms/user';
   import { columns, searchSchemas } from './columns';
-  import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
+  import {
+    DeleteOutlined,
+    EditOutlined,
+    PlusOutlined,
+    SafetyCertificateOutlined,
+  } from '@vicons/antd';
   import Edit from './edit.vue';
+  import Pass from './pass.vue';
   import { useDialog, useMessage } from 'naive-ui';
 
   const message = useMessage();
   const dialog = useDialog();
-
   const actionRef = ref();
   const editRef = ref();
+  const passRef = ref();
 
   const actionColumn = reactive({
-    width: 100,
+    width: 110,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -24,6 +30,11 @@
       return h(TableAction as any, {
         style: 'text',
         actions: [
+          {
+            type: 'warning',
+            icon: SafetyCertificateOutlined,
+            onClick: handleRepass.bind(null, record),
+          },
           {
             type: 'info',
             icon: EditOutlined,
@@ -60,6 +71,10 @@
 
   function handleEdit(record: Recordable) {
     editRef.value.show(record.id);
+  }
+
+  function handleRepass(record: Recordable) {
+    passRef.value.show(record.id);
   }
 
   function handleDelete(record: Recordable) {
@@ -110,6 +125,7 @@
     </n-card>
 
     <Edit ref="editRef" @reload="reloadTable" />
+    <Pass ref="passRef" @reload="reloadTable" />
   </div>
 </template>
 
