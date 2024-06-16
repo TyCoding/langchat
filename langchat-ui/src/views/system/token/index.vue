@@ -1,21 +1,23 @@
 <template>
-  <div class="n-layout-page-header">
-    <n-card :bordered="false" title="令牌信息管理"> 系统中所有已经生成的令牌数据。 </n-card>
+  <div>
+    <div class="n-layout-page-header">
+      <n-card :bordered="false" title="令牌信息管理"> 系统中所有已经生成的令牌数据。 </n-card>
+    </div>
+
+    <n-card :bordered="false" class="mt-4">
+      <BasicTable
+        ref="actionRef"
+        :actionColumn="actionColumn"
+        :columns="columns"
+        :request="loadDataTable"
+        :row-key="(row:any) => row.id"
+        :single-line="false"
+        :size="'small'"
+      />
+    </n-card>
+
+    <Edit ref="editRef" @reload="reloadTable" />
   </div>
-
-  <n-card :bordered="false" class="mt-4">
-    <BasicTable
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="columns"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      :single-line="false"
-      :size="'small'"
-    />
-  </n-card>
-
-  <Edit ref="editRef" @reload="reloadTable" />
 </template>
 
 <script lang="ts" setup>
@@ -46,14 +48,12 @@
           {
             type: 'info',
             label: '详情',
-            size: 'tiny',
             icon: EyeOutlined,
             onClick: handleEdit.bind(null, record),
           },
           {
             type: 'error',
             label: '下线',
-            size: 'tiny',
             icon: DeleteOutlined,
             onClick: handleDelete.bind(null, record),
           },
