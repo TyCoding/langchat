@@ -2,19 +2,20 @@ package cn.tycoding.langchat.core.properties.chat;
 
 import cn.tycoding.langchat.core.properties.image.OpenaiImageProps;
 import dev.langchain4j.model.Tokenizer;
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.net.Proxy;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author tycoding
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 @ConfigurationProperties(prefix = "langchat.openai")
 public class OpenaiProps {
 

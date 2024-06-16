@@ -7,11 +7,17 @@ import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.ServletUtil;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author tycoding
@@ -26,7 +32,7 @@ public class AigcConversationController {
     private final AigcMessageService aigcMessageService;
 
     /**
-     * 会话列表
+     * conversation list, filter by user
      */
     @GetMapping("/list")
     public R conversations() {
@@ -34,36 +40,26 @@ public class AigcConversationController {
     }
 
     /**
-     * 分页数据
+     * conversation page
      */
     @GetMapping("/page")
     public R list(AigcConversation data, QueryPage queryPage) {
         return R.ok(MybatisUtil.getData(aigcMessageService.conversationPages(data, queryPage)));
     }
 
-    /**
-     * 新增会话
-     */
     @PostMapping
     public R addConversation(@RequestBody AigcConversation conversation) {
         return R.ok(aigcMessageService.addConversation(conversation));
     }
-
-    /**
-     * 修改会话
-     */
     @PutMapping
     public R updateConversation(@RequestBody AigcConversation conversation) {
         if (conversation.getId() == null) {
-            return R.fail("参数错误");
+            return R.fail("conversation id is null");
         }
         aigcMessageService.updateConversation(conversation);
         return R.ok();
     }
 
-    /**
-     * 删除会话
-     */
     @DeleteMapping("/{conversationId}")
     public R delConversation(@PathVariable String conversationId) {
         aigcMessageService.delConversation(conversationId);
@@ -77,7 +73,7 @@ public class AigcConversationController {
     }
 
     /**
-     * 获取指定会话下的聊天记录
+     * get messages with conversationId
      */
     @GetMapping("/messages/{conversationId}")
     public R getMessages(@PathVariable String conversationId) {
@@ -85,6 +81,9 @@ public class AigcConversationController {
         return R.ok(list);
     }
 
+    /**
+     * add message in conversation
+     */
     @PostMapping("/message")
     public R addMessage(@RequestBody AigcMessage message) {
         message.setIp(ServletUtil.getIpAddr());

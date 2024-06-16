@@ -29,5 +29,6 @@ public class AigcModel implements Serializable {
     private Double temperature;
     private Double topP;
     private String apiKey;
+    private String baseUrl;
 }
 

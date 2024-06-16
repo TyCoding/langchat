@@ -1,9 +1,9 @@
-<script setup lang="ts">
-  import { modelList } from '@/api/models';
+<script lang="ts" setup>
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
   import { useDialog, useMessage } from 'naive-ui';
   import { clean } from '@/api/aigc/chat';
+  import ModelProvider from '@/views/aigc/common/ModelProvider.vue';
 
   defineProps<{
     title: string;
@@ -37,26 +37,20 @@
     </div>
     <n-space align="center">
       <n-tag
-        checkable
         v-model:checked="chatStore.isGoogleSearch"
         :bordered="false"
-        type="primary"
+        checkable
         class="border"
+        type="primary"
       >
         <div class="text-sm flex items-center gap-1">
           <SvgIcon icon="devicon:google" />
           <div>Google Search</div>
         </div>
       </n-tag>
-      <n-select
-        size="small"
-        v-model:value="chatStore.model"
-        :options="modelList"
-        :consistent-menu-width="false"
-        class="!w-32"
-      />
+      <ModelProvider />
 
-      <n-button @click="handleClear" size="small" type="warning" secondary>
+      <n-button secondary size="small" type="warning" @click="handleClear">
         <template #icon>
           <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
         </template>
@@ -66,4 +60,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

@@ -25,7 +25,7 @@ export const LLMProviders: any[] = [
 
 export const columns = [
   {
-    title: '供应商',
+    title: '模型别名',
     key: 'name',
   },
   {
