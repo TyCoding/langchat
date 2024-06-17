@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-  import { h, reactive, ref } from 'vue';
+  import { computed, h, nextTick, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
-  import { columns, LLMProviders } from './data';
+  import { LLMProviders, ProviderEnum } from './data';
   import Edit from './edit.vue';
   import { del, list } from '@/api/aigc/model';
   import { useDialog, useMessage } from 'naive-ui';
+  import { getColumns } from '@/views/aigc/model/coumns';
 
   const message = useMessage();
   const dialog = useDialog();
@@ -37,6 +38,10 @@
     },
   });
 
+  const columns = computed(() => {
+    nextTick();
+    return getColumns(provider.value);
+  });
   const loadDataTable = async (params: any) => {
     if (provider.value === '') {
       provider.value = LLMProviders[0].model;
@@ -44,7 +49,14 @@
 
     return await list({ ...params, provider: provider.value });
   };
-  function handleAdd() {
+  async function handleAdd() {
+    if (ProviderEnum.EMBEDDING === provider.value) {
+      const arr = await loadDataTable({});
+      if (arr.length > 0) {
+        message.error('只允许创建一条Embedding配置，请先删除之前的配置');
+        return;
+      }
+    }
     editRef.value.show({ provider: provider.value });
   }
 
@@ -74,7 +86,7 @@
   <div>
     <div class="n-layout-page-header">
       <n-card :bordered="false" title="模型配置">
-        支持动态配置LLM大模型参数，支持不同的模型使用不同的ApiKey。
+        支持动态配置LLM大模型参数，支持每个模型使用不同的Key，编辑后的模型配置将立即生效。
       </n-card>
     </div>
 
@@ -118,7 +130,7 @@
       </div>
     </n-card>
 
-    <Edit ref="editRef" @reload="reloadTable" />
+    <Edit :provider="provider" ref="editRef" @reload="reloadTable" />
   </div>
 </template>
 

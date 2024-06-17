@@ -16,11 +16,14 @@ public class EmbedProvider {
 
     private final ApplicationContext context;
 
+    public EmbeddingModel embed(String model) {
+        if (context.containsBean(model)) {
+            return (EmbeddingModel) context.getBean(model);
+        }
+        throw new RuntimeException("No matching embedding model information found, please check the model configuration.");
+    }
+
     public EmbeddingModel embed() {
         return new AllMiniLmL6V2EmbeddingModel();
-//        if (context.containsBean(model)) {
-//            return (EmbeddingModel) context.getBean(model);
-//        }
-//        throw new RuntimeException("No matching embedding model information found, please check the model configuration.");
     }
 }

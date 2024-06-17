@@ -30,6 +30,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     jdbc-type-for-null: null
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
 

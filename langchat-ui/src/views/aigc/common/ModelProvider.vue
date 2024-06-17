@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
   import { onMounted } from 'vue';
-  import { list } from '@/api/aigc/model';
+  import { getChatModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/data';
   import { ref } from 'vue-demi';
 
@@ -9,14 +9,16 @@
   const modelList = ref([]);
 
   onMounted(async () => {
-    const providers = await list({});
+    const providers = await getChatModels();
     const data: any = [];
+    if (chatStore.model === '') {
+      chatStore.model = providers[0].id;
+    }
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
       if (children.length === 0) {
         return;
       }
-      console.log(children);
       data.push({
         type: 'group',
         name: i.name,

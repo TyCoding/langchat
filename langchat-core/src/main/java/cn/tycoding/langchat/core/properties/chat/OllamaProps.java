@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.core.properties.chat;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
@@ -11,6 +12,7 @@ import java.util.List;
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 @ConfigurationProperties(prefix = "langchat.ollama")
 public class OllamaProps {
 

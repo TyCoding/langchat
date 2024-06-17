@@ -30,7 +30,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiStreamingChatModel azureOpenAiStreamingChatModel_3t() {
         AzureOpenAiStreamingChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiStreamingChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_3T);
         return builder.build();
     }
@@ -40,7 +39,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiStreamingChatModel azureOpenAiStreamingChatModel_4() {
         AzureOpenAiStreamingChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiStreamingChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_4);
         return builder.build();
     }
@@ -50,7 +48,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiStreamingChatModel azureOpenAiStreamingChatModel_4t() {
         AzureOpenAiStreamingChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiStreamingChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_4T);
         return builder.build();
     }
@@ -70,7 +67,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiChatModel azureOpenAiChatModel_3t() {
         AzureOpenAiChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_3T);
         return builder.build();
     }
@@ -80,7 +76,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiChatModel azureOpenAiChatModel_4() {
         AzureOpenAiChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_4);
         return builder.build();
     }
@@ -90,7 +85,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiChatModel azureOpenAiChatModel_4t() {
         AzureOpenAiChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_4T);
         return builder.build();
     }
@@ -100,7 +94,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiChatModel azureOpenAiChatModel_4o() {
         AzureOpenAiChatModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiChatModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_GPT_4O);
         return builder.build();
     }
@@ -110,7 +103,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiImageModel azureOpenAiImageModel_2() {
         AzureOpenAiImageModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiImageModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_IMAGE_2);
         return builder.build();
     }
@@ -120,7 +112,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiImageModel azureOpenAiImageModel_3() {
         AzureOpenAiImageModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiImageModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_IMAGE_3);
         return builder.build();
     }
@@ -130,7 +121,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiEmbeddingModel openAiEmbeddingModel_3s() {
         AzureOpenAiEmbeddingModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiEmbeddingModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_EMBED_3S);
         return builder.build();
     }
@@ -140,7 +130,6 @@ public class AzureOpenaiComponent {
     public AzureOpenAiEmbeddingModel openAiEmbeddingModel_3l() {
         AzureOpenAiEmbeddingModel.Builder builder =
                 JSON.parseObject(JSON.toJSONString(props.getOpenai()), AzureOpenAiEmbeddingModel.Builder.class);
-        BeanUtils.copyProperties(props.getAzureOpenai(), builder);
         builder.deploymentName(AZUREOPENAI_EMBED_3L);
         return builder.build();
     }

@@ -1,11 +1,5 @@
 package cn.tycoding.langchat.core.service.impl;
 
-import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
-import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
-import static dev.langchain4j.data.document.Metadata.metadata;
-import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
-import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
-
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.service.AigcExcelColService;
 import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
@@ -34,12 +28,19 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
+import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
+import static dev.langchain4j.data.document.Metadata.metadata;
+import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
 /**
  * @author tycoding
@@ -60,7 +61,7 @@ public class LangDocServiceImpl implements LangDocService {
     public EmbeddingR embeddingText(ChatReq req) {
         TextSegment segment = TextSegment.from(req.getMessage(),
                 metadata(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName()));
-        EmbeddingModel embeddingModel = embedProvider.embed();
+        EmbeddingModel embeddingModel = embedProvider.embed(req.getModel());
         Embedding embedding = embeddingModel.embed(segment).content();
 
         String id = milvusEmbeddingStore.add(embedding, segment);
@@ -69,7 +70,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
-        EmbeddingModel model = embedProvider.embed();
+        EmbeddingModel model = embedProvider.embed(req.getModel());
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
         document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());

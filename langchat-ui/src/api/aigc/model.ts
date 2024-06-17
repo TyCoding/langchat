@@ -16,6 +16,27 @@ export function list(params: any) {
   });
 }
 
+export function getChatModels() {
+  return http.request({
+    url: '/aigc/model/getChatModels',
+    method: 'get',
+  });
+}
+
+export function getImageModels() {
+  return http.request({
+    url: '/aigc/model/getImageModels',
+    method: 'get',
+  });
+}
+
+export function getEmbeddingModels() {
+  return http.request({
+    url: '/aigc/model/getEmbeddingModels',
+    method: 'get',
+  });
+}
+
 export function getById(id: any) {
   return http.request({
     url: `/aigc/model/${id}`,

@@ -2,9 +2,10 @@ package cn.tycoding.langchat.aigc.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * @author tycoding
@@ -13,12 +14,8 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class AigcModel implements Serializable {
-
     private static final long serialVersionUID = -19545329638997333L;
 
-    /**
-     * 主键
-     */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
@@ -29,6 +26,16 @@ public class AigcModel implements Serializable {
     private Double temperature;
     private Double topP;
     private String apiKey;
+    private String secretKey;
     private String baseUrl;
+    private String endpoint;
+    private String geminiLocation;
+    private String geminiProject;
+    private String azureDeploymentName;
+    private String imageSize;
+    private String imageQuality;
+    private String imageStyle;
+    private String modelType;
+    private Integer dimensions;
 }
 
