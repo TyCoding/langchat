@@ -23,6 +23,10 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-auth</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-flow</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

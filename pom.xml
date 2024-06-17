@@ -37,6 +37,7 @@
         <module>langchat-server</module>
         <module>langchat-upms</module>
         <module>langchat-auth</module>
+        <module>langchat-flow</module>
     </modules>
 
     <dependencyManagement>
@@ -70,6 +71,11 @@
             <dependency>
                 <groupId>cn.tycoding</groupId>
                 <artifactId>langchat-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tycoding</groupId>
+                <artifactId>langchat-flow</artifactId>
                 <version>${revision}</version>
             </dependency>
 

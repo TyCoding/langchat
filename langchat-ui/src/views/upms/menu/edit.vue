@@ -36,7 +36,7 @@
     if (id != null) {
       setFieldsValue(await getById(id));
     } else {
-      let vars = {
+      let vars: any = {
         isDisabled: false,
         type: 'menu',
         isKeepalive: false,
@@ -48,6 +48,8 @@
       };
       if (parentId !== undefined) {
         vars.parentId = parentId;
+      } else {
+        vars.component = 'LAYOUT';
       }
       setFieldsValue(vars);
     }
