@@ -28,4 +28,10 @@ langchat:
     admin-name: administrator
     admin-pass: 123456
     is-demo-env: true
+  vectorstore:
+    milvus:
+      host: 127.0.0.1
+      port: 19530
+      collection-name: test3
+      dimension: 384
 
