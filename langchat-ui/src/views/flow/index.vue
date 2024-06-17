@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { h, onMounted, reactive, ref } from 'vue';
+  import { h, onMounted, onUnmounted, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { add, del, page as getPage } from '@/api/aigc/flow';
@@ -30,6 +30,9 @@
 前端采用vue-flow，后端采用LiteFlow。由于此模块的设计和开发过程都非常繁琐，请耐心等待
       `,
     });
+  });
+  onUnmounted(() => {
+    notification.destroyAll();
   });
 
   const actionColumn = reactive({
