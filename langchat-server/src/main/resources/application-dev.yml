@@ -34,4 +34,8 @@ langchat:
       port: 19530
       collection-name: test3
       dimension: 384
+  web-search:
+    google:
+      api-key: <KEY>
+      csi: <CSI>
 

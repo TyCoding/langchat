@@ -43,7 +43,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
         GROUP BY
             month
         ORDER BY
-            month DESC;
+            month ASC;
     """)
     List<Dict> getReqChart();
 
@@ -59,7 +59,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
         GROUP BY
             month
         ORDER BY
-            month DESC;
+            month ASC;
     """)
     List<Dict> getTokenChart();
 
