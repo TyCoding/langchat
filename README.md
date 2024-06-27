@@ -4,9 +4,15 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型功能，帮助企业快速定制知识库、企业机器人。
 
-[English](./README_en.md)
+[English](./README_en)
+
+- 网站文档：[http://langchat.cn/](http://langchat.cn/)
+- 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
+- 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
 
 **注意：** 目前LangChat仍在持续开发中，可能存在一些Bug和不完善的地方，作者将尽快修复。
+
+**欢迎Star、fork 持续关注**
 
 ## 特性
 
@@ -17,7 +23,8 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 5. Function Call：支持定制化Tool工具类，实现本地函数调用，从第三方加载数据并提供给LLM
 6. 多渠道发布：计划封装Web SDK，将AI智能客服快速嵌入任意第三方Web应用中；计划支持微信、飞书、钉钉等消息通信渠道（待完善）
 7. Workflows：计划开发可视化LLM流程设计器，高自定义机器人执行流程（待完善）
-8. 更多特性...
+8. 提供AIGC客户端应用，快速管理客户端数据
+9. 更多特性...
 
 ## 赞助
 
@@ -28,6 +35,18 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 添加微信：LangChainChat（备注：赞助）
 
 ![](imgs/MIK-u8rMXC.png)
+
+## 预览
+
+![](imgs/MIK-fYD77Q.png)
+
+![](imgs/MIK-HsjZrq.png)
+
+![](imgs/MIK-qmfti3.png)
+
+![](imgs/MIK-pMyQJN.png)
+
+![](imgs/MIK-v4zoRt.png)
 
 ## 感谢
 

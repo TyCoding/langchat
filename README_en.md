@@ -4,9 +4,15 @@
 
 LangChat is an enterprise-level AIGC project solution in the Java ecosystem. Based on the RBAC permission system, it integrates AIGC large model functionalities to help enterprises quickly customize knowledge bases and enterprise robots.
 
-[中文](./README.md)
+[中文](./README)
+
+- Website Docs：[http://langchat.cn/](http://langchat.cn/)
+- Backend Preview：[http://backend.langchat.cn/](http://backend.langchat.cn/)
+- Front Preview：[http://front.langchat.cn/](http://front.langchat.cn/)
 
 **Note:** LangChat is still under continuous development and may have some bugs and imperfections. The author will fix them as soon as possible.
+
+**Welcome Star, fork to continue to pay attention**
 
 ## Features
 
@@ -17,7 +23,8 @@ LangChat is an enterprise-level AIGC project solution in the Java ecosystem. Bas
 5. Function Call: Supports customized tool classes for local function calls, loading data from third parties, and providing them to LLM.
 6. Multi-channel Release: Plans to encapsulate a Web SDK to quickly embed AI smart customer service into any third-party web application; plans to support messaging channels such as WeChat, Feishu, DingTalk, etc. (to be improved).
 7. Workflows: Plans to develop a visual LLM process designer for highly customized robot execution processes (to be improved).
-8. More features...
+8. Provides AIGC client applications to quickly manage client data
+9. More features...
 
 ## Sponsorship
 
