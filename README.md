@@ -4,7 +4,7 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型功能，帮助企业快速定制知识库、企业机器人。
 
-[English](./README_en)
+[English](./README_en.md)
 
 - 网站文档：[http://langchat.cn/](http://langchat.cn/)
 - 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
@@ -16,6 +16,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 **欢迎Star、fork 持续关注**
 
+<br/>
 
 ## 特性
 
@@ -29,6 +30,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 8. 提供AIGC客户端应用，快速管理客户端数据
 9. 更多特性...
 
+<br/>
 
 ## 赞助
 
