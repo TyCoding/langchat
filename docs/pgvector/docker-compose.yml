@@ -2,7 +2,7 @@
 services:
   db:
     hostname: db
-    image: pgvector/pgvector:0.7.2-pg16
+    image: registry.cn-beijing.aliyuncs.com/langchat/pgvector
     ports:
      - 5432:5432
     restart: always

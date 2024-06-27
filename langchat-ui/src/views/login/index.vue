@@ -13,7 +13,7 @@
   const userStore = useUserStore();
   const router = useRouter();
   const form = reactive({
-    username: 'administrator',
+    username: 'demo',
     password: '123456',
     isCaptcha: true,
   });
