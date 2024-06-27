@@ -26,7 +26,6 @@
           <template #tab> <SvgIcon icon="carbon:password" class="mr-1" />修改密码 </template>
           <Pass />
         </n-tab-pane>
-        <n-tab-pane name="3" tab="消耗" />
       </n-tabs>
       <div></div>
     </div>

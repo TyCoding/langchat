@@ -10,6 +10,7 @@ import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.aigc.service.AigcUserService;
+import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.aigc.utils.AigcStpUtil;
 import cn.tycoding.langchat.auth.service.TokenInfo;
 import cn.tycoding.langchat.common.constant.CacheConst;
@@ -72,6 +73,11 @@ public class AigcAuthEndpoint {
                 .setExpiration(tokenInfo.tokenTimeout)
                 .setUser(aigcUser)
         );
+    }
+
+    @GetMapping("/info")
+    public R info() {
+        return R.ok(AigcAuthUtil.getUserInfo());
     }
 
     @DeleteMapping("/logout")

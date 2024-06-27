@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  const props = defineProps<{
+  defineProps<{
     option: any;
   }>();
 </script>
 
 <template>
-  <n-collapse-item title="标题组件">
+  <n-collapse-item title="标题组件" name="1">
     <template #header-extra>
       <n-switch size="small" @click.stop v-model:value="option!.title.show" :default-value="true" />
     </template>

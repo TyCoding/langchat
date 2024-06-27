@@ -16,6 +16,8 @@
       ms.error('请先选择图表类型');
       return;
     }
+    ms.info('Under development...');
+    return;
     loading.value = true;
     const data = await genChart({
       type: chartStore.key,

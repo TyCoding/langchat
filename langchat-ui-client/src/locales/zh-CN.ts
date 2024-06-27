@@ -66,6 +66,7 @@ export default {
     emailType: '短信登录',
     emailRegType: '邮箱注册',
     phoneRegType: '手机号注册',
+    socialLogin: '更多登录方式正在集成中...',
     otherType: '其他登录方式',
     wxType: '微信登录',
     googleType: 'Google登录',
@@ -87,7 +88,8 @@ export default {
     codeSendSuccess: '验证码已成功发送，请检查邮箱',
     codeSendFail: '验证码发送失败，请稍后重试',
     forgetSubmit: '确定重置',
-    forget: '重置密码',
+    forget: '忘记密码？',
+    forgetTitle: '重置密码',
     forgetPassPlaceholder: '请输入新的密码',
     forgetSubmitSuccess: '密码重置成功，请重新登陆',
   },
@@ -162,7 +164,6 @@ export default {
     previewError: '文档预览失败',
     delConfirm: '你确定删除此文档以及相关数据吗？',
   },
-
   user: {
     title: '用户数据',
     username: '用户名',
@@ -191,17 +192,6 @@ export default {
     outputTips: '根据描述生成的思维导图Markdown格式文本',
     title: '思维导图',
     titleDes: '在左侧输入内容点击生成思维导图，或者点击左侧查看示例',
-    begin: '立即开始',
-  },
-  mermaid: {
-    example: '示例',
-    des: '内容描述',
-    output: '输出内容',
-    confirm: '生成序列图',
-    inputTips: '请描述要生成的序列图Mermaid',
-    outputTips: '根据描述生成的序列图Mermaid脚本内容',
-    title: '序列图',
-    titleDes: '在左侧输入内容点击生成序列图Mermaid，或者点击左侧查看示例',
     begin: '立即开始',
   },
 };

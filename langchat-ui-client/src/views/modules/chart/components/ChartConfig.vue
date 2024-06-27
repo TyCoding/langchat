@@ -28,13 +28,48 @@
     ToolboxComponent,
   ]);
   const chartStore = useChartStore();
-  const option = ref();
+  const option = ref({
+    title: {
+      text: 'Title',
+      left: 'center',
+    },
+    legend: {
+      orient: 'vertical',
+      left: 'left',
+      data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
+    },
+    tooltip: {
+      show: true,
+    },
+    series: [
+      {
+        name: 'Traffic Sources',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '60%'],
+        data: [
+          { value: 335, name: 'Direct' },
+          { value: 310, name: 'Email' },
+          { value: 234, name: 'Ad Networks' },
+          { value: 135, name: 'Video Ads' },
+          { value: 1548, name: 'Search Engines' },
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  });
 
   watch(
     () => chartStore.data,
     (val: Object) => {
       console.log(val);
-      option.value = val;
+      // option.value = val;
     }
   );
 
@@ -45,17 +80,20 @@
 
 <template>
   <div class="w-full h-full p-1 flex flex-row gap-2">
-    <div class="w-9/12 flex justify-center items-center" style="height: calc(100vh - 200px)">
+    <div
+      class="w-9/12 flex justify-center items-center border rounded-xl"
+      style="height: calc(100vh - 200px)"
+    >
       <div class="h-[85%] w-[80%] rounded-md p-6 pt-4">
         <VChart :option="option" autoresize />
       </div>
     </div>
     <n-scrollbar class="!w-3/12" style="height: calc(100vh - 200px)">
       <div class="flex flex-col gap-2 p-2" v-if="option">
-        <n-collapse>
+        <n-collapse expanded-names="1">
           <BaseConfig :option="option" />
-          <LineConfig v-if="chartStore.key.startsWith('line-')" :option="option" />
-          <PieConfig v-if="chartStore.key.startsWith('pie-')" :option="option" />
+          <LineConfig :option="option" />
+          <PieConfig :option="option" />
           <CodeConfig :option="option" @update="onUpdate" />
         </n-collapse>
       </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import { SvgIcon } from '@/components/common';
   import ChartSelect from './components/ChartSelect.vue';
   import ChartData from './components/ChartData.vue';
@@ -17,15 +16,17 @@
 </script>
 
 <template>
-  <div class="w-full pt-3">
+  <div class="w-full pt-3 dot-bg">
     <div class="flex justify-between items-center pl-10 pr-10">
       <n-button text type="primary" size="large">
         <template #icon>
           <SvgIcon icon="solar:chart-broken" />
         </template>
-        可视化图表分析
+        <div class="flex gap-1 items-center">
+          <span>可视化图表分析</span>
+          <n-tag type="warning" size="small">本功能正在开发中...</n-tag>
+        </div>
       </n-button>
-      <n-button text type="primary"> 使用说明 </n-button>
     </div>
     <n-divider class="!mt-2 !mb-6" />
     <div class="w-full flex justify-center items-center gap-4 flex-col pb-16">

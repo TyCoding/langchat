@@ -23,7 +23,7 @@
     code: '',
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     formRef.value.validate(async (errors: any) => {
       if (!errors) {

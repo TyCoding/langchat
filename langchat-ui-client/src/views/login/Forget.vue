@@ -7,7 +7,6 @@
   import { forget, getEmailCode } from '@/api/auth';
   import { rules } from '@/views/login/data';
 
-  const isLogin = ref(true);
   const formRef = ref();
   const message = useMessage();
   const loading = ref(false);
@@ -76,10 +75,10 @@
     <div class="account-root-item root-right-item">
       <div class="account-form">
         <div class="account-top">
-          <div class="user-account">{{ t('login.forget') }}</div>
+          <div class="user-account">{{ t('login.forgetTitle') }}</div>
           <div class="user-register">
             <span>{{ t('login.noAccount') }}</span>
-            <n-button @click="isLogin = false" type="success" text>
+            <n-button @click="router.push('/register')" type="success" text>
               {{ t('login.toRegister') }}
             </n-button>
           </div>

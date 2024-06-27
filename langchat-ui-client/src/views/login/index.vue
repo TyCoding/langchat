@@ -7,8 +7,14 @@
   import PhoneRegister from './PhoneRegister.vue';
   import { t } from '@/locales';
   import { router } from '@/router';
+  import { useMessage } from 'naive-ui';
 
+  const ms = useMessage();
   const isLogin = ref(true);
+
+  function onSocialLogin() {
+    ms.warning(t('login.socialLogin'));
+  }
 </script>
 
 <template>
@@ -56,7 +62,7 @@
           <n-tab-pane name="chap2" :tab="t('login.phoneRegType')"> <PhoneRegister /> </n-tab-pane>
         </n-tabs>
         <div class="flex !justify-end w-full text-end">
-          <n-button @click="router.push('/forget')" text> 忘记密码？ </n-button>
+          <n-button @click="router.push('/forget')" text> {{ t('login.forget') }} </n-button>
         </div>
 
         <n-divider>
@@ -66,19 +72,19 @@
         </n-divider>
         <div class="pb-8">
           <n-space vertical>
-            <n-button dashed block round>
+            <n-button @click="onSocialLogin" dashed block round>
               <template #icon>
                 <SvgIcon icon="uiw:weixin" />
               </template>
               {{ t('login.wxType') }}
             </n-button>
-            <n-button block round dashed>
+            <n-button @click="onSocialLogin" block round dashed>
               <template #icon>
                 <SvgIcon icon="ri:google-fill" />
               </template>
               {{ t('login.googleType') }}
             </n-button>
-            <n-button block round dashed>
+            <n-button @click="onSocialLogin" block round dashed>
               <template #icon>
                 <SvgIcon icon="ri:github-fill" />
               </template>
