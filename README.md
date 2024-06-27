@@ -9,10 +9,13 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 - 网站文档：[http://langchat.cn/](http://langchat.cn/)
 - 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 - 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
+- LangChat源码：[https://github.com/tycoding/langchat](https://github.com/tycoding/langchat)
+- LangChat.cn源码：[https://github.com/tycoding/langchat.cn](https://github.com/tycoding/langchat.cn)
 
 **注意：** 目前LangChat仍在持续开发中，可能存在一些Bug和不完善的地方，作者将尽快修复。
 
 **欢迎Star、fork 持续关注**
+
 
 ## 特性
 
@@ -26,6 +29,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 8. 提供AIGC客户端应用，快速管理客户端数据
 9. 更多特性...
 
+
 ## 赞助
 
 由于作者精力有限，项目开发文档方便会有欠缺，可以加入我的Java微信交流群：LangChainChat（备注目的）。
@@ -34,27 +38,28 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 添加微信：LangChainChat（备注：赞助）
 
-![](imgs/MIK-u8rMXC.png)
+![](docs/imgs/MIK-u8rMXC.png)
 
 ## 预览
 
-![](imgs/MIK-fYD77Q.png)
+![](docs/imgs/MIK-fYD77Q.png)
 
-![](imgs/MIK-HsjZrq.png)
+![](docs/imgs/MIK-HsjZrq.png)
 
-![](imgs/MIK-qmfti3.png)
+![](docs/imgs/MIK-qmfti3.png)
 
-![](imgs/MIK-pMyQJN.png)
+![](docs/imgs/MIK-pMyQJN.png)
 
-![](imgs/MIK-v4zoRt.png)
+![](docs/imgs/MIK-v4zoRt.png)
+
 
 ## 感谢
 
 - [LangChain4j](https://github.com/langchain4j/langchain4j)
+
 
 ## 联系
 
 - 博客: https://tycoding.cn
 - Github: https://github.com/tycoding
 - 邮箱: langchat@outlook.com
-- 微信: LangChainChat

@@ -27,7 +27,7 @@ import dev.langchain4j.rag.query.Query;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
-import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
+import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     private final EmbedProvider embedProvider;
     private final ModelProvider modelProvider;
-    private final MilvusEmbeddingStore milvusEmbeddingStore;
+    private final PgVectorEmbeddingStore embeddingStore;
     private final AigcExcelColService excelColService;
     private final AigcExcelRowService excelRowService;
 
@@ -64,7 +64,7 @@ public class LangDocServiceImpl implements LangDocService {
         EmbeddingModel embeddingModel = embedProvider.embed(req.getModel());
         Embedding embedding = embeddingModel.embed(segment).content();
 
-        String id = milvusEmbeddingStore.add(embedding, segment);
+        String id = embeddingStore.add(embedding, segment);
         return new EmbeddingR().setVectorId(id).setText(segment.text());
     }
 
@@ -82,7 +82,7 @@ public class LangDocServiceImpl implements LangDocService {
         );
         List<TextSegment> segments = splitter.split(document);
         List<Embedding> embeddings = model.embedAll(segments).content();
-        List<String> ids = milvusEmbeddingStore.addAll(embeddings, segments);
+        List<String> ids = embeddingStore.addAll(embeddings, segments);
 
         List<EmbeddingR> list = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {
@@ -105,7 +105,7 @@ public class LangDocServiceImpl implements LangDocService {
             EmbeddingModel model = embedProvider.embed();
             Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
             ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-                    .embeddingStore(milvusEmbeddingStore)
+                    .embeddingStore(embeddingStore)
                     .embeddingModel(model)
                     .dynamicFilter(filterByUserId)
                     .build();

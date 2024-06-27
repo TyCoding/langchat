@@ -9,10 +9,13 @@ LangChat is an enterprise-level AIGC project solution in the Java ecosystem. Bas
 - Website Docs：[http://langchat.cn/](http://langchat.cn/)
 - Backend Preview：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 - Front Preview：[http://front.langchat.cn/](http://front.langchat.cn/)
+- LangChat Source：[https://github.com/tycoding/langchat](https://github.com/tycoding/langchat)
+- LangChat.cn Source：[https://github.com/tycoding/langchat.cn](https://github.com/tycoding/langchat.cn)
 
 **Note:** LangChat is still under continuous development and may have some bugs and imperfections. The author will fix them as soon as possible.
 
 **Welcome Star, fork to continue to pay attention**
+
 
 ## Features
 
@@ -26,6 +29,7 @@ LangChat is an enterprise-level AIGC project solution in the Java ecosystem. Bas
 8. Provides AIGC client applications to quickly manage client data
 9. More features...
 
+
 ## Sponsorship
 
 Due to limited author resources, the project development documentation may be lacking. You can join my Java WeChat group: LangChainChat (please specify the purpose).
@@ -34,11 +38,13 @@ If you have any development questions about LangChat or need secondary developme
 
 Add WeChat: LangChainChat (remark: sponsorship)
 
-![](imgs/MIK-u8rMXC.png)
+![](docs/imgs/MIK-u8rMXC.png)
+
 
 ## Thanks
 
 - [LangChain4j](https://github.com/langchain4j/langchain4j)
+
 
 ## Contact
 

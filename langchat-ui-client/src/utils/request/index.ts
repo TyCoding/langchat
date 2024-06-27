@@ -63,14 +63,14 @@ function axios<T = any>({
     return Promise.reject(res.data);
   };
 
-  const failHandler = (error: any) => {
+  const failHandler = async (error: any) => {
     console.error(error);
 
     const $message = window['$message'];
     const { status } = error.response;
     if (status === 401) {
       $message!.error('Login failed, please login again');
-      router.push({ name: 'Login' });
+      await router.push({ name: 'Login' });
       return;
     }
 

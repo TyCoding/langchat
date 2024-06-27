@@ -14,7 +14,7 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.filter.Filter;
-import dev.langchain4j.store.embedding.milvus.MilvusEmbeddingStore;
+import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -39,7 +39,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     private final EmbedProvider embedProvider;
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
-    private final MilvusEmbeddingStore embeddingStore;
+    private final PgVectorEmbeddingStore embeddingStore;
 
     @Async
     @Override

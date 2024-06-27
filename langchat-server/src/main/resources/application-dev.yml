@@ -29,10 +29,13 @@ langchat:
     admin-pass: 123456
     is-demo-env: true
   vectorstore:
-    milvus:
+    pgvector:
       host: 127.0.0.1
-      port: 19530
-      collection-name: test3
+      user: root
+      password: root
+      port: 5432
+      database: vectordb
+      table: vector_1
       dimension: 384
   web-search:
     google:
