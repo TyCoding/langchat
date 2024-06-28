@@ -101,7 +101,7 @@
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown :options="avatarOptions" trigger="hover" @select="avatarSelect">
           <div class="avatar">
-            <n-avatar :src="avatar" round>
+            <n-avatar :src="avatar" fallback-src="/favicon.ico" round>
               <template #icon>
                 <UserOutlined />
               </template>

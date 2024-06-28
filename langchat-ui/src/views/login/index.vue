@@ -15,7 +15,6 @@
   const form = reactive({
     username: 'demo',
     password: '123456',
-    isCaptcha: true,
   });
 
   const rules = {

@@ -1,7 +1,5 @@
 package cn.tycoding.langchat.auth.endpoint;
 
-import static cn.tycoding.langchat.common.constant.CacheConst.AUTH_SESSION_PREFIX;
-
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DatePattern;
@@ -20,21 +18,14 @@ import cn.tycoding.langchat.upms.service.SysUserService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+import static cn.tycoding.langchat.common.constant.CacheConst.AUTH_SESSION_PREFIX;
 
 /**
  * @author tycoding
@@ -55,6 +46,18 @@ public class AuthEndpoint {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
             throw new ServiceException("用户名或密码为空");
         }
+
+        if (user.getUsername().equals(AuthUtil.ADMINISTRATOR)) {
+            String encodePass = AuthUtil.encode(authProps.getSaltKey(), user.getPassword());
+            if (authProps.getAdminPass().equals(encodePass)) {
+                UserInfo userInfo = new UserInfo();
+                userInfo.setId(System.currentTimeMillis());
+                userInfo.setUsername(user.getUsername());
+                userInfo.setPassword(user.getPassword());
+                return onLogin(userInfo);
+            }
+        }
+
         UserInfo userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
             throw new ServiceException("用户名或密码错误");
@@ -65,6 +68,10 @@ public class AuthEndpoint {
             throw new ServiceException("用户名或密码错误");
         }
 
+        return onLogin(userInfo);
+    }
+
+    private R onLogin(UserInfo userInfo) {
         StpUtil.login(userInfo.getId());
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         StpUtil.getSession()

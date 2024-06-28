@@ -22,19 +22,14 @@ public class AuthProps {
     private EmailProps email = new EmailProps();
 
     /**
-     * password
+     * salt
      */
     private String saltKey = "langchat-salt";
 
     /**
-     * administrator account username;
+     * administrator account password: 123456
      */
-    private String adminName = "administrator";
-
-    /**
-     * administrator account password
-     */
-    private String adminPass = "123456";
+    private String adminPass = "48kQD0O/A69LENSbk/+FxA==";
 
     /**
      * 是否开启演示环境
