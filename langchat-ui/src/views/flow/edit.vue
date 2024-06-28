@@ -1,8 +1,3 @@
-<template>
-  <basicModal @register="modalRegister" style="width: 45%">
-    <BasicForm @register="register" @submit="handleSubmit" class="mt-5" />
-  </basicModal>
-</template>
 <script lang="ts" setup>
   import { nextTick } from 'vue';
   import { update, getById } from '@/api/aigc/flow';
@@ -52,5 +47,11 @@
   }
   defineExpose({ show });
 </script>
+
+<template>
+  <basicModal @register="modalRegister" style="width: 45%">
+    <BasicForm @register="register" @submit="handleSubmit" class="mt-5" />
+  </basicModal>
+</template>
 
 <style scoped lang="less"></style>

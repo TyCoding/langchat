@@ -13,7 +13,7 @@
   const userStore = useUserStore();
   const router = useRouter();
   const form = reactive({
-    username: 'demo',
+    username: 'langchat',
     password: '123456',
   });
 

@@ -24,11 +24,8 @@
   onMounted(() => {
     notification.create({
       type: 'warning',
-      title: 'About Flow Design',
-      content: `此模块主要为了流程化编排应用或是机器人，其实相关代码很早就写了，但之前一直没有找到WorkFlow前后端的解决方案。
-目前会逐步开始完善此模块，
-前端采用vue-flow，后端采用LiteFlow。由于此模块的设计和开发过程都非常繁琐，请耐心等待
-      `,
+      title: 'About Workflows Design',
+      content: `此模块主要为了流程化编排AI应用，提供一种高定制化流程的应用机器人。由于此模块的工作量会非常庞大，请耐心等待！`,
     });
   });
   onUnmounted(() => {
@@ -178,10 +175,10 @@
         </n-button>
       </template>
     </BasicTable>
-  </n-card>
 
-  <Edit ref="editRef" @reload="reloadTable" />
-  <Coding ref="codingRef" @reload="reloadTable" />
+    <Edit ref="editRef" @reload="reloadTable" />
+    <Coding ref="codingRef" @reload="reloadTable" />
+  </n-card>
 </template>
 
 <style lang="less" scoped></style>
