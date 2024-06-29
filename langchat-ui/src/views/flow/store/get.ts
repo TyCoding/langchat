@@ -1,16 +1,22 @@
 import { Component, markRaw } from 'vue';
-import { SparklesOutline, DocumentTextOutline } from '@vicons/ionicons5';
-import { LLMPin, AssistPin, EndPin, StartPin, KnowledgeWeb, KnowledgeDoc } from '@/views/flow/pin';
-import { AssistNode, End, LLMNode, Start } from '@/views/flow/node';
+import {
+  SparklesOutline,
+  DocumentTextOutline,
+  DownloadOutline,
+  CodeSlashOutline,
+} from '@vicons/ionicons5';
+import { LLMPin, EndPin, StartPin, KnowledgeWeb, KnowledgeDoc, CodePin } from '@/views/flow/pin';
+import { CodeNode, End, HttpNode, LLMNode, Start } from '@/views/flow/node';
 import { renderPropsIcon } from '@/utils';
 import type { FlowExportObject } from '@vue-flow/core/dist/types/flow';
+import HttpPin from '@/views/flow/pin/node/HttpPin.vue';
 
 export enum TypeEnum {
   Start = 'Start',
   End = 'End',
-  Assist = 'Assist',
-  Http = 'Http',
   LLM = 'LLM',
+  Http = 'Http',
+  Code = 'Code',
 }
 
 export enum PluginEnum {
@@ -32,8 +38,9 @@ enum ColEnum {
 export const nodeTypes = {
   [TypeEnum.Start]: markRaw(Start),
   [TypeEnum.End]: markRaw(End),
-  [TypeEnum.Assist]: markRaw(AssistNode),
   [TypeEnum.LLM]: markRaw(LLMNode),
+  [TypeEnum.Http]: markRaw(HttpNode),
+  [TypeEnum.Code]: markRaw(CodeNode),
 };
 
 export interface Pin {
@@ -44,6 +51,7 @@ export interface Pin {
   col?: ColEnum;
   isNode?: boolean;
   data?: any;
+  icon?: any;
 }
 
 const nodePins: Pin[] = [
@@ -53,31 +61,27 @@ const nodePins: Pin[] = [
     col: ColEnum.Node,
     isNode: true,
     des: '利用LLM进行文本消息问答',
+    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '16px' }),
     data: {
       model: 'gpt-4',
       temperate: 0.7,
     },
   },
   {
-    type: TypeEnum.Assist,
-    component: AssistPin,
-    col: ColEnum.Node,
-    isNode: true,
-    des: '利用LLM进行文本消息问答',
-  },
-  {
     type: TypeEnum.Http,
-    component: StartPin,
+    component: HttpPin,
     col: ColEnum.Node,
     isNode: true,
     des: '发送HTTP请求',
+    icon: renderPropsIcon(DownloadOutline, { color: '#8a2be2', size: '16px' }),
   },
   {
-    type: TypeEnum.Http,
-    component: StartPin,
+    type: TypeEnum.Code,
+    component: CodePin,
     col: ColEnum.Node,
     isNode: true,
-    des: '发送HTTP请求',
+    des: 'Code...',
+    icon: renderPropsIcon(CodeSlashOutline, { color: '#8a2be2', size: '16px' }),
   },
 
   { type: TypeEnum.End, component: EndPin, col: ColEnum.Base, isNode: true },
@@ -91,6 +95,7 @@ const pluginPins: Pin[] = [
     component: StartPin,
     col: ColEnum.SendMessage,
     isNode: false,
+    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '16px' }),
   },
 
   {
@@ -99,6 +104,7 @@ const pluginPins: Pin[] = [
     component: StartPin,
     col: ColEnum.Ai,
     isNode: false,
+    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '16px' }),
   },
   {
     type: PluginEnum.Knowledge_Web,
@@ -106,6 +112,7 @@ const pluginPins: Pin[] = [
     component: KnowledgeWeb,
     col: ColEnum.Knowledge,
     isNode: false,
+    icon: renderPropsIcon(DocumentTextOutline, { color: '#8a2be2', size: '16px' }),
   },
   {
     type: PluginEnum.Knowledge_Doc,
@@ -113,6 +120,7 @@ const pluginPins: Pin[] = [
     component: KnowledgeDoc,
     col: ColEnum.Knowledge,
     isNode: false,
+    icon: renderPropsIcon(DocumentTextOutline, { color: '#8a2be2', size: '16px' }),
   },
 ];
 
@@ -176,40 +184,10 @@ export function getDatas(obj: FlowExportObject): any[] {
   return data;
 }
 
-const icons = [
-  {
-    type: TypeEnum.LLM,
-    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
-  },
-  {
-    type: TypeEnum.Assist,
-    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
-  },
-  {
-    type: TypeEnum.Http,
-    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
-  },
-  {
-    type: PluginEnum.Input,
-    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
-  },
-  {
-    type: PluginEnum.ExecuteCode,
-    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
-  },
-  {
-    type: PluginEnum.Knowledge_Web,
-    icon: renderPropsIcon(DocumentTextOutline, { size: '15px' }),
-  },
-  {
-    type: PluginEnum.Knowledge_Doc,
-    icon: renderPropsIcon(DocumentTextOutline, { size: '15px' }),
-  },
-];
-
 export function renderNodeIcon(type: string) {
-  const list = icons.filter((i) => i.type == type);
-  return list.length > 0 ? list[0].icon : undefined;
+  const list = nodePins.filter((i) => i.type == type);
+  const pluginPin = pluginPins.filter((i) => i.type == type);
+  return list.length > 0 ? list[0].icon : pluginPin.length > 0 ? pluginPin[0].icon : undefined;
 }
 
 export function renderNodeDes(type: string) {

@@ -46,7 +46,7 @@
 </template>
 
 <style scoped lang="less">
-  ::v-deep(.cm-focused) {
-    outline: none !important;
-  }
+::v-deep(.cm-focused) {
+  outline: none !important;
+}
 </style>

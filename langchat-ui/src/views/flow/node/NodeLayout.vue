@@ -113,7 +113,9 @@
     </div>
     <div class="text-xs text-gray-400 outline-2 pt-1 pb-1">{{ renderNodeDes(node.type) }}</div>
 
-    <slot name="content"></slot>
+    <div class="my-2">
+      <slot name="content"></slot>
+    </div>
 
     <div class="">
       <Draggable

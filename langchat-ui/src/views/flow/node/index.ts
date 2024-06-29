@@ -1,7 +1,8 @@
 import NodeLayout from './NodeLayout.vue';
 import Start from './common/Start.vue';
 import End from './common/End.vue';
-import AssistNode from './AssistNode.vue';
+import HttpNode from './HttpNode.vue';
+import CodeNode from './CodeNode.vue';
 import LLMNode from './LLMNode.vue';
 
-export { NodeLayout, AssistNode, Start, End, LLMNode };
+export { NodeLayout, HttpNode, CodeNode, Start, End, LLMNode };

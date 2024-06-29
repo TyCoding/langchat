@@ -7,7 +7,11 @@
 
 <template>
   <NodeLayout :node="node">
-    <template #content> 1111 </template>
+    <template #content>
+      <div class="">
+        <n-input size="small" placeholder="input http url..." />
+      </div>
+    </template>
   </NodeLayout>
 </template>
 

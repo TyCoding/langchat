@@ -32,7 +32,7 @@
 <template>
   <NodeLayout :node="node">
     <template #content>
-      <div class="w-full h-full flex flex-col gap-2 mt-1 mb-2">
+      <div class="w-full h-full flex flex-col gap-2">
         <div class="bg-[#f7f7f7] p-2 flex flex-row justify-between items-center rounded-md">
           <div class="flex gap-1 w-full items-center">
             <span class="text-xs text-gray-400">模型</span>

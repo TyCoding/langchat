@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
-  import { useRouter } from 'vue-router';
   import { ConnectionLineType, useVueFlow, VueFlow } from '@vue-flow/core';
   import { MiniMap } from '@vue-flow/minimap';
   import { Background } from '@vue-flow/background';
@@ -13,7 +12,6 @@
   import { nodeTypes } from '@/views/flow/store/get';
   import CardLayout from '@/views/flow/layout/CardLayout.vue';
 
-  const router = useRouter();
   const flowStore = useFlowStore();
   const loading = ref(false);
   const nodeMenuRef = ref();
@@ -38,6 +36,9 @@
     }
     list.value = JSON.parse(data.flow);
     loading.value = false;
+
+    // 将面板设置为显示状态
+    flowStore.setShowCard();
   });
 
   onConnect((params) => {
