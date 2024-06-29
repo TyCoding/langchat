@@ -14,7 +14,7 @@
 <template>
   <NodeLayout :node="node">
     <template #content>
-      <div class="">
+      <div class="rounded overflow-hidden">
         <codemirror
           v-model="code"
           placeholder="Code goes here..."

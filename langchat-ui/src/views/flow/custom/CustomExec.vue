@@ -151,15 +151,12 @@
       </div>
     </div>
 
-    <div class="bottom absolute bottom-0 left-0 w-full h-[60px] z-10">
+    <div class="bottom absolute bottom-4 left-0 w-full h-[60px] z-10">
       <div class="pl-5 pr-5 flex justify-center items-center space-x-2 w-full">
         <n-input
           @focus="handleFocus"
           v-model:value="content"
-          type="textarea"
-          size="small"
-          class="w-full rounded-lg text-xs"
-          :autosize="{ minRows: 2, maxRows: 5 }"
+          class="w-full rounded-2xl px-1 py-0.5 text-xs"
           :disabled="loading"
           @keypress="handleEnter"
         >
