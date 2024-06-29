@@ -25,8 +25,11 @@ spring:
 
 langchat:
   auth:
-    admin-pass: 48kQD0O/A69LENSbk/+FxA==
-    is-demo-env: true
+    email:
+      host: smtp.qq.com
+      port: 465
+      from: <EMAIL>
+      pass: <PASS>
   vectorstore:
     pgvector:
       host: 127.0.0.1

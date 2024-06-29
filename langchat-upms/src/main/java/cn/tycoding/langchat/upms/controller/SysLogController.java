@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.upms.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -33,7 +34,7 @@ public class SysLogController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("@auth.hasAuth('system:log:delete')")
+    @SaCheckPermission("upms:log:delete")
     public R delete(@PathVariable Long id) {
         sysLogService.delete(id);
         return R.ok();

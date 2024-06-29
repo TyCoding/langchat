@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -44,18 +45,21 @@ public class AigcDocsController {
     }
 
     @PostMapping
+    @SaCheckPermission("aigc:docs:add")
     public R add(@RequestBody AigcDocs data) {
         docsMapper.insert(data);
         return R.ok();
     }
 
     @PutMapping
+    @SaCheckPermission("aigc:docs:update")
     public R update(@RequestBody AigcDocs data) {
         docsMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+    @SaCheckPermission("aigc:docs:delete")
     public R delete(@PathVariable String id) {
         docsMapper.deleteById(id);
         return R.ok();

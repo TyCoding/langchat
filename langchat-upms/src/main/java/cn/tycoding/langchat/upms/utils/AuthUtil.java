@@ -4,14 +4,13 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.upms.dto.UserInfo;
+import cn.tycoding.langchat.upms.entity.SysRole;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 权限相关方法
@@ -27,12 +26,6 @@ public class AuthUtil {
      * 使用：所有涉及根据角色查询的地方都排除对此角色的限制
      */
     public static final String ADMINISTRATOR = "administrator";
-
-    /**
-     * 系统默认演示环境角色别名
-     * 作用：在 langchat.auth.isDemoEnv 配置开启后，将会对所有按钮级权限拦截并提示前端
-     */
-    public static final String DEMO_ENV = "demo_env";
 
     /**
      * 客户端用户角色
@@ -109,36 +102,33 @@ public class AuthUtil {
      * 获取用户角色Id集合
      */
     public static List<Long> getRoleIds() {
-//        List<Long> roleIds = new ArrayList<>();
-//        Authentication authentication = getAuthentication();
-//        if (authentication == null) {
-//            return roleIds;
-//        }
-//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//        authorities.stream().filter(granted -> StringUtils.startsWith(granted.getAuthority(), AuthConstant.ROLE_PREFIX)).forEach(granted -> {
-//            String id = StringUtils.substringBetween(granted.getAuthority(), AuthConstant.ROLE_PREFIX, AuthConstant.ROLE_SUFFIX);
-//            roleIds.add(Long.parseLong(id));
-//        });
-//        return roleIds;
-        return new ArrayList<>();
+        UserInfo userInfo = getUserInfo();
+        if (userInfo == null || userInfo.getRoleIds() == null) {
+            return new ArrayList<>();
+        }
+        return userInfo.getRoleIds();
     }
 
     /**
      * 获取用户角色Alias集合
      */
     public static List<String> getRoleNames() {
-//        List<String> roleNames = new ArrayList<>();
-//        Authentication authentication = getAuthentication();
-//        if (authentication == null) {
-//            return roleNames;
-//        }
-//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//        authorities.stream().filter(granted -> StringUtils.startsWith(granted.getAuthority(), AuthConstant.ROLE_PREFIX)).forEach(granted -> {
-//            String name = StringUtils.substringAfter(granted.getAuthority(), AuthConstant.ROLE_SUFFIX);
-//            roleNames.add(name);
-//        });
-//        return roleNames;
-        return new ArrayList<>();
+        UserInfo userInfo = getUserInfo();
+        if (userInfo == null || userInfo.getRoles() == null) {
+            return new ArrayList<>();
+        }
+        return userInfo.getRoles().stream().map(SysRole::getAlias).toList();
+    }
+
+    /**
+     * 获取权限集合
+     */
+    public static List<String> getPermissionNames() {
+        UserInfo userInfo = getUserInfo();
+        if (userInfo == null || userInfo.getPerms() == null) {
+            return new ArrayList<>();
+        }
+        return userInfo.getPerms().stream().toList();
     }
 
     /**

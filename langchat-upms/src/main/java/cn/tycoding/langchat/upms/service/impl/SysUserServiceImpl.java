@@ -7,31 +7,24 @@ import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.upms.dto.UserInfo;
-import cn.tycoding.langchat.upms.entity.SysDept;
-import cn.tycoding.langchat.upms.entity.SysMenu;
-import cn.tycoding.langchat.upms.entity.SysRole;
-import cn.tycoding.langchat.upms.entity.SysUser;
-import cn.tycoding.langchat.upms.entity.SysUserRole;
+import cn.tycoding.langchat.upms.entity.*;
 import cn.tycoding.langchat.upms.mapper.SysUserMapper;
-import cn.tycoding.langchat.upms.service.SysDeptService;
-import cn.tycoding.langchat.upms.service.SysMenuService;
-import cn.tycoding.langchat.upms.service.SysRoleService;
-import cn.tycoding.langchat.upms.service.SysUserRoleService;
-import cn.tycoding.langchat.upms.service.SysUserService;
+import cn.tycoding.langchat.upms.service.*;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 用户表(User)表服务实现类
@@ -85,7 +78,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         //获取用户角色列表
         List<SysRole> sysRoleList = sysRoleService.findRolesByUserId(userInfo.getId());
-        if (sysRoleList.size() == 0) {
+        if (sysRoleList.isEmpty()) {
             throw new ServiceException(AuthUtil.NOT_ROLE_ERROR);
         }
 

@@ -188,8 +188,9 @@ const transform: AxiosTransform = {
   responseInterceptorsCatch: (error: any) => {
     const $dialog = window['$dialog'];
     const $message = window['$message'];
+    const $loading = window['$loading'];
     const { response, code, message } = error || {};
-    // TODO 此处要根据后端接口返回格式修改
+    console.log(error);
     const msg: string =
       response && response.data && response.data.message ? response.data.message : '';
     const err: string = error.toString();
@@ -203,11 +204,14 @@ const transform: AxiosTransform = {
         response.data.code === ResultEnum.UnAuthorization
       ) {
         const LoginName = PageEnum.BASE_LOGIN_NAME;
-        const LoginPath = PageEnum.BASE_LOGIN;
+
+        $loading.finish();
         if (router.currentRoute.value?.name === LoginName) return Promise.resolve(response);
+
         // 到登录页
-        storage.clear();
-        window.location.href = LoginPath;
+        // const LoginPath = PageEnum.BASE_LOGIN;
+        // storage.clear();
+        // window.location.href = LoginPath;
       }
       if (err && err.includes('Network Error')) {
         $dialog.info({

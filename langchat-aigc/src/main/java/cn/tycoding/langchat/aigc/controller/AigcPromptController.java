@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcPrompt;
 import cn.tycoding.langchat.aigc.service.AigcPromptService;
@@ -46,19 +47,23 @@ public class AigcPromptController {
         return R.ok(aigcPromptService.getById(id));
     }
 
-    @DeleteMapping("/{id}")
-    public R del(@PathVariable String id) {
-        return R.ok(aigcPromptService.removeById(id));
-    }
-
     @PostMapping
+    @SaCheckPermission("aigc:prompt:add")
     public R add(@RequestBody AigcPrompt data) {
         data.setCreateTime(new Date());
         return R.ok(aigcPromptService.save(data));
     }
 
     @PutMapping
+    @SaCheckPermission("aigc:prompt:update")
     public R update(@RequestBody AigcPrompt data) {
         return R.ok(aigcPromptService.updateById(data));
     }
+
+    @DeleteMapping("/{id}")
+    @SaCheckPermission("aigc:prompt:delete")
+    public R del(@PathVariable String id) {
+        return R.ok(aigcPromptService.removeById(id));
+    }
+
 }

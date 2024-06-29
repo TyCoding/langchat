@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.component.ProviderRefreshEvent;
 import cn.tycoding.langchat.aigc.entity.AigcModel;
@@ -73,10 +74,13 @@ public class AigcModelController {
 
     @GetMapping("/{id}")
     public R<AigcModel> findById(@PathVariable String id) {
-        return R.ok(modelService.getById(id));
+        AigcModel model = modelService.getById(id);
+        hide(model);
+        return R.ok(model);
     }
 
     @PostMapping
+    @SaCheckPermission("aigc:model:add")
     public R add(@RequestBody AigcModel data) {
         modelService.save(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -84,6 +88,7 @@ public class AigcModelController {
     }
 
     @PutMapping
+    @SaCheckPermission("aigc:model:update")
     public R update(@RequestBody AigcModel data) {
         modelService.updateById(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -91,6 +96,7 @@ public class AigcModelController {
     }
 
     @DeleteMapping("/{id}")
+    @SaCheckPermission("aigc:model:delete")
     public R delete(@PathVariable String id) {
         modelService.removeById(id);
 

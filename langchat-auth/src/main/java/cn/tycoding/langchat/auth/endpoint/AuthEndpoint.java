@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.auth.endpoint;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DatePattern;
@@ -44,28 +45,17 @@ public class AuthEndpoint {
     @PostMapping("/login")
     public R login(@RequestBody UserInfo user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
-            throw new ServiceException("用户名或密码为空");
-        }
-
-        if (user.getUsername().equals(AuthUtil.ADMINISTRATOR)) {
-            String encodePass = AuthUtil.encode(authProps.getSaltKey(), user.getPassword());
-            if (authProps.getAdminPass().equals(encodePass)) {
-                UserInfo userInfo = new UserInfo();
-                userInfo.setId(System.currentTimeMillis());
-                userInfo.setUsername(user.getUsername());
-                userInfo.setPassword(user.getPassword());
-                return onLogin(userInfo);
-            }
+            throw new ServiceException("The user name or password is empty");
         }
 
         UserInfo userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
-            throw new ServiceException("用户名或密码错误");
+            throw new ServiceException("The username or password is error");
         }
 
         String decryptPass = AuthUtil.decrypt(authProps.getSaltKey(), userInfo.getPassword());
         if (!decryptPass.equals(user.getPassword())) {
-            throw new ServiceException("用户名或密码错误");
+            throw new ServiceException("The username or password is error");
         }
 
         return onLogin(userInfo);
@@ -77,7 +67,7 @@ public class AuthEndpoint {
         StpUtil.getSession()
                 .set(CacheConst.AUTH_USER_INFO_KEY, userInfo)
                 .set(CacheConst.AUTH_TOKEN_INFO_KEY, tokenInfo);
-        log.info("====> 登陆成功，token={}", tokenInfo.getTokenValue());
+        log.info("====> login success，token={}", tokenInfo.getTokenValue());
         return R.ok(new TokenInfo().setToken(tokenInfo.tokenValue).setExpiration(tokenInfo.tokenTimeout));
     }
 
@@ -87,7 +77,15 @@ public class AuthEndpoint {
         return R.ok();
     }
 
+    @GetMapping("/info")
+    public R<UserInfo> info() {
+        UserInfo userInfo = userService.info(AuthUtil.getUsername());
+        userInfo.setPassword(null);
+        return R.ok(userInfo);
+    }
+
     @DeleteMapping("/token/{token}")
+    @SaCheckPermission("auth:delete")
     public R tokenDel(@PathVariable String token) {
         StpUtil.kickoutByTokenValue(token);
         return R.ok();

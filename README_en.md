@@ -42,10 +42,13 @@ Add WeChat: LangChainChat (remark: sponsorship)
 
 ![](docs/imgs/MIK-u8rMXC.png)
 
-## License
+## Copyright and License
 
-Licensed under the GNU License (GPL) v3. Copyright (c) 2024-present, TyCoding.
+Licensed under the GNU License (GPL) v3. 
 
+Copyright (c) 2024-present, TyCoding.
+
+Support personal free access to learn to use, commercial applications please contact the author authorization
 
 ## Preview
 

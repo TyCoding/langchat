@@ -25,14 +25,4 @@ public class AuthProps {
      * salt
      */
     private String saltKey = "langchat-salt";
-
-    /**
-     * administrator account password: 123456
-     */
-    private String adminPass = "48kQD0O/A69LENSbk/+FxA==";
-
-    /**
-     * 是否开启演示环境
-     */
-    private Boolean isDemoEnv = false;
 }

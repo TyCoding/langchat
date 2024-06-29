@@ -68,7 +68,7 @@
 <template>
   <div class="h-full">
     <div class="n-layout-page-header mb-4">
-      <n-card :bordered="false" title="日志数据管理">
+      <n-card :bordered="false">
         <template #header>
           <div class="flex flex-wrap items-start">
             <n-popover class="custom-popover">

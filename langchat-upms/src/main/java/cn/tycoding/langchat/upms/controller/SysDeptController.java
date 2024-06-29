@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.upms.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.tree.Tree;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.R;
@@ -40,7 +41,7 @@ public class SysDeptController {
 
     @PostMapping
     @ApiLog("新增部门")
-//    @PreAuthorize("@auth.hasAuth('upms:dept:add')")
+    @SaCheckPermission("upms:dept:add")
     public R add(@RequestBody SysDept sysDept) {
         sysDept.setParentId(sysDept.getParentId() == null ? 0L : sysDept.getParentId());
         sysDeptService.save(sysDept);
@@ -49,7 +50,7 @@ public class SysDeptController {
 
     @PutMapping
     @ApiLog("修改部门")
-//    @PreAuthorize("@auth.hasAuth('upms:dept:update')")
+    @SaCheckPermission("upms:dept:update")
     public R update(@RequestBody SysDept sysDept) {
         sysDept.setParentId(sysDept.getParentId() == null ? 0L : sysDept.getParentId());
         sysDeptService.updateById(sysDept);
@@ -58,7 +59,7 @@ public class SysDeptController {
 
     @DeleteMapping("/{id}")
     @ApiLog("删除部门")
-//    @PreAuthorize("@auth.hasAuth('upms:dept:delete')")
+    @SaCheckPermission("upms:dept:delete")
     public R delete(@PathVariable Long id) {
         sysDeptService.delete(id);
         return R.ok();

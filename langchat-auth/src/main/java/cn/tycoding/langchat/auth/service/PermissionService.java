@@ -1,10 +1,10 @@
 package cn.tycoding.langchat.auth.service;
 
 import cn.dev33.satoken.stp.StpInterface;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,17 +17,11 @@ public class PermissionService implements StpInterface {
 
     @Override
     public List<String> getPermissionList(Object o, String s) {
-        log.info("获取权限列表：{}, {}", o, s);
-        List<String> list = new ArrayList<>();
-        list.add("user:add");
-        return list;
+        return AuthUtil.getPermissionNames();
     }
 
     @Override
     public List<String> getRoleList(Object o, String s) {
-        log.info("获取角色列表：{}, {}", o, s);
-        List<String> list = new ArrayList<>();
-        list.add("admin");
-        return list;
+        return AuthUtil.getRoleNames();
     }
 }

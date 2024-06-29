@@ -42,9 +42,11 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 ![](docs/imgs/MIK-u8rMXC.png)
 
-## 开源协议
+## 版权和协议
 
-Licensed under the GNU License (GPL) v3. Copyright (c) 2024-present, TyCoding.
+Licensed under the GNU License (GPL) v3. 
+
+Copyright (c) 2024-present, TyCoding.
 
 采用GUN GPL-v3开源协议，可以免费学习使用，个人可以免费是接入使用，商业应用请联系作者授权。
 

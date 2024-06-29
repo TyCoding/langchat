@@ -72,6 +72,13 @@ const nodePins: Pin[] = [
     isNode: true,
     des: '发送HTTP请求',
   },
+  {
+    type: TypeEnum.Http,
+    component: StartPin,
+    col: ColEnum.Node,
+    isNode: true,
+    des: '发送HTTP请求',
+  },
 
   { type: TypeEnum.End, component: EndPin, col: ColEnum.Base, isNode: true },
   { type: TypeEnum.Start, component: StartPin, col: ColEnum.Base, isNode: true },
@@ -176,6 +183,10 @@ const icons = [
   },
   {
     type: TypeEnum.Assist,
+    icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
+  },
+  {
+    type: TypeEnum.Http,
     icon: renderPropsIcon(SparklesOutline, { color: '#8a2be2', size: '15px' }),
   },
   {

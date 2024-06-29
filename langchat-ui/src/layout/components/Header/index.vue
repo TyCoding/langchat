@@ -243,14 +243,12 @@
               message.success('成功退出登录');
               // 移除标签页
               localStorage.removeItem(TABS_ROUTES);
-              router
-                .replace({
-                  name: 'Login',
-                  query: {
-                    redirect: route.fullPath,
-                  },
-                })
-                .finally(() => location.reload());
+              router.replace({
+                name: 'Login',
+                query: {
+                  redirect: route.fullPath,
+                },
+              });
             });
           },
           onNegativeClick: () => {},

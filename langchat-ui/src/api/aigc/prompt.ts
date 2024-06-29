@@ -1,5 +1,4 @@
 import { http } from '@/utils/http/axios';
-import { AxiosProgressEvent } from 'axios';
 
 export function list(params: any) {
   return http.request({
@@ -52,21 +51,4 @@ export function del(id: string) {
     url: `/aigc/prompt/${id}`,
     method: 'delete',
   });
-}
-
-export function chat(
-  params: any,
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
-  return http.request(
-    {
-      url: `/aigc/chat/prompt`,
-      method: 'post',
-      params,
-      onDownloadProgress: onDownloadProgress,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
 }

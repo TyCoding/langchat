@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.upms.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
@@ -46,7 +47,7 @@ public class SysRoleController {
 
     @PostMapping
     @ApiLog("新增角色")
-//    @PreAuthorize("@auth.hasAuth('upms:role:add')")
+    @SaCheckPermission("upms:role:add")
     public R add(@RequestBody SysRoleDTO sysRole) {
         sysRoleService.add(sysRole);
         return R.ok();
@@ -54,7 +55,7 @@ public class SysRoleController {
 
     @PutMapping
     @ApiLog("修改角色")
-//    @PreAuthorize("@auth.hasAuth('upms:role:update')")
+    @SaCheckPermission("upms:role:update")
     public R update(@RequestBody SysRoleDTO sysRole) {
         sysRoleService.update(sysRole);
         return R.ok();
@@ -62,7 +63,7 @@ public class SysRoleController {
 
     @DeleteMapping("/{id}")
     @ApiLog("删除角色")
-//    @PreAuthorize("@auth.hasAuth('upms:role:delete')")
+    @SaCheckPermission("upms:role:delete")
     public R delete(@PathVariable Long id) {
         sysRoleService.delete(id);
         return R.ok();

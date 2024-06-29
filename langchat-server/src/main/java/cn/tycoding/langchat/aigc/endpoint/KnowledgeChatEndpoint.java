@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
@@ -27,6 +28,7 @@ public class KnowledgeChatEndpoint {
     private final AigcMessageService messageService;
 
     @PostMapping
+    @SaCheckPermission("aigc:knowledge:chat")
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -53,6 +55,7 @@ public class KnowledgeChatEndpoint {
     }
 
     @DeleteMapping("/cleanMessage/{conversationId}")
+    @SaCheckPermission("aigc:knowledge:clean")
     public R cleanMessage(@PathVariable String conversationId) {
         messageService.clearMessage(conversationId);
         return R.ok();

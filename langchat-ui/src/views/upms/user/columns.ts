@@ -101,6 +101,15 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入用户名', trigger: ['blur'] }],
   },
   {
+    field: 'password',
+    label: '密码',
+    component: 'NInput',
+    componentProps: {
+      placeholder: '请输入密码',
+    },
+    rules: [{ required: true, message: '请输入密码', trigger: ['blur'] }],
+  },
+  {
     field: 'roleIds',
     label: '角色',
     slot: 'roleSlot',

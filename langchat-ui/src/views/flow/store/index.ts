@@ -3,10 +3,9 @@ import { defineStore } from 'pinia';
 import { getPin, Pin } from '@/views/flow/store/get';
 import { Component, shallowRef, toRaw } from 'vue';
 import { BlankPin } from '@/views/flow/pin';
-import { Flow } from '@/api/models/flow';
 
 export interface FlowState {
-  data: Flow | undefined; // 当前编辑的流程数据
+  data: any; // 当前编辑的流程数据
   nodeId: string; // 当前激活的NodeId，通过useVueFlow().findNode获取实例对象
   pin: Pin | null; // 当前激活节点的pin component
   pinComponent: Component;

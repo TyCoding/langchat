@@ -5,7 +5,7 @@ import { http } from '@/utils/http/axios';
  */
 export function getUserInfo() {
   return http.request({
-    url: '/upms/user/info',
+    url: '/auth/info',
     method: 'get',
   });
 }

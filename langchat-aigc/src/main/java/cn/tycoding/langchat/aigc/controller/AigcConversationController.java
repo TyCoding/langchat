@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.aigc.entity.AigcConversation;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
@@ -7,17 +8,11 @@ import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.ServletUtil;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author tycoding
@@ -48,10 +43,13 @@ public class AigcConversationController {
     }
 
     @PostMapping
+    @SaCheckPermission("aigc:conversation:add")
     public R addConversation(@RequestBody AigcConversation conversation) {
         return R.ok(aigcMessageService.addConversation(conversation));
     }
+
     @PutMapping
+    @SaCheckPermission("aigc:conversation:update")
     public R updateConversation(@RequestBody AigcConversation conversation) {
         if (conversation.getId() == null) {
             return R.fail("conversation id is null");
@@ -61,12 +59,14 @@ public class AigcConversationController {
     }
 
     @DeleteMapping("/{conversationId}")
+    @SaCheckPermission("aigc:conversation:delete")
     public R delConversation(@PathVariable String conversationId) {
         aigcMessageService.delConversation(conversationId);
         return R.ok();
     }
 
     @DeleteMapping("/message/{conversationId}")
+    @SaCheckPermission("aigc:conversation:delete")
     public R clearMessage(@PathVariable String conversationId) {
         aigcMessageService.clearMessage(conversationId);
         return R.ok();
@@ -85,6 +85,7 @@ public class AigcConversationController {
      * add message in conversation
      */
     @PostMapping("/message")
+    @SaCheckPermission("aigc:conversation:add")
     public R addMessage(@RequestBody AigcMessage message) {
         message.setIp(ServletUtil.getIpAddr());
         return R.ok(aigcMessageService.addMessage(message));

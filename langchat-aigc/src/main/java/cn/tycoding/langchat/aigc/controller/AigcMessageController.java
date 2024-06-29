@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
@@ -44,6 +45,7 @@ public class AigcMessageController {
     }
 
     @DeleteMapping("/{id}")
+    @SaCheckPermission("aigc:message:delete")
     public R del(@PathVariable String id) {
         return R.ok(aigcMessageService.removeById(id));
     }

@@ -33,10 +33,12 @@
   async function show(id?: string, parentId?: string) {
     openModal();
     await nextTick();
+    let vars: any = {};
     if (id != null) {
-      setFieldsValue(await getById(id));
+      vars = await getById(id);
+      setFieldsValue(vars);
     } else {
-      let vars: any = {
+      vars = {
         isDisabled: false,
         type: 'menu',
         isKeepalive: false,
@@ -54,6 +56,7 @@
       setFieldsValue(vars);
     }
     menuList.value = await getMenuList({});
+    onSelectType(vars.type, vars);
   }
 
   async function handleSubmit(values: any) {
@@ -81,7 +84,7 @@
     setFieldsValue(data);
   }
 
-  function onSelectType(val, model, field) {
+  function onSelectType(val, model) {
     const isHidden = val == 'button';
     const filterSchemas = formSchemas.filter((i) => {
       if (i.field == 'icon' || i.field == 'component') {
@@ -91,6 +94,7 @@
         model['path'] = '';
         i.isHidden = isHidden;
       }
+      clearValidate();
       return true;
     });
     setProps({ schemas: filterSchemas });

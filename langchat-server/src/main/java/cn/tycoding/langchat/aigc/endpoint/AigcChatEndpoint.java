@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
@@ -15,12 +16,7 @@ import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.consts.ModelConst;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -38,6 +34,7 @@ public class AigcChatEndpoint {
     private final EmbeddingService embeddingDocs;
 
     @PostMapping
+    @SaCheckPermission("aigc:client:chat")
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -62,6 +59,7 @@ public class AigcChatEndpoint {
     }
 
     @PostMapping("/docs/{id}")
+    @SaCheckPermission("aigc:client:chat:docs")
     public Object docs(@RequestBody ChatReq req, @PathVariable String id) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -75,6 +73,7 @@ public class AigcChatEndpoint {
     }
 
     @PostMapping("/docs/upload")
+    @SaCheckPermission("aigc:client:chat:upload")
     public R docs(MultipartFile file) {
         AigcOss oss = aigcOssService.upload(file);
         embeddingDocs.embedDocs(
@@ -86,6 +85,7 @@ public class AigcChatEndpoint {
     }
 
     @DeleteMapping("/docs/{id}")
+    @SaCheckPermission("aigc:client:delete")
     public R docs(@PathVariable String id) {
         aigcOssService.removeById(id);
         // del vector store
@@ -94,6 +94,7 @@ public class AigcChatEndpoint {
     }
 
     @PostMapping("/translate")
+    @SaCheckPermission("aigc:client:translate")
     public SseEmitter translate(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -103,6 +104,7 @@ public class AigcChatEndpoint {
     }
 
     @PostMapping("/write")
+    @SaCheckPermission("aigc:client:write")
     public SseEmitter write(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -112,12 +114,14 @@ public class AigcChatEndpoint {
     }
 
     @PostMapping("/mindmap")
+    @SaCheckPermission("aigc:client:mindmap")
     public R mindmap(@RequestBody ChatReq req) {
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.MINDMAP));
         return R.ok(new ChatRes(chatService.text(req)));
     }
 
     @PostMapping("/image")
+    @SaCheckPermission("aigc:client:image")
     public R image(@RequestBody ImageR req) {
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.IMAGE));
         return R.ok(chatService.image(req));

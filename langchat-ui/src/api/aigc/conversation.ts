@@ -8,30 +8,6 @@ export function page(params: any) {
   });
 }
 
-export function list(params: any) {
-  return http.request({
-    url: '/aigc/conversation/list',
-    method: 'get',
-    params,
-  });
-}
-
-export function add(params: any) {
-  return http.request({
-    url: '/aigc/conversation',
-    method: 'post',
-    params,
-  });
-}
-
-export function update(params: any) {
-  return http.request({
-    url: '/aigc/conversation',
-    method: 'put',
-    params,
-  });
-}
-
 export function del(id: string) {
   return http.request({
     url: `/aigc/conversation/${id}`,

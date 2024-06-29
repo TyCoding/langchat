@@ -50,7 +50,7 @@
   function handleDelete(record: Recordable) {
     dialog.info({
       title: '提示',
-      content: `您想删除 ${record.name}`,
+      content: `您想删除此条记录？`,
       positiveText: '确定',
       negativeText: '取消',
       onPositiveClick: async () => {

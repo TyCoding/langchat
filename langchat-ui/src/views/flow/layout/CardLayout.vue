@@ -31,8 +31,8 @@
           <n-tab-pane name="Node" tab="Node">
             <NodeCard :list="collapses(true)" />
           </n-tab-pane>
-          <n-tab-pane name="Plugins" tab="Plugins"
-            ><PluginCard :list="collapses(false)" />
+          <n-tab-pane name="Plugins" tab="Plugins">
+            <PluginCard :list="collapses(false)" />
           </n-tab-pane>
         </n-tabs>
       </div>

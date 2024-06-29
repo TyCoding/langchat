@@ -32,17 +32,20 @@ public class AigcOssController {
     }
 
     @PostMapping("/upload")
+//    @SaCheckPermission("aigc:oss:update")
     public R upload(MultipartFile file) {
         return R.ok(aigcOssService.upload(file));
     }
 
     @PutMapping
+//    @SaCheckPermission("aigc:oss:update")
     public R update(@RequestBody AigcOss data) {
         aigcOssService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+//    @SaCheckPermission("aigc:oss:delete")
     public R delete(@PathVariable String id) {
         aigcOssService.removeById(id);
         return R.ok();

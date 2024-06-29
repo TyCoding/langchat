@@ -80,7 +80,7 @@
       type: type,
       position,
       label: type,
-      data: data,
+      data: data ?? {},
     };
     console.log('添加节点', newNode);
 

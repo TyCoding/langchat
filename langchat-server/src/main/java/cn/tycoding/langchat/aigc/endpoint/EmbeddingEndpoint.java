@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.aigc.endpoint;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.dto.DocsTypeEnum;
@@ -42,6 +43,7 @@ public class EmbeddingEndpoint {
     private final EmbeddingService embeddingService;
 
     @PostMapping("/text")
+    @SaCheckPermission("aigc:embedding:chat")
     public R text(@RequestBody AigcDocs data) {
         if (StrUtil.isBlankIfStr(data.getContent())) {
             throw new ServiceException("文档内容不能为空");
@@ -67,6 +69,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/docs/{knowledgeId}")
+    @SaCheckPermission("aigc:embedding:embed")
     public R docs(MultipartFile file, @PathVariable String knowledgeId) {
         AigcOss oss = aigcOssService.upload(file);
         AigcDocs data = new AigcDocs()
@@ -83,6 +86,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/struct/excel/{knowledgeId}")
+    @SaCheckPermission("aigc:embedding:excel")
     public R structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
         byte[] bytes = file.getBytes();
         AigcOss oss = aigcOssService.upload(file);
@@ -115,6 +119,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/search")
+    @SaCheckPermission("aigc:embedding:search")
     public R search(@RequestBody AigcDocs data) {
         return R.ok(embeddingService.search(data));
     }

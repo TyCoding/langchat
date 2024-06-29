@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.upms.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.dto.MenuTree;
@@ -46,7 +47,7 @@ public class SysMenuController {
 
     @PostMapping
     @ApiLog("新增菜单")
-//    @PreAuthorize("@auth.hasAuth('upms:menu:add')")
+    @SaCheckPermission("upms:menu:add")
     public R add(@RequestBody SysMenu sysMenu) {
         sysMenuService.add(sysMenu);
         return R.ok();
@@ -54,7 +55,7 @@ public class SysMenuController {
 
     @PutMapping
     @ApiLog("修改菜单")
-//    @PreAuthorize("@auth.hasAuth('upms:menu:update')")
+    @SaCheckPermission("upms:menu:update")
     public R update(@RequestBody SysMenu sysMenu) {
         sysMenuService.update(sysMenu);
         return R.ok();
@@ -62,7 +63,7 @@ public class SysMenuController {
 
     @DeleteMapping("/{id}")
     @ApiLog("删除菜单")
-//    @PreAuthorize("@auth.hasAuth('upms:menu:delete')")
+    @SaCheckPermission("upms:menu:delete")
     public R delete(@PathVariable Long id) {
         sysMenuService.delete(id);
         return R.ok();

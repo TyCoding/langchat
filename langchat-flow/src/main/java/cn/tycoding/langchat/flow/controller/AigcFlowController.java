@@ -1,5 +1,6 @@
 package cn.tycoding.langchat.flow.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -51,6 +52,7 @@ public class AigcFlowController {
     }
 
     @PostMapping
+    @SaCheckPermission("aigc:flow:add")
     public R add(@RequestBody AigcFlow data) {
         data.setCreateTime(new Date());
         flowService.save(data);
@@ -58,6 +60,7 @@ public class AigcFlowController {
     }
 
     @PutMapping
+    @SaCheckPermission("aigc:flow:update")
     public R update(@RequestBody AigcFlow data) {
         data.setUpdateTime(new Date());
         flowService.updateById(data);
@@ -65,12 +68,14 @@ public class AigcFlowController {
     }
 
     @DeleteMapping("/{id}")
+    @SaCheckPermission("aigc:flow:delete")
     public R delete(@PathVariable String id) {
         flowService.removeById(id);
         return R.ok();
     }
 
     @PutMapping("/publish")
+    @SaCheckPermission("aigc:flow:publish")
     public R publish(@RequestBody AigcFlow data) {
         if (data.getId() == null) {
             throw new ServiceException("Flow数据异常");

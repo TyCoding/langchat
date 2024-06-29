@@ -23,7 +23,7 @@
     showSubBtn: false,
   });
 
-  const [register, { setFieldsValue }] = useForm({
+  const [register, { setFieldsValue, clearValidate, setProps }] = useForm({
     gridProps: { cols: 2 },
     labelWidth: 120,
     layout: 'horizontal',
@@ -41,6 +41,15 @@
     } else {
       setFieldsValue({ status: true, sex: '男' });
     }
+    // 隐藏密码输入框
+    const filterSchemas = formSchemas.filter((i) => {
+      if (i.field == 'password') {
+        i.isHidden = !isNullOrWhitespace(id);
+      }
+      clearValidate();
+      return true;
+    });
+    await setProps({ schemas: filterSchemas });
     deptList.value = await getDeptList({});
     roleList.value = await getRoleList({});
   }

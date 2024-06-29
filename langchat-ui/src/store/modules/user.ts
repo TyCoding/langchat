@@ -80,7 +80,8 @@ export const useUserStore = defineStore({
           this.setPermissions(data.perms);
           this.setUserInfo(data);
         } else {
-          throw new Error('getInfo: permissionsList must be a non-null array !');
+          this.setPermissions([]);
+          // throw new Error('getInfo: permissionsList must be a non-null array !');
         }
         this.setUserInfo(data);
         this.setAvatar(data.avatar);

@@ -35,7 +35,6 @@
             (router.currentRoute.value.query?.redirect || '/') as string
           );
           message.destroyAll();
-          message.success('登录成功，即将进入系统');
           if (router.currentRoute.value.name === PageEnum.BASE_LOGIN_NAME) {
             await router.push('/');
           } else {
