@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { reactive, ref, toRaw } from 'vue';
   import { useMessage } from 'naive-ui';
@@ -14,8 +14,8 @@
   const router = useRouter();
 
   const form = reactive({
-    username: 'langchat@outlook.com',
-    password: '123456',
+    username: '',
+    password: '',
   });
 
   const handleSubmit = (e: any) => {
@@ -40,33 +40,33 @@
 
 <template>
   <div class="mt-4 login-content-form">
-    <n-form ref="formRef" label-placement="left" size="large" :model="form" :rules="rules">
-      <n-form-item path="username" class="login-animation1">
+    <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" size="large">
+      <n-form-item class="login-animation1" path="username">
         <n-input v-model:value="form.username" :placeholder="t('login.namePlaceholder')">
           <template #prefix>
-            <n-icon size="18" color="#808695">
+            <n-icon color="#808695" size="18">
               <SvgIcon icon="material-symbols:person-outline" />
             </n-icon>
           </template>
         </n-input>
       </n-form-item>
-      <n-form-item path="password" class="login-animation2">
+      <n-form-item class="login-animation2" path="password">
         <n-input
           v-model:value="form.password"
-          type="password"
-          showPasswordOn="click"
           :placeholder="t('login.passPlaceholder')"
+          showPasswordOn="click"
+          type="password"
         >
           <template #prefix>
-            <n-icon size="18" color="#808695">
+            <n-icon color="#808695" size="18">
               <SvgIcon icon="mdi:lock-outline" />
             </n-icon>
           </template>
         </n-input>
       </n-form-item>
       <n-form-item class="login-animation3">
-        <n-space vertical class="w-full">
-          <n-button type="primary" @click="handleSubmit" :loading="loading" block secondary>
+        <n-space class="w-full" vertical>
+          <n-button :loading="loading" block secondary type="primary" @click="handleSubmit">
             {{ t('login.title') }}
           </n-button>
         </n-space>
@@ -75,4 +75,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

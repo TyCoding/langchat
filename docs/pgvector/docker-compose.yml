@@ -1,16 +1,15 @@
 # Compose a postgres database together with the extension pgvector
 services:
-  db:
-    hostname: db
+  pgvector:
     image: registry.cn-beijing.aliyuncs.com/langchat/pgvector
+#    image: docker.m.daocloud.io/pgvector/pgvector:0.7.2-pg16
     ports:
      - 5432:5432
     restart: always
     environment:
-      - POSTGRES_DB=vectordb
+      - POSTGRES_DB=langchat
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
