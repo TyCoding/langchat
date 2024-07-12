@@ -38,7 +38,6 @@
         <module>langchat-upms</module>
         <module>langchat-auth</module>
         <module>langchat-flow</module>
-        <module>langchat-provider</module>
     </modules>
 
     <dependencyManagement>
