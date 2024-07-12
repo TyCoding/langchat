@@ -11,7 +11,6 @@
 
     <artifactId>langchat-common</artifactId>
     <version>${revision}</version>
-    <packaging>jar</packaging>
 
     <dependencies>
         <!-- Spring -->
@@ -63,6 +62,7 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
             <version>${langchain4j.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
