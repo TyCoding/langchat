@@ -67,10 +67,20 @@ function axios<T = any>({
     console.error(error);
 
     const $message = window['$message'];
+    const $dialog = window['$dialog'];
     const { status } = error.response;
     if (status === 401) {
-      $message!.error('Login failed, please login again');
-      await router.push({ name: 'Login' });
+      // $message!.error('Login failed, please login again');
+      // await router.push({ name: 'Login' });
+      $dialog!.warning({
+        title: 'Tips',
+        content: 'You have not logged in or the login is invalid',
+        positiveText: 'Login',
+        negativeText: 'Cancel',
+        onPositiveClick: async () => {
+          await router.push({ name: 'Login' });
+        },
+      });
       return;
     }
 
