@@ -12,6 +12,8 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 - LangChat源码：[https://github.com/tycoding/langchat](https://github.com/tycoding/langchat)
 - LangChat.cn源码：[https://github.com/tycoding/langchat.cn](https://github.com/tycoding/langchat.cn)
 
+**注意：** 本项目仍有不完善和待开发的功能请见谅。如果你想深入和作者聊LangChat开发计划，**可以请作者喝一杯咖啡加入LangChat交流群**
+
 **注意：** 由于贫穷，作者使用的最低配的阿里云服务器，项目通过frp部署在本地电脑，无奈frp流量转发太慢，所以访问速度会慢一些请谅解
 
 **欢迎Star、fork 持续关注**
@@ -41,6 +43,8 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 添加微信：LangChainChat（备注：赞助）
 
 ![](docs/imgs/MIK-u8rMXC.png)
+
+<div>（支付宝扫一扫，请作者喝一杯咖啡）</div>
 
 ## 版权和协议
 
