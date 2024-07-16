@@ -36,7 +36,7 @@ langchat:
       user: root
       password: root
       port: 5432
-      database: vectordb
+      database: langchat
       table: vector_1
       dimension: 384
   web-search:
