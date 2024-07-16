@@ -1,5 +1,5 @@
 import { FormSchema } from '@/components/Form';
-import { LLMProviders, ProviderEnum } from '@/views/aigc/model/data';
+import { EmbeddingProviderEnum, LLMProviders, ProviderEnum } from '@/views/aigc/model/data';
 
 const baseHeadSchemas: FormSchema[] = [
   {
@@ -336,16 +336,12 @@ export const embeddingSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型类型', trigger: ['blur'] }],
     componentProps: {
-      options: [
-        {
-          label: 'openai',
-          value: 'openai',
-        },
-        {
-          label: 'azure-openai',
-          value: 'azure-openai',
-        },
-      ],
+      options: Object.values(EmbeddingProviderEnum).map((i) => {
+        return {
+          label: i,
+          value: i,
+        };
+      }),
     },
   },
   {
@@ -362,6 +358,8 @@ export const embeddingSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
+      tag: true,
       options: getModels(ProviderEnum.EMBEDDING),
     },
   },

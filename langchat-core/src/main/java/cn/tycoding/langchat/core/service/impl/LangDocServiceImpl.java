@@ -61,7 +61,7 @@ public class LangDocServiceImpl implements LangDocService {
     public EmbeddingR embeddingText(ChatReq req) {
         TextSegment segment = TextSegment.from(req.getMessage(),
                 metadata(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName()));
-        EmbeddingModel embeddingModel = embedProvider.embed(req.getModel());
+        EmbeddingModel embeddingModel = embedProvider.embed();
         Embedding embedding = embeddingModel.embed(segment).content();
 
         String id = embeddingStore.add(embedding, segment);
@@ -70,7 +70,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
-        EmbeddingModel model = embedProvider.embed(req.getModel());
+        EmbeddingModel model = embedProvider.embed();
 
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
         document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());

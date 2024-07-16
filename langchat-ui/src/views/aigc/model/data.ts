@@ -1,3 +1,13 @@
+export enum EmbeddingProviderEnum {
+  OPENAI = 'openai',
+  AZURE_OPENAI = 'azure-openai',
+  GOOGLE = 'google',
+  OLLAMA = 'ollama',
+  BAIDU = 'baidu',
+  ALIBABA = 'alibaba',
+  ZHIPU = 'zhipu',
+}
+
 export enum ProviderEnum {
   OPENAI = 'openai',
   AZURE_OPENAI = 'azure-openai',
@@ -111,9 +121,17 @@ export const LLMProviders: any[] = [
     models: ['dall-e-2', 'dall-e-3'],
   },
   {
-    model: 'embedding',
+    model: ProviderEnum.EMBEDDING,
     name: 'Embedding',
-    models: ['text-embedding-3-small', 'text-embedding-3-large', 'text-embedding-ada-002'],
+    models: [
+      'text-embedding-3-small',
+      'text-embedding-3-large',
+      'text-embedding-ada-002',
+      'embedding-v1',
+      'bge_large_zh',
+      'bge_large_en',
+      'tao_8k',
+    ],
   },
   // {
   //   model: 'web-search',

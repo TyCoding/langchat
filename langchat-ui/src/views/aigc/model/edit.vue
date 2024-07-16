@@ -5,7 +5,6 @@
   import { isNullOrWhitespace } from '@/utils/is';
   import { add, update } from '@/api/aigc/model';
   import { useMessage } from 'naive-ui';
-  import { getColumns } from '@/views/aigc/model/coumns';
 
   const props = defineProps<{
     provider: string;

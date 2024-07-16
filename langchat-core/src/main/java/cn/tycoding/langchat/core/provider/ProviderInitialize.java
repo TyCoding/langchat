@@ -1,18 +1,20 @@
 package cn.tycoding.langchat.core.provider;
 
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.aigc.component.ProviderEnum;
 import cn.tycoding.langchat.aigc.entity.AigcModel;
 import cn.tycoding.langchat.aigc.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
-import cn.tycoding.langchat.aigc.component.ProviderEnum;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;
+import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
 import dev.langchain4j.model.dashscope.QwenStreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.model.qianfan.QianfanEmbeddingModel;
 import dev.langchain4j.model.qianfan.QianfanStreamingChatModel;
 import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
 import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
@@ -193,7 +195,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .modelName(model.getModel())
                             .dimensions(model.getDimensions())
                             .build();
-                    contextHolder.registerBean(model.getId(), build);
+                    contextHolder.registerBean("OpenAiEmbeddingModel", build);
                 }
 
                 if (ProviderEnum.AZURE_OPENAI.getModel().equals(model.getModelType())) {
@@ -202,7 +204,26 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .apiKey(model.getApiKey())
                             .deploymentName(model.getBaseUrl())
                             .build();
-                    contextHolder.registerBean(model.getId(), build);
+                    contextHolder.registerBean("AzureOpenAiEmbeddingModel", build);
+                }
+
+                if (ProviderEnum.BAIDU.getModel().equals(model.getModelType())) {
+                    QianfanEmbeddingModel build = QianfanEmbeddingModel
+                            .builder()
+                            .apiKey(model.getApiKey())
+                            .modelName(model.getModel())
+                            .secretKey(model.getSecretKey())
+                            .build();
+                    contextHolder.registerBean("QianfanEmbeddingModel", build);
+                }
+
+                if (ProviderEnum.ALIBABA.getModel().equals(model.getModelType())) {
+                    QwenEmbeddingModel build = QwenEmbeddingModel
+                            .builder()
+                            .apiKey(model.getApiKey())
+                            .modelName(model.getModel())
+                            .build();
+                    contextHolder.registerBean("QwenEmbeddingModel", build);
                 }
             }
         });
