@@ -21,7 +21,7 @@ public class WebSearchComponent {
     private final WebSearchProps props;
 
     @Bean
-    @ConditionalOnProperty(GOOGLE_CON)
+    @ConditionalOnProperty(value = GOOGLE_CON)
     public GoogleCustomWebSearchEngine googleCustomWebSearchEngine() {
         GoogleProps google = props.getGoogle();
         return GoogleCustomWebSearchEngine
