@@ -2,7 +2,11 @@
 
 > 快速构建企业级AIGC项目
 
-LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型功能，帮助企业快速定制知识库、企业机器人。
+LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型功能，帮助企业快速定制AI知识库、企业AI机器人。
+ 
+接入 OpenAI / Gemini / Ollama / Azure / 智谱 / 阿里通义大模型 / 百度千帆大模型等大模型。
+
+**本项目前后端完全由TyCoding一个人开发，工作量庞大，可能存在一些问题请连接，持续开发中...**
 
 [English](./README_en.md)
 
@@ -14,7 +18,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 **注意：** 本项目仍有不完善和待开发的功能请见谅。如果你想深入和作者聊LangChat开发计划，**可以请作者喝一杯咖啡加入LangChat交流群**
 
-**注意：** 由于贫穷，作者使用的最低配的阿里云服务器，项目通过frp部署在本地电脑，无奈frp流量转发太慢，所以访问速度会慢一些请谅解
+**注意：** 由于贫穷，作者使用的最低配的阿里云服务器，所以访问速度会慢一些请谅解
 
 **欢迎Star、fork 持续关注**
 
@@ -36,13 +40,16 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 ## 赞助
 
-由于作者精力有限，项目开发文档方便会有欠缺，可以加入我的Java微信交流群：LangChainChat（备注目的）。
+由于作者精力有限，开发文档会有所欠缺，可以加入我的Java微信交流群：LangChainChat（备注目的）。
 
-如果你有关于LangChat的开发问题或者二开定制等需求，也可以请作者喝一杯咖啡加入我的LangChat交流群：
+如果你有关于LangChat的开发问题或者二开定制等需求，或者想要深入交流Java生态AIGC产品开发、产品变现等，也可以请作者喝一杯咖啡加入我的LangChat交流群：
 
 添加微信：LangChainChat（备注：赞助）
 
-![](docs/imgs/MIK-u8rMXC.png)
+<div style="display: flex; height: 280px;gap: 30px;">
+<img src="docs/imgs/MIK-u8rMXC.png"/>
+<img src="docs/imgs/MIK-SGq9f6.JPG"/>
+</div>
 
 <div>（支付宝扫一扫，请作者喝一杯咖啡）</div>
 
