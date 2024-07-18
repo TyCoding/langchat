@@ -30,18 +30,6 @@ LangChat is an enterprise-level AIGC project solution in the Java ecosystem. Bas
 8. Provides AIGC client applications to quickly manage client data
 9. More features...
 
-<br/>
-
-## Sponsorship
-
-Due to limited author resources, the project development documentation may be lacking. You can join my Java WeChat group: LangChainChat (please specify the purpose).
-
-If you have any development questions about LangChat or need secondary development customization, you can buy the author a cup of coffee and join my LangChat group:
-
-Add WeChat: LangChainChat (remark: sponsorship)
-
-![](docs/imgs/MIK-u8rMXC.png)
-
 ## Copyright and License
 
 Licensed under the GNU License (GPL) v3. 

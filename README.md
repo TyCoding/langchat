@@ -40,18 +40,13 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 ## 赞助
 
-由于作者精力有限，开发文档会有所欠缺，可以加入我的Java微信交流群：LangChainChat（备注目的）。
+由于作者精力有限，开发文档会有所欠缺，可以加入我的Java微信交流群：LangChainChat（备注：闲聊）。
 
-如果你有关于LangChat的开发问题或者二开定制等需求，或者想要深入交流Java生态AIGC产品开发、产品变现等，也可以请作者喝一杯咖啡加入我的LangChat交流群：
+如果你有关于LangChat的开发问题或者二开定制等需求，或者想要深入交流Java生态AIGC产品开发、产品变现等，也可以请作者喝一杯咖啡加入我的LangChat交流群（可以一起交流LangChat后续开发规划）：
 
 添加微信：LangChainChat（备注：赞助）
 
-<div style="display: flex; height: 280px;gap: 30px;">
-<img src="docs/imgs/MIK-u8rMXC.png"/>
-<img src="docs/imgs/MIK-SGq9f6.JPG"/>
-</div>
-
-<div>（支付宝扫一扫，请作者喝一杯咖啡）</div>
+![](docs/imgs/MIK-3F1Xlb.png)
 
 ## 版权和协议
 
