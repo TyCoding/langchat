@@ -63,13 +63,13 @@
   <div class="account-root">
     <div class="account-root-item root-left-item">
       <div class="root-left-logo">
-        <img src="@/assets/login/logo.png" alt="" />
+        <img alt="" src="@/assets/login/logo.png" />
         <div class="stand-title ml-1">{{ t('app') }}</div>
       </div>
       <div class="root-left-title">{{ t('login.slogan') }}</div>
       <div class="root-left-desc" v-html="t('login.des')"> </div>
       <div class="coding-img">
-        <img src="@/assets/login/login_bg.svg" alt="" />
+        <img alt="" src="@/assets/login/login_bg.svg" />
       </div>
     </div>
     <div class="account-root-item root-right-item">
@@ -78,61 +78,61 @@
           <div class="user-account">{{ t('login.forgetTitle') }}</div>
           <div class="user-register">
             <span>{{ t('login.noAccount') }}</span>
-            <n-button @click="router.push('/register')" type="success" text>
-              {{ t('login.toRegister') }}
+            <n-button text type="success" @click="router.push('/login')">
+              {{ t('login.toLogin') }}
             </n-button>
           </div>
         </div>
 
         <div class="mt-4 login-content-form">
-          <n-form ref="formRef" label-placement="left" size="large" :model="form" :rules="rules">
-            <n-form-item path="username" class="login-animation1">
+          <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" size="large">
+            <n-form-item class="login-animation1" path="username">
               <n-input v-model:value="form.email" :placeholder="t('login.emailPlaceholder')">
                 <template #prefix>
-                  <n-icon size="18" color="#808695">
+                  <n-icon color="#808695" size="18">
                     <SvgIcon icon="material-symbols:person-outline" />
                   </n-icon>
                 </template>
               </n-input>
             </n-form-item>
-            <n-form-item path="code" class="login-animation2">
+            <n-form-item class="login-animation2" path="code">
               <n-input v-model:value="form.code" :placeholder="t('login.codePlaceholder')">
                 <template #prefix>
-                  <n-icon size="18" color="#808695">
+                  <n-icon color="#808695" size="18">
                     <SvgIcon icon="ph:key" />
                   </n-icon>
                 </template>
                 <template #suffix>
-                  <n-button @click="onGetCode()" :disabled="codeLoading" text type="success">
+                  <n-button :disabled="codeLoading" text type="success" @click="onGetCode()">
                     <n-countdown
                       v-if="codeLoading"
                       :active="codeLoading"
-                      @finish="codeLoading = false"
                       :duration="59000"
                       :render="({ seconds }) => `${String(seconds) + t('login.codeExp')}`"
+                      @finish="codeLoading = false"
                     />
                     <template v-else>{{ t('login.getCode') }}</template>
                   </n-button>
                 </template>
               </n-input>
             </n-form-item>
-            <n-form-item path="password" class="login-animation2">
+            <n-form-item class="login-animation2" path="password">
               <n-input
                 v-model:value="form.password"
-                type="password"
-                showPasswordOn="click"
                 :placeholder="t('login.forgetPassPlaceholder')"
+                showPasswordOn="click"
+                type="password"
               >
                 <template #prefix>
-                  <n-icon size="18" color="#808695">
+                  <n-icon color="#808695" size="18">
                     <SvgIcon icon="mdi:lock-outline" />
                   </n-icon>
                 </template>
               </n-input>
             </n-form-item>
             <n-form-item class="login-animation3">
-              <n-space vertical class="w-full">
-                <n-button type="primary" @click="handleSubmit" :loading="loading" block secondary>
+              <n-space class="w-full" vertical>
+                <n-button :loading="loading" block secondary type="primary" @click="handleSubmit">
                   {{ t('login.forgetSubmit') }}
                 </n-button>
               </n-space>
@@ -147,19 +147,19 @@
         </n-divider>
         <div class="pb-8">
           <n-space vertical>
-            <n-button dashed block round>
+            <n-button block dashed round>
               <template #icon>
                 <SvgIcon icon="uiw:weixin" />
               </template>
               {{ t('login.wxType') }}
             </n-button>
-            <n-button block round dashed>
+            <n-button block dashed round>
               <template #icon>
                 <SvgIcon icon="ri:google-fill" />
               </template>
               {{ t('login.googleType') }}
             </n-button>
-            <n-button block round dashed>
+            <n-button block dashed round>
               <template #icon>
                 <SvgIcon icon="ri:github-fill" />
               </template>

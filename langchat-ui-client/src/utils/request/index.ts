@@ -1,6 +1,8 @@
 import type { AxiosProgressEvent, AxiosResponse, GenericAbortSignal } from 'axios';
 import request from './axios';
 import { router } from '@/router';
+import { useUserStore } from '@/store';
+import { isNullOrWhitespace } from '@/utils/is';
 
 export interface HttpOption {
   url: string;
@@ -69,18 +71,29 @@ function axios<T = any>({
     const $message = window['$message'];
     const $dialog = window['$dialog'];
     const { status } = error.response;
+    const userStore = useUserStore();
+
     if (status === 401) {
       // $message!.error('Login failed, please login again');
       // await router.push({ name: 'Login' });
-      $dialog!.warning({
-        title: 'Tips',
-        content: 'You have not logged in or the login is invalid',
-        positiveText: 'Login',
-        negativeText: 'Cancel',
-        onPositiveClick: async () => {
-          await router.push({ name: 'Login' });
-        },
-      });
+
+      if (isNullOrWhitespace(userStore.token)) {
+        $dialog!.warning({
+          title: 'Tips',
+          content: 'You have not logged in or the login is invalid',
+          positiveText: 'Login',
+          negativeText: 'Cancel',
+          onPositiveClick: async () => {
+            await router.push({ name: 'Login' });
+          },
+        });
+      } else {
+        $dialog!.warning({
+          title: 'Tips',
+          content: 'You do not have operation permission, please contact the administrator',
+        });
+      }
+
       return;
     }
 
