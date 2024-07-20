@@ -352,8 +352,8 @@ CREATE TABLE `aigc_model` (
                               `provider` varchar(100) DEFAULT NULL COMMENT '供应商',
                               `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '别名',
                               `response_limit` int DEFAULT NULL COMMENT '响应长度',
-                              `temperature` int DEFAULT NULL COMMENT '温度',
-                              `top_p` int DEFAULT NULL,
+                              `temperature` double DEFAULT NULL COMMENT '温度',
+                              `top_p` double DEFAULT NULL,
                               `api_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
                               `base_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
                               `secret_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -741,7 +741,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` (`id`, `username`, `password`, `real_name`, `sex`, `phone`, `email`, `dept_id`, `avatar`, `status`, `create_time`) VALUES (1, 'administrator', 'G2XltQvvMCezT1DNkjPyTA==', '超级管理员', '女', '19809587831', 'tycoding@sina.com', 1362597682681577473, 'http://tycoding.cn/imgs/tycoding.png', 1, '2019-01-01 00:00:00');
+INSERT INTO `sys_user` (`id`, `username`, `password`, `real_name`, `sex`, `phone`, `email`, `dept_id`, `avatar`, `status`, `create_time`) VALUES (1, 'administrator', '48kQD0O/A69LENSbk/+FxA==', '超级管理员', '女', '19809587831', 'tycoding@sina.com', 1362597682681577473, 'http://tycoding.cn/imgs/tycoding.png', 1, '2019-01-01 00:00:00');
 INSERT INTO `sys_user` (`id`, `username`, `password`, `real_name`, `sex`, `phone`, `email`, `dept_id`, `avatar`, `status`, `create_time`) VALUES (3, 'langchat', '48kQD0O/A69LENSbk/+FxA==', '演示环境账号', '男', '18929809812', 'langchat@outlook.com', 2, 'http://tycoding.cn/imgs/tycoding.png', 1, '2021-06-15 22:26:55');
 COMMIT;
 

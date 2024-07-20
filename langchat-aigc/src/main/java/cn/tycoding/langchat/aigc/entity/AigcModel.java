@@ -23,8 +23,8 @@ public class AigcModel implements Serializable {
     private String provider;
     private String name;
     private Integer responseLimit;
-    private Double temperature;
-    private Double topP;
+    private Double temperature = 0.2;
+    private Double topP = 0.0;
     private String apiKey;
     private String secretKey;
     private String baseUrl;

@@ -364,24 +364,38 @@ export const embeddingSchemas: FormSchema[] = [
     },
   },
   {
+    field: 'temperature',
+    label: '生成随机性',
+    labelMessage: '调高参数会使得模型的输出更多样性和创新性，反之降低参数将会减少多样性',
+    component: 'NSlider',
+    rules: [{ type: 'number', required: true, message: '请输入生成随机性', trigger: ['blur'] }],
+    componentProps: {
+      showTooltip: true,
+      defaultValue: 0.8,
+      step: 0.05,
+      min: 0,
+      max: 2,
+    },
+  },
+  {
     field: 'dimensions',
     label: 'Dimensions',
     labelMessage: '此参数代表向量纬数，注意此参数需要和向量数据库匹配',
     component: 'NSelect',
-    rules: [{ required: true, message: '请选择向量维数', trigger: ['blur'] }],
+    rules: [{ type: 'number', required: true, message: '请选择向量维数', trigger: ['blur'] }],
     componentProps: {
       options: [
         {
           label: '384',
-          value: '384',
+          value: 384,
         },
         {
           label: '1536',
-          value: '1536',
+          value: 1536,
         },
         {
           label: '3072',
-          value: '3072',
+          value: 3072,
         },
       ],
     },
