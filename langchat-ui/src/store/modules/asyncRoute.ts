@@ -116,6 +116,13 @@ export const useAsyncRouteStore = defineStore({
       this.setMenus(accessedRouters);
       return toRaw(accessedRouters);
     },
+    clear() {
+      this.menus = [];
+      this.routers = constantRouter;
+      this.routersAdded = [];
+      this.keepAliveComponents = [];
+      this.isDynamicRouteAdded = false;
+    },
   },
 });
 

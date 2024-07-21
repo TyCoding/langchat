@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
-  import { onMounted } from 'vue';
+  import { onMounted, toRaw } from 'vue';
   import { getChatModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/data';
   import { ref } from 'vue-demi';
@@ -11,8 +11,10 @@
   onMounted(async () => {
     const providers = await getChatModels();
     const data: any = [];
-    if (chatStore.model === '') {
-      chatStore.model = providers[0].id;
+    if (chatStore.modelName === '') {
+      chatStore.modelId = providers[0].id;
+      chatStore.modelName = providers[0].model;
+      chatStore.modelProvider = providers[0].provider;
     }
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
@@ -28,17 +30,25 @@
     });
     modelList.value = data;
   });
+
+  function onUpdate(val, opt) {
+    const obj = toRaw(opt);
+    chatStore.modelId = obj.id;
+    chatStore.modelName = obj.model;
+    chatStore.modelProvider = obj.provider;
+  }
 </script>
 
 <template>
   <n-select
-    v-model:value="chatStore.model"
+    v-model:value="chatStore.modelId"
     :consistent-menu-width="false"
     :label-field="'name'"
     :options="modelList"
     :value-field="'id'"
     class="!w-32"
     size="small"
+    @update:value="onUpdate"
   />
 </template>
 

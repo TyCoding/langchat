@@ -7,6 +7,7 @@
   import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
+  import { RoleEnum } from '@/enums/roleEnum';
 
   const message = useMessage();
   const dialog = useDialog();
@@ -27,11 +28,13 @@
           {
             type: 'info',
             icon: EditOutlined,
+            ifShow: record.alias !== RoleEnum.ADMINISTRATOR,
             onClick: handleEdit.bind(null, record),
           },
           {
             type: 'error',
             icon: DeleteOutlined,
+            ifShow: record.alias !== RoleEnum.ADMINISTRATOR,
             onClick: handleDelete.bind(null, record),
           },
         ],

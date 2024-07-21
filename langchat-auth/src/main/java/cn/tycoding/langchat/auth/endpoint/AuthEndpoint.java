@@ -8,6 +8,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.auth.service.TokenInfo;
+import cn.tycoding.langchat.auth.utils.SysLogUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
@@ -15,9 +16,11 @@ import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.dto.UserInfo;
+import cn.tycoding.langchat.upms.entity.SysUser;
 import cn.tycoding.langchat.upms.service.SysUserService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,15 +61,12 @@ public class AuthEndpoint {
             throw new ServiceException("The username or password is error");
         }
 
-        return onLogin(userInfo);
-    }
-
-    private R onLogin(UserInfo userInfo) {
         StpUtil.login(userInfo.getId());
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         StpUtil.getSession()
                 .set(CacheConst.AUTH_USER_INFO_KEY, userInfo)
                 .set(CacheConst.AUTH_TOKEN_INFO_KEY, tokenInfo);
+        SysLogUtil.publish(1, "服务端登录");
         log.info("====> login success，token={}", tokenInfo.getTokenValue());
         return R.ok(new TokenInfo().setToken(tokenInfo.tokenValue).setExpiration(tokenInfo.tokenTimeout));
     }
@@ -74,6 +74,30 @@ public class AuthEndpoint {
     @DeleteMapping("/logout")
     public R logout() {
         StpUtil.logout();
+        return R.ok();
+    }
+
+    @PostMapping("/register")
+    public R emailRegister(@RequestBody SysUser data) {
+        if (StrUtil.isBlank(data.getUsername()) || StrUtil.isBlank(data.getPassword())) {
+            throw new ServiceException("The user name or password is empty");
+        }
+
+        // 校验用户名是否已存在
+        List<SysUser> list = userService.list(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, data.getUsername()));
+        if (!list.isEmpty()) {
+            throw new ServiceException("This username has already been registered");
+        }
+
+        SysUser user = new SysUser()
+                .setUsername(data.getUsername())
+                .setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()))
+                .setRealName(data.getUsername())
+                .setPhone(data.getPhone())
+                .setStatus(true)
+                .setCreateTime(new Date());
+        userService.save(user);
+        SysLogUtil.publish(1, "服务端注册");
         return R.ok();
     }
 

@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +63,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-//    @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
+    @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public UserInfo info(String username) {
         SysUser user = this.findByName(username);
         UserInfo userInfo = BeanUtil.copyProperties(user, UserInfo.class);
@@ -78,27 +79,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         //获取用户角色列表
         List<SysRole> sysRoleList = sysRoleService.findRolesByUserId(userInfo.getId());
-        if (sysRoleList.isEmpty()) {
-            throw new ServiceException(AuthUtil.NOT_ROLE_ERROR);
+        if (!sysRoleList.isEmpty()) {
+            //获取用户权限列表
+            List<SysMenu> menuList = new ArrayList<>();
+            long isAdmin = sysRoleList.stream().filter(role -> AuthUtil.ADMINISTRATOR.equals(role.getAlias())).count();
+            if (isAdmin > 0) {
+                // 包含了超级管理员角色，拥有所有权限
+                menuList = sysMenuService.list();
+            } else {
+                // 根据角色筛选权限
+                menuList = sysMenuService.getUserMenuList(sysRoleList);
+            }
+            Set<String> perms =
+                    menuList.stream().map(SysMenu::getPerms).filter(StringUtils::isNotEmpty).collect(Collectors.toSet());
+
+            List<Long> roleIds = sysRoleList.stream().map(SysRole::getId).toList();
+            userInfo.setRoleIds(roleIds);
+
+            //获取用户部门信息
+            SysDept sysDept = sysDeptService.getById(userInfo.getDeptId());
+            return userInfo.setRoles(sysRoleList).setPerms(perms).setDept(sysDept);
         }
 
-        //获取用户权限列表
-        List<SysMenu> menuList = new ArrayList<>();
-        long isAdmin = sysRoleList.stream().filter(role -> AuthUtil.ADMINISTRATOR.equals(role.getAlias())).count();
-        if (isAdmin > 0) {
-            // 包含了超级管理员角色，拥有所有权限
-            menuList = sysMenuService.list();
-        } else {
-            // 根据角色筛选权限
-            menuList = sysMenuService.getUserMenuList(sysRoleList);
-        }
-        Set<String> perms =
-                menuList.stream().map(SysMenu::getPerms).filter(StringUtils::isNotEmpty).collect(Collectors.toSet());
-
-        //获取用户部门信息
-        SysDept sysDept = sysDeptService.getById(userInfo.getDeptId());
-
-        return userInfo.setRoles(sysRoleList).setPerms(perms).setDept(sysDept);
+        return userInfo;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package cn.tycoding.langchat.auth.service;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.tycoding.langchat.common.exception.AuthException;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
-import java.nio.file.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * 全局异常拦截（注意：这种方式只能拦截经过Controller的异常，未经过Controller的异常拦截不到）
@@ -82,6 +84,13 @@ public class GlobalExceptionTranslator {
     public R handleError(HttpMessageNotReadableException e) {
         e.printStackTrace();
         return R.fail(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({NotPermissionException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public R handleError(NotPermissionException e) {
+        e.printStackTrace();
+        return R.fail("没有操作权限");
     }
 
     @ExceptionHandler({SaTokenException.class})

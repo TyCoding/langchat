@@ -74,7 +74,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.BAIDU,
-    name: '百度大模型',
+    name: '百度千帆大模型',
     models: [
       'ernie_bot_8k',
       'eb-instant',
@@ -93,7 +93,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.ALIBABA,
-    name: '阿里大模型',
+    name: '阿里千帆大模型',
     models: [
       'qwen-turbo',
       'qwen-plus',

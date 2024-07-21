@@ -13,7 +13,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ChatReq {
 
-    private String model;
+    private String modelId;
+    private String modelName;
+    private String modelProvider;
 
     private String message;
 

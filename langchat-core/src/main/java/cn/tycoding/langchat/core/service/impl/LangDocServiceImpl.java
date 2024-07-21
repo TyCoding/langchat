@@ -14,13 +14,11 @@ import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.query.Query;
@@ -39,7 +37,6 @@ import java.util.function.Function;
 import static cn.tycoding.langchat.core.consts.EmbedConst.FILENAME;
 import static cn.tycoding.langchat.core.consts.EmbedConst.KNOWLEDGE;
 import static dev.langchain4j.data.document.Metadata.metadata;
-import static dev.langchain4j.model.openai.OpenAiModelName.GPT_3_5_TURBO;
 import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
 /**
@@ -75,11 +72,7 @@ public class LangDocServiceImpl implements LangDocService {
         Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
         document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());
 
-        DocumentSplitter splitter = DocumentSplitters.recursive(
-                100,
-                0,
-                new OpenAiTokenizer(GPT_3_5_TURBO)
-        );
+        DocumentSplitter splitter = EmbedProvider.splitter(req.getModelName(), req.getModelProvider());
         List<TextSegment> segments = splitter.split(document);
         List<Embedding> embeddings = model.embedAll(segments).content();
         List<String> ids = embeddingStore.addAll(embeddings, segments);
@@ -93,7 +86,7 @@ public class LangDocServiceImpl implements LangDocService {
 
     @Override
     public TokenStream chat(ChatReq req) {
-        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModel());
+        StreamingChatLanguageModel chatLanguageModel = modelProvider.stream(req.getModelId());
         AiServices<Assistant> aiServices = AiServices.builder(Assistant.class)
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
                 .streamingChatLanguageModel(chatLanguageModel);

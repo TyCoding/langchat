@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,12 +43,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 //    @Cacheable(value = CacheConst.MENU_DETAIL_KEY, key = "#userId")
     public List<MenuTree<SysMenu>> build(Long userId) {
         List<Long> roleIds = AuthUtil.getRoleIds();
-        if (roleIds.isEmpty()) {
-//            throw new AuthException(AuthUtil.NOT_ROLE_ERROR);
-        }
         if (AuthUtil.getRoleNames().contains(AuthUtil.ADMINISTRATOR)) {
             // 超级管理员，不做权限过滤
             roleIds.clear();
+        } else {
+            if (roleIds.isEmpty()) {
+                return new ArrayList<>();
+            }
         }
         List<SysMenu> sysMenuList = baseMapper.build(roleIds, CommonConst.MENU_TYPE_MENU);
         List<MenuTree<SysMenu>> build = TreeUtil.build(sysMenuList);

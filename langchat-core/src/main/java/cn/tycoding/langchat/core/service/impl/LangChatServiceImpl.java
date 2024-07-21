@@ -38,7 +38,7 @@ public class LangChatServiceImpl implements LangChatService {
 
     @Override
     public TokenStream chat(ChatReq req) {
-        StreamingChatLanguageModel model = provider.stream(req.getModel());
+        StreamingChatLanguageModel model = provider.stream(req.getModelId());
 
         Assistant assistant;
         if (req.getIsGoogleSearch()) {
@@ -70,7 +70,7 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public String text(ChatReq req) {
         try {
-            ChatLanguageModel model = provider.text(req.getModel());
+            ChatLanguageModel model = provider.text(req.getModelId());
             return model.generate(req.getPrompt().text());
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import cn.tycoding.langchat.aigc.service.AigcUserService;
 import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
 import cn.tycoding.langchat.aigc.utils.AigcStpUtil;
 import cn.tycoding.langchat.auth.service.TokenInfo;
+import cn.tycoding.langchat.auth.utils.SysLogUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
@@ -67,6 +68,7 @@ public class AigcAuthEndpoint {
 
         AigcUser aigcUser = BeanUtil.copyProperties(userInfo, AigcUser.class);
         aigcUser.setPassword(null);
+        SysLogUtil.publish(1, "客户端登录");
         log.info("====> Aigc User Login success! token={}", tokenInfo.getTokenValue());
         return R.ok(new TokenInfo()
                 .setToken(tokenInfo.tokenValue)
@@ -112,6 +114,7 @@ public class AigcAuthEndpoint {
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.save(user);
+        SysLogUtil.publish(1, "客户端注册");
         return R.ok();
     }
 

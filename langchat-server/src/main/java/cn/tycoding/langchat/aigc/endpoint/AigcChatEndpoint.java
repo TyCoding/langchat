@@ -47,9 +47,9 @@ public class AigcChatEndpoint {
             req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
         }
 
-        if (req.getModel().endsWith(ModelConst.IMAGE_SUFFIX)) {
+        if (req.getModelId().endsWith(ModelConst.IMAGE_SUFFIX)) {
             AigcOss oss = chatService.image(
-                    new ImageR().setPrompt(req.getPrompt()).setModel(req.getModel()));
+                    new ImageR().setPrompt(req.getPrompt()).setModel(req.getModelId()));
             emitter.send("Image:" + oss);
             emitter.complete();
         } else {

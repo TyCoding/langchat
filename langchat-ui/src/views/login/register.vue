@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
   import { useMessage } from 'naive-ui';
-  import { LockClosedOutline, PersonOutline } from '@vicons/ionicons5';
+  import { LockClosedOutline, PersonOutline, PhonePortraitOutline } from '@vicons/ionicons5';
   import { PageEnum } from '@/enums/pageEnum';
   import { websiteConfig } from '@/config/website.config';
 
@@ -13,43 +13,62 @@
   const userStore = useUserStore();
   const router = useRouter();
   const form = reactive({
-    username: 'langchat',
-    password: '123456',
+    username: '',
+    password: '',
+    phone: '',
   });
 
   const rules = {
     username: { required: true, message: '请输入用户名', trigger: 'blur' },
-    password: { required: true, message: '请输入密码', trigger: 'blur' },
+    password: {
+      required: true,
+      trigger: 'blur',
+      validator: (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+          if (value.length == 0) {
+            reject(new Error('请输入密码'));
+          }
+          if (value.length < 6) {
+            reject(new Error('密码长度至少6位'));
+          } else {
+            resolve();
+          }
+        });
+      },
+    },
+    phone: {
+      required: true,
+      trigger: 'blur',
+      validator: (rule: any, value: string) => {
+        return new Promise<void>((resolve, reject) => {
+          if (value.length == 0) {
+            reject(new Error('请输入手机号'));
+          }
+          if (!/^[1]+[3,8]+\d{9}$/.test(value)) {
+            reject(new Error('手机号格式错误'));
+          } else {
+            resolve();
+          }
+        });
+      },
+    },
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     formRef.value.validate(async (errors: any) => {
       if (!errors) {
-        message.loading('登录中...');
         loading.value = true;
-
         try {
-          await userStore.login(toRaw(form));
-          const toPath = decodeURIComponent(
-            (router.currentRoute.value.query?.redirect || '/') as string
-          );
-          message.destroyAll();
-          if (router.currentRoute.value.name === PageEnum.BASE_LOGIN_NAME) {
-            await router.push('/');
-          } else {
-            await router.push(toPath);
-          }
+          await userStore.register(toRaw(form));
+          message.success('注册成功，请重新登陆');
+          await router.push(PageEnum.BASE_LOGIN);
         } finally {
           loading.value = false;
         }
       }
     });
   };
-
-  function onCodeLogin() {
-    message.warning('暂时没有接入短信登录方式');
-  }
 </script>
 
 <template>
@@ -63,7 +82,7 @@
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
       <div class="view-account-form">
-        <div class="text-center text-2xl mb-8">Login {{ websiteConfig.title }}</div>
+        <div class="text-center text-2xl mb-8">Register {{ websiteConfig.title }}</div>
         <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" size="large">
           <n-form-item class="login-animation1" path="username">
             <n-input v-model:value="form.username" placeholder="请输入用户名">
@@ -88,17 +107,25 @@
               </template>
             </n-input>
           </n-form-item>
+          <n-form-item class="login-animation3" path="phone">
+            <n-input v-model:value="form.phone" placeholder="请输入手机号" showPasswordOn="click">
+              <template #prefix>
+                <n-icon color="#808695" size="18">
+                  <PhonePortraitOutline />
+                </n-icon>
+              </template>
+            </n-input>
+          </n-form-item>
           <n-form-item class="login-animation3 mt-2">
             <n-button :loading="loading" block size="large" type="primary" @click="handleSubmit">
-              登录
+              注册
             </n-button>
           </n-form-item>
           <div class="login-animation4 mb-3">
             <div class="w-full flex justify-end gap-2">
-              <n-button text type="info" @click="onCodeLogin">验证码登录</n-button>
-              <n-button text type="info" @click="router.push(PageEnum.BASE_REGISTER)">
-                注册账号
-              </n-button>
+              <n-text class="cursor-pointer" type="info" @click="router.push(PageEnum.BASE_LOGIN)">
+                返回登录
+              </n-text>
             </div>
           </div>
           <div class="mt-8 text-xs text-gray-300 login-animation5 text-center">

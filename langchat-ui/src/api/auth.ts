@@ -22,6 +22,14 @@ export function login(data: any) {
   });
 }
 
+export function register(data: any) {
+  return http.request({
+    url: `/auth/register`,
+    method: 'POST',
+    data,
+  });
+}
+
 /**
  * @description: 用户登出
  */

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import Message from './message/Message.vue';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
   import { computed, ref } from 'vue';
@@ -96,7 +96,9 @@
           message,
           role: 'user',
           isGoogleSearch: chatStore.isGoogleSearch,
-          model: chatStore.model,
+          modelId: chatStore.modelId,
+          modelName: chatStore.modelName,
+          modelProvider: chatStore.modelProvider,
         },
         async ({ event }) => {
           const list = event.target.responseText.split('\n\n');
@@ -180,17 +182,17 @@
       <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto">
         <div
           ref="scrollRef"
-          class="w-full max-w-screen-3xl m-auto pl-8 pr-8"
           :class="[isMobile ? 'p-2' : 'p-5']"
+          class="w-full max-w-screen-3xl m-auto pl-8 pr-8"
         >
           <Message
             v-for="(item, index) of dataSources"
             :key="index"
             :date-time="item.createTime"
-            :text="item.message"
-            :inversion="item.role !== 'assistant'"
             :error="item.isError"
+            :inversion="item.role !== 'assistant'"
             :loading="loading"
+            :text="item.message"
             @delete="handleDelete(item)"
           />
           <div class="sticky bottom-0 left-0 flex justify-center">
@@ -212,24 +214,24 @@
           <n-input
             ref="inputRef"
             v-model:value="message"
-            type="textarea"
-            @keypress="handleEnter"
             :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
             class="!rounded-full px-2 py-1"
             placeholder="搜索"
             size="large"
+            type="textarea"
+            @keypress="handleEnter"
           >
             <template #prefix>
-              <n-popselect placement="top" :options="menuOptions" trigger="click">
-                <n-button text class="!mr-2">
+              <n-popselect :options="menuOptions" placement="top" trigger="click">
+                <n-button class="!mr-2" text>
                   <template #icon>
-                    <n-icon class="text-2xl" :component="AttachOutline" />
+                    <n-icon :component="AttachOutline" class="text-2xl" />
                   </template>
                 </n-button>
               </n-popselect>
             </template>
             <template #suffix>
-              <n-button text :loading="loading" @click="handleSubmit">
+              <n-button :loading="loading" text @click="handleSubmit">
                 <template #icon>
                   <n-icon :component="SparklesOutline" />
                 </template>
@@ -242,7 +244,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   ::v-deep(.custom-input) {
     .n-input-wrapper {
       padding-right: 10px;

@@ -2,8 +2,9 @@ import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED } from '@/store/mutation-types';
 
-import { getUserInfo, login, logout } from '@/api/auth';
+import { getUserInfo, login, logout, register } from '@/api/auth';
 import { storage } from '@/utils/Storage';
+import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
 
 export type UserInfoType = {
   id: string;
@@ -70,6 +71,10 @@ export const useUserStore = defineStore({
       }
       return response;
     },
+    // 注册
+    async register(params: any) {
+      return await register(params);
+    },
 
     // 获取用户信息
     async getInfo() {
@@ -96,14 +101,18 @@ export const useUserStore = defineStore({
     async logout() {
       await logout();
       this.setPermissions([]);
+      this.setToken('');
+      this.setAvatar('');
       this.setUserInfo({
         id: '',
         username: '',
         realName: '',
         avatar: '',
       });
-      storage.remove(ACCESS_TOKEN);
-      storage.remove(CURRENT_USER);
+      storage.clear();
+
+      const routerStore = useAsyncRouteStore();
+      routerStore.clear();
     },
   },
 });

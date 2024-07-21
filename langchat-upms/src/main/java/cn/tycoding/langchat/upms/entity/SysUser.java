@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 @TableName("sys_user")
 public class SysUser implements Serializable {
     private static final long serialVersionUID = -94827981963832107L;
