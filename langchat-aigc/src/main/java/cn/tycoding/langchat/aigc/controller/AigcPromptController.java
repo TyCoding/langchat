@@ -3,7 +3,6 @@ package cn.tycoding.langchat.aigc.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcPrompt;
 import cn.tycoding.langchat.aigc.service.AigcPromptService;
-import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -48,20 +47,17 @@ public class AigcPromptController {
     }
 
     @PostMapping
-    @AigcPerm
     public R add(@RequestBody AigcPrompt data) {
         data.setCreateTime(new Date());
         return R.ok(aigcPromptService.save(data));
     }
 
     @PutMapping
-    @AigcPerm
     public R update(@RequestBody AigcPrompt data) {
         return R.ok(aigcPromptService.updateById(data));
     }
 
     @DeleteMapping("/{id}")
-    @AigcPerm
     public R del(@PathVariable String id) {
         return R.ok(aigcPromptService.removeById(id));
     }

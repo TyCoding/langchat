@@ -2,7 +2,6 @@ package cn.tycoding.langchat.aigc.controller;
 
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsSliceMapper;
-import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -46,7 +45,6 @@ public class AigcDocsSliceController {
     }
 
     @PostMapping
-    @AigcPerm
     public R add(@RequestBody AigcDocsSlice data) {
         data.setCreateTime(new Date());
         docsSliceMapper.insert(data);
@@ -54,14 +52,12 @@ public class AigcDocsSliceController {
     }
 
     @PutMapping
-    @AigcPerm
     public R update(@RequestBody AigcDocsSlice data) {
         docsSliceMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @AigcPerm
     public R delete(@PathVariable String id) {
         docsSliceMapper.deleteById(id);
         return R.ok();

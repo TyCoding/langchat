@@ -2,7 +2,6 @@ package cn.tycoding.langchat.aigc.controller;
 
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsMapper;
-import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -45,21 +44,18 @@ public class AigcDocsController {
     }
 
     @PostMapping
-    @AigcPerm
     public R add(@RequestBody AigcDocs data) {
         docsMapper.insert(data);
         return R.ok();
     }
 
     @PutMapping
-    @AigcPerm
     public R update(@RequestBody AigcDocs data) {
         docsMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @AigcPerm
     public R delete(@PathVariable String id) {
         docsMapper.deleteById(id);
         return R.ok();
