@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.component.ProviderRefreshEvent;
 import cn.tycoding.langchat.aigc.entity.AigcModel;
 import cn.tycoding.langchat.aigc.service.AigcModelService;
-import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -80,7 +79,6 @@ public class AigcModelController {
     }
 
     @PostMapping
-    @AigcPerm
     public R add(@RequestBody AigcModel data) {
         modelService.save(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -88,7 +86,6 @@ public class AigcModelController {
     }
 
     @PutMapping
-    @AigcPerm
     public R update(@RequestBody AigcModel data) {
         modelService.updateById(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -96,7 +93,6 @@ public class AigcModelController {
     }
 
     @DeleteMapping("/{id}")
-    @AigcPerm
     public R delete(@PathVariable String id) {
         modelService.removeById(id);
 
