@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.aigc.entity.AigcConversation;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -43,13 +43,13 @@ public class AigcConversationController {
     }
 
     @PostMapping
-    @SaCheckPermission("aigc:conversation:add")
+    @AigcPerm
     public R addConversation(@RequestBody AigcConversation conversation) {
         return R.ok(aigcMessageService.addConversation(conversation));
     }
 
     @PutMapping
-    @SaCheckPermission("aigc:conversation:update")
+    @AigcPerm
     public R updateConversation(@RequestBody AigcConversation conversation) {
         if (conversation.getId() == null) {
             return R.fail("conversation id is null");
@@ -59,14 +59,14 @@ public class AigcConversationController {
     }
 
     @DeleteMapping("/{conversationId}")
-    @SaCheckPermission("aigc:conversation:delete")
+    @AigcPerm
     public R delConversation(@PathVariable String conversationId) {
         aigcMessageService.delConversation(conversationId);
         return R.ok();
     }
 
     @DeleteMapping("/message/{conversationId}")
-    @SaCheckPermission("aigc:conversation:delete")
+    @AigcPerm
     public R clearMessage(@PathVariable String conversationId) {
         aigcMessageService.clearMessage(conversationId);
         return R.ok();
@@ -85,7 +85,7 @@ public class AigcConversationController {
      * add message in conversation
      */
     @PostMapping("/message")
-    @SaCheckPermission("aigc:conversation:add")
+    @AigcPerm
     public R addMessage(@RequestBody AigcMessage message) {
         message.setIp(ServletUtil.getIpAddr());
         return R.ok(aigcMessageService.addMessage(message));

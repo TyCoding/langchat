@@ -1,10 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { reactive, ref } from 'vue';
   import { t } from '@/locales';
   import { rules } from '@/views/login/data';
+  import { useMessage } from 'naive-ui';
 
   const formRef = ref();
+  const message = useMessage();
   const loading = ref(false);
   const form = reactive({
     email: '',
@@ -17,65 +19,67 @@
   };
 
   const codeLoading = ref(false);
-  function onGetCode() {}
+  function onGetCode() {
+    message.warning('暂时未接入短信登录方式');
+  }
 </script>
 
 <template>
   <div class="mt-4 login-content-form">
-    <n-form ref="formRef" label-placement="left" size="large" :model="form" :rules="rules">
-      <n-form-item path="email" class="login-animation1">
+    <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" size="large">
+      <n-form-item class="login-animation1" path="email">
         <n-input v-model:value="form.email" :placeholder="t('login.phonePlaceholder')">
           <template #prefix>
-            <n-icon size="18" color="#808695">
+            <n-icon color="#808695" size="18">
               <SvgIcon icon="material-symbols:person-outline" />
             </n-icon>
           </template>
         </n-input>
       </n-form-item>
-      <n-form-item path="code" class="login-animation2">
+      <n-form-item class="login-animation2" path="code">
         <n-input v-model:value="form.code" :placeholder="t('login.codePlaceholder')">
           <template #prefix>
-            <n-icon size="18" color="#808695">
+            <n-icon color="#808695" size="18">
               <SvgIcon icon="ph:key" />
             </n-icon>
           </template>
           <template #suffix>
-            <n-button @click="onGetCode()" :disabled="codeLoading" text type="success">
+            <n-button :disabled="codeLoading" text type="success" @click="onGetCode()">
               <n-countdown
                 v-if="codeLoading"
                 :active="codeLoading"
-                @finish="codeLoading = false"
                 :duration="59000"
                 :render="({ seconds }) => `${String(seconds) + t('login.codeExp')}`"
+                @finish="codeLoading = false"
               />
               <template v-else>{{ t('login.getCode') }}</template>
             </n-button>
           </template>
         </n-input>
       </n-form-item>
-      <n-form-item path="password" class="login-animation2">
+      <n-form-item class="login-animation2" path="password">
         <n-input
           v-model:value="form.password"
-          type="password"
-          showPasswordOn="click"
           :placeholder="t('login.passPlaceholder')"
+          showPasswordOn="click"
+          type="password"
         >
           <template #prefix>
-            <n-icon size="18" color="#808695">
+            <n-icon color="#808695" size="18">
               <SvgIcon icon="mdi:lock-outline" />
             </n-icon>
           </template>
         </n-input>
       </n-form-item>
       <n-form-item class="login-animation3">
-        <n-space vertical class="w-full">
+        <n-space class="w-full" vertical>
           <n-button
-            type="primary"
-            disabled
-            @click="handleSubmit"
             :loading="loading"
             block
+            disabled
             secondary
+            type="primary"
+            @click="handleSubmit"
           >
             {{ t('login.title') }}
           </n-button>
@@ -85,4 +89,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

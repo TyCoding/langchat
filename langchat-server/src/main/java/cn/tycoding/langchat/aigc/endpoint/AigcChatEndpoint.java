@@ -7,6 +7,7 @@ import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.aigc.service.ChatService;
 import cn.tycoding.langchat.aigc.service.EmbeddingService;
 import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
 import cn.tycoding.langchat.common.dto.ImageR;
@@ -34,7 +35,7 @@ public class AigcChatEndpoint {
     private final EmbeddingService embeddingDocs;
 
     @PostMapping
-    @SaCheckPermission("aigc:client:chat")
+    @AigcPerm
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);

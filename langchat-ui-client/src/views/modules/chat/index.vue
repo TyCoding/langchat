@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { computed, onMounted, onUnmounted, onUpdated, Ref, ref } from 'vue';
+  import { computed, onMounted, onUnmounted, onUpdated, ref } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { v4 as uuidv4 } from 'uuid';
   import { chat } from '@/api/chat';
@@ -68,14 +68,19 @@
     loading.value = true;
     prompt.value = '';
 
-    // ai
-    await scrollToBottom();
-    const { conversationId } = await addMessage(data);
-    aiChatId.value = uuidv4();
-    await scrollToBottom();
-    await chatStore.addMessage('', 'assistant', aiChatId.value);
-    await scrollToBottomIfAtBottom();
-    await onChat(message, conversationId);
+    try {
+      // ai
+      await scrollToBottom();
+      const { conversationId } = await addMessage(data);
+      aiChatId.value = uuidv4();
+      await scrollToBottom();
+      await chatStore.addMessage('', 'assistant', aiChatId.value);
+      await scrollToBottomIfAtBottom();
+      await onChat(message, conversationId);
+    } catch (err) {
+      loading.value = false;
+      prompt.value = '';
+    }
   }
 
   async function onChat(message: string, conversationId?: string) {
@@ -236,8 +241,8 @@
               <div
                 v-else
                 ref="scrollRef"
-                class="max-w-screen-2xl m-auto"
                 :class="[isMobile ? 'p-2' : 'p-5 py-8 !px-12']"
+                class="max-w-screen-2xl m-auto"
               >
                 <Message
                   v-for="(item, index) of dataSources"
@@ -263,23 +268,23 @@
 
           <footer :class="footerClass">
             <div
-              class="w-full max-w-screen-2xl m-auto relative"
               :class="isMobile ? 'pb-2' : ' px-20 pb-10 '"
+              class="w-full max-w-screen-2xl m-auto relative"
             >
               <div class="flex items-center justify-between">
                 <n-input
                   ref="inputRef"
                   v-model:value="prompt"
+                  :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
+                  :placeholder="t('chat.placeholder')"
+                  class="!rounded-full px-2 py-1"
+                  size="large"
                   type="textarea"
                   @keypress="handleEnter"
-                  :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
-                  class="!rounded-full px-2 py-1"
-                  :placeholder="t('chat.placeholder')"
-                  size="large"
                 >
                   <template #prefix>
-                    <n-popselect placement="top" :options="menuOptions" trigger="click">
-                      <n-button text class="!mr-2" size="large">
+                    <n-popselect :options="menuOptions" placement="top" trigger="click">
+                      <n-button class="!mr-2" size="large" text>
                         <template #icon>
                           <SvgIcon icon="ion:attach" />
                         </template>
@@ -287,7 +292,7 @@
                     </n-popselect>
                   </template>
                   <template #suffix>
-                    <n-button text :loading="loading" @click="handleSubmit">
+                    <n-button :loading="loading" text @click="handleSubmit">
                       <template #icon>
                         <SvgIcon icon="mdi:sparkles-outline" />
                       </template>

@@ -25,6 +25,9 @@ spring:
 
 langchat:
   auth:
+    # client端新注册的用户是否开启操作权限，如果为false，client端新用户默认只有页面预览权限没有操作权限
+    # 需要在server端给指定用户授权后才能正常使用
+    aigc-reg-user-is-perms: true
     email:
       host: smtp.qq.com
       port: 465

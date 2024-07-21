@@ -1,11 +1,11 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcDocs;
 import cn.tycoding.langchat.aigc.entity.AigcKnowledge;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.aigc.service.AigcKnowledgeService;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -78,7 +78,7 @@ public class AigcKnowledgeController {
     }
 
     @PostMapping
-    @SaCheckPermission("aigc:knowledge:add")
+    @AigcPerm
     public R add(@RequestBody AigcKnowledge data) {
         data.setCreateTime(String.valueOf(System.currentTimeMillis()));
         kbService.save(data);
@@ -86,14 +86,14 @@ public class AigcKnowledgeController {
     }
 
     @PutMapping
-    @SaCheckPermission("aigc:knowledge:update")
+    @AigcPerm
     public R update(@RequestBody AigcKnowledge data) {
         kbService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @SaCheckPermission("aigc:knowledge:delete")
+    @AigcPerm
     public R delete(@PathVariable String id) {
         kbService.removeById(id);
         return R.ok();

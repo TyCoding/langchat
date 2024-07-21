@@ -88,10 +88,7 @@ function axios<T = any>({
           },
         });
       } else {
-        $dialog!.warning({
-          title: 'Tips',
-          content: 'You do not have operation permission, please contact the administrator',
-        });
+        $message!.warning('当前账号没有操作权限，请联系管理员授权');
       }
 
       return;

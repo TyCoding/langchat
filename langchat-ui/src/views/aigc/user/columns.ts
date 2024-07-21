@@ -25,6 +25,24 @@ export const columns: BasicColumn[] = [
     align: 'center',
   },
   {
+    title: '操作权限',
+    key: 'isPerms',
+    align: 'center',
+    width: 120,
+    render(row) {
+      return h(
+        NTag,
+        {
+          type: row.isPerms ? 'success' : 'error',
+          size: 'small',
+        },
+        {
+          default: () => (row.isPerms ? '可用' : '无权限'),
+        }
+      );
+    },
+  },
+  {
     title: '账号状态',
     key: 'status',
     align: 'center',
@@ -90,6 +108,23 @@ export const formSchemas: FormSchema[] = [
       placeholder: '请输入用户昵称',
     },
     rules: [{ required: true, message: '请输入用户昵称', trigger: ['blur'] }],
+  },
+  {
+    field: 'isPerms',
+    component: 'NRadioGroup',
+    label: '操作权限',
+    componentProps: {
+      options: [
+        {
+          label: '启用',
+          value: true,
+        },
+        {
+          label: '禁用',
+          value: false,
+        },
+      ],
+    },
   },
   {
     field: 'status',

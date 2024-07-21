@@ -60,6 +60,8 @@ public class AigcUser implements Serializable {
      */
     private Integer chatLimit;
 
+    private Boolean isPerms;
+
     /**
      * 状态 0锁定 1有效
      */

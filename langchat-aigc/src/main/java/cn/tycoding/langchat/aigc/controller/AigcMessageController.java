@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.aigc.entity.AigcMessage;
 import cn.tycoding.langchat.aigc.service.AigcMessageService;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -11,11 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author tycoding
@@ -45,7 +41,7 @@ public class AigcMessageController {
     }
 
     @DeleteMapping("/{id}")
-    @SaCheckPermission("aigc:message:delete")
+    @AigcPerm
     public R del(@PathVariable String id) {
         return R.ok(aigcMessageService.removeById(id));
     }

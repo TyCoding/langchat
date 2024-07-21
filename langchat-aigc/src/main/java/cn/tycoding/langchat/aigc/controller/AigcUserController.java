@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.aigc.entity.AigcUser;
 import cn.tycoding.langchat.aigc.service.AigcUserService;
@@ -54,24 +53,21 @@ public class AigcUserController {
     }
 
     @PostMapping
-    @ApiLog("新增用户")
-    @SaCheckPermission("aigc:user:add")
+    @ApiLog("新增客户端用户")
     public R<AigcUser> add(@RequestBody AigcUser data) {
         userService.save(data);
         return R.ok();
     }
 
     @PutMapping
-    @ApiLog("修改用户")
-    @SaCheckPermission("aigc:user:update")
+    @ApiLog("修改客户端用户")
     public R update(@RequestBody AigcUser data) {
         userService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @ApiLog("删除用户")
-    @SaCheckPermission("aigc:user:delete")
+    @ApiLog("删除客户端用户")
     public R delete(@PathVariable Long id) {
         AigcUser user = userService.getById(id);
         if (user != null) {

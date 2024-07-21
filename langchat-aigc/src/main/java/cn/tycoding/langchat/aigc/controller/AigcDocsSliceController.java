@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.aigc.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.aigc.entity.AigcDocsSlice;
 import cn.tycoding.langchat.aigc.mapper.AigcDocsSliceMapper;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -46,7 +46,7 @@ public class AigcDocsSliceController {
     }
 
     @PostMapping
-    @SaCheckPermission("aigc:docs:slice:add")
+    @AigcPerm
     public R add(@RequestBody AigcDocsSlice data) {
         data.setCreateTime(new Date());
         docsSliceMapper.insert(data);
@@ -54,14 +54,14 @@ public class AigcDocsSliceController {
     }
 
     @PutMapping
-    @SaCheckPermission("aigc:docs:slice:update")
+    @AigcPerm
     public R update(@RequestBody AigcDocsSlice data) {
         docsSliceMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @SaCheckPermission("aigc:docs:slice:delete")
+    @AigcPerm
     public R delete(@PathVariable String id) {
         docsSliceMapper.deleteById(id);
         return R.ok();

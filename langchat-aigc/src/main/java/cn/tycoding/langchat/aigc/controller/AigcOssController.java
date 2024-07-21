@@ -3,6 +3,7 @@ package cn.tycoding.langchat.aigc.controller;
 import cn.tycoding.langchat.aigc.entity.AigcOss;
 import cn.tycoding.langchat.aigc.service.AigcOssService;
 import cn.tycoding.langchat.aigc.utils.AigcAuthUtil;
+import cn.tycoding.langchat.common.annotation.AigcPerm;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class AigcOssController {
     }
 
     @PostMapping("/upload")
-//    @SaCheckPermission("aigc:oss:update")
+    @AigcPerm
     public R upload(MultipartFile file) {
         return R.ok(aigcOssService.upload(file));
     }

@@ -111,6 +111,7 @@ public class AigcAuthEndpoint {
                 .setPassword(AuthUtil.encode(props.getSaltKey(), data.getPassword()))
                 .setNickname(data.getEmail())
                 .setEmail(data.getEmail())
+                .setIsPerms(props.getAigcRegUserIsPerms())
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.save(user);
