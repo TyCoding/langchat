@@ -47,12 +47,16 @@
   async function onSubmit(values: any) {
     if (values !== false) {
       isShow.value = false;
-      if (isNullOrWhitespace(values.id)) {
-        await add(values);
+      const data = { ...values };
+      if (data.apiKey.indexOf('****')) {
+        data.apiKey = undefined;
+      }
+      if (isNullOrWhitespace(data.id)) {
+        await add(data);
         emit('reload');
         message.success('新增成功');
       } else {
-        await update(values);
+        await update(data);
         emit('reload');
         message.success('修改成功');
       }

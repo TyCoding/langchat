@@ -6,9 +6,3 @@ export function getPrompts(data: any) {
     data: data,
   });
 }
-
-export function getById(id: string) {
-  return http.get({
-    url: '/aigc/prompt/' + id,
-  });
-}

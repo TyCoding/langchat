@@ -15,7 +15,7 @@ public class AuthException extends RuntimeException {
     private final int code;
 
     public AuthException() {
-        super(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        super("没有操作权限");
         this.code = HttpStatus.UNAUTHORIZED.value();
     }
 
