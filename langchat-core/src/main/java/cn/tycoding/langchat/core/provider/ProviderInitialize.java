@@ -5,11 +5,13 @@ import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.core.consts.EmbedConst;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;
 import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
 import dev.langchain4j.model.dashscope.QwenStreamingChatModel;
+import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
@@ -43,6 +45,12 @@ public class ProviderInitialize implements ApplicationContextAware {
     }
 
     public void init() {
+        // delete embedding model
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OPENAI);
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANFAN);
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANWEN);
+
         List<AigcModel> list = aigcModelService.list();
         list.forEach(model -> {
             // Uninstall previously registered beans before registering them
@@ -195,7 +203,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .modelName(model.getModel())
                             .dimensions(model.getDimensions())
                             .build();
-                    contextHolder.registerBean("OpenAiEmbeddingModel", build);
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OPENAI, build);
                 }
 
                 if (ProviderEnum.AZURE_OPENAI.getModel().equals(model.getModelType())) {
@@ -204,7 +212,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .apiKey(model.getApiKey())
                             .deploymentName(model.getBaseUrl())
                             .build();
-                    contextHolder.registerBean("AzureOpenAiEmbeddingModel", build);
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI, build);
                 }
 
                 if (ProviderEnum.BAIDU.getModel().equals(model.getModelType())) {
@@ -214,7 +222,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .modelName(model.getModel())
                             .secretKey(model.getSecretKey())
                             .build();
-                    contextHolder.registerBean("QianfanEmbeddingModel", build);
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANFAN, build);
                 }
 
                 if (ProviderEnum.ALIBABA.getModel().equals(model.getModelType())) {
@@ -223,7 +231,16 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .apiKey(model.getApiKey())
                             .modelName(model.getModel())
                             .build();
-                    contextHolder.registerBean("QwenEmbeddingModel", build);
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANWEN, build);
+                }
+
+                if (ProviderEnum.OLLAMA.getModel().equals(model.getModelType())) {
+                    OllamaEmbeddingModel build = OllamaEmbeddingModel
+                            .builder()
+                            .baseUrl(model.getBaseUrl())
+                            .modelName(model.getModel())
+                            .build();
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OLLAMA, build);
                 }
             }
         });

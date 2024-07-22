@@ -1,6 +1,7 @@
 package cn.tycoding.langchat.core.provider;
 
 import cn.tycoding.langchat.biz.component.ProviderEnum;
+import cn.tycoding.langchat.core.consts.EmbedConst;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.azure.AzureOpenAiTokenizer;
@@ -34,17 +35,20 @@ public class EmbedProvider {
     }
 
     public EmbeddingModel embed() {
-        if (context.containsBean("OpenAiEmbeddingModel")) {
-            return (EmbeddingModel) context.getBean("OpenAiEmbeddingModel");
+        if (context.containsBean(EmbedConst.CLAZZ_NAME_OPENAI)) {
+            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OPENAI);
         }
-        if (context.containsBean("AzureOpenAiEmbeddingModel")) {
-            return (EmbeddingModel) context.getBean("AzureOpenAiEmbeddingModel");
+        if (context.containsBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI)) {
+            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
         }
-        if (context.containsBean("QianfanEmbeddingModel")) {
-            return (EmbeddingModel) context.getBean("QianfanEmbeddingModel");
+        if (context.containsBean(EmbedConst.CLAZZ_NAME_QIANFAN)) {
+            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_QIANFAN);
         }
-        if (context.containsBean("QwenEmbeddingModel")) {
-            return (EmbeddingModel) context.getBean("QwenEmbeddingModel");
+        if (context.containsBean(EmbedConst.CLAZZ_NAME_QIANWEN)) {
+            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_QIANWEN);
+        }
+        if (context.containsBean(EmbedConst.CLAZZ_NAME_OLLAMA)) {
+            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OLLAMA);
         }
         throw new RuntimeException("No matching embedding model information found, please check the model configuration.");
     }
