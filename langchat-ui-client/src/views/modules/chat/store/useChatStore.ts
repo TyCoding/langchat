@@ -14,7 +14,9 @@ import { getPrompts } from '@/api/chat';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      model: 'gpt-4o',
+      modelId: '',
+      modelName: '',
+      modelProvider: '',
       active: '',
       isEdit: '',
       isGoogleSearch: false,
@@ -118,7 +120,9 @@ export const useChatStore = defineStore('chat-store', {
         conversationId: this.curConversation?.id,
         role: role,
         message,
-        model: this.model,
+        modelId: this.modelId,
+        modelName: this.modelName,
+        modelProvider: this.modelProvider,
         createTime: formatToDateTime(new Date()),
       };
       this.messages.push(data);

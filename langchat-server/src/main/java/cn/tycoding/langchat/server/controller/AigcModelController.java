@@ -37,21 +37,21 @@ public class AigcModelController {
     @GetMapping("/getChatModels")
     public R<List<AigcModel>> getChatModels() {
         List<AigcModel> list = modelService.getChatModels();
-        list.forEach(this::hide);
+        list.forEach(i -> i.setApiKey(null));
         return R.ok(list);
     }
 
     @GetMapping("/getImageModels")
     public R<List<AigcModel>> getImageModels() {
         List<AigcModel> list = modelService.getImageModels();
-        list.forEach(this::hide);
+        list.forEach(i -> i.setApiKey(null));
         return R.ok(list);
     }
 
     @GetMapping("/getEmbeddingModels")
     public R<List<AigcModel>> getEmbeddingModels() {
         List<AigcModel> list = modelService.getEmbeddingModels();
-        list.forEach(this::hide);
+        list.forEach(i -> i.setApiKey(null));
         return R.ok(list);
     }
 

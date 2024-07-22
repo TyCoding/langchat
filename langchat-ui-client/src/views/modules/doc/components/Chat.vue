@@ -12,8 +12,8 @@
   import { t } from '@/locales';
   import Header from '@/views/modules/chat/Header.vue';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
-  // @ts-ignore
-  import { modelList } from '@/api/models/index.d.ts';
+  import { useChatStore } from '@/views/modules/chat/store/useChatStore';
+  import ModelProvider from '@/views/modules/common/ModelProvider.vue';
 
   const { isMobile } = useBasicLayout();
   const emits = defineEmits(['focus-active']);
@@ -23,6 +23,7 @@
   const isGoogleSearch = ref(false);
   const loading = ref(false);
   const docStore = useDocStore();
+  const chatStore = useChatStore();
 
   function init() {
     messages.value = docStore.messages as any;
@@ -93,7 +94,9 @@
         {
           conversationId: docStore.file?.id,
           message: message.value,
-          model: model.value,
+          modelId: chatStore.modelId,
+          modelName: chatStore.modelName,
+          modelProvider: chatStore.modelProvider,
           isGoogleSearch: isGoogleSearch.value,
         },
         ({ event }) => {
@@ -153,7 +156,8 @@
       <div
         class="relative flex items-center justify-between min-w-0 overflow-hidden h-12 ml-2 mr-2 gap-2"
       >
-        <n-select v-model:value="model" :options="modelList" class="!w-[160px]" size="small" />
+        <ModelProvider />
+
         <n-tag
           v-model:checked="isGoogleSearch"
           :bordered="false"

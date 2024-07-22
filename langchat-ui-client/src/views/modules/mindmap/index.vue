@@ -6,8 +6,7 @@
   import { genMindMap } from '@/api/chat';
   import { isBlank } from '@/utils/is';
   import { t } from '@/locales';
-  // @ts-ignore
-  import { modelList } from '@/api/models/index.d.ts';
+  import ModelProvider from '@/views/modules/common/ModelProvider.vue';
 
   const model = ref('gpt-4o');
   const ms = useMessage();
@@ -48,7 +47,8 @@
     >
       <div class="px-4 pt-2 flex items-center justify-between">
         <div>{{ t('mindmap.des') }}</div>
-        <n-select size="small" v-model:value="model" :options="modelList" class="!w-[140px]" />
+
+        <ModelProvider />
       </div>
       <Sider :genText="genText" :loading="loading" @case="onCase" @generate="onGenerate" />
     </n-layout-sider>

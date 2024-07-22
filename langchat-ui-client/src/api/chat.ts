@@ -38,6 +38,12 @@ export function getPrompts(data: any) {
   });
 }
 
+export function getChatModels() {
+  return http.get({
+    url: '/aigc/model/getChatModels',
+  });
+}
+
 export function genWrite(
   data: ChatR,
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
