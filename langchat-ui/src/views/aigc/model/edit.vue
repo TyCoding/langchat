@@ -48,7 +48,8 @@
     if (values !== false) {
       isShow.value = false;
       const data = { ...values };
-      if (data.apiKey.indexOf('****')) {
+      console.log(data, data.apiKey.indexOf('****'));
+      if (data.apiKey.indexOf('****') > 0) {
         data.apiKey = undefined;
       }
       if (isNullOrWhitespace(data.id)) {

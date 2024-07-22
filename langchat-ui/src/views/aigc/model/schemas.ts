@@ -96,6 +96,7 @@ export const openaiSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.OPENAI),
     },
   },
@@ -112,6 +113,7 @@ export const azureOpenaiSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.AZURE_OPENAI),
     },
   },
@@ -180,6 +182,7 @@ export const baiduSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.BAIDU),
     },
   },
@@ -203,6 +206,7 @@ export const alibabaSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.ALIBABA),
     },
   },
@@ -219,6 +223,7 @@ export const zhipuSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.ZHIPU),
     },
   },
@@ -235,6 +240,7 @@ export const imageSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型类型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: [
         {
           label: 'openai',
@@ -261,6 +267,7 @@ export const imageSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      filterable: true,
       options: getModels(ProviderEnum.TEXT_IMAGE),
     },
   },

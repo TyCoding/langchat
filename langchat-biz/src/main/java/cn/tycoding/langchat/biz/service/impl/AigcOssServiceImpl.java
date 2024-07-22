@@ -1,16 +1,19 @@
 package cn.tycoding.langchat.biz.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.mapper.AigcOssMapper;
 import cn.tycoding.langchat.biz.service.AigcOssService;
-import cn.tycoding.langchat.common.dto.OssR;
-import cn.tycoding.langchat.common.properties.OssProps;
-import cn.tycoding.langchat.common.utils.OssUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 /**
  * @author tycoding
@@ -20,13 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class AigcOssServiceImpl extends ServiceImpl<AigcOssMapper, AigcOss> implements AigcOssService {
 
-    private final OssProps ossProps;
+    private final FileStorageService fileStorageService;
 
     @Override
     public AigcOss upload(MultipartFile file, String userId) {
-        OssR ossR = OssUtil.transfer(ossProps, file);
-        AigcOss oss = new AigcOss();
-        BeanUtils.copyProperties(ossR, oss);
+        FileInfo info = fileStorageService.of(file)
+                .setPath(DateUtil.format(new Date(), DatePattern.PURE_DATE_PATTERN))
+                .upload();
+        AigcOss oss = BeanUtil.copyProperties(info, AigcOss.class);
+        oss.setOssId(info.getId());
         oss.setUserId(userId);
         this.save(oss);
         return oss;

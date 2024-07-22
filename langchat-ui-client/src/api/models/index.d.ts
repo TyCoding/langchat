@@ -48,19 +48,6 @@ export interface ChatR {
   length?: string;
 }
 
-export interface Oss {
-  id?: number;
-  client?: number;
-  fileName?: string;
-  targetName?: string;
-  bucket?: string;
-  type?: string;
-  size?: string;
-  url?: string;
-  des?: string;
-  createTime?: string;
-}
-
 export interface ImageR {
   message?: string;
   model?: string;

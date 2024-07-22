@@ -1,6 +1,5 @@
 package cn.tycoding.langchat.core;
 
-import cn.tycoding.langchat.common.properties.OssProps;
 import cn.tycoding.langchat.core.properties.LangChatProps;
 import cn.tycoding.langchat.core.properties.chat.AzureOpenaiProps;
 import cn.tycoding.langchat.core.properties.chat.GeminiProps;
@@ -27,7 +26,6 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties({
-        OssProps.class,
         LangChatProps.class,
         OllamaProps.class,
         OpenaiProps.class,

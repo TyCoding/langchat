@@ -27,7 +27,6 @@
 
   function init() {
     messages.value = docStore.messages as any;
-    console.log('xxx', message.value);
   }
 
   function handleFocus() {

@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  * @author tycoding
  * @since 2024/1/30
  */
-@RequestMapping("/client/chat")
+@RequestMapping("/client")
 @RestController
 @AllArgsConstructor
 public class ClientChatEndpoint {
@@ -33,8 +33,8 @@ public class ClientChatEndpoint {
     private final AigcOssService aigcOssService;
     private final ClientEmbeddingService clientEmbeddingService;
 
-    @PostMapping
     @ClientPerm
+    @PostMapping("/chat")
     public Object chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -78,9 +78,9 @@ public class ClientChatEndpoint {
         AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
         clientEmbeddingService.embedDocs(
                 new ChatReq()
-                        .setDocsName(oss.getTargetName())
+                        .setDocsName(oss.getOriginalFilename())
                         .setKnowledgeId(oss.getId())
-                        .setPath(oss.getPath()));
+                        .setUrl(oss.getUrl()));
         return R.ok(oss);
     }
 
@@ -94,7 +94,7 @@ public class ClientChatEndpoint {
     }
 
     @ClientPerm
-    @PostMapping("/translate")
+    @PostMapping("/chat/translate")
     public SseEmitter translate(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -104,7 +104,7 @@ public class ClientChatEndpoint {
     }
 
     @ClientPerm
-    @PostMapping("/write")
+    @PostMapping("/chat/write")
     public SseEmitter write(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
@@ -114,14 +114,14 @@ public class ClientChatEndpoint {
     }
 
     @ClientPerm
-    @PostMapping("/mindmap")
+    @PostMapping("/chat/mindmap")
     public R mindmap(@RequestBody ChatReq req) {
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.MINDMAP));
         return R.ok(new ChatRes(clientChatService.text(req)));
     }
 
     @ClientPerm
-    @PostMapping("/image")
+    @PostMapping("/chat/image")
     public R image(@RequestBody ImageR req) {
         req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.IMAGE));
         return R.ok(clientChatService.image(req));

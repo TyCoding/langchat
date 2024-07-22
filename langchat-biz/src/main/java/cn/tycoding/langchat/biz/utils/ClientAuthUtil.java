@@ -1,7 +1,6 @@
 package cn.tycoding.langchat.biz.utils;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.tycoding.langchat.biz.entity.AigcUser;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.AuthException;
@@ -49,7 +48,7 @@ public class ClientAuthUtil {
      */
     public static AigcUser getUserInfo() {
         try {
-            return (AigcUser) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
+            return (AigcUser) ClientStpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
             throw new AuthException();
         }

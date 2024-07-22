@@ -75,7 +75,7 @@ public class EmbeddingEndpoint {
     public R docs(MultipartFile file, @PathVariable String knowledgeId) {
         AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
         AigcDocs data = new AigcDocs()
-                .setName(oss.getFileName())
+                .setName(oss.getOriginalFilename())
                 .setSliceStatus(false)
                 .setSize(file.getSize())
                 .setType(DocsTypeEnum.UPLOAD.name())
@@ -83,7 +83,7 @@ public class EmbeddingEndpoint {
         aigcKnowledgeService.addDocs(data);
 
         // embedding docs
-        embeddingService.embedDocsSlice(data, oss.getPath());
+        embeddingService.embedDocsSlice(data, oss.getUrl());
         return R.ok();
     }
 
@@ -93,7 +93,7 @@ public class EmbeddingEndpoint {
         byte[] bytes = file.getBytes();
         AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
         AigcDocs data = new AigcDocs()
-                .setName(oss.getFileName())
+                .setName(oss.getOriginalFilename())
                 .setSliceStatus(true)
                 .setSize(file.getSize())
                 .setType(DocsTypeEnum.UPLOAD.name())

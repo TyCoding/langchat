@@ -43,12 +43,12 @@ public class EmbeddingServiceImpl implements EmbeddingService {
 
     @Async
     @Override
-    public void embedDocsSlice(AigcDocs data, String path) {
+    public void embedDocsSlice(AigcDocs data, String url) {
         List<EmbeddingR> list = langDocService.embeddingDocs(
                 new ChatReq()
                         .setDocsName(data.getName())
                         .setKnowledgeId(data.getKnowledgeId())
-                        .setPath(path));
+                        .setUrl(url));
         list.forEach(i -> {
             aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
                     .setKnowledgeId(data.getKnowledgeId())

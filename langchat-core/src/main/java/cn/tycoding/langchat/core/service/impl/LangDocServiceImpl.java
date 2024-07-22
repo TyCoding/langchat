@@ -13,6 +13,7 @@ import cn.tycoding.langchat.core.tools.StructTools;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
+import dev.langchain4j.data.document.loader.UrlDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
@@ -69,7 +70,12 @@ public class LangDocServiceImpl implements LangDocService {
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
         EmbeddingModel model = embedProvider.embed();
 
-        Document document = FileSystemDocumentLoader.loadDocument(req.getPath(), new ApacheTikaDocumentParser());
+        Document document;
+        if (req.getUrl().startsWith("http")) {
+            document = UrlDocumentLoader.load(req.getUrl(), new ApacheTikaDocumentParser());
+        } else {
+            document = FileSystemDocumentLoader.loadDocument(req.getUrl(), new ApacheTikaDocumentParser());
+        }
         document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());
 
         DocumentSplitter splitter = EmbedProvider.splitter(req.getModelName(), req.getModelProvider());

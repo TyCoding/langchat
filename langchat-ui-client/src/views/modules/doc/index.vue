@@ -1,34 +1,33 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { ref } from 'vue';
   import Chat from './components/Chat.vue';
   import FileList from './components/FileList.vue';
   import { t } from '@/locales';
   import FileView from './components/FileView.vue';
   import { useDocStore } from '@/views/modules/doc/store';
-  import { Oss } from '@/api/models';
 
   const chatRef = ref();
   const docStore = useDocStore();
 
-  async function onSelect(item: Oss) {
+  async function onSelect(item: any) {
     await docStore.onSelect(item);
     chatRef.value.init();
   }
 </script>
 
 <template>
-  <n-layout has-sider class="h-full w-full">
+  <n-layout class="h-full w-full" has-sider>
     <n-layout-sider
       :collapsed-width="0"
-      collapse-mode="width"
       :width="280"
-      show-trigger="arrow-circle"
       bordered
+      collapse-mode="width"
+      show-trigger="arrow-circle"
     >
       <FileList @select="onSelect" />
     </n-layout-sider>
     <div class="w-full h-full">
-      <n-split direction="horizontal" class="h-full" :default-size="0.6">
+      <n-split :default-size="0.6" class="h-full" direction="horizontal">
         <template #1>
           <div class="w-full h-full">
             <div
@@ -39,8 +38,8 @@
             </div>
             <n-empty
               v-if="docStore.file.url === undefined"
-              class="h-full w-full justify-center"
               :description="t('doc.previewEmpty')"
+              class="h-full w-full justify-center"
             />
             <template v-else>
               <FileView :url="docStore.file.url" />
@@ -57,4 +56,4 @@
   </n-layout>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

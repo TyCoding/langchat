@@ -8,7 +8,6 @@ import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,12 +29,6 @@ public class ClientOssController {
                 .orderByDesc(AigcOss::getCreateTime)
         );
         return R.ok(list);
-    }
-
-    @PostMapping("/upload")
-    @ClientPerm
-    public R upload(MultipartFile file) {
-        return R.ok(aigcOssService.upload(file, ClientAuthUtil.getUserId()));
     }
 
     @PutMapping

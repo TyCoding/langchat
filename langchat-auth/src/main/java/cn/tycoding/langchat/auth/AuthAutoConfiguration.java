@@ -1,7 +1,6 @@
 package cn.tycoding.langchat.auth;
 
 import cn.tycoding.langchat.common.properties.AuthProps;
-import cn.tycoding.langchat.common.properties.OssProps;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2024/1/5
  */
 @Configuration
-@EnableConfigurationProperties({AuthProps.class, OssProps.class})
+@EnableConfigurationProperties({AuthProps.class})
 public class AuthAutoConfiguration {
 
 }

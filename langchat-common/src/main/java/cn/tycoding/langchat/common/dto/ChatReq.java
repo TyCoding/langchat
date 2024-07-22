@@ -37,7 +37,7 @@ public class ChatReq {
 
     private String docsId;
 
-    private String path;
+    private String url;
 
     private String role;
 

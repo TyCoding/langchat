@@ -1,5 +1,5 @@
 import { http } from '@/utils/request';
-import { ChatR, ImageR, Oss } from '@/api/models';
+import { ChatR, ImageR } from '@/api/models';
 import { AxiosProgressEvent } from 'axios';
 
 /**
@@ -25,7 +25,7 @@ export function docsChat(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: `/client/chat/docs/${knowledgeId}`,
+    url: `/client/docs/${knowledgeId}`,
     data,
     onDownloadProgress: onDownloadProgress,
   });
@@ -65,7 +65,7 @@ export function genChart(data: ChatR) {
 /**
  * @description 生成图片
  */
-export function genImage(data: ImageR): Promise<Oss> {
+export function genImage(data: ImageR) {
   return http.post({
     url: '/client/chat/image',
     data: data,
