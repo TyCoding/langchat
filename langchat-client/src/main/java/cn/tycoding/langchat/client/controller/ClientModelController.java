@@ -17,7 +17,7 @@ import java.util.List;
  * @author tycoding
  * @since 2024/1/19
  */
-@RequestMapping("/client/prompt")
+@RequestMapping("/client")
 @RestController
 @AllArgsConstructor
 public class ClientModelController {
