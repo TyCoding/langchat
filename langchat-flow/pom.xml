@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-aigc</artifactId>
+            <artifactId>langchat-biz</artifactId>
         </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>

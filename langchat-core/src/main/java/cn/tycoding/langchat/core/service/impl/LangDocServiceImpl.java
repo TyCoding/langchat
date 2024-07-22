@@ -1,8 +1,8 @@
 package cn.tycoding.langchat.core.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.aigc.service.AigcExcelColService;
-import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
+import cn.tycoding.langchat.biz.service.AigcExcelColService;
+import cn.tycoding.langchat.biz.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.provider.EmbedProvider;

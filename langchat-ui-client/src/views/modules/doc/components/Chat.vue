@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { chat } from '@/api/docs';
+  import { docsChat } from '@/api/chat';
   import { v4 as uuid } from 'uuid';
   import MarkdownIt from 'markdown-it';
   import hljs from 'highlight.js';
@@ -88,7 +88,7 @@
         createTime: 0,
       });
       const items = messages.value.filter((i) => i.id == id);
-      await chat(
+      await docsChat(
         docStore.file?.id,
         {
           conversationId: docStore.file?.id,
@@ -147,19 +147,19 @@
 <template>
   <div class="container relative h-full card-shadow rounded-xl mb-2 flex flex-col">
     <header
-      class="sticky z-30 border-b dark:border-neutral-800 border-l-0 bg-white/80 dark:bg-black/20 backdrop-blur"
       :class="isMobile ? 'px-1' : 'px-2'"
+      class="sticky z-30 border-b dark:border-neutral-800 border-l-0 bg-white/80 dark:bg-black/20 backdrop-blur"
     >
       <div
         class="relative flex items-center justify-between min-w-0 overflow-hidden h-12 ml-2 mr-2 gap-2"
       >
-        <n-select size="small" v-model:value="model" :options="modelList" class="!w-[160px]" />
+        <n-select v-model:value="model" :options="modelList" class="!w-[160px]" size="small" />
         <n-tag
-          checkable
           v-model:checked="isGoogleSearch"
           :bordered="false"
-          type="primary"
+          checkable
           class="border"
+          type="primary"
         >
           <div class="text-sm flex items-center gap-1">
             <SvgIcon icon="devicon:google" />
@@ -172,22 +172,22 @@
 
     <div
       v-if="docStore.file.id"
-      class="pt-2 left-0 w-full z-10"
       :class="isMobile ? 'mb-2' : 'mb-6'"
+      class="pt-2 left-0 w-full z-10"
     >
       <div class="px-8 flex justify-center items-center space-x-2 w-full">
         <n-input
-          :disabled="loading"
           v-model:value="message"
+          :autosize="{ minRows: 1, maxRows: 3 }"
+          :disabled="loading"
+          :placeholder="t('chat.placeholder')"
+          class="!rounded-full px-2 py-1"
           type="textarea"
           @focus="handleFocus"
           @keypress="handleEnter"
-          :autosize="{ minRows: 1, maxRows: 3 }"
-          class="!rounded-full px-2 py-1"
-          :placeholder="t('chat.placeholder')"
         >
           <template #suffix>
-            <n-button text :loading="loading" @click="handleSubmit">
+            <n-button :loading="loading" text @click="handleSubmit">
               <template #icon>
                 <SvgIcon icon="mdi:sparkles-outline" />
               </template>
@@ -199,7 +199,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   ::v-deep(.markdown-body) {
     background-color: transparent !important;
     font-size: inherit;

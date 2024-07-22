@@ -6,7 +6,7 @@ import { TokenInfo, User } from '@/api/models';
  */
 export function getEmailCode(email: string) {
   return http.get({
-    url: `/aigc/auth/email/code?email=${email}`,
+    url: `/client/auth/email/code?email=${email}`,
   });
 }
 
@@ -15,43 +15,34 @@ export function getEmailCode(email: string) {
  */
 export function emailRegister(data: any) {
   return http.post({
-    url: `/aigc/auth/email/register`,
+    url: `/client/auth/email/register`,
     data,
   });
 }
 
-/**
- * @description: 用户登录
- */
 export function login(data: any): Promise<TokenInfo> {
   return http.post({
-    url: `/aigc/auth/login`,
+    url: `/client/auth/login`,
     data,
   });
 }
 
-/**
- * @description: 用户登录
- */
 export function info(): Promise<User> {
   return http.get({
-    url: `/aigc/auth/info`,
+    url: `/client/auth/info`,
   });
 }
 
 export function forget(data: any) {
   return http.post({
-    url: `/aigc/auth/forget`,
+    url: `/client/auth/forget`,
     method: 'POST',
     data,
   });
 }
 
-/**
- * @description: 用户登出
- */
 export function logout() {
   return http.delete({
-    url: '/aigc/auth/logout',
+    url: '/client/auth/logout',
   });
 }

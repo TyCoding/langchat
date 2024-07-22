@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.core.provider;
 
-import cn.tycoding.langchat.aigc.component.ProviderRefreshEvent;
+import cn.tycoding.langchat.biz.component.ProviderRefreshEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

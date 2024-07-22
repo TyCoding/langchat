@@ -281,7 +281,7 @@ CREATE TABLE `aigc_oss` (
 -- Records of aigc_oss
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_oss` (`id`, `user_id`, `file_name`, `target_name`, `bucket`, `url`, `path`, `type`, `size`, `create_time`) VALUES ('1c6883ff0f5f005f5c72700fd4423ad3', '1', 'story-about-happy-carrot', '4a4d7dffe42ccc67ee0a4560901e83db.pdf', '/20240606', 'http://127.0.0.1/20240606/4a4d7dffe42ccc67ee0a4560901e83db.pdf', '/opt/homebrew/var/www/20240606/4a4d7dffe42ccc67ee0a4560901e83db.pdf', 'pdf', 35359, '2024-06-12 12:27:30');
+INSERT INTO `aigc_oss` (`id`, `user_id`, `file_name`, `target_name`, `bucket`, `url`, `path`, `type`, `size`, `create_time`) VALUES ('1c6883ff0f5f005f5c72700fd4423ad3', '1', 'story-about-happy-carrot', 'story-about-happy-carrot.pdf', '/20240606', 'http://cdn.tycoding.cn/story-about-happy-carrot.pdf', '/opt/homebrew/var/www/20240606/story-about-happy-carrot.pdf', 'pdf', 35359, '2024-06-12 12:27:30');
 COMMIT;
 
 -- ----------------------------

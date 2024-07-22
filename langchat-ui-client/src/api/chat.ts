@@ -10,9 +10,31 @@ export function chat(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: '/aigc/chat',
+    url: '/client/chat',
     data,
     onDownloadProgress: onDownloadProgress,
+  });
+}
+
+/**
+ * @description: Doc聊天
+ */
+export function docsChat(
+  knowledgeId: string,
+  data: any,
+  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
+) {
+  return http.post({
+    url: `/client/chat/docs/${knowledgeId}`,
+    data,
+    onDownloadProgress: onDownloadProgress,
+  });
+}
+
+export function getPrompts(data: any) {
+  return http.get({
+    url: '/client/prompt/list',
+    data: data,
   });
 }
 
@@ -21,7 +43,7 @@ export function genWrite(
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
-    url: `/aigc/chat/write`,
+    url: `/client/chat/write`,
     data: data,
     onDownloadProgress: onDownloadProgress,
   });
@@ -29,7 +51,7 @@ export function genWrite(
 
 export function genChart(data: ChatR) {
   return http.post({
-    url: '/aigc/chat/chart',
+    url: '/client/chat/chart',
     data: data,
   });
 }
@@ -39,7 +61,7 @@ export function genChart(data: ChatR) {
  */
 export function genImage(data: ImageR): Promise<Oss> {
   return http.post({
-    url: '/aigc/chat/image',
+    url: '/client/chat/image',
     data: data,
   });
 }
@@ -49,7 +71,7 @@ export function genImage(data: ImageR): Promise<Oss> {
  */
 export function genMindMap(data: ChatR) {
   return http.post({
-    url: '/aigc/chat/mindmap',
+    url: '/client/chat/mindmap',
     data: data,
   });
 }

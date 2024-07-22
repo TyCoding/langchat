@@ -9,7 +9,7 @@ import {
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
 import { toRaw } from 'vue';
-import { getPrompts } from '@/api/prompt';
+import { getPrompts } from '@/api/chat';
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>

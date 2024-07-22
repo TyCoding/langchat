@@ -1,9 +1,9 @@
 package cn.tycoding.langchat.core.provider;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.aigc.component.ProviderEnum;
-import cn.tycoding.langchat.aigc.entity.AigcModel;
-import cn.tycoding.langchat.aigc.service.AigcModelService;
+import cn.tycoding.langchat.biz.component.ProviderEnum;
+import cn.tycoding.langchat.biz.entity.AigcModel;
+import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;

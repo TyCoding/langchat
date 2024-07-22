@@ -33,7 +33,8 @@
     <modules>
         <module>langchat-common</module>
         <module>langchat-core</module>
-        <module>langchat-aigc</module>
+        <module>langchat-client</module>
+        <module>langchat-biz</module>
         <module>langchat-server</module>
         <module>langchat-upms</module>
         <module>langchat-auth</module>
@@ -55,7 +56,12 @@
             </dependency>
             <dependency>
                 <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-aigc</artifactId>
+                <artifactId>langchat-biz</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tycoding</groupId>
+                <artifactId>langchat-client</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

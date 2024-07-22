@@ -1,10 +1,10 @@
 package cn.tycoding.langchat.core.tools;
 
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.aigc.entity.AigcExcelCol;
-import cn.tycoding.langchat.aigc.entity.AigcExcelRow;
-import cn.tycoding.langchat.aigc.service.AigcExcelColService;
-import cn.tycoding.langchat.aigc.service.AigcExcelRowService;
+import cn.tycoding.langchat.biz.entity.AigcExcelCol;
+import cn.tycoding.langchat.biz.entity.AigcExcelRow;
+import cn.tycoding.langchat.biz.service.AigcExcelColService;
+import cn.tycoding.langchat.biz.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import dev.langchain4j.agent.tool.Tool;

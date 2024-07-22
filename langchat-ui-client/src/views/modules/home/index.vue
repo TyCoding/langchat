@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { SvgIcon } from '@/components/common';
   import Typed from 'typed.js';
   import CardList from './components/CardList.vue';
   import { Bot } from '@/api/models';
-  import { getPrompts } from '@/api/prompt';
+  import { getPrompts } from '@/api/chat';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
 
@@ -42,25 +42,25 @@
           </div>
 
           <div class="flex flex-wrap gap-2 mt-4 mb-8">
-            <n-button @click="router.push({ name: 'Chat' })" type="success" secondary round>
+            <n-button round secondary type="success" @click="router.push({ name: 'Chat' })">
               <template #icon>
                 <SvgIcon icon="bx:chat" />
               </template>
               {{ t('home.chat') }}
             </n-button>
-            <n-button @click="router.push({ name: 'Image' })" type="success" secondary round>
+            <n-button round secondary type="success" @click="router.push({ name: 'Image' })">
               <template #icon>
                 <SvgIcon icon="radix-icons:image" />
               </template>
               {{ t('home.image') }}
             </n-button>
-            <n-button @click="router.push({ name: 'Doc' })" type="success" secondary round>
+            <n-button round secondary type="success" @click="router.push({ name: 'Doc' })">
               <template #icon>
                 <SvgIcon icon="mingcute:doc-line" />
               </template>
               {{ t('home.doc') }}
             </n-button>
-            <n-button @click="router.push({ name: 'Chart' })" type="success" secondary round>
+            <n-button round secondary type="success" @click="router.push({ name: 'Chart' })">
               <template #icon>
                 <SvgIcon icon="fluent:data-area-24-regular" />
               </template>
@@ -72,15 +72,15 @@
         <n-input
           v-model:value="title"
           :placeholder="t('home.search')"
-          @keyup.enter="fetchData"
           round
+          @keyup.enter="fetchData"
         >
           <template #suffix>
             <SvgIcon class="text-lg cursor-pointer" icon="mingcute:search-line" />
           </template>
         </n-input>
 
-        <n-spin size="large" :show="loading">
+        <n-spin :show="loading" size="large">
           <CardList :list="prompts" />
         </n-spin>
       </div>
@@ -88,7 +88,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   .grid-mask {
     height: 100%;
     background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.13) 0.8px, transparent 0);

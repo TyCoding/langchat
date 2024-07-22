@@ -1,6 +1,6 @@
 package cn.tycoding.langchat.core.provider;
 
-import cn.tycoding.langchat.aigc.component.ProviderEnum;
+import cn.tycoding.langchat.biz.component.ProviderEnum;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.azure.AzureOpenAiTokenizer;
