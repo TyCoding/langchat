@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  langchat:
+    image: registry.cn-beijing.aliyuncs.com/langchat/langchat
+    restart: always
+    ports:
+      - 8100:8100
+    volumes:
+      - ./logs/:/app/logs
+    networks:
+      - langchat-net
+
+  langchat-ui:
+    image: registry.cn-beijing.aliyuncs.com/langchat/langchat-ui
+    restart: always
+    ports:
+      - 3010:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - langchat-net
+
+  langchat-client:
+    image: registry.cn-beijing.aliyuncs.com/langchat/langchat-client
+    restart: always
+    ports:
+      - 3011:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - langchat-net
+
+  langchat-mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password --skip-name-resolve
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./docs/langchat.sql:/docker-entrypoint-initdb.d/langchat.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    restart: always
+    mem_limit: 512m
+    networks:
+      - langchat-net
+
+  langchat-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis_data:/data
+    restart: always
+    command: redis-server
+    networks:
+      - langchat-net
+
+  langchat-pgvector:
+    image: registry.cn-beijing.aliyuncs.com/langchat/pgvector
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_DB=langchat
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./docs/pgvector/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - langchat-net
+
+networks:
+  langchat-net:
+    driver: bridge

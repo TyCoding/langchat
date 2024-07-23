@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  langchat:
+    image: registry.cn-beijing.aliyuncs.com/langchat/langchat
+    restart: always
+    ports:
+      - 8100:8100
+    volumes:
+      - ./logs/:/app/logs
+    networks:
+      - langchat-net
+
+networks:
+  langchat-net:
+    driver: bridge

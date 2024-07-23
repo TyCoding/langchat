@@ -4,7 +4,7 @@
   import { v4 as uuidv4 } from 'uuid';
   import { chat } from '@/api/chat';
   import { Message as AiMessage } from '@/typings/chat';
-  import Message from './message/message.vue';
+  import Message from './message/Message.vue';
   import Sider from './sider/index.vue';
   import { useDialog } from 'naive-ui';
   import { useBasicLayout } from '@/hooks/useBasicLayout';

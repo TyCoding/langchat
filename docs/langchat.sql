@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS langchat;
+USE langchat;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
