@@ -1,7 +1,9 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -44,18 +46,24 @@ public class AigcDocsController {
     }
 
     @PostMapping
+    @ApiLog("新增文档")
+    @SaCheckPermission("aigc:docs:add")
     public R add(@RequestBody AigcDocs data) {
         docsMapper.insert(data);
         return R.ok();
     }
 
     @PutMapping
+    @ApiLog("修改文档")
+    @SaCheckPermission("aigc:docs:update")
     public R update(@RequestBody AigcDocs data) {
         docsMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除文档")
+    @SaCheckPermission("aigc:docs:delete")
     public R delete(@PathVariable String id) {
         docsMapper.deleteById(id);
         return R.ok();

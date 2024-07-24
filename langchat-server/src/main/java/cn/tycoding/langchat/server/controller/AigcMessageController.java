@@ -1,8 +1,10 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -40,6 +42,8 @@ public class AigcMessageController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除会话消息")
+    @SaCheckPermission("aigc:message:delete")
     public R del(@PathVariable String id) {
         return R.ok(aigcMessageService.removeById(id));
     }

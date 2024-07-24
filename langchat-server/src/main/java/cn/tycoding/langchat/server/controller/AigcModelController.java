@@ -1,9 +1,11 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.component.ProviderRefreshEvent;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -79,6 +81,8 @@ public class AigcModelController {
     }
 
     @PostMapping
+    @ApiLog("添加模型")
+    @SaCheckPermission("aigc:model:add")
     public R add(@RequestBody AigcModel data) {
         modelService.save(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -86,6 +90,8 @@ public class AigcModelController {
     }
 
     @PutMapping
+    @ApiLog("修改模型")
+    @SaCheckPermission("aigc:model:update")
     public R update(@RequestBody AigcModel data) {
         modelService.updateById(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
@@ -93,6 +99,8 @@ public class AigcModelController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除模型")
+    @SaCheckPermission("aigc:model:delete")
     public R delete(@PathVariable String id) {
         modelService.removeById(id);
 

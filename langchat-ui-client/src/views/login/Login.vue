@@ -14,8 +14,8 @@
   const router = useRouter();
 
   const form = reactive({
-    username: '',
-    password: '',
+    username: 'langchat@outlook.com',
+    password: '123456',
   });
 
   const handleSubmit = (e: any) => {

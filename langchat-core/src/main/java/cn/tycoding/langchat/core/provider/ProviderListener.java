@@ -19,7 +19,8 @@ public class ProviderListener {
 
     @EventListener
     public void providerEvent(ProviderRefreshEvent event) {
-        log.info("refresh provider beans");
+        log.info("refresh provider beans begin......");
         providerInitialize.init();
+        log.info("refresh provider beans success......");
     }
 }

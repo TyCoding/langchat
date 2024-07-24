@@ -3,6 +3,7 @@ import request from './axios';
 import { router } from '@/router';
 import { useUserStore } from '@/store';
 import { isNullOrWhitespace } from '@/utils/is';
+import { t } from '@/locales';
 
 export interface HttpOption {
   url: string;
@@ -78,19 +79,20 @@ function axios<T = any>({
       // await router.push({ name: 'Login' });
 
       if (isNullOrWhitespace(userStore.token)) {
+        $dialog!.destroyAll();
         $dialog!.warning({
-          title: 'Tips',
-          content: 'You have not logged in or the login is invalid',
-          positiveText: 'Login',
-          negativeText: 'Cancel',
+          title: t('login.title'),
+          content: t('login.content'),
+          positiveText: t('login.positiveText'),
+          negativeText: t('login.negativeText'),
           onPositiveClick: async () => {
             await router.push({ name: 'Login' });
           },
         });
+        throw new Error('unthorization');
       } else {
         $message!.warning('当前账号没有操作权限，请联系管理员授权');
       }
-
       return;
     }
 

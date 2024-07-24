@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { computed } from 'vue';
   import { useDialog } from 'naive-ui';
@@ -25,18 +25,8 @@
   });
   const languageOptions: { label: string; key: Language; value: Language }[] = [
     { label: '简体中文', key: 'zh-CN', value: 'zh-CN' },
-    { label: '繁體中文', key: 'zh-TW', value: 'zh-TW' },
     { label: 'English', key: 'en-US', value: 'en-US' },
-    { label: '한국어', key: 'ko-KR', value: 'ko-KR' },
-    { label: 'Русский язык', key: 'ru-RU', value: 'ru-RU' },
   ];
-
-  const routerName = computed({
-    get() {
-      return router.currentRoute.value.name;
-    },
-    set() {},
-  });
 
   async function onLogout() {
     await userStore.logout();
@@ -61,15 +51,15 @@
       <div class="flex flex-col gap-3 border-neutral-800 pt-3 pl-3 pr-3">
         <n-button
           v-for="item in routesConst"
-          text
           :key="item.name"
-          @click="router.push({ name: item.name })"
           :class="router.currentRoute.value.name == item.name ? '!text-[#7fe7c4]' : ''"
+          text
+          @click="router.push({ name: item.name })"
         >
           <div
             class="rounded-[10px] bg-white dark:bg-[#34373f] w-[60px] pt-2 pb-1 flex justify-center items-center cursor-pointer flex-col"
           >
-            <SvgIcon class="text-2xl" :icon="item.meta?.icon" />
+            <SvgIcon :icon="item.meta?.icon" class="text-2xl" />
             <div class="mt-1 mb-1 text-[11px]"> {{ item.meta?.label }} </div>
           </div>
         </n-button>
@@ -77,13 +67,13 @@
     </n-scrollbar>
 
     <div class="m-2 flex flex-col justify-center items-center gap-2 mb-4 bottom-0">
-      <n-space vertical class="mb-2">
-        <n-popover trigger="hover" placement="right">
+      <n-space class="mb-2" vertical>
+        <n-popover placement="right" trigger="hover">
           <template #trigger>
             <n-button
-              text
               v-if="appStore.theme == 'light'"
               size="small"
+              text
               @click="appStore.setTheme('dark')"
             >
               <template #icon>
@@ -91,9 +81,9 @@
               </template>
             </n-button>
             <n-button
-              text
               v-if="appStore.theme == 'dark'"
               size="small"
+              text
               @click="appStore.setTheme('light')"
             >
               <template #icon>
@@ -106,8 +96,8 @@
 
         <n-popselect
           v-model:value="language"
-          placement="right"
           :options="languageOptions"
+          placement="right"
           trigger="click"
           @update-value="(value) => appStore.setLanguage(value)"
         >
@@ -121,19 +111,19 @@
         <n-avatar class="cursor-pointer" round>
           <SvgIcon class="text-lg" icon="solar:user-broken" />
         </n-avatar>
-        <n-button @click="onLogin()" size="tiny" type="success" secondary>
+        <n-button secondary size="tiny" type="success" @click="onLogin()">
           {{ t('side.login') }}
         </n-button>
       </template>
       <template v-else>
-        <n-popover trigger="hover" placement="right">
+        <n-popover placement="right" trigger="hover">
           <template #trigger>
             <n-avatar
-              @click="router.push({ name: 'Profile' })"
-              class="cursor-pointer"
-              :src="user.avatar ?? '/avatar.jpg'"
               :fallback-src="defaultAvatar"
+              :src="user.avatar ?? '/avatar.jpg'"
+              class="cursor-pointer"
               round
+              @click="router.push({ name: 'Profile' })"
             />
           </template>
           <span>{{ t('side.profile') }}</span>
@@ -141,7 +131,7 @@
         <n-ellipsis style="max-width: 70px">
           {{ user.username }}
         </n-ellipsis>
-        <n-button @click="onLogout()" size="tiny" secondary type="warning">
+        <n-button secondary size="tiny" type="warning" @click="onLogout()">
           {{ t('side.logout') }}
         </n-button>
       </template>
@@ -149,4 +139,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

@@ -1,9 +1,11 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.biz.entity.AigcConversation;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
 import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -44,12 +46,16 @@ public class AigcConversationController {
     }
 
     @PostMapping
+    @ApiLog("添加会话窗口")
+    @SaCheckPermission("aigc:conversation:add")
     public R addConversation(@RequestBody AigcConversation conversation) {
         conversation.setUserId(ClientAuthUtil.getUserId());
         return R.ok(aigcMessageService.addConversation(conversation));
     }
 
     @PutMapping
+    @ApiLog("更新会话窗口")
+    @SaCheckPermission("aigc:conversation:update")
     public R updateConversation(@RequestBody AigcConversation conversation) {
         if (conversation.getId() == null) {
             return R.fail("conversation id is null");
@@ -59,12 +65,16 @@ public class AigcConversationController {
     }
 
     @DeleteMapping("/{conversationId}")
+    @ApiLog("删除会话窗口")
+    @SaCheckPermission("aigc:conversation:delete")
     public R delConversation(@PathVariable String conversationId) {
         aigcMessageService.delConversation(conversationId);
         return R.ok();
     }
 
     @DeleteMapping("/message/{conversationId}")
+    @ApiLog("清空会话窗口数据")
+    @SaCheckPermission("aigc:conversation:clear")
     public R clearMessage(@PathVariable String conversationId) {
         aigcMessageService.clearMessage(conversationId);
         return R.ok();

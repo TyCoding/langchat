@@ -1,8 +1,10 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcPrompt;
 import cn.tycoding.langchat.biz.service.AigcPromptService;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -47,17 +49,23 @@ public class AigcPromptController {
     }
 
     @PostMapping
+    @ApiLog("添加Prompt")
+    @SaCheckPermission("aigc:prompt:add")
     public R add(@RequestBody AigcPrompt data) {
         data.setCreateTime(new Date());
         return R.ok(aigcPromptService.save(data));
     }
 
     @PutMapping
+    @ApiLog("更新Prompt")
+    @SaCheckPermission("aigc:prompt:update")
     public R update(@RequestBody AigcPrompt data) {
         return R.ok(aigcPromptService.updateById(data));
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除Prompt")
+    @SaCheckPermission("aigc:prompt:delete")
     public R del(@PathVariable String id) {
         return R.ok(aigcPromptService.removeById(id));
     }

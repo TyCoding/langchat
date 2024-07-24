@@ -1,7 +1,9 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.mapper.AigcDocsSliceMapper;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -45,6 +47,8 @@ public class AigcDocsSliceController {
     }
 
     @PostMapping
+    @ApiLog("新增切片数据")
+    @SaCheckPermission("aigc:docs:slice:add")
     public R add(@RequestBody AigcDocsSlice data) {
         data.setCreateTime(new Date());
         docsSliceMapper.insert(data);
@@ -52,12 +56,16 @@ public class AigcDocsSliceController {
     }
 
     @PutMapping
+    @ApiLog("修改切片数据")
+    @SaCheckPermission("aigc:docs:slice:update")
     public R update(@RequestBody AigcDocsSlice data) {
         docsSliceMapper.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除切片数据")
+    @SaCheckPermission("aigc:docs:slice:delete")
     public R delete(@PathVariable String id) {
         docsSliceMapper.deleteById(id);
         return R.ok();

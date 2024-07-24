@@ -2,6 +2,7 @@ package cn.tycoding.langchat.server.controller;
 
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.service.AigcOssService;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,17 +33,20 @@ public class AigcOssController {
     }
 
     @PostMapping("/upload")
+    @ApiLog("上传OSS文件")
     public R upload(MultipartFile file) {
         return R.ok(aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId())));
     }
 
     @PutMapping
+    @ApiLog("更新OSS文件资源")
     public R update(@RequestBody AigcOss data) {
         aigcOssService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除OSS文件资源")
     public R delete(@PathVariable String id) {
         aigcOssService.removeById(id);
         return R.ok();

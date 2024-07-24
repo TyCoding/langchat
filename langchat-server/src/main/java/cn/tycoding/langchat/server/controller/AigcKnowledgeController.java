@@ -1,10 +1,12 @@
 package cn.tycoding.langchat.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcKnowledge;
 import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
+import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -77,6 +79,8 @@ public class AigcKnowledgeController {
     }
 
     @PostMapping
+    @ApiLog("新增知识库")
+    @SaCheckPermission("aigc:knowledge:add")
     public R add(@RequestBody AigcKnowledge data) {
         data.setCreateTime(String.valueOf(System.currentTimeMillis()));
         kbService.save(data);
@@ -84,12 +88,16 @@ public class AigcKnowledgeController {
     }
 
     @PutMapping
+    @ApiLog("更新知识库")
+    @SaCheckPermission("aigc:knowledge:update")
     public R update(@RequestBody AigcKnowledge data) {
         kbService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
+    @ApiLog("删除知识库")
+    @SaCheckPermission("aigc:knowledge:delete")
     public R delete(@PathVariable String id) {
         kbService.removeById(id);
         return R.ok();
