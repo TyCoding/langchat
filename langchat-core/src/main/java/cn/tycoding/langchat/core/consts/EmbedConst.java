@@ -13,5 +13,6 @@ public interface EmbedConst {
     String CLAZZ_NAME_AZURE_OPENAI = "AzureOpenAiEmbeddingModel";
     String CLAZZ_NAME_QIANFAN = "QianfanEmbeddingModel";
     String CLAZZ_NAME_QIANWEN = "QwenEmbeddingModel";
+    String CLAZZ_NAME_ZHIPU = "ZhipuAiEmbeddingModel";
     String CLAZZ_NAME_OLLAMA = "OllamaEmbeddingModel";
 }

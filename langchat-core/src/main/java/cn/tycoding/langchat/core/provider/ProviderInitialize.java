@@ -19,6 +19,7 @@ import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
 import dev.langchain4j.model.qianfan.QianfanEmbeddingModel;
 import dev.langchain4j.model.qianfan.QianfanStreamingChatModel;
 import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
+import dev.langchain4j.model.zhipu.ZhipuAiEmbeddingModel;
 import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeansException;
@@ -49,7 +50,9 @@ public class ProviderInitialize implements ApplicationContextAware {
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OPENAI);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANFAN);
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_ZHIPU);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANWEN);
+        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OLLAMA);
 
         List<AigcModel> list = aigcModelService.list();
         list.forEach(model -> {
@@ -232,6 +235,16 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .modelName(model.getModel())
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANWEN, build);
+                }
+
+                if (ProviderEnum.ZHIPU.getModel().equals(model.getModelType())) {
+                    ZhipuAiEmbeddingModel build = ZhipuAiEmbeddingModel
+                            .builder()
+                            .apiKey(model.getApiKey())
+                            .model(model.getModel())
+                            .baseUrl(model.getBaseUrl())
+                            .build();
+                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_ZHIPU, build);
                 }
 
                 if (ProviderEnum.OLLAMA.getModel().equals(model.getModelType())) {
