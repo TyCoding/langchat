@@ -16,7 +16,6 @@
 
 package cn.tycoding.langchat.client.controller;
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.service.AigcOssService;
@@ -34,13 +33,9 @@ import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.consts.ModelConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.io.IOException;
 
 /**
  * @author tycoding
@@ -55,32 +50,6 @@ public class ClientChatEndpoint {
     private final ClientChatService clientChatService;
     private final AigcOssService aigcOssService;
     private final ClientEmbeddingService clientEmbeddingService;
-
-    @PostMapping("/test")
-    public Object test(@RequestBody Object obj) {
-        log.info("x: {}", obj);
-        return Dict.create().set("message", "你好呀").set("threadId", "111");
-    }
-
-    @PostMapping("/test2")
-    public Object test2(@RequestBody Object obj) throws InterruptedException, IOException {
-        log.info("Received: {}", obj);
-        ResponseBodyEmitter emitter = new ResponseBodyEmitter();
-
-        new Thread(() -> {
-            try {
-                for (int i = 0; i < 10; i++) {
-                    emitter.send("Data: " + i + "\n", MediaType.TEXT_PLAIN);
-                    Thread.sleep(1000);
-                }
-                emitter.complete();
-            } catch (Exception e) {
-                emitter.completeWithError(e);
-            }
-        }).start();
-
-        return emitter;
-    }
 
     @ClientPerm
     @PostMapping("/chat")

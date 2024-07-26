@@ -47,6 +47,10 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-app</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

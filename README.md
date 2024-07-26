@@ -2,7 +2,7 @@
 
 > 快速构建企业级AIGC项目
 
-LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型功能，帮助企业快速定制AI知识库、企业AI机器人。
+LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
 接入 OpenAI / Gemini / Ollama / Azure / 智谱 / 阿里通义大模型 / 百度千帆大模型等大模型。
 
