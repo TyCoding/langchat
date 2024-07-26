@@ -21,26 +21,37 @@ import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.tycoding.langchat.auth.event.LogEvent;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
+import cn.tycoding.langchat.biz.utils.ClientStpUtil;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.entity.SysLog;
 import com.alibaba.fastjson.JSON;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.Objects;
 
 /**
  * @author tycoding
  * @since 2024/1/5
  */
+@Slf4j
 @Configuration
 @AllArgsConstructor
 public class AuthConfiguration {
 
+    private final SpringContextHolder contextHolder;
     private final AuthProps authProps;
     private final String[] skipUrl = new String[]{
             "/auth/login",
@@ -54,7 +65,11 @@ public class AuthConfiguration {
                 .addExclude("/favicon.ico")
 
                 .setAuth(obj -> {
-                    SaRouter.match("/**")
+                    SaRouter
+                            .match("/upms/**", "/aigc/**", "/app/**")
+                            .check(StpUtil::checkLogin)
+                            .match("/client/**")
+                            .check(ClientStpUtil::checkLogin)
                             .notMatch(skipUrl)
                             .notMatch(authProps.getSkipUrl().toArray(new String[0]))
                     ;
@@ -67,6 +82,9 @@ public class AuthConfiguration {
             SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_FAIL, HttpStatus.UNAUTHORIZED.getReasonPhrase(), null, null);
             SpringContextHolder.publishEvent(new LogEvent(sysLog));
         }
+
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        log.error("Unauthorized request：{}", URLUtil.getPath(request.getRequestURI()));
 
         SaHolder.getResponse()
                 .setStatus(HttpStatus.UNAUTHORIZED.value())

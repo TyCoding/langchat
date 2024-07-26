@@ -38,5 +38,9 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-auth</artifactId>
+        </dependency>
     </dependencies>
 </project>
