@@ -31,6 +31,7 @@
     </properties>
 
     <modules>
+        <module>langchat-app</module>
         <module>langchat-common</module>
         <module>langchat-core</module>
         <module>langchat-client</module>
@@ -47,6 +48,11 @@
             <dependency>
                 <groupId>cn.tycoding</groupId>
                 <artifactId>langchat-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tycoding</groupId>
+                <artifactId>langchat-app</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
