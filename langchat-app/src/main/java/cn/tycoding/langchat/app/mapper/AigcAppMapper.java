@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
  *
@@ -15,36 +14,16 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.app.entity;
+package cn.tycoding.langchat.app.mapper;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Date;
+import cn.tycoding.langchat.app.entity.AigcApp;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author tycoding
  * @since 2024/7/26
  */
-@Data
-@Accessors(chain = true)
-public class AigcBot implements Serializable {
-    private static final long serialVersionUID = -94917153262781949L;
-
-    /**
-     * 主键
-     */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
-
-    private String name;
-    private String title;
-    private String link;
-    private String icon;
-    private String des;
-    private String floatIcon;
-    private Date createTime;
+@Mapper
+public interface AigcAppMapper extends BaseMapper<AigcApp> {
 }
