@@ -1,6 +1,5 @@
 /*
- * Project: LangChat
- * Author: TyCoding
+ * Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
  *
  * Licensed under the GNU Affero General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,12 +65,6 @@ public class TokenDaoRedis implements SaTokenDao {
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_PATTERN);
 
     private static final String prefix = CacheConst.AUTH_PREFIX;
-
-    private static String sub(String key) {
-        int index = StrUtil.ordinalIndexOf(key, ":", 2);
-        return prefix + StrUtil.subSuf(key, index + 1);
-    }
-
     /**
      * ObjectMapper 对象 (以 public 作用域暴露出此对象，方便开发者二次更改配置)
      *
@@ -83,21 +76,23 @@ public class TokenDaoRedis implements SaTokenDao {
      * </p>
      */
     public ObjectMapper objectMapper;
-
     /**
      * String 读写专用
      */
     public StringRedisTemplate stringRedisTemplate;
-
     /**
      * Object 读写专用
      */
     public RedisTemplate<String, Object> objectRedisTemplate;
-
     /**
      * 标记：是否已初始化成功
      */
     public boolean isInit;
+
+    private static String sub(String key) {
+        int index = StrUtil.ordinalIndexOf(key, ":", 2);
+        return prefix + StrUtil.subSuf(key, index + 1);
+    }
 
     @Autowired
     public void init(RedisConnectionFactory connectionFactory) {
