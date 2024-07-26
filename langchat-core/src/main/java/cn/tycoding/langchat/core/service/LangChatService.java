@@ -30,6 +30,8 @@ public interface LangChatService {
 
     TokenStream chat(ChatReq req);
 
+    TokenStream singleChat(ChatReq req);
+
     String text(ChatReq req);
 
     Response<Image> image(ImageR req);

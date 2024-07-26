@@ -145,7 +145,7 @@ public class ClientChatServiceImpl implements ClientChatService {
         StreamEmitter emitter = req.getEmitter();
         long startTime = System.currentTimeMillis();
         try {
-            langChatService.chat(req)
+            langChatService.singleChat(req)
                     .onNext(e -> {
                         emitter.send(new ChatRes(e));
                     })

@@ -1,5 +1,5 @@
 import { http } from '@/utils/request';
-import { ChatR, ImageR } from '@/api/models';
+import { ChatR } from '@/api/models';
 import { AxiosProgressEvent } from 'axios';
 
 /**
@@ -51,7 +51,7 @@ export function getImageModels() {
 }
 
 export function genWrite(
-  data: ChatR,
+  data: any,
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) {
   return http.post({
@@ -71,7 +71,7 @@ export function genChart(data: ChatR) {
 /**
  * @description 生成图片
  */
-export function genImage(data: ImageR) {
+export function genImage(data: any) {
   return http.post({
     url: '/client/chat/image',
     data: data,

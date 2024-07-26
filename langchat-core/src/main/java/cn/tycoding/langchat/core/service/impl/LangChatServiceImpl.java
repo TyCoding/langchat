@@ -87,6 +87,16 @@ public class LangChatServiceImpl implements LangChatService {
     }
 
     @Override
+    public TokenStream singleChat(ChatReq req) {
+        StreamingChatLanguageModel model = provider.stream(req.getModelId());
+
+        Assistant  assistant = AiServices.builder(Assistant.class)
+                .streamingChatLanguageModel(model)
+                .build();
+        return assistant.stream(req.getConversationId(), req.getPrompt().text());
+    }
+
+    @Override
     public String text(ChatReq req) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 

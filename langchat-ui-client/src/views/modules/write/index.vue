@@ -3,6 +3,7 @@
   import Write from './components/Write.vue';
   import Beautify from './components/Beautify.vue';
   import { ref } from 'vue';
+  import ModelProvider from '@/views/modules/common/ModelProvider.vue';
 
   const message = ref('');
   function onOk(val: string) {
@@ -37,6 +38,7 @@
           <div class="font-bold flex items-center flex-wrap gap-2">
             <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
             <span>输出内容预览</span>
+            <ModelProvider />
           </div>
           <div>
             <n-button secondary size="small" type="success">

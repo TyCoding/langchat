@@ -36,17 +36,17 @@ public class ModelProvider {
      * Gets the Model of the streaming type
      */
     public StreamingChatLanguageModel stream(String model) {
-        if (context.containsBean(model)) {
+        try {
             return (StreamingChatLanguageModel) context.getBean(model);
-        } else {
+        } catch (Exception e) {
             throw new RuntimeException("No matching model information found, please check the model configuration.");
         }
     }
 
     public ImageModel image(String model) {
-        if (context.containsBean(model)) {
+        try {
             return (ImageModel) context.getBean(model);
-        } else {
+        } catch (Exception e) {
             throw new RuntimeException("No matching model information found, please check the model configuration.");
         }
     }

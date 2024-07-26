@@ -1,17 +1,18 @@
 <script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
-  import { ref } from 'vue';
+  import { ref, toRaw } from 'vue';
   import { genWrite } from '@/api/chat';
   import { isBlank } from '@/utils/is';
   import { useMessage } from 'naive-ui';
-  import { ChatR } from '@/api/models';
+  import { useChatStore } from '@/views/modules/chat/store/useChatStore';
 
   const emit = defineEmits(['ok']);
-  const message = useMessage();
+  const ms = useMessage();
+  const chatStore = useChatStore();
   const loading = ref(false);
-  const form = ref<ChatR>({
+  const form = ref<any>({
     message: '',
-    role: '自动',
+    profession: '自动',
     type: '自动',
     tone: '自动',
     language: '自动',
@@ -19,34 +20,43 @@
   });
 
   const lengthList = ['自动', '短', '中等', '长'];
-  const roleList = ['自动', '金融', '互联网', '医疗', '销售'];
+  const professionList = ['自动', '金融', '互联网', '医疗', '销售'];
   const typeList = ['自动', '邮件', '文章', '检讨书', '大纲'];
   const toneList = ['自动', '友善', '随意', '专业', '诙谐', '幽默', '正式'];
   const languageList = ['自动', '中文', '英文', '韩语', '日语'];
 
   async function onSubmit() {
     if (isBlank(form.value.message)) {
-      message.error('请输入内容');
+      ms.error('请输入内容');
       return;
     }
+    emit('ok', '');
     loading.value = true;
-    await genWrite(form.value, ({ event }) => {
-      const list = event.target.responseText.split('\n\n');
-      let text = '';
-      list.forEach((i: any) => {
-        console.log(i);
-        if (!i.startsWith('data:{')) {
-          return;
-        }
-        const { done, contmessageent } = JSON.parse(i.substring(5, i.length));
-        if (done) {
-          message.success('翻译完成');
-        } else {
-          text += message;
-        }
-      });
-      emit('ok', text);
-    }).finally(() => (loading.value = false));
+    await genWrite(
+      {
+        ...toRaw(form.value),
+        modelId: chatStore.modelId,
+        modelName: chatStore.modelName,
+        modelProvider: chatStore.modelProvider,
+      },
+      ({ event }) => {
+        const list = event.target.responseText.split('\n\n');
+        let text = '';
+        list.forEach((i: any) => {
+          console.log(i);
+          if (!i.startsWith('data:{')) {
+            return;
+          }
+          const { done, message } = JSON.parse(i.substring(5, i.length));
+          if (done) {
+            ms.success('编写完成');
+          } else {
+            text += message;
+          }
+        });
+        emit('ok', text);
+      }
+    ).finally(() => (loading.value = false));
   }
 </script>
 
@@ -78,10 +88,10 @@
         <n-button
           v-for="item in lengthList"
           :key="item"
-          :type="form.role == item ? 'success' : 'default'"
+          :type="form.length == item ? 'success' : 'default'"
           secondary
           size="small"
-          @click="form.role = item"
+          @click="form.length = item"
         >
           {{ item }}
         </n-button>
@@ -95,16 +105,16 @@
       </div>
       <div class="flex justify-start gap-2 flex-wrap">
         <n-button
-          v-for="item in roleList"
+          v-for="item in professionList"
           :key="item"
-          :type="form.role == item ? 'success' : 'default'"
+          :type="form.profession == item ? 'success' : 'default'"
           secondary
           size="small"
-          @click="form.role = item"
+          @click="form.profession = item"
         >
           {{ item }}
         </n-button>
-        <n-input v-model:value="form.role" class="!w-[90px]" size="small" />
+        <n-input v-model:value="form.profession" class="!w-[90px]" size="small" />
       </div>
     </div>
 
@@ -169,4 +179,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>
