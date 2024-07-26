@@ -19,6 +19,7 @@ package cn.tycoding.langchat.upms.utils;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
+import cn.tycoding.langchat.common.exception.AuthException;
 import cn.tycoding.langchat.upms.dto.UserInfo;
 import cn.tycoding.langchat.upms.entity.SysRole;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 权限相关方法
@@ -88,7 +91,7 @@ public class AuthUtil {
         try {
             return (UserInfo) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
-            return null;
+            throw new AuthException(403, "登录已失效，请重新登陆");
         }
     }
 

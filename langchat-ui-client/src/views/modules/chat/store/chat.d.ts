@@ -1,8 +1,8 @@
 export interface ChatState {
-  modelId: string;
-  modelName: string;
-  modelProvider: string;
-  isGoogleSearch: boolean;
+  modelId?: string;
+  modelName?: string;
+  modelProvider?: string;
+  isGoogleSearch?: boolean;
   isEdit: string; //当前编辑的id
   active: string; //当前激活的id
   siderCollapsed: boolean; //侧边栏展开状态

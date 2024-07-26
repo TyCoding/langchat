@@ -71,14 +71,31 @@ function axios<T = any>({
 
     const $message = window['$message'];
     const $dialog = window['$dialog'];
-    const { status } = error.response;
+    const { status, data } = error.response;
     const userStore = useUserStore();
+
+    if (data.code === 403) {
+      $message!.destroyAll();
+      $dialog!.destroyAll();
+      await userStore.logout();
+      $dialog!.warning({
+        title: t('login.title'),
+        content: t('login.content'),
+        positiveText: t('login.positiveText'),
+        negativeText: t('login.negativeText'),
+        onPositiveClick: async () => {
+          await router.push({ name: 'Login' });
+        },
+      });
+      return;
+    }
 
     if (status === 401) {
       // $message!.error('Login failed, please login again');
       // await router.push({ name: 'Login' });
 
       if (isNullOrWhitespace(userStore.token)) {
+        $message!.destroyAll();
         $dialog!.destroyAll();
         $dialog!.warning({
           title: t('login.title'),

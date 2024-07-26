@@ -66,7 +66,7 @@ public class ClientAuthUtil {
         try {
             return (AigcUser) ClientStpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
-            throw new AuthException();
+            throw new AuthException(403, "登录已失效，请重新登陆");
         }
     }
 

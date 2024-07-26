@@ -19,8 +19,11 @@
 
   async function fetchData() {
     loading.value = true;
-    fileList.value = await list();
-    loading.value = false;
+    try {
+      fileList.value = await list();
+    } finally {
+      loading.value = false;
+    }
   }
 
   function onSelect(item: any) {
@@ -69,6 +72,7 @@
   const taskCount = ref(0);
   let timerId: string | number | NodeJS.Timeout | undefined;
   let continuePolling = false;
+
   function startTask() {
     continuePolling = true;
     timerId = setInterval(() => {

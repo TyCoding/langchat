@@ -201,7 +201,8 @@ const transform: AxiosTransform = {
       }
       if (
         response.status === ResultEnum.UnAuthorization ||
-        response.data.code === ResultEnum.UnAuthorization
+        response.data.code === ResultEnum.UnAuthorization ||
+        response.data.code === 403
       ) {
         const LoginName = PageEnum.BASE_LOGIN_NAME;
 

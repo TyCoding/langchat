@@ -28,17 +28,16 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ImageR {
 
+    private String modelId;
+    private String modelName;
+    private String modelProvider;
+
     private Prompt prompt;
 
     /**
      * 内容
      */
     private String message;
-
-    /**
-     * 模型
-     */
-    private String model;
 
     /**
      * 质量

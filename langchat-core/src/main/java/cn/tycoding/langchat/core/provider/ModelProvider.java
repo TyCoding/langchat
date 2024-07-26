@@ -16,9 +16,6 @@
 
 package cn.tycoding.langchat.core.provider;
 
-import static cn.tycoding.langchat.core.consts.ModelConst.TEXT_SUFFIX;
-
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import lombok.AllArgsConstructor;
@@ -41,14 +38,6 @@ public class ModelProvider {
     public StreamingChatLanguageModel stream(String model) {
         if (context.containsBean(model)) {
             return (StreamingChatLanguageModel) context.getBean(model);
-        } else {
-            throw new RuntimeException("No matching model information found, please check the model configuration.");
-        }
-    }
-
-    public ChatLanguageModel text(String model) {
-        if (context.containsBean(model)) {
-            return (ChatLanguageModel) context.getBean(model + TEXT_SUFFIX);
         } else {
             throw new RuntimeException("No matching model information found, please check the model configuration.");
         }

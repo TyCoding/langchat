@@ -30,7 +30,6 @@ import cn.tycoding.langchat.common.dto.PromptConst;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
-import cn.tycoding.langchat.core.consts.ModelConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -65,14 +64,7 @@ public class ClientChatEndpoint {
             req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
         }
 
-        if (req.getModelId().endsWith(ModelConst.IMAGE_SUFFIX)) {
-            AigcOss oss = clientChatService.image(
-                    new ImageR().setPrompt(req.getPrompt()).setModel(req.getModelId()));
-            emitter.send("Image:" + oss);
-            emitter.complete();
-        } else {
-            clientChatService.chat(req);
-        }
+        clientChatService.chat(req);
         return emitter.get();
     }
 

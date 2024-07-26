@@ -42,16 +42,10 @@ export interface ChatR {
   role?: 'user' | 'assistant' | 'system';
   createTime?: string;
   type?: string;
-  model?: string;
+  modelId?: string;
+  modelName?: string;
+  modelProvider?: string;
   language?: string;
   tone?: string;
   length?: string;
-}
-
-export interface ImageR {
-  message?: string;
-  model?: string;
-  quality?: string;
-  size?: string;
-  style?: string;
 }

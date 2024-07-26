@@ -1,20 +1,24 @@
 <script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
-  import { genImage } from '@/api/chat';
-  import { ref, toRaw } from 'vue';
+  import { genImage, getImageModels } from '@/api/chat';
+  import { onMounted, ref, toRaw } from 'vue';
   import { isBlank } from '@/utils/is';
   import { useMessage } from 'naive-ui';
-  import { ImageR } from '@/api/models';
 
   const emit = defineEmits(['ok']);
   const loading = ref(false);
   const ms = useMessage();
   const message = ref('');
-  const form = ref<ImageR>({
-    model: 'dall-e-3',
+  const form = ref<any>({
+    modelName: 'dall-e-3',
     quality: 'standard',
     size: '1024x1024',
     style: 'vivid',
+  });
+
+  const modelProviders = ref<any[]>([]);
+  onMounted(async () => {
+    modelProviders.value = toRaw(await getImageModels());
   });
 
   async function onSubmit() {
@@ -22,6 +26,15 @@
       ms.error('请输入内容');
       return;
     }
+    const models = toRaw(modelProviders.value).filter((i) => i.model === form.value.modelName);
+    console.log(models);
+    if (models.length === 0) {
+      ms.error('没有找到匹配的模型，请联系管理员');
+      return;
+    }
+    form.value.modelId = models[0].id;
+    form.value.modelProvider = models[0].provider;
+
     loading.value = true;
     ms.success('图片生成中，请稍后...');
     const data = await genImage({
@@ -86,10 +99,10 @@
         <n-button
           v-for="item in modelList"
           :key="item.label"
-          :type="form.model == item.value ? 'success' : 'default'"
+          :type="form.modelName == item.value ? 'success' : 'default'"
           secondary
           size="small"
-          @click="form.model = item.value"
+          @click="form.modelName = item.value"
         >
           {{ item.label }}
         </n-button>
@@ -105,7 +118,7 @@
         <n-button
           v-for="item in qualityList"
           :key="item"
-          :disabled="form.model == 'dall-e-2'"
+          :disabled="form.modelName == 'dall-e-2'"
           :type="form.quality == item.value ? 'success' : 'default'"
           secondary
           size="small"
@@ -126,7 +139,7 @@
           v-for="item in sizeList"
           :key="item"
           :disabled="
-            form.model == 'dall-e-2' && (item.value == '1792x1024' || item.value == '1024x1792')
+            form.modelName == 'dall-e-2' && (item.value == '1792x1024' || item.value == '1024x1792')
           "
           :type="form.size == item.value ? 'success' : 'default'"
           secondary
@@ -147,7 +160,7 @@
         <n-button
           v-for="item in styleList"
           :key="item"
-          :disabled="form.model == 'dall-e-2'"
+          :disabled="form.modelName == 'dall-e-2'"
           :type="form.style == item.value ? 'success' : 'default'"
           secondary
           size="small"
@@ -160,4 +173,4 @@
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

@@ -44,6 +44,12 @@ export function getChatModels() {
   });
 }
 
+export function getImageModels() {
+  return http.get({
+    url: '/client/getImageModels',
+  });
+}
+
 export function genWrite(
   data: ChatR,
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void

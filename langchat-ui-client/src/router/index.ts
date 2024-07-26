@@ -58,15 +58,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/modules/image/index.vue'),
       },
       {
-        path: '/chart',
-        name: 'Chart',
-        meta: {
-          label: t('menu.chart'),
-          icon: 'fluent:data-area-24-regular',
-        },
-        component: () => import('@/views/modules/chart/index.vue'),
-      },
-      {
         path: '/mindmap',
         name: 'MindMap',
         meta: {
@@ -74,6 +65,15 @@ const routes: RouteRecordRaw[] = [
           icon: 'ri:mind-map',
         },
         component: () => import('@/views/modules/mindmap/index.vue'),
+      },
+      {
+        path: '/chart',
+        name: 'Chart',
+        meta: {
+          label: t('menu.chart'),
+          icon: 'fluent:data-area-24-regular',
+        },
+        component: () => import('@/views/modules/chart/index.vue'),
       },
     ],
   },

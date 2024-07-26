@@ -7,10 +7,11 @@
   import { isBlank } from '@/utils/is';
   import { t } from '@/locales';
   import ModelProvider from '@/views/modules/common/ModelProvider.vue';
+  import { useChatStore } from '@/views/modules/chat/store/useChatStore';
 
-  const model = ref('gpt-4o');
   const ms = useMessage();
   const loading = ref(false);
+  const chatStore = useChatStore();
   const genText = ref('');
 
   async function onGenerate(text: string) {
@@ -22,7 +23,9 @@
     try {
       const { message } = await genMindMap({
         message: text,
-        model: model.value,
+        modelId: chatStore.modelId,
+        modelName: chatStore.modelName,
+        modelProvider: chatStore.modelProvider,
       });
       genText.value = message;
     } finally {

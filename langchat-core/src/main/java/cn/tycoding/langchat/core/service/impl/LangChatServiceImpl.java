@@ -16,15 +16,16 @@
 
 package cn.tycoding.langchat.core.service.impl;
 
+import cn.hutool.core.lang.UUID;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.provider.SearchProvider;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangChatService;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.output.Response;
@@ -39,6 +40,8 @@ import dev.langchain4j.service.TokenStream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author tycoding
@@ -85,9 +88,26 @@ public class LangChatServiceImpl implements LangChatService {
 
     @Override
     public String text(ChatReq req) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
         try {
-            ChatLanguageModel model = provider.text(req.getModelId());
-            return model.generate(req.getPrompt().text());
+            StreamingChatLanguageModel model = provider.stream(req.getModelId());
+            Assistant assistant = AiServices.builder(Assistant.class)
+                    .streamingChatLanguageModel(model)
+                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
+                    .build();
+
+            StringBuilder text = new StringBuilder();
+            assistant.stream(UUID.randomUUID().toString(), req.getPrompt().text())
+                    .onNext(text::append)
+                    .onComplete((t) -> {
+                        future.complete(null);
+                    })
+                    .onError(future::completeExceptionally)
+                    .start();
+
+            future.join();
+            return text.toString();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -97,11 +117,11 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public Response<Image> image(ImageR req) {
         try {
-            ImageModel model = provider.image(req.getModel());
+            ImageModel model = provider.image(req.getModelId());
             return model.generate(req.getPrompt().text());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new ServiceException("图片生成失败");
         }
     }
 }
