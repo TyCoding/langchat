@@ -22,6 +22,8 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 **欢迎Star、fork 持续关注**
 
+**LangChat部署、启动文档地址：** [http://www.langchat.cn/docs/introduction](http://www.langchat.cn/docs/introduction)
+
 ## 特性
 
 1. 多模态：支持集成国内外数十家AI大模型
