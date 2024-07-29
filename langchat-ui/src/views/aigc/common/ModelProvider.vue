@@ -1,9 +1,8 @@
 <script lang="ts" setup>
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
-  import { onMounted, toRaw } from 'vue';
+  import { onMounted, ref, toRaw } from 'vue';
   import { getChatModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/data';
-  import { ref } from 'vue-demi';
 
   const chatStore = useChatStore();
   const modelList = ref([]);

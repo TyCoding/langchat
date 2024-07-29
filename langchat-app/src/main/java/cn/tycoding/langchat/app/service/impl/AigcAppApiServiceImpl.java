@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.app.service;
+package cn.tycoding.langchat.app.service.impl;
 
-import cn.tycoding.langchat.app.entity.AigcAppIframe;
-import com.baomidou.mybatisplus.extension.service.IService;
+import cn.tycoding.langchat.app.entity.AigcAppApi;
+import cn.tycoding.langchat.app.mapper.AigcAppApiMapper;
+import cn.tycoding.langchat.app.service.AigcAppApiService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * @author tycoding
  * @since 2024/7/26
  */
-public interface AigcAppIframeService extends IService<AigcAppIframe> {
+@Service
+public class AigcAppApiServiceImpl extends ServiceImpl<AigcAppApiMapper, AigcAppApi> implements AigcAppApiService {
 
 }

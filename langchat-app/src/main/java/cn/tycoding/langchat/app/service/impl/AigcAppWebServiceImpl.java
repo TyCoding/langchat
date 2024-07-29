@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
  *
@@ -15,34 +14,19 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.app.entity;
+package cn.tycoding.langchat.app.service.impl;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Date;
+import cn.tycoding.langchat.app.entity.AigcAppWeb;
+import cn.tycoding.langchat.app.mapper.AigcAppWebMapper;
+import cn.tycoding.langchat.app.service.AigcAppWebService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * @author tycoding
  * @since 2024/7/26
  */
-@Data
-@Accessors(chain = true)
-public class AigcApp implements Serializable {
-    private static final long serialVersionUID = -94917153262781949L;
+@Service
+public class AigcAppWebServiceImpl extends ServiceImpl<AigcAppWebMapper, AigcAppWeb> implements AigcAppWebService {
 
-    /**
-     * 主键
-     */
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
-
-    private String channel;
-    private String name;
-    private String type;
-    private String des;
-    private Date createTime;
 }

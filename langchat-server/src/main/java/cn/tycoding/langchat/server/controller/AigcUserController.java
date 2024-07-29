@@ -20,11 +20,11 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.biz.entity.AigcUser;
 import cn.tycoding.langchat.biz.service.AigcUserService;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +44,7 @@ public class AigcUserController {
 
     @GetMapping("/info")
     public R<AigcUser> info() {
-        AigcUser userInfo = userService.info(ClientAuthUtil.getUsername());
+        AigcUser userInfo = userService.info(AuthUtil.getUsername());
         userInfo.setPassword(null);
         return R.ok(userInfo);
     }

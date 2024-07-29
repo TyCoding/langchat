@@ -18,13 +18,13 @@ package cn.tycoding.langchat.app.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -34,25 +34,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/aigc/bot")
+@RequestMapping("/aigc/app")
 public class AigcAppController {
 
     private final AigcAppService aigcAppService;
 
     @GetMapping("/list")
     public R<List<AigcApp>> list(AigcApp data) {
-        return R.ok(aigcAppService.list(new LambdaQueryWrapper<AigcApp>()));
+        return R.ok(aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
+                .eq(StrUtil.isNotBlank(data.getChannel()), AigcApp::getChannel, data.getChannel())));
     }
 
     @GetMapping("/page")
     public R<Dict> page(AigcApp data, QueryPage queryPage) {
         return R.ok(MybatisUtil.getData(aigcAppService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcApp>lambdaQuery()
-                        .like(StringUtils.isNotEmpty(data.getName()), AigcApp::getName, data.getName()))));
+                        .like(StringUtils.isNotEmpty(data.getName()), AigcApp::getName, data.getName())
+                        .eq(StrUtil.isNotBlank(data.getChannel()), AigcApp::getChannel, data.getChannel())
+        )));
     }
 
     @GetMapping("/{id}")
-    public R<AigcApp> findById(@PathVariable Long id) {
+    public R<AigcApp> findById(@PathVariable String id) {
         return R.ok(aigcAppService.getById(id));
     }
 
@@ -75,7 +78,7 @@ public class AigcAppController {
     @DeleteMapping("/{id}")
     @ApiLog("删除应用")
     @SaCheckPermission("aigc:app:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         aigcAppService.removeById(id);
         return R.ok();
     }

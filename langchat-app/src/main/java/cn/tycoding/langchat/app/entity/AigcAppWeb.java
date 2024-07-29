@@ -31,7 +31,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class AigcAppIframe implements Serializable {
+public class AigcAppWeb implements Serializable {
     private static final long serialVersionUID = -94917153262781949L;
 
     /**
@@ -40,6 +40,7 @@ public class AigcAppIframe implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
+    private String channel;
     private String name;
     private String title;
     private String link;

@@ -23,13 +23,13 @@ import cn.tycoding.langchat.biz.dto.DocsTypeEnum;
 import cn.tycoding.langchat.biz.entity.*;
 import cn.tycoding.langchat.biz.listener.StructExcelListener;
 import cn.tycoding.langchat.biz.service.*;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.service.LangDocService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -89,7 +89,7 @@ public class EmbeddingEndpoint {
     @PostMapping("/docs/{knowledgeId}")
     @SaCheckPermission("aigc:embedding:embed")
     public R docs(MultipartFile file, @PathVariable String knowledgeId) {
-        AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
+        AigcOss oss = aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId()));
         AigcDocs data = new AigcDocs()
                 .setName(oss.getOriginalFilename())
                 .setSliceStatus(false)
@@ -107,7 +107,7 @@ public class EmbeddingEndpoint {
     @SaCheckPermission("aigc:embedding:excel")
     public R structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
         byte[] bytes = file.getBytes();
-        AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
+        AigcOss oss = aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId()));
         AigcDocs data = new AigcDocs()
                 .setName(oss.getOriginalFilename())
                 .setSliceStatus(true)

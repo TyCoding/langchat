@@ -31,7 +31,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class AigcApp implements Serializable {
+public class AigcAppApi implements Serializable {
     private static final long serialVersionUID = -94917153262781949L;
 
     /**
@@ -39,10 +39,17 @@ public class AigcApp implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
+    private String modelId;
+    private String knowledgeId;
+    private String promptId;
 
     private String channel;
+    private String apiKey;
     private String name;
-    private String type;
+    private String title;
+    private String link;
+    private String icon;
+    private String floatIcon;
     private String des;
     private Date createTime;
 }

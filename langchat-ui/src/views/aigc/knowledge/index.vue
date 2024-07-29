@@ -44,8 +44,8 @@
     loading.value = false;
   }
 
-  function handleInfo(record: any) {
-    router.push({ name: 'knowledge_info', params: { id: record.id } });
+  async function handleInfo(record: any) {
+    await router.push('/aigc/knowledge/' + record.id);
   }
 
   function handleAdd() {
@@ -94,22 +94,22 @@
         <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow-lg shadow-neutral-200">
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
-              <n-avatar v-if="item.cover" :src="item.cover" :size="48" round>
+              <n-avatar v-if="item.cover" :size="48" :src="item.cover" round>
                 <template #fallback>
                   <SvgIcon class="text-4xl" icon="twemoji:open-book" />
                 </template>
               </n-avatar>
               <SvgIcon v-else class="text-4xl" icon="twemoji:open-book" />
               <h2
-                @click="handleInfo(item)"
                 class="text-gray-800 font-semibold cursor-pointer hover:text-blue-500"
+                @click="handleInfo(item)"
               >
                 {{ item.name }}
               </h2>
             </div>
             <button
-              @click="handleInfo(item)"
               class="text-blue-500 text-sm border rounded-lg px-3 py-2 duration-150 hover:bg-gray-200 flex items-center gap-2"
+              @click="handleInfo(item)"
             >
               <n-icon size="18">
                 <FolderOutlined />
@@ -130,7 +130,7 @@
               <span class="text-sm"> {{ (Number(item.totalSize) / 1000000).toFixed(2) }} MB </span>
             </div>
             <div class="flex gap-3">
-              <n-button @click="handleEdit(item)" text type="primary">
+              <n-button text type="primary" @click="handleEdit(item)">
                 <template #icon>
                   <n-icon>
                     <EditOutlined />
@@ -138,7 +138,7 @@
                 </template>
                 修改
               </n-button>
-              <n-button @click="handleDelete(item)" text type="error">
+              <n-button text type="error" @click="handleDelete(item)">
                 <template #icon>
                   <n-icon>
                     <DeleteOutlined />
@@ -155,9 +155,9 @@
         <n-pagination
           v-model:page="pagination.page"
           :item-count="pagination.total"
-          size="medium"
           show-quick-jumper
           show-size-picker
+          size="medium"
         >
           <template #prefix="{}"> 共 {{ pagination.total }} 条 </template>
         </n-pagination>

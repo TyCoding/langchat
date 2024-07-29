@@ -84,13 +84,14 @@ export const BaseRoute: Array<any> = [
       },
     ],
   },
+
   {
     path: '/aigc',
     name: 'aigc',
     component: 'LAYOUT',
     show: false,
     meta: {
-      title: '知识库',
+      title: '应用集成',
     },
     children: [
       {
@@ -100,6 +101,42 @@ export const BaseRoute: Array<any> = [
         show: false,
         meta: {
           title: '知识库数据',
+        },
+      },
+      {
+        path: 'knowledge/info',
+        name: 'knowledge_info_index',
+        component: '/aigc/knowledge/components/index',
+        show: false,
+        meta: {
+          title: '知识库数据',
+        },
+      },
+      {
+        path: 'app/api/:id?',
+        name: 'API_CHANNEL',
+        component: '/app/api/index',
+        show: false,
+        meta: {
+          title: 'API渠道',
+        },
+      },
+      {
+        path: 'app/web/:id?',
+        name: 'WEB_CHANNEL',
+        component: '/app/web/index',
+        show: false,
+        meta: {
+          title: 'WEB渠道',
+        },
+      },
+      {
+        path: 'app/weixin/:id?',
+        name: 'WEIXIN_CHANNEL',
+        component: '/app/weixin/index',
+        show: false,
+        meta: {
+          title: '微信渠道',
         },
       },
     ],

@@ -20,7 +20,6 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.tycoding.langchat.biz.entity.AigcConversation;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -65,7 +64,7 @@ public class AigcConversationController {
     @ApiLog("添加会话窗口")
     @SaCheckPermission("aigc:conversation:add")
     public R addConversation(@RequestBody AigcConversation conversation) {
-        conversation.setUserId(ClientAuthUtil.getUserId());
+        conversation.setUserId(String.valueOf(AuthUtil.getUserId()));
         return R.ok(aigcMessageService.addConversation(conversation));
     }
 

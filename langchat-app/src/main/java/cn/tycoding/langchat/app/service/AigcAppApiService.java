@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.app.mapper;
+package cn.tycoding.langchat.app.service;
 
-import cn.tycoding.langchat.app.entity.AigcAppIframe;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import cn.tycoding.langchat.app.entity.AigcAppApi;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author tycoding
  * @since 2024/7/26
  */
-@Mapper
-public interface AigcAppIframeMapper extends BaseMapper<AigcAppIframe> {
+public interface AigcAppApiService extends IService<AigcAppApi> {
+
 }

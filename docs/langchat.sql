@@ -479,6 +479,10 @@ INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `ord
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572644, '文档向量解析', 410, NULL, 'aigc:embedding:embed', 'button', 6, NULL, NULL, 0, 0, 0, NULL);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572645, 'Excel解析', 410, NULL, 'aigc:embedding:excel', 'button', 7, NULL, NULL, 0, 0, 0, NULL);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572646, '向量搜索', 410, NULL, 'aigc:embedding:search', 'button', 8, NULL, NULL, 0, 0, 0, NULL);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572648, '应用集成', 400, 'bot', 'aigc:app:bot', 'menu', 0, '', '/app/index', 0, 0, 0, 1);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572649, '新增应用', 1788942973669572648, NULL, 'aigc:app:add', 'button', 1, NULL, NULL, 0, 0, 0, NULL);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572650, '修改应用', 1788942973669572648, NULL, 'aigc:app:update', 'button', 2, NULL, NULL, 0, 0, 0, NULL);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572651, '删除应用', 1788942973669572648, NULL, 'aigc:app:delete', 'button', 3, NULL, NULL, 0, 0, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -609,5 +613,46 @@ BEGIN;
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (3, 2);
 COMMIT;
+
+
+-- ----------------------------
+-- Table structure for aigc_app_api
+-- ----------------------------
+DROP TABLE IF EXISTS `aigc_app_api`;
+CREATE TABLE `aigc_app_api` (
+                                `id` varchar(50) NOT NULL COMMENT '主键',
+                                `model_id` varchar(50) DEFAULT NULL COMMENT 'model',
+                                `knowledge_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '知识库',
+                                `prompt_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '提示词',
+                                `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
+                                `channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '渠道',
+                                `api_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Key',
+                                `link` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '跳转链接',
+                                `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图标',
+                                `float_icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '悬浮图标',
+                                `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '标题',
+                                `des` varchar(255) DEFAULT NULL COMMENT '描述',
+                                `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='应用';
+
+-- ----------------------------
+-- Table structure for aigc_app_web
+-- ----------------------------
+DROP TABLE IF EXISTS `aigc_app_web`;
+CREATE TABLE `aigc_app_web` (
+                                `id` varchar(50) NOT NULL COMMENT '主键',
+                                `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
+                                `channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '渠道',
+                                `api_key` varchar(50) DEFAULT NULL,
+                                `link` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '跳转链接',
+                                `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图标',
+                                `float_icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '悬浮图标',
+                                `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '标题',
+                                `des` varchar(255) DEFAULT NULL COMMENT '描述',
+                                `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='应用';
+
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -16,10 +16,9 @@
 
 package cn.tycoding.langchat.app.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
-import cn.tycoding.langchat.app.entity.AigcAppIframe;
-import cn.tycoding.langchat.app.service.AigcAppIframeService;
+import cn.tycoding.langchat.app.entity.AigcAppWeb;
+import cn.tycoding.langchat.app.service.AigcAppWebService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -34,48 +33,48 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/aigc/bot/iframe")
-public class AigcAppIframeController {
+@RequestMapping("/aigc/app/web")
+public class AigcAppWebController {
 
-    private final AigcAppIframeService aigcAppService;
+    private final AigcAppWebService aigcAppService;
 
     @GetMapping("/list")
-    public R<List<AigcAppIframe>> list(AigcAppIframe data) {
-        return R.ok(aigcAppService.list(new LambdaQueryWrapper<AigcAppIframe>()));
+    public R<List<AigcAppWeb>> list(AigcAppWeb data) {
+        return R.ok(aigcAppService.list(new LambdaQueryWrapper<AigcAppWeb>()));
     }
 
     @GetMapping("/page")
-    public R<Dict> page(AigcAppIframe data, QueryPage queryPage) {
+    public R<Dict> page(AigcAppWeb data, QueryPage queryPage) {
         return R.ok(MybatisUtil.getData(aigcAppService.page(MybatisUtil.wrap(data, queryPage),
-                Wrappers.<AigcAppIframe>lambdaQuery()
-                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppIframe::getName, data.getName()))));
+                Wrappers.<AigcAppWeb>lambdaQuery()
+                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppWeb::getName, data.getName()))));
     }
 
     @GetMapping("/{id}")
-    public R<AigcAppIframe> findById(@PathVariable Long id) {
+    public R<AigcAppWeb> findById(@PathVariable String id) {
         return R.ok(aigcAppService.getById(id));
     }
 
     @PostMapping
-    @ApiLog("新增应用")
-    @SaCheckPermission("aigc:app:iframe:add")
-    public R add(@RequestBody AigcAppIframe data) {
+    @ApiLog("新增WEB渠道")
+//    @SaCheckPermission("aigc:app:iframe:add")
+    public R add(@RequestBody AigcAppWeb data) {
         aigcAppService.save(data);
         return R.ok();
     }
 
     @PutMapping
-    @ApiLog("修改应用")
-    @SaCheckPermission("aigc:app:iframe:update")
-    public R update(@RequestBody AigcAppIframe data) {
+    @ApiLog("修改WEB渠道")
+//    @SaCheckPermission("aigc:app:iframe:update")
+    public R update(@RequestBody AigcAppWeb data) {
         aigcAppService.updateById(data);
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @ApiLog("删除应用")
-    @SaCheckPermission("aigc:app:iframe:delete")
-    public R delete(@PathVariable Long id) {
+    @ApiLog("删除WEB渠道")
+//    @SaCheckPermission("aigc:app:iframe:delete")
+    public R delete(@PathVariable String id) {
         aigcAppService.removeById(id);
         return R.ok();
     }

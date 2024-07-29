@@ -1,48 +1,4 @@
-import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-import { h } from 'vue';
-import { NButton } from 'naive-ui';
-import router from '@/router';
-import { formatToDate } from '@/utils/dateUtil';
-
-export const columns: BasicColumn[] = [
-  {
-    title: '知识库名称',
-    key: 'name',
-    align: 'center',
-    width: 300,
-    render(row: any) {
-      return h(
-        NButton,
-        {
-          text: true,
-          tag: 'a',
-          type: 'primary',
-          onClick: () => {
-            router.push({ name: 'knowledge_info', params: { id: row.id } });
-          },
-        },
-        {
-          default: () => row.name,
-        }
-      );
-    },
-  },
-  {
-    title: '知识库描述',
-    key: 'des',
-    align: 'center',
-  },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    align: 'center',
-    width: 120,
-    render(row: any) {
-      return h('span', {}, formatToDate(new Date(Number(row.createTime))));
-    },
-  },
-];
 
 export const searchSchemas: FormSchema[] = [
   {
