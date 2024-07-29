@@ -82,7 +82,7 @@ public class AuthEndpoint {
         StpUtil.getSession()
                 .set(CacheConst.AUTH_USER_INFO_KEY, userInfo)
                 .set(CacheConst.AUTH_TOKEN_INFO_KEY, tokenInfo);
-        SysLogUtil.publish(1, "服务端登录");
+        SysLogUtil.publish(1, "服务端登录", AuthUtil.getUsername());
         log.info("====> login success，token={}", tokenInfo.getTokenValue());
         return R.ok(new TokenInfo().setToken(tokenInfo.tokenValue).setExpiration(tokenInfo.tokenTimeout));
     }
@@ -113,7 +113,7 @@ public class AuthEndpoint {
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.save(user);
-        SysLogUtil.publish(1, "服务端注册");
+        SysLogUtil.publish(1, "服务端注册", AuthUtil.getUsername());
         return R.ok();
     }
 

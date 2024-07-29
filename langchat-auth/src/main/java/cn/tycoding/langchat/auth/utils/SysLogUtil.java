@@ -22,7 +22,6 @@ import cn.hutool.http.HttpUtil;
 import cn.tycoding.langchat.auth.event.LogEvent;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.upms.entity.SysLog;
-import cn.tycoding.langchat.upms.utils.AuthUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -62,13 +61,13 @@ public class SysLogUtil {
      * @return Log类
      */
     @SneakyThrows
-    public static SysLog build(Integer type, String operation, String method, Long time) {
+    public static SysLog build(Integer type, String operation, String method, Long time, String username) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         return new SysLog()
                 .setType(type)
-                .setUsername(AuthUtil.getUsername())
+                .setUsername(username)
                 .setOperation(operation)
                 .setCreateTime(new Date())
                 .setIp(JakartaServletUtil.getClientIP(request))
@@ -85,8 +84,8 @@ public class SysLogUtil {
      * @param type      日志类型
      * @param operation 描述
      */
-    public static void publish(int type, String operation) {
-        SysLog sysLog = SysLogUtil.build(type, operation, null, null);
+    public static void publish(int type, String operation, String username) {
+        SysLog sysLog = SysLogUtil.build(type, operation, null, null, username);
         SpringContextHolder.publishEvent(new LogEvent(sysLog));
     }
 }

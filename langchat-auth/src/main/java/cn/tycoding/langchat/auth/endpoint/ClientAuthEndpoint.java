@@ -84,7 +84,7 @@ public class ClientAuthEndpoint {
 
         AigcUser aigcUser = BeanUtil.copyProperties(userInfo, AigcUser.class);
         aigcUser.setPassword(null);
-        SysLogUtil.publish(1, "客户端登录");
+        SysLogUtil.publish(1, "客户端登录", ClientAuthUtil.getUsername());
         log.info("====> Aigc User Login success! token={}", tokenInfo.getTokenValue());
         return R.ok(new TokenInfo()
                 .setToken(tokenInfo.tokenValue)
@@ -131,7 +131,7 @@ public class ClientAuthEndpoint {
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.save(user);
-        SysLogUtil.publish(1, "客户端注册");
+        SysLogUtil.publish(1, "客户端注册", ClientAuthUtil.getUsername());
         return R.ok();
     }
 

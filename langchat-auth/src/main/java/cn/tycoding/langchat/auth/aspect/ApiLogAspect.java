@@ -18,9 +18,11 @@ package cn.tycoding.langchat.auth.aspect;
 
 import cn.tycoding.langchat.auth.event.LogEvent;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
+import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.upms.entity.SysLog;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -47,7 +49,15 @@ public class ApiLogAspect {
         long time = System.currentTimeMillis() - beginTime;
 
         String method = className + "." + methodName + "()";
-        SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_OK, apiLog.value(), method, time);
+
+        String username = null;
+        try {
+            username = AuthUtil.getUsername();
+        } catch (Exception e) {
+            username = ClientAuthUtil.getUsername();
+        }
+
+        SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_OK, apiLog.value(), method, time, username);
 
         SpringContextHolder.publishEvent(new LogEvent(sysLog));
         return point.proceed();

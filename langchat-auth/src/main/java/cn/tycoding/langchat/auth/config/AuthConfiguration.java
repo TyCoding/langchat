@@ -25,11 +25,13 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.tycoding.langchat.auth.event.LogEvent;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
+import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.biz.utils.ClientStpUtil;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.entity.SysLog;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.alibaba.fastjson.JSON;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -79,7 +81,13 @@ public class AuthConfiguration {
 
     private String handleError(Throwable e) {
         if (e instanceof NotPermissionException || e instanceof NotRoleException) {
-            SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_FAIL, HttpStatus.UNAUTHORIZED.getReasonPhrase(), null, null);
+            String username = null;
+            try {
+                username = AuthUtil.getUsername();
+            } catch (Exception err) {
+                username = ClientAuthUtil.getUsername();
+            }
+            SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_FAIL, HttpStatus.UNAUTHORIZED.getReasonPhrase(), null, null, username);
             SpringContextHolder.publishEvent(new LogEvent(sysLog));
         }
 

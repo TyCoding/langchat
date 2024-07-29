@@ -33,7 +33,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +78,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
+//    @Cacheable(value = CacheConst.USER_DETAIL_KEY, key = "#username")
     public UserInfo info(String username) {
         SysUser user = this.findByName(username);
         UserInfo userInfo = BeanUtil.copyProperties(user, UserInfo.class);

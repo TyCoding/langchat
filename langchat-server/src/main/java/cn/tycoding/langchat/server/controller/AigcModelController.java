@@ -47,7 +47,8 @@ public class AigcModelController {
 
     @GetMapping("/list")
     public R<List<AigcModel>> list(AigcModel data) {
-        List<AigcModel> list = modelService.list(Wrappers.<AigcModel>lambdaQuery().eq(AigcModel::getProvider, data.getProvider()));
+        List<AigcModel> list = modelService.list(Wrappers.<AigcModel>lambdaQuery()
+                .eq(StrUtil.isNotBlank(data.getProvider()), AigcModel::getProvider, data.getProvider()));
         list.forEach(this::hide);
         return R.ok(list);
     }
