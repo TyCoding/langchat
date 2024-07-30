@@ -87,6 +87,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .modelName(model.getModel())
                         .maxTokens(model.getResponseLimit())
                         .temperature(model.getTemperature())
+                        .logRequests(true)
+                        .logResponses(true)
                         .topP(model.getTopP())
                         .build();
                 contextHolder.registerBean(model.getId(), build);
@@ -103,6 +105,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .deploymentName(model.getAzureDeploymentName())
                         .maxTokens(model.getResponseLimit())
                         .temperature(model.getTemperature())
+                        .logRequestsAndResponses(true)
                         .topP(model.getTopP())
                         .build();
                 contextHolder.registerBean(model.getId(), build);
@@ -119,6 +122,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .modelName(model.getModel())
                         .temperature(Float.parseFloat(model.getTemperature().toString()))
                         .maxOutputTokens(model.getResponseLimit())
+                        .logRequests(true)
+                        .logResponses(true)
                         .topP(Float.parseFloat(model.getTopP().toString()))
                         .build();
                 contextHolder.registerBean(model.getId(), build);
@@ -131,6 +136,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .modelName(model.getModel())
                         .temperature(model.getTemperature())
                         .topP(model.getTopP())
+                        .logRequests(true)
+                        .logResponses(true)
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
@@ -144,6 +151,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .baseUrl(model.getBaseUrl())
                         .temperature(model.getTemperature())
                         .topP(model.getTopP())
+                        .logRequests(true)
+                        .logResponses(true)
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
@@ -182,6 +191,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .maxToken(model.getResponseLimit())
                         .temperature(model.getTemperature())
                         .topP(model.getTopP())
+                        .logRequests(true)
+                        .logResponses(true)
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
@@ -196,6 +207,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .size(model.getImageSize())
                             .quality(model.getImageQuality())
                             .style(model.getImageStyle())
+                            .logRequests(true)
+                            .logResponses(true)
                             .build();
                     contextHolder.registerBean(model.getId(), build);
                 }
@@ -208,6 +221,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .size(model.getImageSize())
                             .quality(model.getImageQuality())
                             .style(model.getImageStyle())
+                            .logRequestsAndResponses(true)
                             .build();
                     contextHolder.registerBean(model.getId(), build);
                 }
@@ -221,6 +235,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .baseUrl(model.getBaseUrl())
                             .modelName(model.getModel())
                             .dimensions(model.getDimensions())
+                            .logRequests(true)
+                            .logResponses(true)
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OPENAI, build);
                 }
@@ -230,6 +246,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .builder()
                             .apiKey(model.getApiKey())
                             .deploymentName(model.getBaseUrl())
+                            .logRequestsAndResponses(true)
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI, build);
                 }
@@ -240,6 +257,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .apiKey(model.getApiKey())
                             .modelName(model.getModel())
                             .secretKey(model.getSecretKey())
+                            .logRequests(true)
+                            .logResponses(true)
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANFAN, build);
                 }
@@ -259,6 +278,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .apiKey(model.getApiKey())
                             .model(model.getModel())
                             .baseUrl(model.getBaseUrl())
+                            .logRequests(true)
+                            .logResponses(true)
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_ZHIPU, build);
                 }
@@ -268,6 +289,8 @@ public class ProviderInitialize implements ApplicationContextAware {
                             .builder()
                             .baseUrl(model.getBaseUrl())
                             .modelName(model.getModel())
+                            .logRequests(true)
+                            .logResponses(true)
                             .build();
                     contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OLLAMA, build);
                 }

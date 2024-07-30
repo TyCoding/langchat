@@ -37,3 +37,10 @@ mybatis-plus:
 sa-token:
   is-print: false
   token-name: Authorization
+
+logging:
+  level:
+    dev:
+      langchain4j: DEBUG
+      ai4j:
+        openai4j: DEBUG
