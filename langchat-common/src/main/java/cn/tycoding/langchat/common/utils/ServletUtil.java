@@ -54,6 +54,21 @@ public class ServletUtil {
         return null;
     }
 
+    public static String getAuthorizationToken() {
+        String token = getRequest().getHeader("Authorization");
+        if (token != null && token.toLowerCase().startsWith("bearer")) {
+            return token.replace("bearer", "").trim();
+        }
+        return null;
+    }
+
+    public static String getToken(String token) {
+        if (token != null && token.toLowerCase().startsWith("bearer")) {
+            return token.replace("bearer", "").trim();
+        }
+        return token;
+    }
+
     public static String getIpAddr() {
         HttpServletRequest request = getRequest();
         if (request == null) {

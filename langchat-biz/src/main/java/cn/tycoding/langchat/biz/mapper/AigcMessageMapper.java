@@ -58,8 +58,8 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
 
     @Select("""
         SELECT
-            DATE_FORMAT(create_time, '%Y-%m') as month,
-            COUNT(*) as count
+            COALESCE(DATE_FORMAT(create_time, '%Y-%m'), 0) as month,
+            COALESCE(COUNT(*), 0) as count
         FROM
             aigc_message
         WHERE
@@ -74,8 +74,8 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
 
     @Select("""
         SELECT
-            DATE_FORMAT(create_time, '%Y-%m') as month,
-            SUM(tokens) as count
+            COALESCE(DATE_FORMAT(create_time, '%Y-%m'), 0) as month,
+            COALESCE(SUM(tokens), 0) as count
         FROM
             aigc_message
         WHERE
@@ -90,8 +90,8 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
 
     @Select("""
         SELECT
-            COUNT(*) AS totalReq,
-            SUM( CASE WHEN DATE ( create_time ) = CURDATE() THEN 1 ELSE 0 END ) AS curReq
+            COALESCE(COUNT(*), 0) AS totalReq,
+            COALESCE(SUM( CASE WHEN DATE ( create_time ) = CURDATE() THEN 1 ELSE 0 END ), 0) AS curReq
         FROM
             aigc_message
         WHERE
@@ -101,10 +101,10 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
 
     @Select("""
         SELECT
-            SUM( tokens ) AS totalToken,
-            SUM( CASE WHEN DATE ( create_time ) = CURDATE() THEN tokens ELSE 0 END ) AS curToken
+            COALESCE(SUM(tokens), 0) AS totalToken,
+            COALESCE(SUM(CASE WHEN DATE(create_time) = CURDATE() THEN tokens ELSE 0 END), 0) AS curToken
         FROM
-            aigc_message
+            aigc_message;
     """)
     Dict getTotalSum();
 }

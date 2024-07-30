@@ -16,10 +16,10 @@
 
 package cn.tycoding.langchat.app.endpoint;
 
-import cn.hutool.core.lang.Dict;
+import cn.tycoding.langchat.app.endpoint.auth.CompletionReq;
+import cn.tycoding.langchat.app.endpoint.auth.OpenapiAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,24 +35,20 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/langchat/openapi/v1")
+@RequestMapping("/v1")
 public class AppApiChatEndpoint {
 
-    @PostMapping("/test")
-    public Object test(@RequestBody Object obj) {
-        log.info("x: {}", obj);
-        return Dict.create().set("message", "你好呀").set("threadId", "111");
-    }
-
-    @PostMapping("/test2")
-    public Object test2(@RequestBody Object obj) throws InterruptedException, IOException {
-        log.info("Received: {}", obj);
+    @OpenapiAuth
+    @PostMapping("/chat/completions")
+    public Object test2(@RequestBody CompletionReq req) throws InterruptedException, IOException {
+        log.info("x: {}", req);
         ResponseBodyEmitter emitter = new ResponseBodyEmitter();
 
         new Thread(() -> {
             try {
-                for (int i = 0; i < 10; i++) {
-                    emitter.send("Data: " + i + "\n", MediaType.TEXT_PLAIN);
+                for (int i = 0; i < 5; i++) {
+//                    new ChatReq().set
+//                    emitter.send(JSON.toJSONString(res));
                     Thread.sleep(1000);
                 }
                 emitter.complete();

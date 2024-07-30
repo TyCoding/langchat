@@ -170,18 +170,6 @@ public class ProviderInitialize implements ApplicationContextAware {
                 contextHolder.registerBean(model.getId(), build);
             }
 
-            if (ProviderEnum.ALIBABA.getModel().equals(provider)) {
-                QwenStreamingChatModel build = QwenStreamingChatModel
-                        .builder()
-                        .apiKey(model.getApiKey())
-                        .modelName(model.getModel())
-                        .maxTokens(model.getResponseLimit())
-                        .temperature(Float.parseFloat(model.getTemperature().toString()))
-                        .topP(model.getTopP())
-                        .build();
-                contextHolder.registerBean(model.getId(), build);
-            }
-
             if (ProviderEnum.ZHIPU.getModel().equals(provider)) {
                 ZhipuAiStreamingChatModel build = ZhipuAiStreamingChatModel
                         .builder()

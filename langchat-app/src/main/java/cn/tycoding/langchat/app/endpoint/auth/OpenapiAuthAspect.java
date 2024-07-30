@@ -16,25 +16,30 @@
 
 package cn.tycoding.langchat.app.endpoint.auth;
 
-import cn.dev33.satoken.exception.NotPermissionException;
-import cn.tycoding.langchat.biz.entity.AigcUser;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
+import cn.tycoding.langchat.common.exception.AuthException;
+import cn.tycoding.langchat.common.utils.ServletUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Slf4j
 @Aspect
 @Configuration
+@AllArgsConstructor
 public class OpenapiAuthAspect {
+
+    private StringRedisTemplate redisTemplate;
 
     @Around("@annotation(openapiAuth)")
     public Object around(ProceedingJoinPoint point, OpenapiAuth openapiAuth) throws Throwable {
-        AigcUser userInfo = ClientAuthUtil.getUserInfo();
-        if (userInfo.getIsPerms() == null || !userInfo.getIsPerms()) {
-            throw new NotPermissionException("当前账号没有操作权限，请联系管理员");
+        String authorization = ServletUtil.getAuthorizationToken();
+
+        if (authorization == null) {
+            throw new AuthException("Authentication Token invalid");
         }
         return point.proceed();
     }
