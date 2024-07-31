@@ -20,36 +20,43 @@
 
   hljs.registerLanguage('javascript', javascript);
 
+  const url = `http://langchat.cn`;
   const request = `
-POST /api/users HTTP/1.1
-Host: example.com
+POST /v1/chat/completions HTTP/1.1
 Content-Type: application/json
-
+Authorization: 'Bearer YOUR_ACCESS_TOKEN'
+Body:
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+    "messages": [
+        { "role": "user", "content": "你好" }
+    ]
 }
   `;
 
   const response = `
-{
-  "name": "John Doe",
-  "email": "john@example.com"
-}
+data: {"choices": [{"index": 0, "delta": {"content": "你好！"}, "finish_reason": null}], "session_id": null}
+
+data: {"choices": [{"index": 0, "delta": {"content": "我能"}, "finish_reason": null}], "session_id": null}
+
+data: {"choices": [{"index": 0, "delta": {"content": "为你"}, "finish_reason": null}], "session_id": null}
+
+data: {"choices": [{"index": 0, "delta": {"content": "做些什么？"}, "finish_reason": null}], "session_id": null}
+
+data: {"choices": [{"index": 0, "delta": {}, "finish_reason": "stop", "usage": {"prompt_tokens": 9, "completion_tokens": 6, "total_tokens": 15}}], "session_id": null}
   `;
 
   const demo = `
-const url = 'http://langchat.cn/langchat/openapi/v1/';
+const url = 'http://langchat.cn/v1/chat/completions';
 const data = {
-  message: '你好呀',
+    "messages": [
+        { "role": "user", "content": "你好" }
+    ]
 };
 
 fetch(url, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Host': 'example.com',
-    'Accept': 'application/json',
     'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
   },
   body: JSON.stringify(data)
@@ -75,11 +82,7 @@ fetch(url, {
       <div>
         <n-alert title="API URL" type="info" />
         <div class="bg-[#18181c] mt-2 py-2 px-4 overflow-x-auto rounded">
-          <n-code
-            class="text-white"
-            code="http://langchat.cn/langchat/openapi/v1/"
-            language="JavaScript"
-          />
+          <n-code :code="url" class="text-white" language="JavaScript" />
         </div>
       </div>
 
@@ -91,7 +94,7 @@ fetch(url, {
       </div>
 
       <div>
-        <n-alert title="Response" type="info" />
+        <n-alert title="Response（Stream）" type="info" />
         <div class="bg-[#18181c] py-2 mt-2 px-4 overflow-x-auto rounded">
           <n-code :code="response" class="text-white" language="JavaScript" />
         </div>

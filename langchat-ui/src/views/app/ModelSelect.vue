@@ -20,7 +20,7 @@
   import { LLMProviders } from '@/views/aigc/model/data';
 
   const props = defineProps<{
-    id: string;
+    id: any;
   }>();
   const emit = defineEmits(['update']);
   const options = ref([]);
@@ -48,7 +48,7 @@
   function onUpdate(val: any, opt) {
     const obj = toRaw(opt);
     emit('update', {
-      modelId: obj.id,
+      id: obj.id,
       modelName: obj.model,
       modelProvider: obj.provider,
     });

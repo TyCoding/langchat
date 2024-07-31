@@ -19,7 +19,7 @@
   import { list } from '@/api/aigc/knowledge';
 
   const props = defineProps<{
-    id: string;
+    id: any;
   }>();
   const emit = defineEmits(['update']);
   const options = ref([]);

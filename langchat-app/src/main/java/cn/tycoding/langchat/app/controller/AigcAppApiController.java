@@ -18,10 +18,10 @@ package cn.tycoding.langchat.app.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.entity.AigcAppApi;
 import cn.tycoding.langchat.app.service.AigcAppApiService;
+import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -41,6 +41,7 @@ import java.util.List;
 public class AigcAppApiController {
 
     private final AigcAppApiService appApiService;
+    private final AppChannelStore appChannelStore;
 
     @GetMapping("/generate/key")
     public R generateKey() {
@@ -48,14 +49,9 @@ public class AigcAppApiController {
         return R.ok(Dict.create().set("apiKey", AppConst.PREFIX + uuid));
     }
 
-    private void hide(AigcAppApi data) {
-        data.setApiKey(StrUtil.hide(data.getApiKey(), 13, data.getApiKey().length() - 4));
-    }
-
     @GetMapping("/list")
     public R<List<AigcAppApi>> list(AigcAppApi data) {
         List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>());
-        list.forEach(this::hide);
         return R.ok(list);
     }
 
@@ -64,7 +60,6 @@ public class AigcAppApiController {
         IPage<AigcAppApi> iPage = appApiService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcAppApi>lambdaQuery()
                         .like(StringUtils.isNotEmpty(data.getName()), AigcAppApi::getName, data.getName()));
-        iPage.getRecords().forEach(this::hide);
         return R.ok(MybatisUtil.getData(iPage));
     }
 
@@ -79,6 +74,7 @@ public class AigcAppApiController {
 //    @SaCheckPermission("aigc:app:iframe:add")
     public R add(@RequestBody AigcAppApi data) {
         appApiService.save(data);
+        appChannelStore.init();
         return R.ok();
     }
 
@@ -87,6 +83,7 @@ public class AigcAppApiController {
 //    @SaCheckPermission("aigc:app:iframe:update")
     public R update(@RequestBody AigcAppApi data) {
         appApiService.updateById(data);
+        appChannelStore.init();
         return R.ok();
     }
 
@@ -95,6 +92,7 @@ public class AigcAppApiController {
 //    @SaCheckPermission("aigc:app:iframe:delete")
     public R delete(@PathVariable String id) {
         appApiService.removeById(id);
+        appChannelStore.init();
         return R.ok();
     }
 }

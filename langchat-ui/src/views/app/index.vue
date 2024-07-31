@@ -22,6 +22,7 @@
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import router from '@/router';
   import { useDialog, useMessage } from 'naive-ui';
+  import { copyToClip } from '@/utils/copy';
 
   const editRef = ref();
   const dialog = useDialog();
@@ -49,7 +50,6 @@
   }
 
   async function onInfo(item: any) {
-    console.log('点击了', item);
     if (item.channel === 'CHANNEL_API') {
       await router.push('/aigc/app/api/' + item.id);
     }
@@ -112,6 +112,15 @@
       },
     });
   }
+
+  function getKey(apiKey: string) {
+    const key = apiKey;
+    return key.slice(0, 13) + key.slice(13, -4).replace(/./g, '*') + key.slice(-4);
+  }
+  async function onCopy(key: string) {
+    await copyToClip(key);
+    ms.success('Api Key复制成功');
+  }
 </script>
 
 <template>
@@ -172,16 +181,18 @@
 
               <div class="flex items-center justify-between w-full mt-3 gap-x-2">
                 <input
-                  :value="item.link"
+                  v-if="items.key === 'CHANNEL_API'"
+                  :value="getKey(item.apiKey)"
                   class="flex-1 block h-8 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                   type="text"
                 />
-
                 <button
                   class="rounded-md hidden sm:block p-1.5 text-gray-700 bg-white border border-gray-200 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring transition-colors duration-300 hover:text-blue-500 dark:hover:text-blue-500"
+                  @click="onCopy(item.apiKey)"
                 >
                   <SvgIcon class="text-lg" icon="uil:copy" />
                 </button>
+
                 <button
                   class="rounded-md hidden sm:block p-1.5 text-gray-700 bg-blue-100 focus:ring-opacity-40 focus:outline-none focus:ring transition-colors duration-300 hover:text-blue-500 dark:hover:text-blue-500"
                   @click="onInfo(item)"

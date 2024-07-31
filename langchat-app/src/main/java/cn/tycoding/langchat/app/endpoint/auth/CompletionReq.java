@@ -44,7 +44,7 @@ public class CompletionReq {
 
     @Data
     @Builder
-    static class Message {
+    public static class Message {
         String role;
         String content;
     }

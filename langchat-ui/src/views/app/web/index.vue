@@ -18,6 +18,8 @@
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import router from '@/router';
   import { ref } from 'vue-demi';
+  import Preview from './components/preview.vue';
+  import Edit from './components/edit.vue';
 
   const active = ref('1');
 </script>
@@ -42,7 +44,12 @@
       <div></div>
     </div>
 
-    <n-card class="flex-1">11</n-card>
+    <div class="flex-1 overflow-y-auto">
+      <div class="flex gap-4 h-full w-full">
+        <Preview class="w-3/5" />
+        <Edit class="w-full" />
+      </div>
+    </div>
   </div>
 </template>
 

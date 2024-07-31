@@ -2,7 +2,7 @@
   import { onMounted, ref, toRaw } from 'vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { isNullOrWhitespace } from '@/utils/is';
-  import { add, generateKey, getById, update } from '@/api/app/appApi';
+  import { add, generateKey, getById, update } from '@/api/app/appWeb';
   import { list as getModelList } from '@/api/aigc/model';
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';

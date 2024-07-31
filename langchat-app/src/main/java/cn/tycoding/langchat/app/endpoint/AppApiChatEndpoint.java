@@ -16,17 +16,28 @@
 
 package cn.tycoding.langchat.app.endpoint;
 
+import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.endpoint.auth.CompletionReq;
+import cn.tycoding.langchat.app.endpoint.auth.CompletionRes;
 import cn.tycoding.langchat.app.endpoint.auth.OpenapiAuth;
+import cn.tycoding.langchat.app.entity.AigcAppApi;
+import cn.tycoding.langchat.app.entity.AigcAppWeb;
+import cn.tycoding.langchat.app.store.AppChannelStore;
+import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.utils.PromptUtil;
+import cn.tycoding.langchat.common.utils.StreamEmitter;
+import cn.tycoding.langchat.core.service.LangChatService;
+import dev.langchain4j.model.input.Prompt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author tycoding
@@ -38,25 +49,50 @@ import java.io.IOException;
 @RequestMapping("/v1")
 public class AppApiChatEndpoint {
 
-    @OpenapiAuth
-    @PostMapping("/chat/completions")
-    public Object test2(@RequestBody CompletionReq req) throws InterruptedException, IOException {
-        log.info("x: {}", req);
-        ResponseBodyEmitter emitter = new ResponseBodyEmitter();
+    private final LangChatService langChatService;
 
-        new Thread(() -> {
-            try {
-                for (int i = 0; i < 5; i++) {
-//                    new ChatReq().set
-//                    emitter.send(JSON.toJSONString(res));
-                    Thread.sleep(1000);
-                }
-                emitter.complete();
-            } catch (Exception e) {
-                emitter.completeWithError(e);
-            }
-        }).start();
+    @OpenapiAuth(AppConst.CHANNEL_API)
+    @PostMapping(value = "/chat/completions")
+    public SseEmitter completions(@RequestBody CompletionReq req) {
+        StreamEmitter emitter = new StreamEmitter();
+        AigcAppApi appApi = AppChannelStore.getApiChannel();
 
-        return emitter;
+        return handler(emitter, appApi.getModelId(), req.getMessages());
+    }
+
+    private SseEmitter handler(StreamEmitter emitter, String modelId, List<CompletionReq.Message> messages) {
+        if (messages == null || messages.isEmpty() || StrUtil.isBlank(modelId)) {
+            throw new RuntimeException("Message is undefined. Or check the model configuration");
+        }
+        CompletionReq.Message message = messages.get(0);
+
+        Prompt prompt = PromptUtil.build(message.getContent());
+        langChatService
+                .singleChat(new ChatReq()
+                        .setPrompt(prompt)
+                        .setMessage(message.getContent())
+                        .setRole(message.getRole())
+                        .setModelId(modelId))
+                .onNext(token -> {
+                    CompletionRes res = CompletionRes.process(token);
+                    emitter.send(res);
+                }).onComplete(c -> {
+                    CompletionRes res = CompletionRes.end(c);
+                    emitter.send(res);
+                    emitter.complete();
+                }).onError(e -> {
+                    emitter.error(e.getMessage());
+                }).start();
+
+        return emitter.get();
+    }
+
+    @OpenapiAuth(AppConst.CHANNEL_WEB)
+    @PostMapping(value = "/chat/completions/channel/web")
+    public SseEmitter webChat(@RequestBody CompletionReq req) {
+        StreamEmitter emitter = new StreamEmitter();
+        AigcAppWeb appWeb = AppChannelStore.getWebChannel();
+
+        return handler(emitter, appWeb.getModelId(), req.getMessages());
     }
 }

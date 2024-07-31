@@ -16,7 +16,8 @@
 
 package cn.tycoding.langchat.core.service.impl;
 
-import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.exception.ServiceException;
@@ -58,6 +59,9 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public TokenStream chat(ChatReq req) {
         StreamingChatLanguageModel model = provider.stream(req.getModelId());
+        if (StrUtil.isBlank(req.getConversationId())) {
+            req.setConversationId(IdUtil.simpleUUID());
+        }
 
         Assistant assistant;
         if (req.getIsGoogleSearch()) {
@@ -89,6 +93,9 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public TokenStream singleChat(ChatReq req) {
         StreamingChatLanguageModel model = provider.stream(req.getModelId());
+        if (StrUtil.isBlank(req.getConversationId())) {
+            req.setConversationId(IdUtil.simpleUUID());
+        }
 
         Assistant  assistant = AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(model)
@@ -99,6 +106,9 @@ public class LangChatServiceImpl implements LangChatService {
     @Override
     public String text(ChatReq req) {
         CompletableFuture<Void> future = new CompletableFuture<>();
+        if (StrUtil.isBlank(req.getConversationId())) {
+            req.setConversationId(IdUtil.simpleUUID());
+        }
 
         try {
             StreamingChatLanguageModel model = provider.stream(req.getModelId());
@@ -108,7 +118,7 @@ public class LangChatServiceImpl implements LangChatService {
                     .build();
 
             StringBuilder text = new StringBuilder();
-            assistant.stream(UUID.randomUUID().toString(), req.getPrompt().text())
+            assistant.stream(req.getConversationId(), req.getPrompt().text())
                     .onNext(text::append)
                     .onComplete((t) -> {
                         future.complete(null);

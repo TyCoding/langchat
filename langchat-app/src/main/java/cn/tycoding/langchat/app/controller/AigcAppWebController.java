@@ -17,8 +17,11 @@
 package cn.tycoding.langchat.app.controller;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.IdUtil;
+import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.entity.AigcAppWeb;
 import cn.tycoding.langchat.app.service.AigcAppWebService;
+import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -37,6 +40,13 @@ import java.util.List;
 public class AigcAppWebController {
 
     private final AigcAppWebService aigcAppService;
+    private final AppChannelStore appChannelStore;
+
+    @GetMapping("/generate/key")
+    public R generateKey() {
+        String uuid = IdUtil.simpleUUID();
+        return R.ok(Dict.create().set("apiKey", AppConst.PREFIX + uuid));
+    }
 
     @GetMapping("/list")
     public R<List<AigcAppWeb>> list(AigcAppWeb data) {
@@ -60,6 +70,7 @@ public class AigcAppWebController {
 //    @SaCheckPermission("aigc:app:iframe:add")
     public R add(@RequestBody AigcAppWeb data) {
         aigcAppService.save(data);
+        appChannelStore.init();
         return R.ok();
     }
 
@@ -68,6 +79,7 @@ public class AigcAppWebController {
 //    @SaCheckPermission("aigc:app:iframe:update")
     public R update(@RequestBody AigcAppWeb data) {
         aigcAppService.updateById(data);
+        appChannelStore.init();
         return R.ok();
     }
 
@@ -76,6 +88,7 @@ public class AigcAppWebController {
 //    @SaCheckPermission("aigc:app:iframe:delete")
     public R delete(@PathVariable String id) {
         aigcAppService.removeById(id);
+        appChannelStore.init();
         return R.ok();
     }
 }

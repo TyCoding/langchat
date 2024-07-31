@@ -39,13 +39,19 @@ public class AigcAppWeb implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
+    private String modelId;
+    private String knowledgeId;
+    private String promptId;
 
     private String channel;
+    private String apiKey;
+    private Integer reqLimit = 100;
     private String name;
     private String title;
     private String link;
     private String icon;
     private String floatIcon;
     private String des;
+    private Date expired = null;
     private Date createTime;
 }

@@ -45,11 +45,9 @@ public class AigcAppApi implements Serializable {
 
     private String channel;
     private String apiKey;
+    private Integer reqLimit = 100;
     private String name;
-    private String title;
-    private String link;
-    private String icon;
-    private String floatIcon;
     private String des;
+    private Date expired = null;
     private Date createTime;
 }

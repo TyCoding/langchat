@@ -16,7 +16,9 @@
 
 package cn.tycoding.langchat.app.endpoint.auth;
 
+import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.common.exception.AuthException;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Slf4j
 @Aspect
@@ -32,14 +33,20 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 @AllArgsConstructor
 public class OpenapiAuthAspect {
 
-    private StringRedisTemplate redisTemplate;
+    private final AppChannelStore channelStore;
 
     @Around("@annotation(openapiAuth)")
     public Object around(ProceedingJoinPoint point, OpenapiAuth openapiAuth) throws Throwable {
         String authorization = ServletUtil.getAuthorizationToken();
 
         if (authorization == null) {
-            throw new AuthException("Authentication Token invalid");
+            throw new AuthException(401, "Authentication Token invalid");
+        }
+
+        try {
+            channelStore.isExpired(openapiAuth.value());
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
         }
         return point.proceed();
     }

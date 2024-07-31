@@ -57,7 +57,7 @@ public class ServletUtil {
     public static String getAuthorizationToken() {
         String token = getRequest().getHeader("Authorization");
         if (token != null && token.toLowerCase().startsWith("bearer")) {
-            return token.replace("bearer", "").trim();
+            return token.toLowerCase().replace("bearer", "").trim();
         }
         return null;
     }
