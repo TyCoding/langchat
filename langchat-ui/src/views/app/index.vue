@@ -15,19 +15,18 @@
   -->
 
 <script lang="ts" setup>
-  import { h, onMounted, ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import Edit from './edit.vue';
   import { del as delApi, list as getApiList } from '@/api/app/appApi';
   import { del as delWeb, list as getWebList } from '@/api/app/appWeb';
   import SvgIcon from '@/components/SvgIcon/index.vue';
-  import router from '@/router';
   import { useDialog, useMessage } from 'naive-ui';
   import { copyToClip } from '@/utils/copy';
+  import { ChannelEnum, getKey, onInfo, renderIcon, renderTitle } from '@/views/app/columns';
 
   const editRef = ref();
   const dialog = useDialog();
   const ms = useMessage();
-  const loading = ref(true);
   const groups = ref<any[]>([]);
 
   onMounted(async () => {
@@ -35,61 +34,14 @@
   });
 
   async function fetchData() {
-    loading.value = true;
-    try {
-      const apiArr = await getApiList({});
-      const webArr = await getWebList({});
-      groups.value = [
-        { key: 'CHANNEL_API', value: apiArr as any[] },
-        { key: 'CHANNEL_WEB', value: webArr as any[] },
-        { key: 'CHANNEL_WEIXIN', value: [] as any[] },
-      ];
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  async function onInfo(item: any) {
-    if (item.channel === 'CHANNEL_API') {
-      await router.push('/aigc/app/api/' + item.id);
-    }
-    if (item.channel === 'CHANNEL_WEB') {
-      await router.push('/aigc/app/web/' + item.id);
-    }
-    if (item.channel === 'CHANNEL_WEIXIN') {
-      await router.push('/aigc/app/weixin/' + item.id);
-    }
-  }
-
-  function renderTitle(channel: string) {
-    if (channel === 'CHANNEL_API') return 'HTTP API渠道';
-    if (channel === 'CHANNEL_WEB') return 'WEB渠道';
-    if (channel === 'CHANNEL_WEIXIN') return '微信渠道';
-  }
-
-  function renderIcon(channel: string) {
-    return {
-      render() {
-        if (channel === 'CHANNEL_API') {
-          return h(SvgIcon, {
-            class: 'text-4xl text-blue-500',
-            icon: 'hugeicons:api',
-          });
-        }
-        if (channel === 'CHANNEL_WEB') {
-          return h(SvgIcon, {
-            class: 'text-4xl text-blue-500',
-            icon: 'mdi:web-sync',
-          });
-        }
-        if (channel === 'CHANNEL_WEIXIN') {
-          return h(SvgIcon, {
-            class: 'text-4xl text-green-400',
-            icon: 'uiw:weixin',
-          });
-        }
-      },
-    };
+    const apiArr = await getApiList({});
+    const webArr = await getWebList({});
+    groups.value = [
+      { key: ChannelEnum.CHANNEL_API, value: apiArr as any[] },
+      { key: ChannelEnum.CHANNEL_WEB, value: webArr as any[] },
+      { key: ChannelEnum.CHANNEL_WEIXIN, value: [] as any[] },
+      { key: ChannelEnum.CHANNEL_DING, value: [] as any[] },
+    ];
   }
 
   function onDelete(channel: string, id: string) {
@@ -113,10 +65,6 @@
     });
   }
 
-  function getKey(apiKey: string) {
-    const key = apiKey;
-    return key.slice(0, 13) + key.slice(13, -4).replace(/./g, '*') + key.slice(-4);
-  }
   async function onCopy(key: string) {
     await copyToClip(key);
     ms.success('Api Key复制成功');
@@ -131,7 +79,7 @@
       </n-card>
     </div>
 
-    <n-spin :show="loading" class="mt-4 w-full mb-10 px-6">
+    <div class="mt-2 w-full mb-10 px-6 !h-auto">
       <div class="flex items-center gap-2 justify-start">
         <n-button dashed type="primary" @click="editRef.show()"> 新增应用 </n-button>
         <n-button tertiary type="primary" @click="fetchData">
@@ -145,6 +93,7 @@
             <component :is="renderIcon(items.key)" />
           </template>
         </n-alert>
+        <n-empty v-if="items.value.length === 0" class="mt-6" description="暂时没有配置" />
         <div class="grid gap-2 sm:grid-cols-3 lg:grid-cols-5">
           <n-card
             v-for="item in items.value"
@@ -204,7 +153,7 @@
           </n-card>
         </div>
       </div>
-    </n-spin>
+    </div>
 
     <Edit ref="editRef" @reload="fetchData" />
   </div>

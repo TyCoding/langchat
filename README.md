@@ -54,6 +54,18 @@ Copyright (c) 2024-present, TyCoding.
 
 采用GUN GPL-v3开源协议，可以免费学习使用，个人可以免费是接入使用，商业应用请联系作者授权。
 
+## 版本更新
+
+- 2024.7.15 LangChat正式发布、公开仓库
+- 2024.7.19 LangChat完成分离Server、Client端业务架构，保持业务分离
+- 2024.7.21 LangChat完成多存储方案，支持本地、七牛云、阿里云、腾讯云OSS服务
+- 2024.7.30 LangChat开发Web SDK，接入API、WEB消息渠道，支持Iframe嵌入
+- ...
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TyCoding/langchat&type=Date)](https://star-history.com/#TyCoding/langchat&Date)
+
 ## 预览
 
 ![](docs/imgs/MIK-fYD77Q.png)
