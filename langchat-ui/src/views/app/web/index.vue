@@ -36,17 +36,13 @@
           <SvgIcon class="text-lg" icon="uil:setting" />
           <span class="pl-2">应用配置</span>
         </n-tab>
-        <n-tab name="2">
-          <SvgIcon class="text-lg" icon="grommet-icons:console" />
-          <span class="pl-2">应用接入</span>
-        </n-tab>
       </n-tabs>
       <div></div>
     </div>
 
     <div class="flex-1 overflow-y-auto">
       <div class="flex gap-4 h-full w-full">
-        <Preview class="w-2/4" />
+        <Preview class="w-3/5" />
         <Edit class="w-full" />
       </div>
     </div>
