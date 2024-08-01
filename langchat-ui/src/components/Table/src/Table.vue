@@ -1,3 +1,19 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <div class="table-toolbar">
     <!--顶部左侧区域-->
@@ -5,9 +21,9 @@
       <template v-if="title">
         <div class="table-toolbar-left-title">
           {{ title }}
-          <n-tooltip trigger="hover" v-if="titleTooltip">
+          <n-tooltip v-if="titleTooltip" trigger="hover">
             <template #trigger>
-              <n-icon size="18" class="ml-1 text-gray-400 cursor-pointer">
+              <n-icon class="ml-1 text-gray-400 cursor-pointer" size="18">
                 <QuestionCircleOutlined />
               </n-icon>
             </template>
@@ -50,10 +66,10 @@
         <template #trigger>
           <div class="table-toolbar-right-icon">
             <n-dropdown
-              @select="densitySelect"
-              trigger="click"
-              :options="densityOptions"
               v-model:value="tableSize"
+              :options="densityOptions"
+              trigger="click"
+              @select="densitySelect"
             >
               <n-icon size="18">
                 <ColumnHeightOutlined />
@@ -71,13 +87,13 @@
   <div class="s-table">
     <n-data-table
       ref="tableElRef"
-      v-bind="getBindValues"
-      :striped="isStriped"
       :pagination="pagination"
+      :striped="isStriped"
+      v-bind="getBindValues"
       @update:page="updatePage"
       @update:page-size="updatePageSize"
     >
-      <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
+      <template v-for="item in Object.keys($slots)" :key="item" #[item]="data">
         <slot :name="item" v-bind="data"></slot>
       </template>
     </n-data-table>

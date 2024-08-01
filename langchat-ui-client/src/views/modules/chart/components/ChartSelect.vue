@@ -1,4 +1,20 @@
-<script setup lang="ts">
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
+<script lang="ts" setup>
   import {
     areaBasic,
     areaSimple,
@@ -59,11 +75,11 @@
   <div class="flex flex-col gap-4">
     <div v-for="item in charts" :key="item">
       <div class="mb-2 text-gray-700 dark:text-white text-[17px]">{{ item.group }}</div>
-      <n-grid :x-gap="18" :y-gap="18" :cols="5" class="pl-0.5 pr-0.5">
+      <n-grid :cols="5" :x-gap="18" :y-gap="18" class="pl-0.5 pr-0.5">
         <n-gi v-for="child in item.list" :key="child">
           <n-card
-            class="cursor-pointer !rounded-md"
             :class="child.key == chartStore.key ? 'card-active' : ''"
+            class="cursor-pointer !rounded-md"
             content-style="padding: 10px"
             hoverable
             @click="onSelect(child.key)"
@@ -81,7 +97,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   .img-hover:hover {
     img {
       transition: 0.3s ease-in-out;

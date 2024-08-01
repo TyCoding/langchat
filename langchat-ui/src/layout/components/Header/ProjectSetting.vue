@@ -1,6 +1,22 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
-  <n-drawer v-model:show="isDrawer" :width="width" :placement="placement">
-    <n-drawer-content :title="title" :native-scrollbar="false">
+  <n-drawer v-model:show="isDrawer" :placement="placement" :width="width">
+    <n-drawer-content :native-scrollbar="false" :title="title">
       <div class="drawer">
         <n-divider title-placement="center">主题</n-divider>
 
@@ -9,12 +25,12 @@
             <template #trigger>
               <n-switch v-model:value="designStore.darkTheme" class="dark-theme-switch">
                 <template #checked>
-                  <n-icon size="14" color="#ffd93b">
+                  <n-icon color="#ffd93b" size="14">
                     <SunnySharp />
                   </n-icon>
                 </template>
                 <template #unchecked>
-                  <n-icon size="14" color="#ffd93b">
+                  <n-icon color="#ffd93b" size="14">
                     <Moon />
                   </n-icon>
                 </template>
@@ -28,13 +44,13 @@
 
         <div class="drawer-setting-item align-items-top">
           <span
-            class="theme-item"
             v-for="(item, index) in appThemeList"
             :key="index"
             :style="{ 'background-color': item }"
+            class="theme-item"
             @click="togTheme(item)"
           >
-            <n-icon size="12" v-if="item === designStore.appTheme">
+            <n-icon v-if="item === designStore.appTheme" size="12">
               <CheckOutlined />
             </n-icon>
           </span>
@@ -47,42 +63,42 @@
             <n-tooltip placement="top">
               <template #trigger>
                 <img
+                  alt="左侧菜单模式"
                   src="~@/assets/images/nav-theme-dark.svg"
                   @click="togNavMode('vertical')"
-                  alt="左侧菜单模式"
                 />
               </template>
               <span>左侧菜单模式</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-show="settingStore.navMode === 'vertical'" />
+            <n-badge v-show="settingStore.navMode === 'vertical'" color="#19be6b" dot />
           </div>
 
           <div class="drawer-setting-item-style">
             <n-tooltip placement="top">
               <template #trigger>
                 <img
-                  src="~@/assets/images/nav-horizontal.svg"
                   alt="顶部菜单模式"
+                  src="~@/assets/images/nav-horizontal.svg"
                   @click="togNavMode('horizontal')"
                 />
               </template>
               <span>顶部菜单模式</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-show="settingStore.navMode === 'horizontal'" />
+            <n-badge v-show="settingStore.navMode === 'horizontal'" color="#19be6b" dot />
           </div>
 
           <div class="drawer-setting-item-style">
             <n-tooltip placement="top">
               <template #trigger>
                 <img
+                  alt="顶部菜单混合模式"
                   src="~@/assets/images/nav-horizontal-mix.svg"
                   @click="togNavMode('horizontal-mix')"
-                  alt="顶部菜单混合模式"
                 />
               </template>
               <span>顶部菜单混合模式</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-show="settingStore.navMode === 'horizontal-mix'" />
+            <n-badge v-show="settingStore.navMode === 'horizontal-mix'" color="#19be6b" dot />
           </div>
         </div>
 
@@ -93,42 +109,42 @@
             <n-tooltip placement="top">
               <template #trigger>
                 <img
-                  src="~@/assets/images/nav-theme-dark.svg"
                   alt="暗色侧边栏"
+                  src="~@/assets/images/nav-theme-dark.svg"
                   @click="togNavTheme('dark')"
                 />
               </template>
               <span>暗色侧边栏</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-if="settingStore.navTheme === 'dark'" />
+            <n-badge v-if="settingStore.navTheme === 'dark'" color="#19be6b" dot />
           </div>
 
           <div class="drawer-setting-item-style">
             <n-tooltip placement="top">
               <template #trigger>
                 <img
-                  src="~@/assets/images/nav-theme-light.svg"
                   alt="白色侧边栏"
+                  src="~@/assets/images/nav-theme-light.svg"
                   @click="togNavTheme('light')"
                 />
               </template>
               <span>白色侧边栏</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-if="settingStore.navTheme === 'light'" />
+            <n-badge v-if="settingStore.navTheme === 'light'" color="#19be6b" dot />
           </div>
 
           <div class="drawer-setting-item-style">
             <n-tooltip placement="top">
               <template #trigger>
                 <img
+                  alt="暗色顶栏"
                   src="~@/assets/images/header-theme-dark.svg"
                   @click="togNavTheme('header-dark')"
-                  alt="暗色顶栏"
                 />
               </template>
               <span>暗色顶栏</span>
             </n-tooltip>
-            <n-badge dot color="#19be6b" v-if="settingStore.navTheme === 'header-dark'" />
+            <n-badge v-if="settingStore.navTheme === 'header-dark'" color="#19be6b" dot />
           </div>
         </div>
         <n-divider title-placement="center">界面功能</n-divider>
@@ -137,8 +153,8 @@
           <div class="drawer-setting-item-title"> 分割菜单 </div>
           <div class="drawer-setting-item-action">
             <n-switch
-              :disabled="settingStore.navMode !== 'horizontal-mix'"
               v-model:value="settingStore.menuSetting.mixMenu"
+              :disabled="settingStore.navMode !== 'horizontal-mix'"
             />
           </div>
         </div>
@@ -220,7 +236,7 @@
         </div>
 
         <div class="drawer-setting-item">
-          <n-alert type="warning" :showIcon="false">
+          <n-alert :showIcon="false" type="warning">
             <p>{{ alertText }}</p>
           </n-alert>
         </div>
@@ -230,7 +246,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, unref, watch, computed } from 'vue';
+  import { computed, defineComponent, reactive, toRefs, unref, watch } from 'vue';
   import { useProjectSettingStore } from '@/store/modules/projectSetting';
   import { useDesignSettingStore } from '@/store/modules/designSetting';
   import { CheckOutlined } from '@vicons/antd';

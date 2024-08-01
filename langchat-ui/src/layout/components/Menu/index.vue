@@ -1,13 +1,29 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <NMenu
-    :options="menus"
+    :collapsed="collapsed"
+    :collapsed-icon-size="20"
+    :collapsed-width="64"
+    :expanded-keys="openKeys"
+    :indent="24"
     :inverted="inverted"
     :mode="mode"
-    :collapsed="collapsed"
-    :collapsed-width="64"
-    :collapsed-icon-size="20"
-    :indent="24"
-    :expanded-keys="openKeys"
+    :options="menus"
     :value="getSelectedKeys"
     @update:value="clickMenuItem"
     @update:expanded-keys="menuExpanded"
@@ -15,7 +31,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted, reactive, computed, watch, toRefs, unref } from 'vue';
+  import { computed, defineComponent, onMounted, reactive, ref, toRefs, unref, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
   import { generatorMenu, generatorMenuMix } from '@/utils';

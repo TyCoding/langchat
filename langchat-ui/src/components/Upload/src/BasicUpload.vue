@@ -1,23 +1,39 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <div class="w-full">
     <div class="upload">
       <div class="upload-card">
         <!--图片列表-->
         <div
-          class="upload-card-item"
-          :style="getCSSProperties"
           v-for="(item, index) in imgList"
           :key="`img_${index}`"
+          :style="getCSSProperties"
+          class="upload-card-item"
         >
           <div class="upload-card-item-info">
             <div class="img-box">
               <img :src="item" />
             </div>
             <div class="img-box-actions">
-              <n-icon size="18" class="mx-2 action-icon" @click="preview(item)">
+              <n-icon class="mx-2 action-icon" size="18" @click="preview(item)">
                 <EyeOutlined />
               </n-icon>
-              <n-icon size="18" class="mx-2 action-icon" @click="remove(index)">
+              <n-icon class="mx-2 action-icon" size="18" @click="remove(index)">
                 <DeleteOutlined />
               </n-icon>
             </div>
@@ -26,18 +42,18 @@
 
         <!--上传图片-->
         <div
-          class="upload-card-item upload-card-item-select-picture"
-          :style="getCSSProperties"
           v-if="imgList.length < maxNumber"
+          :style="getCSSProperties"
+          class="upload-card-item upload-card-item-select-picture"
         >
           <n-upload
-            v-bind="$props"
             :file-list-style="{ display: 'none' }"
-            @before-upload="beforeUpload"
+            v-bind="$props"
             @finish="finish"
+            @before-upload="beforeUpload"
           >
             <div class="flex flex-col justify-center">
-              <n-icon size="18" class="m-auto">
+              <n-icon class="m-auto" size="18">
                 <PlusOutlined />
               </n-icon>
               <span class="upload-title">上传图片</span>
@@ -49,7 +65,7 @@
 
     <!--上传图片-->
     <n-space>
-      <n-alert title="提示" type="info" v-if="helpText" class="flex w-full">
+      <n-alert v-if="helpText" class="flex w-full" title="提示" type="info">
         {{ helpText }}
       </n-alert>
     </n-space>
@@ -58,10 +74,10 @@
   <!--预览图片-->
   <n-modal
     v-model:show="showModal"
-    preset="card"
-    title="预览"
     :bordered="false"
     :style="{ width: '520px' }"
+    preset="card"
+    title="预览"
   >
     <img :src="previewUrl" />
   </n-modal>

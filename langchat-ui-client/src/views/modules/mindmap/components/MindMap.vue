@@ -1,4 +1,20 @@
-<script setup lang="ts">
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import { Transformer } from 'markmap-lib';
   import { Markmap } from 'markmap-view';
@@ -48,15 +64,15 @@
 </script>
 
 <template>
-  <div class="dot-bg w-full h-full" :class="genText == '' ? 'overflow-hidden' : ''">
+  <div :class="genText == '' ? 'overflow-hidden' : ''" class="dot-bg w-full h-full">
     <div class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
-      <n-button @click="onZoomIn" text>
+      <n-button text @click="onZoomIn">
         <SvgIcon class="text-2xl" icon="basil:zoom-in-outline" />
       </n-button>
-      <n-button @click="onZoomOut" text>
+      <n-button text @click="onZoomOut">
         <SvgIcon class="text-2xl" icon="basil:zoom-out-outline" />
       </n-button>
-      <n-button @click="onZoomFill" text>
+      <n-button text @click="onZoomFill">
         <SvgIcon class="text-2xl" icon="fluent:full-screen-zoom-24-filled" />
       </n-button>
       <n-button round size="small" @click="downPng">
@@ -79,16 +95,16 @@
       </n-button>
     </div>
 
-    <div class="h-full w-full flex flex-col justify-center items-center gap-3" v-if="genText == ''">
+    <div v-if="genText == ''" class="h-full w-full flex flex-col justify-center items-center gap-3">
       <SvgIcon class="text-6xl" icon="ri:mind-map" />
       <div class="text-2xl font-bold">{{ t('mindmap.title') }}</div>
       <div class="text-gray-400">{{ t('mindmap.titleDes') }}</div>
     </div>
 
-    <div class="h-full w-full" id="mindmap-view">
-      <svg class="h-full w-full" id="mindmap" />
+    <div id="mindmap-view" class="h-full w-full">
+      <svg id="mindmap" class="h-full w-full" />
     </div>
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

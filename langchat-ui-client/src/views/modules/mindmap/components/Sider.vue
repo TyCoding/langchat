@@ -1,4 +1,20 @@
-<script setup lang="ts">
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
+<script lang="ts" setup>
   import { computed, ref, watch } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { t } from '@/locales';
@@ -61,14 +77,14 @@
 <template>
   <div class="p-4">
     <n-input
-      :disabled="loading"
       v-model:value="text"
+      :disabled="loading"
       :placeholder="t('mindmap.inputTips')"
-      type="textarea"
       :rows="6"
+      type="textarea"
     />
     <div class="mt-2 mb-2">
-      <n-button :loading="loading" @click="onGenerate" type="success" secondary block>
+      <n-button :loading="loading" block secondary type="success" @click="onGenerate">
         <template #icon>
           <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
         </template>
@@ -79,16 +95,16 @@
     <div class="mt-6">
       <div class="flex flex-wrap justify-between items-center mb-2">
         <div>{{ t('mindmap.output') }}</div>
-        <n-button @click="onCase" type="success" text>{{ t('mindmap.example') }}</n-button>
+        <n-button text type="success" @click="onCase">{{ t('mindmap.example') }}</n-button>
       </div>
     </div>
     <n-input
       v-model:value="gen"
       :placeholder="t('mindmap.outputTips')"
-      type="textarea"
       :rows="16"
+      type="textarea"
     />
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

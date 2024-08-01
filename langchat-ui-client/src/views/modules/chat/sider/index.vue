@@ -1,4 +1,20 @@
-<script setup lang="ts">
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
+<script lang="ts" setup>
   import type { CSSProperties } from 'vue';
   import { computed, watch } from 'vue';
   import { SvgIcon } from '@/components/common';
@@ -64,21 +80,21 @@
   <NLayoutSider
     :collapsed="collapsed"
     :collapsed-width="0"
-    :width="260"
     :show-trigger="isMobile ? false : 'arrow-circle'"
+    :style="getMobileClass"
+    :width="260"
+    bordered
     collapse-mode="transform"
     position="absolute"
-    bordered
-    :style="getMobileClass"
     @update-collapsed="handleUpdateCollapsed"
   >
-    <div class="flex flex-col h-full" :style="mobileSafeArea">
+    <div :style="mobileSafeArea" class="flex flex-col h-full">
       <div v-if="loading" class="w-full h-full flex items-center justify-center">
         <n-spin :show="loading" />
       </div>
       <main v-else class="flex flex-col flex-1 min-h-0">
         <div class="p-4 pt-3 flex justify-between items-center gap-2">
-          <n-button @click="onAddConversation" block type="success" secondary>
+          <n-button block secondary type="success" @click="onAddConversation">
             <SvgIcon icon="ic:round-plus" />
             <span>{{ t('chat.newChatButton') }}</span>
           </n-button>
@@ -87,10 +103,10 @@
           <List />
           <div class="pb-2 px-4">
             <n-select
-              :options="chatStore.prompts"
-              :label-field="'name'"
-              :value-field="'id'"
               v-model:value="chatStore.selectPromptId"
+              :label-field="'name'"
+              :options="chatStore.prompts"
+              :value-field="'id'"
             />
           </div>
         </div>

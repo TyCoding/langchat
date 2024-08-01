@@ -1,20 +1,36 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
-  <n-layout class="layout" :position="fixedMenu" has-sider>
+  <n-layout :position="fixedMenu" class="layout" has-sider>
     <n-layout-sider
       v-if="
         !isMobile && isMixMenuNoneSub && (navMode === 'vertical' || navMode === 'horizontal-mix')
       "
+      :collapsed="collapsed"
+      :collapsed-width="64"
+      :inverted="inverted"
+      :native-scrollbar="false"
+      :position="fixedMenu"
+      :width="leftMenuWidth"
+      class="layout-sider"
+      collapse-mode="width"
       show-trigger="bar"
       @collapse="collapsed = true"
-      :position="fixedMenu"
       @expand="collapsed = false"
-      :collapsed="collapsed"
-      collapse-mode="width"
-      :collapsed-width="64"
-      :width="leftMenuWidth"
-      :native-scrollbar="false"
-      :inverted="inverted"
-      class="layout-sider"
     >
       <Logo :collapsed="collapsed" />
       <AsideMenu v-model:collapsed="collapsed" v-model:location="getMenuLocation" />
@@ -22,16 +38,16 @@
 
     <n-drawer
       v-model:show="showSideDrawer"
-      :width="menuWidth"
       :placement="'left'"
+      :width="menuWidth"
       class="layout-side-drawer"
     >
       <n-layout-sider
-        :position="fixedMenu"
         :collapsed="false"
-        :width="menuWidth"
-        :native-scrollbar="false"
         :inverted="inverted"
+        :native-scrollbar="false"
+        :position="fixedMenu"
+        :width="menuWidth"
         class="layout-sider"
       >
         <Logo :collapsed="collapsed" />
@@ -45,24 +61,24 @@
       </n-layout-header>
 
       <n-layout-content
-        class="layout-content"
         :class="{ 'layout-default-background': getDarkTheme === false }"
+        class="layout-content"
       >
         <div
-          class="layout-content-main"
           :class="{
             'layout-content-main-fix': fixedMulti,
             'fluid-header': fixedHeader === 'static',
           }"
+          class="layout-content-main"
         >
           <TabsView v-if="isMultiTabs" v-model:collapsed="collapsed" />
           <div
-            class="main-view"
             :class="{
               'main-view-fix': fixedMulti,
               noMultiTabs: !isMultiTabs,
               'mt-3': !isMultiTabs,
             }"
+            class="main-view"
           >
             <MainView />
           </div>
@@ -78,7 +94,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref, computed, onMounted, watch } from 'vue';
+  import { computed, onMounted, ref, unref, watch } from 'vue';
   import { Logo } from './components/Logo';
   import { TabsView } from './components/TagsView';
   import { MainView } from './components/Main';

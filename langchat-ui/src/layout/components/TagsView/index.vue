@@ -1,6 +1,21 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <div
-    class="box-border tabs-view"
     :class="{
       'tabs-view-fix': multiTabsSetting.fixed,
       'tabs-view-fixed-header': isMultiHeaderFixed,
@@ -8,39 +23,40 @@
       'tabs-view-dark-background': getDarkTheme === true,
     }"
     :style="getChangeStyle"
+    class="box-border tabs-view"
   >
     <div class="tabs-view-main">
-      <div ref="navWrap" class="tabs-card" :class="{ 'tabs-card-scrollable': scrollable }">
+      <div ref="navWrap" :class="{ 'tabs-card-scrollable': scrollable }" class="tabs-card">
         <span
-          class="tabs-card-prev"
           :class="{ 'tabs-card-prev-hide': !scrollable }"
+          class="tabs-card-prev"
           @click="scrollPrev"
         >
-          <n-icon size="16" color="#515a6e">
+          <n-icon color="#515a6e" size="16">
             <LeftOutlined />
           </n-icon>
         </span>
         <span
-          class="tabs-card-next"
           :class="{ 'tabs-card-next-hide': !scrollable }"
+          class="tabs-card-next"
           @click="scrollNext"
         >
-          <n-icon size="16" color="#515a6e">
+          <n-icon color="#515a6e" size="16">
             <RightOutlined />
           </n-icon>
         </span>
         <div ref="navScroll" class="tabs-card-scroll">
-          <Draggable :list="tabsList" animation="300" item-key="fullPath" class="flex">
+          <Draggable :list="tabsList" animation="300" class="flex" item-key="fullPath">
             <template #item="{ element }">
               <div
                 :id="`tag${element.fullPath.split('/').join('\/')}`"
-                class="tabs-card-scroll-item"
                 :class="{ 'active-item': activeKey === element.fullPath }"
-                @click.stop="goPage(element)"
+                class="tabs-card-scroll-item"
                 @contextmenu="handleContextMenu($event, element)"
+                @click.stop="goPage(element)"
               >
                 <span>{{ element.meta.title }}</span>
-                <n-icon size="14" @click.stop="closeTabItem(element)" v-if="!element.meta.affix">
+                <n-icon v-if="!element.meta.affix" size="14" @click.stop="closeTabItem(element)">
                   <CloseOutlined />
                 </n-icon>
               </div>
@@ -50,26 +66,26 @@
       </div>
       <div class="tabs-close">
         <n-dropdown
+          :options="TabsMenuOptions"
+          placement="bottom-end"
           trigger="hover"
           @select="closeHandleSelect"
-          placement="bottom-end"
-          :options="TabsMenuOptions"
         >
           <div class="tabs-close-btn">
-            <n-icon size="16" color="#515a6e">
+            <n-icon color="#515a6e" size="16">
               <DownOutlined />
             </n-icon>
           </div>
         </n-dropdown>
       </div>
       <n-dropdown
+        :options="TabsMenuOptions"
         :show="showDropdown"
         :x="dropdownX"
         :y="dropdownY"
-        @clickoutside="onClickOutside"
         placement="bottom-start"
+        @clickoutside="onClickOutside"
         @select="closeHandleSelect"
-        :options="TabsMenuOptions"
       />
     </div>
   </div>
@@ -77,40 +93,38 @@
 
 <script lang="ts">
   import {
-    defineComponent,
-    reactive,
     computed,
+    defineComponent,
+    nextTick,
+    onMounted,
+    provide,
+    reactive,
     ref,
     toRefs,
-    provide,
     watch,
-    onMounted,
-    nextTick,
   } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { storage } from '@/utils/Storage';
   import { TABS_ROUTES } from '@/store/mutation-types';
-  import { useTabsViewStore } from '@/store/modules/tabsView';
+  import { RouteItem, useTabsViewStore } from '@/store/modules/tabsView';
   import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
-  import { RouteItem } from '@/store/modules/tabsView';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
-  import { useMessage } from 'naive-ui';
+  import { useMessage, useThemeVars } from 'naive-ui';
   import Draggable from 'vuedraggable';
   import { PageEnum } from '@/enums/pageEnum';
   import {
-    DownOutlined,
-    ReloadOutlined,
     CloseOutlined,
     ColumnWidthOutlined,
-    MinusOutlined,
+    DownOutlined,
     LeftOutlined,
+    MinusOutlined,
+    ReloadOutlined,
     RightOutlined,
   } from '@vicons/antd';
   import { renderIcon } from '@/utils';
   import elementResizeDetectorMaker from 'element-resize-detector';
   import { useDesignSetting } from '@/hooks/setting/useDesignSetting';
   import { useProjectSettingStore } from '@/store/modules/projectSetting';
-  import { useThemeVars } from 'naive-ui';
   import { useGo } from '@/hooks/web/usePage';
 
   export default defineComponent({

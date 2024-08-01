@@ -1,4 +1,20 @@
-<script setup lang="ts">
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
+<script lang="ts" setup>
   import { SvgIcon } from '@/components/common';
   import ChartSelect from './components/ChartSelect.vue';
   import ChartData from './components/ChartData.vue';
@@ -18,13 +34,13 @@
 <template>
   <div class="w-full pt-3 dot-bg">
     <div class="flex justify-between items-center pl-10 pr-10">
-      <n-button text type="primary" size="large">
+      <n-button size="large" text type="primary">
         <template #icon>
           <SvgIcon icon="solar:chart-broken" />
         </template>
         <div class="flex gap-1 items-center">
           <span>可视化图表分析</span>
-          <n-tag type="warning" size="small">本功能正在开发中...</n-tag>
+          <n-tag size="small" type="warning">本功能正在开发中...</n-tag>
         </div>
       </n-button>
     </div>
@@ -33,9 +49,9 @@
       <div class="!w-[90%]">
         <n-tabs
           v-model:value="chartStore.step"
-          type="segment"
           animated
           justify-content="space-evenly"
+          type="segment"
         >
           <n-tab-pane
             v-for="(item, index) in steps"
@@ -49,8 +65,8 @@
                 class="flex justify-center items-center w-full pr-2"
               >
                 <div
-                  class="w-full flex justify-center items-center"
                   :class="chartStore.step === index ? 'text-[#70c0e8]' : ''"
+                  class="w-full flex justify-center items-center"
                 >
                   <div class="w-1/2 justify-center flex">{{ item.key }}</div>
                 </div>
@@ -65,7 +81,7 @@
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
   ::v-deep(.n-tabs .n-tabs-tab .n-tabs-tab__label) {
     width: 100% !important;
   }

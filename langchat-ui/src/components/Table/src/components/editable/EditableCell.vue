@@ -1,26 +1,42 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <div class="editable-cell">
     <div v-show="!isEdit" class="editable-cell-content" @click="handleEdit">
       {{ getValues }}
-      <n-icon class="edit-icon" v-if="!column.editRow">
+      <n-icon v-if="!column.editRow" class="edit-icon">
         <FormOutlined />
       </n-icon>
     </div>
-    <div class="flex editable-cell-content" v-show="isEdit" v-click-outside="onClickOutside">
+    <div v-show="isEdit" v-click-outside="onClickOutside" class="flex editable-cell-content">
       <div class="editable-cell-content-comp">
         <CellComponent
-          v-bind="getComponentProps"
+          ref="elRef"
+          :class="getWrapperClass"
           :component="getComponent"
           :popoverVisible="getRuleVisible"
-          :ruleMessage="ruleMessage"
           :rule="getRule"
-          :class="getWrapperClass"
-          ref="elRef"
+          :ruleMessage="ruleMessage"
+          v-bind="getComponentProps"
           @options-change="handleOptionsChange"
           @press-enter="handleEnter"
         />
       </div>
-      <div class="editable-cell-action" v-if="!getRowEditable">
+      <div v-if="!getRowEditable" class="editable-cell-action">
         <n-icon class="mx-2 cursor-pointer">
           <CheckOutlined @click="handleSubmit" />
         </n-icon>

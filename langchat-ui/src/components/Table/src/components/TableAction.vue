@@ -1,25 +1,41 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <div class="tableAction">
     <div class="flex items-center justify-center">
       <template v-for="(action, index) in getActions" :key="`${index}-${action.label}`">
-        <n-button v-bind="action" class="mx-1">
+        <n-button class="mx-1" v-bind="action">
           {{ action.label }}
-          <template #icon v-if="action.hasOwnProperty('icon')">
+          <template v-if="action.hasOwnProperty('icon')" #icon>
             <n-icon :component="action.icon" />
           </template>
         </n-button>
       </template>
       <n-dropdown
         v-if="dropDownActions && getDropdownList.length"
-        trigger="hover"
         :options="getDropdownList"
+        trigger="hover"
         @select="select"
       >
         <slot name="more"></slot>
-        <n-button v-bind="getMoreProps" class="mx-1" v-if="!$slots.more" icon-placement="right">
+        <n-button v-if="!$slots.more" class="mx-1" icon-placement="right" v-bind="getMoreProps">
           <div class="flex items-center">
             <span>更多</span>
-            <n-icon size="14" class="ml-1">
+            <n-icon class="ml-1" size="14">
               <DownOutlined />
             </n-icon>
           </div>

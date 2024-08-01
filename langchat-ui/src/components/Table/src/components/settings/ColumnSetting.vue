@@ -1,8 +1,24 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
       <div class="cursor-pointer table-toolbar-right-icon">
-        <n-popover trigger="click" :width="230" class="toolbar-popover" placement="bottom-end">
+        <n-popover :width="230" class="toolbar-popover" placement="bottom-end" trigger="click">
           <template #trigger>
             <n-icon size="18">
               <SettingOutlined />
@@ -17,7 +33,7 @@
                 <n-checkbox v-model:checked="selection" @update:checked="onSelection"
                   >勾选列</n-checkbox
                 >
-                <n-button text type="info" size="small" class="mt-1" @click="resetColumns"
+                <n-button class="mt-1" size="small" text type="info" @click="resetColumns"
                   >重置</n-button
                 >
               </n-space>
@@ -27,36 +43,36 @@
             <n-checkbox-group v-model:value="checkList" @update:value="onChange">
               <Draggable
                 v-model="columnsList"
-                animation="300"
-                item-key="key"
-                filter=".no-draggable"
                 :move="onMove"
+                animation="300"
+                filter=".no-draggable"
+                item-key="key"
                 @end="draggableEnd"
               >
                 <template #item="{ element }">
                   <div
-                    class="table-toolbar-outer-checkbox"
                     :class="{
                       'table-toolbar-outer-checkbox-dark': getDarkTheme === true,
                       'no-draggable': element.draggable === false,
                     }"
+                    class="table-toolbar-outer-checkbox"
                   >
                     <span
-                      class="drag-icon"
                       :class="{ 'drag-icon-hidden': element.draggable === false }"
+                      class="drag-icon"
                     >
                       <n-icon size="18">
                         <DragOutlined />
                       </n-icon>
                     </span>
-                    <n-checkbox :value="element.key" :label="element.title" />
+                    <n-checkbox :label="element.title" :value="element.key" />
                     <div class="fixed-item">
-                      <n-tooltip trigger="hover" placement="bottom">
+                      <n-tooltip placement="bottom" trigger="hover">
                         <template #trigger>
                           <n-icon
-                            size="18"
                             :color="element.fixed === 'left' ? '#2080f0' : undefined"
                             class="cursor-pointer"
+                            size="18"
                             @click="fixedColumn(element, 'left')"
                           >
                             <VerticalRightOutlined />
@@ -65,12 +81,12 @@
                         <span>固定到左侧</span>
                       </n-tooltip>
                       <n-divider vertical />
-                      <n-tooltip trigger="hover" placement="bottom">
+                      <n-tooltip placement="bottom" trigger="hover">
                         <template #trigger>
                           <n-icon
-                            size="18"
                             :color="element.fixed === 'right' ? '#2080f0' : undefined"
                             class="cursor-pointer"
+                            size="18"
                             @click="fixedColumn(element, 'right')"
                           >
                             <VerticalLeftOutlined />

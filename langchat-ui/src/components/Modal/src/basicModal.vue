@@ -1,15 +1,31 @@
+<!--
+  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+  -
+  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     https://www.gnu.org/licenses/agpl-3.0.html
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+
 <template>
-  <n-modal id="basic-modal" v-bind="getBindValue" v-model:show="isModal" @close="onCloseModal">
+  <n-modal id="basic-modal" v-model:show="isModal" v-bind="getBindValue" @close="onCloseModal">
     <template #header>
-      <div class="w-full cursor-move" id="basic-modal-bar">{{ getBindValue.title }}</div>
+      <div id="basic-modal-bar" class="w-full cursor-move">{{ getBindValue.title }}</div>
     </template>
     <template #default>
       <slot name="default"></slot>
     </template>
-    <template #action v-if="!$slots.action">
+    <template v-if="!$slots.action" #action>
       <n-space>
         <n-button v-if="showCloseBtn" @click="closeModal">{{ subCloseText }}</n-button>
-        <n-button v-if="showSubBtn" type="primary" :loading="subLoading" @click="handleSubmit">{{
+        <n-button v-if="showSubBtn" :loading="subLoading" type="primary" @click="handleSubmit">{{
           subBtuText
         }}</n-button>
       </n-space>

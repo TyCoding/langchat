@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
+ *
+ * Licensed under the GNU Affero General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/agpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { renderIcon } from '@/utils/index';
 import {
   AccessibilityOutline,
@@ -35,14 +51,14 @@ import {
   BagOutline,
   BagRemoveOutline,
   BalloonOutline,
-  BanOutline,
   BandageOutline,
-  BarChartOutline,
+  BanOutline,
   BarbellOutline,
+  BarChartOutline,
   BarcodeOutline,
   BaseballOutline,
-  BasketOutline,
   BasketballOutline,
+  BasketOutline,
   BatteryChargingOutline,
   BatteryDeadOutline,
   BatteryFullOutline,
@@ -55,9 +71,9 @@ import {
   BoatOutline,
   BodyOutline,
   BonfireOutline,
-  BookOutline,
   BookmarkOutline,
   BookmarksOutline,
+  BookOutline,
   BowlingBallOutline,
   BriefcaseOutline,
   BrowsersOutline,
@@ -65,8 +81,8 @@ import {
   BugOutline,
   BuildOutline,
   BulbOutline,
-  BusOutline,
   BusinessOutline,
+  BusOutline,
   CafeOutline,
   CalculatorOutline,
   CalendarClearOutline,
@@ -75,8 +91,6 @@ import {
   CallOutline,
   CameraOutline,
   CameraReverseOutline,
-  CarOutline,
-  CarSportOutline,
   CardOutline,
   CaretBackCircleOutline,
   CaretBackOutline,
@@ -86,6 +100,8 @@ import {
   CaretForwardOutline,
   CaretUpCircleOutline,
   CaretUpOutline,
+  CarOutline,
+  CarSportOutline,
   CartOutline,
   CashOutline,
   CellularOutline,
@@ -143,8 +159,8 @@ import {
   DocumentAttachOutline,
   DocumentLockOutline,
   DocumentOutline,
-  DocumentTextOutline,
   DocumentsOutline,
+  DocumentTextOutline,
   DownloadOutline,
   DuplicateOutline,
   EarOutline,
@@ -160,9 +176,9 @@ import {
   ExitOutline,
   ExpandOutline,
   ExtensionPuzzleOutline,
+  EyedropOutline,
   EyeOffOutline,
   EyeOutline,
-  EyedropOutline,
   FastFoodOutline,
   FemaleOutline,
   FileTrayFullOutline,
@@ -176,9 +192,9 @@ import {
   FitnessOutline,
   FlagOutline,
   FlameOutline,
+  FlashlightOutline,
   FlashOffOutline,
   FlashOutline,
-  FlashlightOutline,
   FlaskOutline,
   FlowerOutline,
   FolderOpenOutline,
