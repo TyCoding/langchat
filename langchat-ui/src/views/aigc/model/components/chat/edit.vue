@@ -52,7 +52,6 @@
     setFieldsValue({ ...form, ...record });
   }
 
-  console.log(props.provider);
   const [register, { setFieldsValue }] = useForm({
     labelWidth: 120,
     gridProps: { cols: 1 },
@@ -64,10 +63,6 @@
     if (values !== false) {
       isShow.value = false;
       const data = { ...values };
-      console.log(data, data.apiKey.indexOf('****'));
-      if (data.apiKey.indexOf('****') > 0) {
-        data.apiKey = undefined;
-      }
       if (isNullOrWhitespace(data.id)) {
         await add(data);
         emit('reload');

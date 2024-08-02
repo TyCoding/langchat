@@ -16,8 +16,9 @@
 
 <script lang="ts" setup>
   import { onMounted, ref, toRaw } from 'vue';
-  import { getChatModels } from '@/api/aigc/model';
-  import { LLMProviders } from '@/views/aigc/model/data';
+  import { list as getModels } from '@/api/aigc/model';
+  import { LLMProviders } from '@/views/aigc/model/components/chat/data';
+  import { ModelTypeEnum } from '@/api/models';
 
   const props = defineProps<{
     id: any;
@@ -27,7 +28,7 @@
   const modelId = ref('');
 
   onMounted(async () => {
-    const providers = await getChatModels();
+    const providers = await getModels({ type: ModelTypeEnum.CHAT });
     const data: any = [];
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);

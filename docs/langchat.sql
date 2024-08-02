@@ -241,6 +241,7 @@ CREATE TABLE `aigc_message` (
 DROP TABLE IF EXISTS `aigc_model`;
 CREATE TABLE `aigc_model` (
                               `id` varchar(50) NOT NULL COMMENT '主键',
+                              `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '类型: CHAT、Embedding、Image',
                               `model` varchar(100) DEFAULT NULL COMMENT '模型名称',
                               `provider` varchar(100) DEFAULT NULL COMMENT '供应商',
                               `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '别名',
@@ -257,7 +258,6 @@ CREATE TABLE `aigc_model` (
                               `image_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片大小',
                               `image_quality` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片质量',
                               `image_style` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图片风格',
-                              `model_type` varchar(50) DEFAULT NULL,
                               `dimensions` int DEFAULT NULL COMMENT '向量维数',
                               PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='LLM模型配置表';

@@ -15,7 +15,9 @@
  */
 
 import { FormSchema } from '@/components/Form';
-import { EmbeddingProviderEnum, LLMProviders, ProviderEnum } from '@/views/aigc/model/data';
+import { LLMProviders, ProviderEnum } from './data';
+import { ModelTypeEnum } from '@/api/models';
+import { isNullOrWhitespace } from '@/utils/is';
 
 const baseHeadSchemas: FormSchema[] = [
   {
@@ -23,6 +25,13 @@ const baseHeadSchemas: FormSchema[] = [
     label: 'ID',
     component: 'NInput',
     isHidden: true,
+  },
+  {
+    field: 'type',
+    label: 'type',
+    component: 'NInput',
+    isHidden: true,
+    defaultValue: ModelTypeEnum.CHAT,
   },
   {
     field: 'provider',
@@ -100,6 +109,19 @@ const keySchemas: FormSchema[] = [
     label: 'Base Url',
     labelMessage: '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的',
     component: 'NInput',
+    rules: [
+      {
+        required: false,
+        trigger: ['blur'],
+        validator: (_, value: string) => {
+          const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+          if (isNullOrWhitespace(value) || urlRegex.test(value)) {
+            return true;
+          }
+          return new Error('URL格式错误');
+        },
+      },
+    ],
   },
 ];
 
@@ -151,7 +173,7 @@ export const azureOpenaiSchemas: FormSchema[] = [
   ...baseSchemas,
 ];
 
-export const googleSchemas: FormSchema[] = [
+export const geminiSchemas: FormSchema[] = [
   ...baseHeadSchemas,
   {
     field: 'geminiProject',
@@ -189,7 +211,7 @@ export const ollamaSchemas: FormSchema[] = [
   ...baseSchemas,
 ];
 
-export const baiduSchemas: FormSchema[] = [
+export const qfanSchemas: FormSchema[] = [
   ...baseHeadSchemas,
   {
     field: 'model',
@@ -199,7 +221,7 @@ export const baiduSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
       filterable: true,
-      options: getModels(ProviderEnum.BAIDU),
+      options: getModels(ProviderEnum.Q_FAN),
     },
   },
   {
@@ -213,7 +235,7 @@ export const baiduSchemas: FormSchema[] = [
   ...baseSchemas,
 ];
 
-export const alibabaSchemas: FormSchema[] = [
+export const qwenSchemas: FormSchema[] = [
   ...baseHeadSchemas,
   {
     field: 'model',
@@ -223,7 +245,7 @@ export const alibabaSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
       filterable: true,
-      options: getModels(ProviderEnum.ALIBABA),
+      options: getModels(ProviderEnum.Q_WEN),
     },
   },
   ...keySchemas,
@@ -247,184 +269,6 @@ export const zhipuSchemas: FormSchema[] = [
   ...baseSchemas,
 ];
 
-export const imageSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'modelType',
-    label: '模型类型',
-    labelMessage: '代表模型的类型',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型类型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: [
-        {
-          label: 'openai',
-          value: 'openai',
-        },
-        {
-          label: 'azure-openai',
-          value: 'azure-openai',
-        },
-      ],
-    },
-  },
-  {
-    field: 'apiKey',
-    label: 'Api Key',
-    labelMessage: '模型链接的秘钥，注意有些模型例如Gemini是本地认证方式，则不是通过这种方式',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
-  },
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.TEXT_IMAGE),
-    },
-  },
-  {
-    field: 'imageSize',
-    label: '图片大小',
-    labelMessage: '生成图片的大小尺寸',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择图片大小', trigger: ['blur'] }],
-    componentProps: {
-      options: [
-        {
-          label: '1024x1024',
-          value: '1024x1024',
-        },
-        {
-          label: '1024x1792',
-          value: '1024x1792',
-        },
-        {
-          label: '1792x1024',
-          value: '1792x1024',
-        },
-      ],
-    },
-  },
-  {
-    field: 'imageQuality',
-    label: '图片质量',
-    labelMessage: '生成图片的质量',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择图片的质量', trigger: ['blur'] }],
-    componentProps: {
-      options: [
-        {
-          label: 'standard',
-          value: 'standard',
-        },
-        {
-          label: 'hd',
-          value: 'hd',
-        },
-      ],
-    },
-  },
-  {
-    field: 'imageStyle',
-    label: '图片风格',
-    labelMessage: '生成图片的风格',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择图片的风格', trigger: ['blur'] }],
-    componentProps: {
-      options: [
-        {
-          label: 'vivid',
-          value: 'vivid',
-        },
-        {
-          label: 'natural',
-          value: 'natural',
-        },
-      ],
-    },
-  },
-];
-
-export const embeddingSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'modelType',
-    label: '模型类型',
-    labelMessage: '代表模型的类型',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型类型', trigger: ['blur'] }],
-    componentProps: {
-      options: Object.values(EmbeddingProviderEnum).map((i) => {
-        return {
-          label: i,
-          value: i,
-        };
-      }),
-    },
-  },
-  {
-    field: 'apiKey',
-    label: 'Api Key',
-    labelMessage: '模型链接的秘钥，注意有些模型例如Gemini是本地认证方式，则不是通过这种方式',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
-  },
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      tag: true,
-      options: getModels(ProviderEnum.EMBEDDING),
-    },
-  },
-  {
-    field: 'temperature',
-    label: '生成随机性',
-    labelMessage: '调高参数会使得模型的输出更多样性和创新性，反之降低参数将会减少多样性',
-    component: 'NSlider',
-    rules: [{ type: 'number', required: true, message: '请输入生成随机性', trigger: ['blur'] }],
-    componentProps: {
-      showTooltip: true,
-      defaultValue: 0.8,
-      step: 0.05,
-      min: 0,
-      max: 2,
-    },
-  },
-  {
-    field: 'dimensions',
-    label: 'Dimensions',
-    labelMessage: '此参数代表向量纬数，注意此参数需要和向量数据库匹配',
-    component: 'NSelect',
-    rules: [{ type: 'number', required: true, message: '请选择向量维数', trigger: ['blur'] }],
-    componentProps: {
-      options: [
-        {
-          label: '384',
-          value: 384,
-        },
-        {
-          label: '1536',
-          value: 1536,
-        },
-        {
-          label: '3072',
-          value: 3072,
-        },
-      ],
-    },
-  },
-];
-
 export function getSchemas(provider: string) {
   switch (provider) {
     case ProviderEnum.OPENAI: {
@@ -433,26 +277,20 @@ export function getSchemas(provider: string) {
     case ProviderEnum.AZURE_OPENAI: {
       return azureOpenaiSchemas;
     }
-    case ProviderEnum.GOOGLE: {
-      return googleSchemas;
+    case ProviderEnum.GEMINI: {
+      return geminiSchemas;
     }
     case ProviderEnum.OLLAMA: {
       return ollamaSchemas;
     }
-    case ProviderEnum.BAIDU: {
-      return baiduSchemas;
+    case ProviderEnum.Q_FAN: {
+      return qfanSchemas;
     }
-    case ProviderEnum.ALIBABA: {
-      return alibabaSchemas;
+    case ProviderEnum.Q_WEN: {
+      return qwenSchemas;
     }
     case ProviderEnum.ZHIPU: {
       return zhipuSchemas;
-    }
-    case ProviderEnum.TEXT_IMAGE: {
-      return imageSchemas;
-    }
-    case ProviderEnum.EMBEDDING: {
-      return embeddingSchemas;
     }
   }
   return [];

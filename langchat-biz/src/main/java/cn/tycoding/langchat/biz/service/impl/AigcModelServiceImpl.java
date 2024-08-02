@@ -16,7 +16,7 @@
 
 package cn.tycoding.langchat.biz.service.impl;
 
-import cn.tycoding.langchat.biz.component.ProviderEnum;
+import cn.tycoding.langchat.biz.component.ModelTypeEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.mapper.AigcModelMapper;
 import cn.tycoding.langchat.biz.service.AigcModelService;
@@ -38,20 +38,19 @@ public class AigcModelServiceImpl extends ServiceImpl<AigcModelMapper, AigcModel
     @Override
     public List<AigcModel> getChatModels() {
         return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
-                .ne(AigcModel::getProvider, ProviderEnum.EMBEDDING.getModel())
-                .ne(AigcModel::getProvider, ProviderEnum.TEXT_IMAGE.getModel()));
+                .eq(AigcModel::getType, ModelTypeEnum.EMBEDDING.name()));
     }
 
     @Override
     public List<AigcModel> getImageModels() {
         return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
-                .eq(AigcModel::getProvider, ProviderEnum.TEXT_IMAGE.getModel()));
+                .eq(AigcModel::getType, ModelTypeEnum.TEXT_IMAGE.name()));
     }
 
     @Override
     public List<AigcModel> getEmbeddingModels() {
         return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
-                .eq(AigcModel::getProvider, ProviderEnum.EMBEDDING.getModel()));
+                .eq(AigcModel::getType, ModelTypeEnum.EMBEDDING.name()));
     }
 }
 

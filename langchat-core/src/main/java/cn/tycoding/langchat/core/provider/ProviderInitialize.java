@@ -17,6 +17,7 @@
 package cn.tycoding.langchat.core.provider;
 
 import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.biz.component.ModelTypeEnum;
 import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
@@ -36,6 +37,7 @@ import dev.langchain4j.model.qianfan.QianfanEmbeddingModel;
 import dev.langchain4j.model.qianfan.QianfanStreamingChatModel;
 import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
 import dev.langchain4j.model.zhipu.ZhipuAiEmbeddingModel;
+import dev.langchain4j.model.zhipu.ZhipuAiImageModel;
 import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeansException;
@@ -44,6 +46,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tycoding
@@ -62,7 +65,7 @@ public class ProviderInitialize implements ApplicationContextAware {
     }
 
     public void init() {
-        // delete embedding model
+        // un register embedding model
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OPENAI);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANFAN);
@@ -72,11 +75,24 @@ public class ProviderInitialize implements ApplicationContextAware {
 
         List<AigcModel> list = aigcModelService.list();
         list.forEach(model -> {
+            if (Objects.equals(model.getBaseUrl(), "")) {
+                model.setBaseUrl(null);
+            }
             // Uninstall previously registered beans before registering them
             contextHolder.unregisterBean(model.getId());
 
-            String provider = model.getProvider();
-            if (ProviderEnum.OPENAI.getModel().equals(provider)) {
+            llmHandler(model);
+            embeddingHandler(model);
+            imageHandler(model);
+        });
+    }
+
+    private void llmHandler(AigcModel model) {
+        String type = model.getType();
+        String provider = model.getProvider();
+
+        if (ModelTypeEnum.CHAT.name().equals(type)) {
+            if (ProviderEnum.OPENAI.name().equals(provider)) {
                 if (StrUtil.isBlank(model.getApiKey())) {
                     return;
                 }
@@ -93,8 +109,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.AZURE_OPENAI.getModel().equals(provider)) {
+            if (ProviderEnum.AZURE_OPENAI.name().equals(provider)) {
                 if (StrUtil.isBlank(model.getApiKey())) {
                     return;
                 }
@@ -110,8 +125,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.GOOGLE.getModel().equals(provider)) {
+            if (ProviderEnum.GEMINI.name().equals(provider)) {
                 if (StrUtil.isBlank(model.getApiKey()) || StrUtil.isBlank(model.getSecretKey())) {
                     return;
                 }
@@ -128,8 +142,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.OLLAMA.getModel().equals(provider)) {
+            if (ProviderEnum.OLLAMA.name().equals(provider)) {
                 OllamaStreamingChatModel build = OllamaStreamingChatModel
                         .builder()
                         .baseUrl(model.getBaseUrl())
@@ -141,8 +154,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.BAIDU.getModel().equals(provider)) {
+            if (ProviderEnum.Q_FAN.name().equals(provider)) {
                 QianfanStreamingChatModel build = QianfanStreamingChatModel
                         .builder()
                         .apiKey(model.getApiKey())
@@ -156,8 +168,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.ALIBABA.getModel().equals(provider)) {
+            if (ProviderEnum.Q_WEN.name().equals(provider)) {
                 QwenStreamingChatModel build = QwenStreamingChatModel
                         .builder()
                         .apiKey(model.getApiKey())
@@ -169,8 +180,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
-
-            if (ProviderEnum.ZHIPU.getModel().equals(provider)) {
+            if (ProviderEnum.ZHIPU.name().equals(provider)) {
                 ZhipuAiStreamingChatModel build = ZhipuAiStreamingChatModel
                         .builder()
                         .apiKey(model.getApiKey())
@@ -184,105 +194,120 @@ public class ProviderInitialize implements ApplicationContextAware {
                         .build();
                 contextHolder.registerBean(model.getId(), build);
             }
+        }
+    }
 
-            if (ProviderEnum.TEXT_IMAGE.getModel().equals(provider)) {
-                if (ProviderEnum.OPENAI.getModel().equals(model.getModelType())) {
-                    OpenAiImageModel build = OpenAiImageModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .baseUrl(model.getBaseUrl())
-                            .modelName(model.getModel())
-                            .size(model.getImageSize())
-                            .quality(model.getImageQuality())
-                            .style(model.getImageStyle())
-                            .logRequests(true)
-                            .logResponses(true)
-                            .build();
-                    contextHolder.registerBean(model.getId(), build);
-                }
+    private void embeddingHandler(AigcModel model) {
+        String type = model.getType();
+        String provider = model.getProvider();
 
-                if (ProviderEnum.AZURE_OPENAI.getModel().equals(model.getModelType())) {
-                    AzureOpenAiImageModel build = AzureOpenAiImageModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .deploymentName(model.getAzureDeploymentName())
-                            .size(model.getImageSize())
-                            .quality(model.getImageQuality())
-                            .style(model.getImageStyle())
-                            .logRequestsAndResponses(true)
-                            .build();
-                    contextHolder.registerBean(model.getId(), build);
-                }
+        if (ModelTypeEnum.CHAT.name().equals(type)) {
+            if (ProviderEnum.OPENAI.name().equals(provider)) {
+                OpenAiEmbeddingModel build = OpenAiEmbeddingModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .baseUrl(model.getBaseUrl())
+                        .modelName(model.getModel())
+                        .dimensions(model.getDimensions())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OPENAI, build);
             }
-
-            if (ProviderEnum.EMBEDDING.getModel().equals(provider)) {
-                if (ProviderEnum.OPENAI.getModel().equals(model.getModelType())) {
-                    OpenAiEmbeddingModel build = OpenAiEmbeddingModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .baseUrl(model.getBaseUrl())
-                            .modelName(model.getModel())
-                            .dimensions(model.getDimensions())
-                            .logRequests(true)
-                            .logResponses(true)
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OPENAI, build);
-                }
-
-                if (ProviderEnum.AZURE_OPENAI.getModel().equals(model.getModelType())) {
-                    AzureOpenAiEmbeddingModel build = AzureOpenAiEmbeddingModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .deploymentName(model.getBaseUrl())
-                            .logRequestsAndResponses(true)
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI, build);
-                }
-
-                if (ProviderEnum.BAIDU.getModel().equals(model.getModelType())) {
-                    QianfanEmbeddingModel build = QianfanEmbeddingModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .modelName(model.getModel())
-                            .secretKey(model.getSecretKey())
-                            .logRequests(true)
-                            .logResponses(true)
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANFAN, build);
-                }
-
-                if (ProviderEnum.ALIBABA.getModel().equals(model.getModelType())) {
-                    QwenEmbeddingModel build = QwenEmbeddingModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .modelName(model.getModel())
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANWEN, build);
-                }
-
-                if (ProviderEnum.ZHIPU.getModel().equals(model.getModelType())) {
-                    ZhipuAiEmbeddingModel build = ZhipuAiEmbeddingModel
-                            .builder()
-                            .apiKey(model.getApiKey())
-                            .model(model.getModel())
-                            .baseUrl(model.getBaseUrl())
-                            .logRequests(true)
-                            .logResponses(true)
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_ZHIPU, build);
-                }
-
-                if (ProviderEnum.OLLAMA.getModel().equals(model.getModelType())) {
-                    OllamaEmbeddingModel build = OllamaEmbeddingModel
-                            .builder()
-                            .baseUrl(model.getBaseUrl())
-                            .modelName(model.getModel())
-                            .logRequests(true)
-                            .logResponses(true)
-                            .build();
-                    contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OLLAMA, build);
-                }
+            if (ProviderEnum.AZURE_OPENAI.name().equals(provider)) {
+                AzureOpenAiEmbeddingModel build = AzureOpenAiEmbeddingModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .deploymentName(model.getBaseUrl())
+                        .logRequestsAndResponses(true)
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI, build);
             }
-        });
+            if (ProviderEnum.Q_FAN.name().equals(provider)) {
+                QianfanEmbeddingModel build = QianfanEmbeddingModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .modelName(model.getModel())
+                        .secretKey(model.getSecretKey())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANFAN, build);
+            }
+            if (ProviderEnum.Q_WEN.name().equals(provider)) {
+                QwenEmbeddingModel build = QwenEmbeddingModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .modelName(model.getModel())
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_QIANWEN, build);
+            }
+            if (ProviderEnum.ZHIPU.name().equals(provider)) {
+                ZhipuAiEmbeddingModel build = ZhipuAiEmbeddingModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .model(model.getModel())
+                        .baseUrl(model.getBaseUrl())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_ZHIPU, build);
+            }
+            if (ProviderEnum.OLLAMA.name().equals(provider)) {
+                OllamaEmbeddingModel build = OllamaEmbeddingModel
+                        .builder()
+                        .baseUrl(model.getBaseUrl())
+                        .modelName(model.getModel())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(EmbedConst.CLAZZ_NAME_OLLAMA, build);
+            }
+        }
+    }
+
+    private void imageHandler(AigcModel model) {
+        String type = model.getType();
+        String provider = model.getProvider();
+
+        if (ModelTypeEnum.TEXT_IMAGE.name().equals(type)) {
+            if (ProviderEnum.OPENAI.name().equals(provider)) {
+                OpenAiImageModel build = OpenAiImageModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .baseUrl(model.getBaseUrl())
+                        .modelName(model.getModel())
+                        .size(model.getImageSize())
+                        .quality(model.getImageQuality())
+                        .style(model.getImageStyle())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(model.getId(), build);
+            }
+            if (ProviderEnum.AZURE_OPENAI.name().equals(provider)) {
+                AzureOpenAiImageModel build = AzureOpenAiImageModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .deploymentName(model.getAzureDeploymentName())
+                        .size(model.getImageSize())
+                        .quality(model.getImageQuality())
+                        .style(model.getImageStyle())
+                        .logRequestsAndResponses(true)
+                        .build();
+                contextHolder.registerBean(model.getId(), build);
+            }
+            if (ProviderEnum.ZHIPU.name().equals(provider)) {
+                ZhipuAiImageModel build = ZhipuAiImageModel
+                        .builder()
+                        .apiKey(model.getApiKey())
+                        .model(model.getModel())
+                        .baseUrl(model.getBaseUrl())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(model.getId(), build);
+            }
+        }
     }
 }

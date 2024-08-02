@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-export enum ModelTypeEnum {
-  CHAT = 'CHAT',
-  EMBEDDING = 'EMBEDDING',
-  TEXT_IMAGE = 'TEXT_IMAGE',
-  WEB_SEARCH = 'WEB_SEARCH',
+export enum ProviderEnum {
+  OPENAI = 'OPENAI',
+  AZURE_OPENAI = 'AZURE_OPENAI',
+  ZHIPU = 'ZHIPU',
 }
 
-export function hideKey(apiKey: string) {
-  const key = apiKey;
-  return key.slice(0, 13) + key.slice(13, -4).replace(/./g, '*') + key.slice(-4);
-}
+export const LLMProviders: any[] = [
+  {
+    model: ProviderEnum.OPENAI,
+    name: 'OpenAI',
+    models: ['dall-e-2', 'dall-e-3'],
+  },
+  {
+    model: ProviderEnum.AZURE_OPENAI,
+    name: 'Azure OpenAI',
+    models: ['dall-e-2', 'dall-e-3'],
+  },
+  {
+    model: ProviderEnum.ZHIPU,
+    name: '智普AI',
+    models: ['cogview-3'],
+  },
+];

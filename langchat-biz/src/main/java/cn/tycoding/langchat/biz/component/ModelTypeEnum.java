@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-export enum ModelTypeEnum {
-  CHAT = 'CHAT',
-  EMBEDDING = 'EMBEDDING',
-  TEXT_IMAGE = 'TEXT_IMAGE',
-  WEB_SEARCH = 'WEB_SEARCH',
-}
+package cn.tycoding.langchat.biz.component;
 
-export function hideKey(apiKey: string) {
-  const key = apiKey;
-  return key.slice(0, 13) + key.slice(13, -4).replace(/./g, '*') + key.slice(-4);
+import lombok.Getter;
+
+/**
+ * @author tycoding
+ * @since 2024/6/16
+ */
+@Getter
+public enum ModelTypeEnum {
+
+    CHAT,
+    EMBEDDING,
+    TEXT_IMAGE,
+    WEB_SEARCH;
 }

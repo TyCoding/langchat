@@ -17,14 +17,15 @@
 <script lang="ts" setup>
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
   import { onMounted, ref, toRaw } from 'vue';
-  import { getChatModels } from '@/api/aigc/model';
-  import { LLMProviders } from '@/views/aigc/model/data';
+  import { list as getModels } from '@/api/aigc/model';
+  import { LLMProviders } from '@/views/aigc/model/components/chat/data';
+  import { ModelTypeEnum } from '@/api/models';
 
   const chatStore = useChatStore();
   const modelList = ref([]);
 
   onMounted(async () => {
-    const providers = await getChatModels();
+    const providers = (await getModels({ type: ModelTypeEnum.CHAT })) as any;
     const data: any = [];
     if (chatStore.modelName === '') {
       chatStore.modelId = providers[0].id;

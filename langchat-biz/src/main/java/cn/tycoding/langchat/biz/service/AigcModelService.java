@@ -27,19 +27,10 @@ import java.util.List;
  */
 public interface AigcModelService extends IService<AigcModel> {
 
-    /**
-     * Get a list of chat models
-     */
     List<AigcModel> getChatModels();
 
-    /**
-     * Gets a list of models for the Vincennes diagram
-     */
     List<AigcModel> getImageModels();
 
-    /**
-     * Gets the list of Embedding models
-     */
     List<AigcModel> getEmbeddingModels();
 }
 

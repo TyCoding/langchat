@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ProviderEnum } from '@/views/aigc/model/data';
+import { ProviderEnum } from './data';
 
 export const baseColumns = [
   {
@@ -66,7 +66,7 @@ export const azureOpenaiColumns = [
   },
 ];
 
-export const googleColumns = [
+export const geminiColumns = [
   ...baseColumns,
   {
     title: 'Project',
@@ -90,7 +90,7 @@ export const ollamaColumns = [
   },
 ];
 
-export const baiduColumns = [
+export const qfanColumns = [
   ...baseColumns,
   {
     title: 'Secret Key',
@@ -98,54 +98,8 @@ export const baiduColumns = [
   },
 ];
 
-export const alibabaColumns = [...baseColumns];
+export const qwenColumns = [...baseColumns];
 export const zhipuColumns = [...baseColumns];
-
-export const imageColumns = [
-  {
-    title: '模型类型',
-    key: 'modelType',
-  },
-  {
-    title: 'Model Name',
-    key: 'model',
-  },
-  {
-    title: 'Api Key',
-    key: 'apiKey',
-  },
-  {
-    title: '图片大小',
-    key: 'imageSize',
-  },
-  {
-    title: '图片质量',
-    key: 'imageQuality',
-  },
-  {
-    title: '图片风格',
-    key: 'imageStyle',
-  },
-];
-
-export const embeddingColumns = [
-  {
-    title: '模型类型',
-    key: 'modelType',
-  },
-  {
-    title: 'Model Name',
-    key: 'model',
-  },
-  {
-    title: 'Api Key',
-    key: 'apiKey',
-  },
-  {
-    title: 'Dimensions',
-    key: 'dimensions',
-  },
-];
 
 export function getColumns(provider: string) {
   switch (provider) {
@@ -155,26 +109,20 @@ export function getColumns(provider: string) {
     case ProviderEnum.AZURE_OPENAI: {
       return azureOpenaiColumns;
     }
-    case ProviderEnum.GOOGLE: {
-      return googleColumns;
+    case ProviderEnum.GEMINI: {
+      return geminiColumns;
     }
     case ProviderEnum.OLLAMA: {
       return ollamaColumns;
     }
-    case ProviderEnum.BAIDU: {
-      return baiduColumns;
+    case ProviderEnum.Q_FAN: {
+      return qfanColumns;
     }
-    case ProviderEnum.ALIBABA: {
-      return alibabaColumns;
+    case ProviderEnum.Q_WEN: {
+      return qwenColumns;
     }
     case ProviderEnum.ZHIPU: {
       return zhipuColumns;
-    }
-    case ProviderEnum.TEXT_IMAGE: {
-      return imageColumns;
-    }
-    case ProviderEnum.EMBEDDING: {
-      return embeddingColumns;
     }
   }
   return [];

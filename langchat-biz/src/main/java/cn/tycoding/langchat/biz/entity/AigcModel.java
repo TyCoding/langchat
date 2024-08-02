@@ -35,6 +35,7 @@ public class AigcModel implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
+    private String type;
     private String model;
     private String provider;
     private String name;
@@ -51,7 +52,6 @@ public class AigcModel implements Serializable {
     private String imageSize;
     private String imageQuality;
     private String imageStyle;
-    private String modelType;
     private Integer dimensions;
 }
 

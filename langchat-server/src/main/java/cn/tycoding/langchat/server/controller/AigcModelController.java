@@ -48,29 +48,9 @@ public class AigcModelController {
     @GetMapping("/list")
     public R<List<AigcModel>> list(AigcModel data) {
         List<AigcModel> list = modelService.list(Wrappers.<AigcModel>lambdaQuery()
+                .eq(StrUtil.isNotBlank(data.getType()), AigcModel::getType, data.getType())
                 .eq(StrUtil.isNotBlank(data.getProvider()), AigcModel::getProvider, data.getProvider()));
         list.forEach(this::hide);
-        return R.ok(list);
-    }
-
-    @GetMapping("/getChatModels")
-    public R<List<AigcModel>> getChatModels() {
-        List<AigcModel> list = modelService.getChatModels();
-        list.forEach(i -> i.setApiKey(null));
-        return R.ok(list);
-    }
-
-    @GetMapping("/getImageModels")
-    public R<List<AigcModel>> getImageModels() {
-        List<AigcModel> list = modelService.getImageModels();
-        list.forEach(i -> i.setApiKey(null));
-        return R.ok(list);
-    }
-
-    @GetMapping("/getEmbeddingModels")
-    public R<List<AigcModel>> getEmbeddingModels() {
-        List<AigcModel> list = modelService.getEmbeddingModels();
-        list.forEach(i -> i.setApiKey(null));
         return R.ok(list);
     }
 
@@ -101,6 +81,9 @@ public class AigcModelController {
     @ApiLog("添加模型")
     @SaCheckPermission("aigc:model:add")
     public R add(@RequestBody AigcModel data) {
+        if (data.getApiKey().contains("***")) {
+            data.setApiKey(null);
+        }
         modelService.save(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
         return R.ok();
@@ -110,6 +93,9 @@ public class AigcModelController {
     @ApiLog("修改模型")
     @SaCheckPermission("aigc:model:update")
     public R update(@RequestBody AigcModel data) {
+        if (data.getApiKey().contains("***")) {
+            data.setApiKey(null);
+        }
         modelService.updateById(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
         return R.ok();

@@ -38,15 +38,12 @@ public class EmbedProvider {
     private final ApplicationContext context;
 
     public static DocumentSplitter splitter(String modelName, String modelProvider) {
-        if (ProviderEnum.OPENAI.getModel().equals(modelProvider)) {
+        if (ProviderEnum.OPENAI.name().equals(modelProvider)) {
             return DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(modelName));
         }
-        if (ProviderEnum.AZURE_OPENAI.getModel().equals(modelProvider)) {
+        if (ProviderEnum.AZURE_OPENAI.name().equals(modelProvider)) {
             return DocumentSplitters.recursive(100, 0, new AzureOpenAiTokenizer(modelName));
         }
-//        if (ProviderEnum.ALIBABA.getModel().equals(modelProvider)) {
-//            return new QwenTokenizer(modelName);
-//        }
         return DocumentSplitters.recursive(100, 0);
     }
 
