@@ -38,7 +38,7 @@ public class AigcModelServiceImpl extends ServiceImpl<AigcModelMapper, AigcModel
     @Override
     public List<AigcModel> getChatModels() {
         return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
-                .eq(AigcModel::getType, ModelTypeEnum.EMBEDDING.name()));
+                .eq(AigcModel::getType, ModelTypeEnum.CHAT.name()));
     }
 
     @Override

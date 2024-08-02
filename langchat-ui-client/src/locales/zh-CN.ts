@@ -199,6 +199,14 @@ export default {
     nameTips: '请输入名称',
     promptTips: '请输入提示词',
   },
+  image: {
+    example: '示例',
+    des: '内容描述',
+    output: '输出内容',
+    title: '文生图',
+    titleDes: '在左侧输入想要生成图片的自然语言描述',
+    begin: '立即开始',
+  },
   mindmap: {
     example: '示例',
     des: '内容描述',

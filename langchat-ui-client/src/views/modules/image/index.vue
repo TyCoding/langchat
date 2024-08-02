@@ -80,8 +80,8 @@
           </div>
           <div v-else class="h-full w-full flex flex-col justify-center items-center gap-3">
             <SvgIcon class="text-6xl" icon="ri:mind-map" />
-            <div class="text-2xl font-bold">{{ t('mindmap.title') }}</div>
-            <div class="text-gray-400">{{ t('mindmap.titleDes') }}</div>
+            <div class="text-2xl font-bold">{{ t('image.title') }}</div>
+            <div class="text-gray-400">{{ t('image.titleDes') }}</div>
           </div>
         </div>
       </div>
