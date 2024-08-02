@@ -76,12 +76,6 @@
               </template>
               {{ t('home.doc') }}
             </n-button>
-            <n-button round secondary type="success" @click="router.push({ name: 'Chart' })">
-              <template #icon>
-                <SvgIcon icon="fluent:data-area-24-regular" />
-              </template>
-              {{ t('home.chart') }}
-            </n-button>
           </div>
         </div>
 

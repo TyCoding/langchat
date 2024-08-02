@@ -77,13 +77,6 @@ export function genWrite(
   });
 }
 
-export function genChart(data: ChatR) {
-  return http.post({
-    url: '/client/chat/chart',
-    data: data,
-  });
-}
-
 /**
  * @description 生成图片
  */

@@ -41,10 +41,6 @@
         </dependency>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-flow</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.tycoding</groupId>
             <artifactId>langchat-client</artifactId>
         </dependency>
         <dependency>

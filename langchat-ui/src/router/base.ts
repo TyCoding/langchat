@@ -157,35 +157,4 @@ export const BaseRoute: Array<any> = [
       },
     ],
   },
-
-  {
-    path: '/workflow',
-    name: 'flow',
-    component: 'LAYOUT',
-    show: false,
-    meta: {
-      title: '流程编辑',
-    },
-    children: [
-      {
-        path: 'flow/:id/initialize',
-        name: 'flow_initialize',
-        component: '/flow/initialize/FlowTemplate',
-        show: false,
-        meta: {
-          title: '流程初始化',
-        },
-      },
-      {
-        path: 'flow/:id/edit',
-        name: 'flow_edit',
-        component: '/flow/layout/Layout',
-        show: false,
-        meta: {
-          title: '流程编辑',
-          activeMenu: '流程编排',
-        },
-      },
-    ],
-  },
 ];
