@@ -29,6 +29,7 @@ public enum ProviderEnum {
     AZURE_OPENAI,
     GEMINI,
     OLLAMA,
+    CLAUDE,
     Q_FAN,
     Q_WEN,
     ZHIPU,

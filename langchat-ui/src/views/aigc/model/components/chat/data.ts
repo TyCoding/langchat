@@ -19,6 +19,7 @@ export enum ProviderEnum {
   AZURE_OPENAI = 'AZURE_OPENAI',
   GEMINI = 'GEMINI',
   OLLAMA = 'OLLAMA',
+  CLAUDE = 'CLAUDE',
   Q_FAN = 'Q_FAN',
   Q_WEN = 'Q_WEN',
   ZHIPU = 'ZHIPU',
@@ -70,11 +71,23 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.GEMINI,
-    name: 'GEMINI',
+    name: 'Gemini',
   },
   {
     model: ProviderEnum.OLLAMA,
-    name: 'OLLAMA',
+    name: 'Ollama',
+  },
+  {
+    model: ProviderEnum.CLAUDE,
+    name: 'Claude',
+    models: [
+      'claude-3-opus-20240229',
+      'claude-3-sonnet-20240229',
+      'claude-3-haiku-20240307',
+      'claude-2.1',
+      'claude-2.0',
+      'claude-instant-1.2',
+    ],
   },
   {
     model: ProviderEnum.Q_FAN,
@@ -120,3 +133,7 @@ export const LLMProviders: any[] = [
     models: ['glm-4', 'glm-3-turbo', 'chatglm_turbo'],
   },
 ];
+
+export function getTitle(provider: string) {
+  return LLMProviders.filter((i) => i.model === provider)[0].name;
+}

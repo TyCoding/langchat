@@ -90,6 +90,14 @@ export const ollamaColumns = [
   },
 ];
 
+export const claudeColumns = [
+  ...baseColumns,
+  {
+    title: 'Api Key',
+    key: 'apiKey',
+  },
+];
+
 export const qfanColumns = [
   ...baseColumns,
   {
@@ -114,6 +122,9 @@ export function getColumns(provider: string) {
     }
     case ProviderEnum.OLLAMA: {
       return ollamaColumns;
+    }
+    case ProviderEnum.CLAUDE: {
+      return claudeColumns;
     }
     case ProviderEnum.Q_FAN: {
       return qfanColumns;

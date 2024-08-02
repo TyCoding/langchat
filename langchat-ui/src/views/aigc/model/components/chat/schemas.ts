@@ -206,8 +206,37 @@ export const ollamaSchemas: FormSchema[] = [
     label: 'Base Url',
     labelMessage: '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的',
     component: 'NInput',
-    rules: [{ required: true, message: '请输入Base Url', trigger: ['blur'] }],
+    rules: [
+      {
+        required: false,
+        trigger: ['blur'],
+        validator: (_, value: string) => {
+          const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+          if (isNullOrWhitespace(value) || urlRegex.test(value)) {
+            return true;
+          }
+          return new Error('URL格式错误');
+        },
+      },
+    ],
   },
+  ...baseSchemas,
+];
+
+export const claudeSchemas: FormSchema[] = [
+  ...baseHeadSchemas,
+  {
+    field: 'model',
+    label: '模型',
+    labelMessage: '该LLM供应商对应的模型版本号',
+    component: 'NSelect',
+    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
+    componentProps: {
+      filterable: true,
+      options: getModels(ProviderEnum.CLAUDE),
+    },
+  },
+  ...keySchemas,
   ...baseSchemas,
 ];
 
@@ -282,6 +311,9 @@ export function getSchemas(provider: string) {
     }
     case ProviderEnum.OLLAMA: {
       return ollamaSchemas;
+    }
+    case ProviderEnum.CLAUDE: {
+      return claudeSchemas;
     }
     case ProviderEnum.Q_FAN: {
       return qfanSchemas;

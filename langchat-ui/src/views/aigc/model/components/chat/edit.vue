@@ -21,6 +21,7 @@
   import { isNullOrWhitespace } from '@/utils/is';
   import { add, update } from '@/api/aigc/model';
   import { useMessage } from 'naive-ui';
+  import { getTitle } from './data';
 
   const props = defineProps<{
     provider: string;
@@ -32,7 +33,7 @@
   const title = computed(() => {
     return info.value == undefined || info.value.provider == undefined
       ? 'Add Model'
-      : info.value.provider;
+      : getTitle(info.value.provider);
   });
   const form: any = {
     responseLimit: 2000,
@@ -49,6 +50,7 @@
     isShow.value = true;
     await nextTick();
     info.value = record;
+    console.log(record);
     setFieldsValue({ ...form, ...record });
   }
 

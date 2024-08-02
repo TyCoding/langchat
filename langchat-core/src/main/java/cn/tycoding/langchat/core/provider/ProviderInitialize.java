@@ -23,6 +23,7 @@ import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import dev.langchain4j.model.anthropic.AnthropicStreamingChatModel;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;
@@ -81,13 +82,13 @@ public class ProviderInitialize implements ApplicationContextAware {
             // Uninstall previously registered beans before registering them
             contextHolder.unregisterBean(model.getId());
 
-            llmHandler(model);
+            chatHandler(model);
             embeddingHandler(model);
             imageHandler(model);
         });
     }
 
-    private void llmHandler(AigcModel model) {
+    private void chatHandler(AigcModel model) {
         String type = model.getType();
         String provider = model.getProvider();
 
@@ -144,6 +145,18 @@ public class ProviderInitialize implements ApplicationContextAware {
             }
             if (ProviderEnum.OLLAMA.name().equals(provider)) {
                 OllamaStreamingChatModel build = OllamaStreamingChatModel
+                        .builder()
+                        .baseUrl(model.getBaseUrl())
+                        .modelName(model.getModel())
+                        .temperature(model.getTemperature())
+                        .topP(model.getTopP())
+                        .logRequests(true)
+                        .logResponses(true)
+                        .build();
+                contextHolder.registerBean(model.getId(), build);
+            }
+            if (ProviderEnum.CLAUDE.name().equals(provider)) {
+                AnthropicStreamingChatModel build = AnthropicStreamingChatModel
                         .builder()
                         .baseUrl(model.getBaseUrl())
                         .modelName(model.getModel())
