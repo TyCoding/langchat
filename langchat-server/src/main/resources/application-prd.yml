@@ -1,0 +1,68 @@
+server:
+  port: 8100
+
+spring:
+  # 数据库配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/langchat?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      keep-alive: true
+
+  # Redis配置
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+      database: 1
+      jedis:
+        pool:
+          max-wait: 2000
+          time-between-eviction-runs: 1000
+
+langchat:
+  oss:
+    default-platform: local
+    qiniu-kodo:
+      - platform: qiniu # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: <ak>
+        secret-key: <sk>
+        bucket-name:
+        domain: / # 访问域名，注意“/”结尾，例如：http://abc.hn-bkt.clouddn.com/
+        base-path: langchat/ # 基础路径
+    local-plus:
+      - platform: local # 存储平台标识
+        enable-storage: true  #启用存储
+        enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
+        domain: http://127.0.0.1/ # 访问域名，例如：“http://127.0.0.1:8030/file/”，注意后面要和 path-patterns 保持一致，“/”结尾，本地存储建议使用相对路径，方便后期更换域名
+        base-path: langchat/ # 基础路径
+        path-patterns: /Users/tycoding/data/software/nginx/ # 访问路径
+        storage-path: /Users/tycoding/data/software/nginx/ # 存储路径
+  auth:
+    # client端新注册的用户是否开启操作权限，如果为false，client端新用户默认只有页面预览权限没有操作权限
+    # 需要在server端给指定用户授权后才能正常使用
+    aigc-reg-user-is-perms: true
+    email:
+      host: smtp.qq.com
+      port: 465
+      from: <EMAIL>
+      pass: <PASS>
+  vectorstore:
+    pgvector:
+      host: 127.0.0.1
+      user: root
+      password: root
+      port: 5432
+      database: langchat
+      table: vector_1
+      dimension: 384
+    # Google搜索
+#  web-search:
+#    google:
+#      api-key: <KEY>
+#      csi: <CSI>
+

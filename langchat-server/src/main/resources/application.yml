@@ -8,7 +8,7 @@ spring:
     name: langchat
   # 默认执行的配置文件
   profiles:
-    active: local
+    active: dev
   main:
     allow-bean-definition-overriding: true
 
