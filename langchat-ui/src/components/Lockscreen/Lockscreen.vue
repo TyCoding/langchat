@@ -1,19 +1,3 @@
-<!--
-  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
-  -
-  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
-  - you may not use this file except in compliance with the License.
-  - You may obtain a copy of the License at
-  -
-  -     https://www.gnu.org/licenses/agpl-3.0.html
-  -
-  - Unless required by applicable law or agreed to in writing, software
-  - distributed under the License is distributed on an "AS IS" BASIS,
-  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  - See the License for the specific language governing permissions and
-  - limitations under the License.
-  -->
-
 <template>
   <div
     :class="{ onLockLogin: showLogin }"
@@ -36,8 +20,8 @@
       <recharge
         :battery="battery"
         :battery-status="batteryStatus"
-        :calc-charging-time="calcChargingTime"
         :calc-discharging-time="calcDischargingTime"
+        :calc-charging-time="calcChargingTime"
       />
 
       <div class="local-time">
@@ -62,21 +46,21 @@
         </n-avatar>
         <div class="username">{{ loginParams.username }}</div>
         <n-input
-          v-model:value="loginParams.password"
-          autofocus
-          placeholder="请输入登录密码"
           type="password"
+          autofocus
+          v-model:value="loginParams.password"
           @keyup.enter="onLogin"
+          placeholder="请输入登录密码"
         >
           <template #suffix>
-            <n-icon style="cursor: pointer" @click="onLogin">
+            <n-icon @click="onLogin" style="cursor: pointer">
               <LoadingOutlined v-if="loginLoading" />
               <arrow-right-outlined v-else />
             </n-icon>
           </template>
         </n-input>
 
-        <div v-if="isLoginError" class="flex w-full">
+        <div class="flex w-full" v-if="isLoginError">
           <span class="text-red-500">{{ errorMsg }}</span>
         </div>
 

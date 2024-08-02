@@ -1,31 +1,15 @@
-<!--
-  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
-  -
-  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
-  - you may not use this file except in compliance with the License.
-  - You may obtain a copy of the License at
-  -
-  -     https://www.gnu.org/licenses/agpl-3.0.html
-  -
-  - Unless required by applicable law or agreed to in writing, software
-  - distributed under the License is distributed on an "AS IS" BASIS,
-  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  - See the License for the specific language governing permissions and
-  - limitations under the License.
-  -->
-
 <template>
-  <n-form ref="formElRef" :model="formModel" v-bind="getBindValue">
+  <n-form v-bind="getBindValue" :model="formModel" ref="formElRef">
     <n-grid v-bind="getGrid">
       <template v-for="schema in getSchema">
-        <n-gi v-if="!schema.isHidden" :key="schema.field" v-bind="schema.giProps">
+        <n-gi v-bind="schema.giProps" :key="schema.field" v-if="!schema.isHidden">
           <n-form-item :label="schema.label" :path="schema.field">
             <!--标签名右侧温馨提示-->
-            <template v-if="schema.labelMessage" #label>
+            <template #label v-if="schema.labelMessage">
               {{ schema.label }}
-              <n-tooltip :style="schema.labelMessageStyle" trigger="hover">
+              <n-tooltip trigger="hover" :style="schema.labelMessageStyle">
                 <template #trigger>
-                  <n-icon class="text-gray-400 cursor-pointer" size="18">
+                  <n-icon size="18" class="text-gray-400 cursor-pointer">
                     <QuestionCircleOutlined />
                   </n-icon>
                 </template>
@@ -36,9 +20,9 @@
             <!--判断插槽-->
             <template v-if="schema.slot">
               <slot
-                :field="schema.field"
-                :model="formModel"
                 :name="schema.slot"
+                :model="formModel"
+                :field="schema.field"
                 :value="formModel[schema.field]"
               ></slot>
             </template>
@@ -50,8 +34,8 @@
                   <n-checkbox
                     v-for="item in schema.componentProps.options"
                     :key="item.value"
-                    :label="item.label"
                     :value="item.value"
+                    :label="item.label"
                   />
                 </n-space>
               </n-checkbox-group>
@@ -73,18 +57,18 @@
             </template>
             <!--动态渲染表单组件-->
             <component
-              :is="schema.component"
               v-else
+              v-bind="getComponentProps(schema)"
+              :is="schema.component"
               v-model:value="formModel[schema.field]"
               :class="{ isFull: schema.isFull != false && getProps.isFull }"
-              v-bind="getComponentProps(schema)"
             />
             <!--组件后面的内容-->
             <template v-if="schema.suffix">
               <slot
-                :field="schema.field"
-                :model="formModel"
                 :name="schema.suffix"
+                :model="formModel"
+                :field="schema.field"
                 :value="formModel[schema.field]"
               ></slot>
             </template>
@@ -94,21 +78,21 @@
 
       <!--提交 重置 展开 收起 按钮-->
       <n-gi
-        v-if="getProps.showActionButtonGroup"
-        #="{ overflow }"
         :span="isInline ? '' : 24"
         :suffix="isInline ? true : false"
+        #="{ overflow }"
+        v-if="getProps.showActionButtonGroup"
       >
         <n-space
-          :style="{ 'margin-left': `${isInline ? 12 : getProps.labelWidth}px` }"
           align="center"
           justify="end"
+          :style="{ 'margin-left': `${isInline ? 12 : getProps.labelWidth}px` }"
         >
           <n-button
             v-if="getProps.showSubmitButton"
-            :loading="loadingSub"
             v-bind="getSubmitBtnOptions"
             @click="handleSubmit"
+            :loading="loadingSub"
             >{{ getProps.submitButtonText }}</n-button
           >
           <n-button
@@ -118,17 +102,17 @@
             >{{ getProps.resetButtonText }}</n-button
           >
           <n-button
-            v-if="isInline && getProps.showAdvancedButton"
-            icon-placement="right"
-            text
             type="primary"
+            text
+            icon-placement="right"
+            v-if="isInline && getProps.showAdvancedButton"
             @click="unfoldToggle"
           >
             <template #icon>
-              <n-icon v-if="overflow" class="unfold-icon" size="14">
+              <n-icon size="14" class="unfold-icon" v-if="overflow">
                 <DownOutlined />
               </n-icon>
-              <n-icon v-else class="unfold-icon" size="14">
+              <n-icon size="14" class="unfold-icon" v-else>
                 <UpOutlined />
               </n-icon>
             </template>

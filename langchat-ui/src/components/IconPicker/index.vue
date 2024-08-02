@@ -1,30 +1,14 @@
-<!--
-  - Copyright (c) 2024 LangChat. TyCoding All Rights Reserved.
-  -
-  - Licensed under the GNU Affero General Public License, Version 3 (the "License");
-  - you may not use this file except in compliance with the License.
-  - You may obtain a copy of the License at
-  -
-  -     https://www.gnu.org/licenses/agpl-3.0.html
-  -
-  - Unless required by applicable law or agreed to in writing, software
-  - distributed under the License is distributed on an "AS IS" BASIS,
-  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  - See the License for the specific language governing permissions and
-  - limitations under the License.
-  -->
-
 <template>
   <n-popover placement="bottom-end" trigger="click">
     <template #trigger>
-      <n-input v-model:value="modelValue" clearable placeholder="点击选择图标" readonly>
+      <n-input v-model:value="modelValue" clearable readonly placeholder="点击选择图标">
         <template #suffix>
           <component :is="selectedIcon" class="ml-2 mr-2 cursor-pointer text-black" />
         </template>
       </n-input>
     </template>
     <template #header>
-      <n-input v-model:value="searchValue" placeholder="搜索图标" size="small" />
+      <n-input v-model:value="searchValue" size="small" placeholder="搜索图标" />
     </template>
     <div
       v-if="iconsList.length > 0"
@@ -34,19 +18,19 @@
       <span
         v-for="iconItem in iconsList"
         :key="iconItem.key"
-        class="hover:bg-gray-100 cursor-pointer text-xl p-1 flex justify-center items-center"
         @click="handleChange(iconItem)"
+        class="hover:bg-gray-100 cursor-pointer text-xl p-1 flex justify-center items-center"
       >
         <component :is="iconItem.value" />
       </span>
     </div>
     <n-pagination
+      size="small"
       v-model:page="curPage"
       :page-count="totalPages"
-      class="mt-1.5 mb-1.5"
-      size="small"
       @update:page="onUpdatePage"
       @update:page-size="onUpdatePageSize"
+      class="mt-1.5 mb-1.5"
     />
   </n-popover>
 </template>
