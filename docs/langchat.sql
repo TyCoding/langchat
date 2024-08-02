@@ -407,13 +407,13 @@ CREATE TABLE `sys_menu` (
                             `is_keepalive` tinyint(1) DEFAULT NULL COMMENT '是否缓存',
                             `is_show` tinyint(1) DEFAULT NULL COMMENT '是否显示',
                             PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1788942973669572647 DEFAULT CHARSET=utf8mb3 COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=1788942973669572652 DEFAULT CHARSET=utf8mb3 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (100, '权限管理', 0, '/upms', 'upms', 'menu', 3, 'KeyOutline', 'LAYOUT', 0, 0, 1, 1);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (100, '权限管理', 0, '/upms', 'upms', 'menu', 4, 'KeyOutline', 'LAYOUT', 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (110, '用户管理', 100, 'user', '', 'menu', 1, NULL, '/upms/user/index', 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (112, '用户新增', 110, NULL, 'upms:user:add', 'button', 2, NULL, NULL, 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (113, '用户修改', 110, NULL, 'upms:user:update', 'button', 3, NULL, NULL, 0, 0, 1, 1);
@@ -431,7 +431,7 @@ INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `ord
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (142, '菜单新增', 140, NULL, 'upms:menu:add', 'button', 2, NULL, NULL, 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (143, '菜单修改', 140, NULL, 'upms:menu:update', 'button', 3, NULL, NULL, 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (144, '菜单删除', 140, NULL, 'upms:menu:delete', 'button', 4, NULL, NULL, 0, 0, 1, 1);
-INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (200, '系统管理', 0, '/system', '', 'menu', 4, 'SettingsOutline', 'LAYOUT', 0, 0, 1, 1);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (200, '系统管理', 0, '/system', 'system', 'menu', 5, 'SettingsOutline', 'LAYOUT', 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (210, '系统日志', 200, 'log', '', 'menu', 1, NULL, '/system/log/index', 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (212, '日志删除', 210, NULL, 'upms:log:delete', 'button', 2, NULL, NULL, 0, 0, 1, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (230, '令牌管理', 200, 'token', '', 'menu', 2, NULL, '/system/token/index', 0, 0, 1, 1);
@@ -446,8 +446,7 @@ INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `ord
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (410, 'AI智能助手', 400, 'chat-docs', 'aigc:chat', 'menu', 2, '', '/aigc/chat/docs', 0, 0, 0, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (420, 'AI聊天助手', 400, 'chat', 'ai:chat', 'menu', 1, '', '/aigc/chat/index', 0, 0, 0, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572613, '模型配置', 300, 'model', 'aigc:model', 'menu', 1, '', '/aigc/model/index', 0, 0, 0, 1);
-INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572614, 'AIGC流程', 0, '/aigc/workflow', 'aigc:flow', 'menu', 0, 'ConstructOutline', 'LAYOUT', 0, 0, 0, 1);
-INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572615, '流程编排', 1788942973669572614, 'flow', 'aigc:flow', 'menu', 1, '', '/flow/index', 0, 0, 0, 1);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572615, '流程编排', 400, 'flow', 'aigc:flow', 'menu', 1, '', '/flow/index', 0, 0, 0, 1);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572616, '重置密码', 110, NULL, 'upms:user:updatePass', 'button', 6, NULL, NULL, 0, 0, 0, NULL);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572617, '新增流程', 1788942973669572615, NULL, 'aigc:flow:add', 'button', 1, NULL, NULL, 0, 0, 0, NULL);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES (1788942973669572618, '更新流程', 1788942973669572615, NULL, 'aigc:flow:update', 'button', 2, NULL, NULL, 0, 0, 0, NULL);
@@ -567,6 +566,7 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 420);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1788942973669572613);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1788942973669572614);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1788942973669572615);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1788942973669572648);
 COMMIT;
 
 -- ----------------------------
