@@ -69,6 +69,9 @@ public class AigcAppWebController {
     @ApiLog("新增WEB渠道")
 //    @SaCheckPermission("aigc:app:iframe:add")
     public R add(@RequestBody AigcAppWeb data) {
+        if (data.getApiKey().contains("*")) {
+            data.setApiKey(null);
+        }
         aigcAppService.save(data);
         appChannelStore.init();
         return R.ok();
@@ -78,6 +81,9 @@ public class AigcAppWebController {
     @ApiLog("修改WEB渠道")
 //    @SaCheckPermission("aigc:app:iframe:update")
     public R update(@RequestBody AigcAppWeb data) {
+        if (data.getApiKey().contains("*")) {
+            data.setApiKey(null);
+        }
         aigcAppService.updateById(data);
         appChannelStore.init();
         return R.ok();

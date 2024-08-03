@@ -15,7 +15,7 @@
   -->
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue';
+  import { onMounted, onUnmounted } from 'vue';
 
   onMounted(() => {
     window.langchatChatWidget.config.widgetTitle = 'LangChat';
@@ -26,6 +26,11 @@
     window.langchatChatWidget.config.openOnLoad = true;
     window.langchatChatWidget.config.responseIsAStream = true;
     window.langchatChatWidget.config.closeOnOutsideClick = false;
+    window.langchatChatWidget.init();
+  });
+
+  onUnmounted(() => {
+    window.langchatChatWidget.close();
   });
 </script>
 

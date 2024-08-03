@@ -81,10 +81,6 @@ export const geminiColumns = [
 export const ollamaColumns = [
   ...baseColumns,
   {
-    title: 'Project',
-    key: 'project',
-  },
-  {
     title: 'Base Url',
     key: 'baseUrl',
   },

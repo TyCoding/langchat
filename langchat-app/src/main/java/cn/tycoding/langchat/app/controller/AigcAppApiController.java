@@ -73,6 +73,9 @@ public class AigcAppApiController {
     @ApiLog("新增API渠道")
 //    @SaCheckPermission("aigc:app:iframe:add")
     public R add(@RequestBody AigcAppApi data) {
+        if (data.getApiKey().contains("*")) {
+            data.setApiKey(null);
+        }
         appApiService.save(data);
         appChannelStore.init();
         return R.ok();
@@ -82,6 +85,9 @@ public class AigcAppApiController {
     @ApiLog("修改API渠道")
 //    @SaCheckPermission("aigc:app:iframe:update")
     public R update(@RequestBody AigcAppApi data) {
+        if (data.getApiKey().contains("*")) {
+            data.setApiKey(null);
+        }
         appApiService.updateById(data);
         appChannelStore.init();
         return R.ok();

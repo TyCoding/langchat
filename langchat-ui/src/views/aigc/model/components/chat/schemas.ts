@@ -208,10 +208,14 @@ export const ollamaSchemas: FormSchema[] = [
     component: 'NInput',
     rules: [
       {
-        required: false,
+        required: true,
         trigger: ['blur'],
         validator: (_, value: string) => {
-          const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+          if (!value) {
+            return new Error('请输入baseUrl');
+          }
+          const urlRegex =
+            /^(https?:\/\/)?((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/.*)?)$/;
           if (isNullOrWhitespace(value) || urlRegex.test(value)) {
             return true;
           }

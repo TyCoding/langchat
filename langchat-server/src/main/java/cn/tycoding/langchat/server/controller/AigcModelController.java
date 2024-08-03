@@ -81,7 +81,7 @@ public class AigcModelController {
     @ApiLog("添加模型")
     @SaCheckPermission("aigc:model:add")
     public R add(@RequestBody AigcModel data) {
-        if (data.getApiKey().contains("***")) {
+        if (StrUtil.isNotBlank(data.getApiKey()) && data.getApiKey().contains("*")) {
             data.setApiKey(null);
         }
         modelService.save(data);
@@ -93,7 +93,7 @@ public class AigcModelController {
     @ApiLog("修改模型")
     @SaCheckPermission("aigc:model:update")
     public R update(@RequestBody AigcModel data) {
-        if (data.getApiKey().contains("***")) {
+        if (StrUtil.isNotBlank(data.getApiKey()) && data.getApiKey().contains("*")) {
             data.setApiKey(null);
         }
         modelService.updateById(data);
