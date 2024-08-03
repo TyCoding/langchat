@@ -134,6 +134,7 @@ export const openaiSchemas: FormSchema[] = [
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
+      tag: true,
       filterable: true,
       options: getModels(ProviderEnum.OPENAI),
     },

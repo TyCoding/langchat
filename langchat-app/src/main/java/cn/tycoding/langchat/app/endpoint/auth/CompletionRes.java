@@ -54,7 +54,7 @@ public class CompletionRes {
                         .build())
                 .choices(List.of(ChatCompletionChoice
                         .builder()
-                        .finishReason(res.finishReason().toString())
+                        .finishReason(res.finishReason() == null ? "finish" : res.finishReason().toString())
                         .build()))
                 .build();
     }

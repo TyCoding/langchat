@@ -110,7 +110,7 @@
     <div class="w-full">
       <n-alert
         class="w-full mb-4 mt-2 min-alert"
-        title="如果使用第三方代理，需要填写BaseUrl，并增加`/v1`后缀，官方Key不需要设置BaseUrl"
+        title="如果使用第三方代理，需要填写BaseUrl，并增加`/v1`后缀，官方Key不需要设置BaseUrl。如果你使用的第三方代理将所有供应商的接口格式都封装为openai的格式，只需要在OpenAI中自定义配置其他供应商模型即可"
         type="info"
       />
       <BasicTable
