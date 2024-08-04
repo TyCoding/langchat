@@ -4,7 +4,7 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
-接入 OpenAI / Gemini / Ollama / Azure / 智谱 / 阿里通义大模型 / 百度千帆大模型等大模型。
+接入 OpenAI / Gemini / Ollama / Azure / Claude / 智谱AI / 阿里通义大模型 / 百度千帆大模型 等大模型。
 
 **本项目前后端完全由TyCoding一个人开发，工作量庞大，可能存在一些问题请谅解，持续开发中...**
 
@@ -14,15 +14,24 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 - 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 - 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
 - LangChat源码：[https://github.com/tycoding/langchat](https://github.com/tycoding/langchat)
-- LangChat.cn源码：[https://github.com/tycoding/langchat.cn](https://github.com/tycoding/langchat.cn)
 
-**注意：** 本项目仍有不完善和待开发的功能请见谅。如果你想深入和作者聊LangChat开发计划，**可以请作者喝一杯咖啡加入LangChat交流群**
-
-**注意：** 由于贫穷，作者使用的最低配的阿里云服务器，所以访问速度会慢一些请谅解
+**注意：** 如果想和作者深入交流LangChat开发规划、AIGC产品研发、变现等方式，**可以请作者喝一杯咖啡加入LangChat交流群**
 
 **欢迎Star、fork 持续关注**
 
 **LangChat部署、启动文档地址：** [http://www.langchat.cn/docs/introduction](http://www.langchat.cn/docs/introduction)
+
+## 商业化支持
+
+> 为爱发电不持久，提供一些付费的技术支持希望理解
+
+1. 提供项目部署服务，远程部署到服务器
+2. 提供Docker一键部署脚本、提供前后端nginx配置脚本
+3. 提供项目架构讲解和AIGC产品设计&技术支持
+4. 提供项目二开合作，本项目不可商用，商用请联系我
+5. 更多支持...
+
+以上，希望有需要的朋友都可以加我微信 **LangchainChat** 跟我沟通。
 
 ## 特性
 

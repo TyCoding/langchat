@@ -56,3 +56,6 @@ gen_code
 dump.rdb
 
 application-local.yml
+docker/
+*/docker/
+*/Dockerfile
