@@ -17,6 +17,7 @@
 package cn.tycoding.langchat.upms.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.AuthProps;
@@ -64,14 +65,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public UserInfo findById(Long userId) {
+    public UserInfo findById(String userId) {
         SysUser sysUser = baseMapper.selectById(userId);
         if (sysUser == null) {
             return null;
         }
         UserInfo dto = BeanUtil.copyProperties(sysUser, UserInfo.class);
         dto.setPassword(null);
-        List<Long> roleIds =
+        List<String> roleIds =
                 sysUserRoleService.getRoleListByUserId(userId).stream().map(SysRole::getId).collect(Collectors.toList());
         dto.setRoleIds(roleIds);
         return dto;
@@ -97,7 +98,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!sysRoleList.isEmpty()) {
             //获取用户权限列表
             List<SysMenu> menuList = new ArrayList<>();
-            long isAdmin = sysRoleList.stream().filter(role -> AuthUtil.ADMINISTRATOR.equals(role.getAlias())).count();
+            long isAdmin = sysRoleList.stream().filter(role -> AuthUtil.ADMINISTRATOR.equals(role.getCode())).count();
             if (isAdmin > 0) {
                 // 包含了超级管理员角色，拥有所有权限
                 menuList = sysMenuService.list();
@@ -108,7 +109,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             Set<String> perms =
                     menuList.stream().map(SysMenu::getPerms).filter(StringUtils::isNotEmpty).collect(Collectors.toSet());
 
-            List<Long> roleIds = sysRoleList.stream().map(SysRole::getId).toList();
+            List<String> roleIds = sysRoleList.stream().map(SysRole::getId).toList();
             userInfo.setRoleIds(roleIds);
 
             //获取用户部门信息
@@ -140,7 +141,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername,
                 sysUser.getUsername());
-        if (sysUser.getId() != null && sysUser.getId() != 0) {
+        if (sysUser.getId() != null) {
             queryWrapper.ne(SysUser::getId, sysUser.getId());
         }
         return baseMapper.selectList(queryWrapper).size() <= 0;
@@ -151,6 +152,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void add(UserInfo user) {
         if (!checkName(user)) {
             throw new ServiceException("该用户名已存在，请重新输入！");
+        }
+        if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
+            throw new ServiceException("用户名或密码为空，请重新输入！");
         }
 
         user.setCreateTime(new Date());
@@ -165,8 +169,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     private void addRole(UserInfo user) {
-        List<Long> roleIds = user.getRoleIds();
-        Long userId = user.getId();
+        List<String> roleIds = user.getRoleIds();
+        String userId = user.getId();
         if (roleIds != null) {
             // 删除之前用户与角色表之前的关联，并重新建立关联
             sysUserRoleService.deleteUserRolesByUserId(userId);
@@ -183,10 +187,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#user.username")
     public void update(UserInfo user) {
         if (user.getUsername().equals(AuthUtil.ADMINISTRATOR)) {
-            throw new ServiceException("The Administrator user cannot be edited");
+            throw new ServiceException("超级管理员用户不可操作");
         }
         if (!checkName(user)) {
-            throw new ServiceException("The user name already exists, please re-enter!");
+            throw new ServiceException("该用户名以存在，请重新输入");
         }
         user.setPassword(null);
         baseMapper.updateById(user);
@@ -196,9 +200,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
-    public void delete(Long id, String username) {
+    public void delete(String id, String username) {
         if (username.equals(AuthUtil.ADMINISTRATOR)) {
-            throw new ServiceException("The Administrator user cannot be deleted");
+            throw new ServiceException("超级管理员用户不可操作");
         }
         baseMapper.deleteById(id);
         sysUserRoleService.deleteUserRolesByUserId(id);
@@ -207,9 +211,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = CacheConst.USER_DETAIL_KEY, key = "#username")
-    public void reset(Long id, String password, String username) {
+    public void reset(String id, String password, String username) {
         if (username.equals(AuthUtil.ADMINISTRATOR)) {
-            throw new ServiceException("The Administrator user cannot reset the password");
+            throw new ServiceException("超级管理员用户不可操作");
         }
         SysUser user = new SysUser();
         user.setId(id);

@@ -79,11 +79,6 @@ export const columns: BasicColumn[] = [
       return (Number(rowData.size) / 1000000).toFixed(2) + ' MB';
     },
   },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    width: 120,
-  },
 ];
 
 export const searchSchemas: FormSchema[] = [

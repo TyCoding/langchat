@@ -39,7 +39,7 @@ public class ModelProvider {
         try {
             return (StreamingChatLanguageModel) context.getBean(model);
         } catch (Exception e) {
-            throw new RuntimeException("No matching model information found, please check the model configuration.");
+            throw new RuntimeException("没有匹配到模型，请检查模型配置！");
         }
     }
 
@@ -47,7 +47,7 @@ public class ModelProvider {
         try {
             return (ImageModel) context.getBean(model);
         } catch (Exception e) {
-            throw new RuntimeException("No matching model information found, please check the model configuration.");
+            throw new RuntimeException("没有匹配到模型，请检查模型配置！");
         }
     }
 }

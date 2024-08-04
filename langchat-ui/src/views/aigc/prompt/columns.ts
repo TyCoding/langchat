@@ -60,11 +60,6 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入标题', trigger: ['blur'] }],
   },
   {
-    field: 'icon',
-    label: '图标',
-    component: 'NInput',
-  },
-  {
     field: 'prompt',
     component: 'NInput',
     label: '提示词',
@@ -74,7 +69,7 @@ export const formSchemas: FormSchema[] = [
       placeholder: '请输入提示词',
       type: 'textarea',
       autosize: {
-        minRows: 20,
+        minRows: 15,
       },
     },
     rules: [{ required: true, message: '请输入Prompt', trigger: ['blur'] }],

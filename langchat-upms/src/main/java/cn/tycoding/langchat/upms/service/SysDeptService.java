@@ -34,6 +34,6 @@ public interface SysDeptService extends IService<SysDept> {
 
     List<Tree<Object>> tree(SysDept sysDept);
 
-    void delete(Long id);
+    void delete(String id);
 
 }

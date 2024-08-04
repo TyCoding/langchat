@@ -45,13 +45,13 @@ public class SysLogController {
     }
 
     @GetMapping("/{id}")
-    public R<SysLog> findById(@PathVariable Long id) {
+    public R<SysLog> findById(@PathVariable String id) {
         return R.ok(sysLogService.getById(id));
     }
 
     @DeleteMapping("/{id}")
     @SaCheckPermission("upms:log:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         sysLogService.delete(id);
         return R.ok();
     }

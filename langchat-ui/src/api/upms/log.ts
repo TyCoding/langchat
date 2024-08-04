@@ -31,7 +31,7 @@ export function getById(id: string) {
   });
 }
 
-export function del(id?: String) {
+export function del(id?: string) {
   return http.request({
     url: `/upms/log/${id}`,
     method: 'delete',

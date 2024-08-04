@@ -28,9 +28,11 @@
     const providers = (await getModels({ type: ModelTypeEnum.CHAT })) as any;
     const data: any = [];
     if (chatStore.modelName === '') {
-      chatStore.modelId = providers[0].id;
-      chatStore.modelName = providers[0].model;
-      chatStore.modelProvider = providers[0].provider;
+      if (providers != null && providers.length != 0) {
+        chatStore.modelId = providers[0].id;
+        chatStore.modelName = providers[0].model;
+        chatStore.modelProvider = providers[0].provider;
+      }
     }
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
@@ -62,7 +64,8 @@
     :label-field="'name'"
     :options="modelList"
     :value-field="'id'"
-    class="!w-32"
+    class="!w-40"
+    placeholder="请先完成模型配置"
     size="small"
     @update:value="onUpdate"
   />

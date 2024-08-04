@@ -18,7 +18,7 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form';
-  import { del, page as getPage } from '@/api/aigc/docs';
+  import { del, page as getPage, reEmbed } from '@/api/aigc/docs';
   import { columns, searchSchemas } from './columns';
   import { AlbumsOutline } from '@vicons/ionicons5';
   import { DeleteOutlined, EditOutlined } from '@vicons/antd';
@@ -45,7 +45,7 @@
           {
             type: 'info',
             icon: AlbumsOutline,
-            onClick: handleEdit.bind(null, record),
+            onClick: handleReEmbed.bind(null, record),
           },
           {
             type: 'info',
@@ -80,6 +80,21 @@
 
   function handleEdit(record: Recordable) {
     editRef.value.show('', record.id);
+  }
+
+  function handleReEmbed(record: Recordable) {
+    dialog.info({
+      title: '提示',
+      content: `您确定重新向量化该文档？此操作将会删除Vector向量库中旧数据`,
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: async () => {
+        await reEmbed(record.id);
+        message.success('文档向量化解析成功');
+        reloadTable();
+      },
+      onNegativeClick: () => {},
+    });
   }
 
   function handleDelete(record: Recordable) {

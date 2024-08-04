@@ -74,7 +74,7 @@ const baseSchemas: FormSchema[] = [
     rules: [{ type: 'number', required: true, message: '请输入生成随机性', trigger: ['blur'] }],
     componentProps: {
       showTooltip: true,
-      defaultValue: 0.8,
+      defaultValue: 0.2,
       step: 0.05,
       min: 0,
       max: 2,
@@ -89,7 +89,7 @@ const baseSchemas: FormSchema[] = [
     rules: [{ type: 'number', required: true, message: '请输入', trigger: ['blur'] }],
     componentProps: {
       showTooltip: true,
-      defaultValue: 1,
+      defaultValue: 0.8,
       step: 0.1,
       min: 0,
       max: 1,

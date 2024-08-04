@@ -19,11 +19,12 @@
   import { useChatStore } from '@/views/aigc/chat/components/store/useChatStore';
   import { useDialog, useMessage } from 'naive-ui';
   import { clean } from '@/api/aigc/chat';
-  import ModelProvider from '@/views/aigc/common/ModelProvider.vue';
+  import ModelProvider from '@/views/aigc/ModelProvider.vue';
 
   defineProps<{
     title: string;
   }>();
+  const emits = defineEmits(['reload']);
   const dialog = useDialog();
   const ms = useMessage();
   const chatStore = useChatStore();
@@ -39,6 +40,7 @@
       negativeText: '否',
       onPositiveClick: async () => {
         await clean(chatStore.conversationId);
+        emits('reload');
         ms.success('聊天记录清除成功');
       },
     });

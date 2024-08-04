@@ -20,7 +20,7 @@
 
     <!-- 分页查询映射结果集 -->
     <resultMap type="cn.tycoding.langchat.upms.dto.UserInfo" id="UserMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="realName" column="real_name" jdbcType="VARCHAR"/>
         <result property="sex" column="sex" jdbcType="VARCHAR"/>

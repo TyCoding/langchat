@@ -25,7 +25,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '角色标识',
-    key: 'alias',
+    key: 'code',
     align: 'center',
   },
   {
@@ -63,7 +63,7 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入角色名称', trigger: ['blur'] }],
   },
   {
-    field: 'alias',
+    field: 'code',
     label: '角色标识',
     component: 'NInput',
     componentProps: {

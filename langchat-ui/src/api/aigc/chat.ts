@@ -21,7 +21,7 @@ export function chat(data: any, onDownloadProgress?: (progressEvent: AxiosProgre
   return http.request(
     {
       method: 'post',
-      url: '/aigc/chat/knowledge',
+      url: '/aigc/chat/completions',
       data,
       onDownloadProgress: onDownloadProgress,
     },
@@ -33,14 +33,14 @@ export function chat(data: any, onDownloadProgress?: (progressEvent: AxiosProgre
 
 export function clean(conversationId: string | null) {
   return http.request({
-    url: `/aigc/chat/knowledge/cleanMessage/${conversationId}`,
+    url: `/aigc/chat/messages/clean/${conversationId}`,
     method: 'delete',
   });
 }
 
-export function getMessages(conversationId?: String) {
+export function getMessages(conversationId?: string) {
   return http.request({
-    url: `/aigc/chat/knowledge/messages/${conversationId}`,
+    url: `/aigc/chat/messages/${conversationId}`,
     method: 'get',
   });
 }

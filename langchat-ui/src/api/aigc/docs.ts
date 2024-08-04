@@ -55,6 +55,13 @@ export function update(params: any) {
   });
 }
 
+export function reEmbed(id: string) {
+  return http.request({
+    url: `/aigc/embedding/re-embed/${id}`,
+    method: 'get',
+  });
+}
+
 export function del(id: string) {
   return http.request({
     url: `/aigc/docs/${id}`,

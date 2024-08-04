@@ -16,9 +16,9 @@
 
 export interface ChatState {
   messages: any[];
-  modelId: string;
-  modelName: string;
-  modelProvider: string;
+  modelId: string | null;
+  modelName: string | null;
+  modelProvider: string | null;
   conversationId: string | null;
   docsId: string | null;
   prompt: any;

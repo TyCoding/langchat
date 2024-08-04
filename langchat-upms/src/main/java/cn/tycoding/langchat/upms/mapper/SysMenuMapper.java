@@ -32,5 +32,5 @@ import java.util.List;
 @Mapper
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
-    List<SysMenu> build(@Param("roleIds") List<Long> roleIds, @Param("type") String type);
+    List<SysMenu> build(@Param("roleIds") List<String> roleIds, @Param("type") String type);
 }

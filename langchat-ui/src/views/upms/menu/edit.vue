@@ -67,7 +67,7 @@
       if (parentId !== undefined) {
         vars.parentId = parentId;
       } else {
-        vars.component = 'LAYOUT';
+        vars.component = 'Layout';
       }
       setFieldsValue(vars);
     }
@@ -159,7 +159,7 @@
         <template #componentSlot="{ model, field }">
           <n-input
             v-model:value="model[field]"
-            :disabled="model[field] === 'LAYOUT'"
+            :disabled="model[field] === 'Layout'"
             placeholder="请输入组件路径"
           />
         </template>

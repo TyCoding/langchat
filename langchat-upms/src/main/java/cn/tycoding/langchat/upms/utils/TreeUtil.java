@@ -57,18 +57,18 @@ public class TreeUtil {
         List<MenuTree<SysMenu>> nodes = init(list);
         List<MenuTree<SysMenu>> tree = new ArrayList<>();
         nodes.forEach(node -> {
-            Long pid = node.getParentId();
+            String pid = node.getParentId();
             if (node.getIsExt()) {
                 node.setComponent("Layout");
                 node.setName(node.getPath());
             }
-            if (pid == null || pid.equals(0L)) {
+            if (pid == null || pid.equals("0")) {
                 // 父级节点
                 tree.add(node);
                 return;
             }
             for (MenuTree<SysMenu> c : nodes) {
-                Long id = c.getId();
+                String id = c.getId();
                 if (id != null && id.equals(pid)) {
                     c.getChildren().add(node);
                     return;

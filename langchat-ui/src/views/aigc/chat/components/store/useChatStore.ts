@@ -21,7 +21,7 @@ import { ChatState } from '@/views/aigc/chat/components/store/chat';
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
     <ChatState>{
-      modelId: '',
+      modelId: null,
       modelName: '',
       modelProvider: '',
       conversationId: null,

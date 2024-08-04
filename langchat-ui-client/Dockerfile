@@ -1,4 +1,3 @@
-# 使用 Node.js 官方镜像进行构建
 FROM node:lts-alpine AS build
 
 # 安装 pnpm
@@ -12,6 +11,8 @@ COPY ./package.json ./pnpm-lock.yaml /app/
 
 # 安装依赖
 RUN pnpm install
+RUN pnpm install chalk
+RUN pnpm install fs-extra
 
 # 复制所有源代码
 COPY . /app

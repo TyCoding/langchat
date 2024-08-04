@@ -30,6 +30,13 @@ export function getReqChart() {
   });
 }
 
+export function getTokenChartBy30() {
+  return http.request({
+    url: `/aigc/statistic/tokenBy30`,
+    method: 'get',
+  });
+}
+
 export function getTokenChart() {
   return http.request({
     url: `/aigc/statistic/token`,

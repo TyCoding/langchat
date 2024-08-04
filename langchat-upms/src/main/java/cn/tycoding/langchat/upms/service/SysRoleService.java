@@ -40,12 +40,12 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 根据用户ID查询其关联的所有角色
      */
-    List<SysRole> findRolesByUserId(Long id);
+    List<SysRole> findRolesByUserId(String id);
 
     /**
      * 根据ID查询
      */
-    SysRoleDTO findById(Long roleId);
+    SysRoleDTO findById(String roleId);
 
     /**
      * 新增角色
@@ -60,5 +60,5 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 删除
      */
-    void delete(Long id);
+    void delete(String id);
 }

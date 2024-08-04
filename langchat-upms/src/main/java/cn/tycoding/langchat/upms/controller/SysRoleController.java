@@ -48,7 +48,7 @@ public class SysRoleController {
     @GetMapping("/list")
     public R<List<SysRole>> list(SysRole sysRole) {
         return R.ok(sysRoleService.list(new LambdaQueryWrapper<SysRole>()
-                .ne(SysRole::getAlias, AuthUtil.ADMINISTRATOR)));
+                .ne(SysRole::getCode, AuthUtil.ADMINISTRATOR)));
     }
 
     @GetMapping("/page")
@@ -57,7 +57,7 @@ public class SysRoleController {
     }
 
     @GetMapping("/{id}")
-    public R<SysRoleDTO> findById(@PathVariable Long id) {
+    public R<SysRoleDTO> findById(@PathVariable String id) {
         return R.ok(sysRoleService.findById(id));
     }
 
@@ -80,7 +80,7 @@ public class SysRoleController {
     @DeleteMapping("/{id}")
     @ApiLog("删除角色")
     @SaCheckPermission("upms:role:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         sysRoleService.delete(id);
         return R.ok();
     }

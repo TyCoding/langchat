@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { tree as getDeptList, add, update, getById } from '@/api/upms/dept';
+  import { add, getById, tree as getDeptList, update } from '@/api/upms/dept';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { basicModal, useModal } from '@/components/Modal';
@@ -79,20 +79,19 @@
 </script>
 
 <template>
-  <basicModal @register="modalRegister" style="width: 30%">
+  <basicModal style="width: 30%" @register="modalRegister">
     <template #default>
-      <BasicForm @register="register" @submit="handleSubmit" class="mt-5">
+      <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
         <template #parentSlot="{ model, field }">
           <n-tree-select
             v-model:value="model[field]"
-            :disabled="model['parentId'] == '0' || model['parentId'] == null"
-            filterable
+            :options="deptList"
             clearable
+            filterable
             key-field="id"
             label-field="name"
-            value-field="id"
             placeholder="请选择上级部门"
-            :options="deptList"
+            value-field="id"
           />
         </template>
       </BasicForm>
@@ -100,4 +99,4 @@
   </basicModal>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less" scoped></style>

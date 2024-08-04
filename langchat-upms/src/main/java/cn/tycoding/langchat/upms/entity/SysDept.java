@@ -19,6 +19,7 @@ package cn.tycoding.langchat.upms.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -29,19 +30,20 @@ import java.io.Serializable;
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 public class SysDept implements Serializable {
     private static final long serialVersionUID = -94917153262781949L;
 
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 上级部门ID
      */
-    private Long parentId;
+    private String parentId;
 
     /**
      * 部门名称

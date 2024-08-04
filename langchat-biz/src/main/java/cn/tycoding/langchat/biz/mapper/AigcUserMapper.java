@@ -31,8 +31,8 @@ public interface AigcUserMapper extends BaseMapper<AigcUser> {
 
     @Select("""
         SELECT
-            COUNT(*) AS totalUser,
-            SUM( CASE WHEN YEAR ( create_time ) = YEAR ( CURDATE()) AND MONTH ( create_time ) = MONTH ( CURDATE()) THEN 1 ELSE 0 END ) AS curUser
+            COALESCE(COUNT(*), 0) AS totalUser,
+            COALESCE(SUM( CASE WHEN YEAR ( create_time ) = YEAR ( CURDATE()) AND MONTH ( create_time ) = MONTH ( CURDATE()) THEN 1 ELSE 0 END ), 0) AS curUser
         FROM
             aigc_user;
     """)

@@ -34,7 +34,7 @@ public class PromptUtil {
     }
 
     public static Prompt build(String message, String promptText) {
-        return new PromptTemplate(promptText).apply(Map.of(PromptConst.QUESTION, message));
+        return new PromptTemplate(promptText + PromptConst.EMPTY).apply(Map.of(PromptConst.QUESTION, message));
     }
 
     public static Prompt build(String message, String promptText, Object param) {

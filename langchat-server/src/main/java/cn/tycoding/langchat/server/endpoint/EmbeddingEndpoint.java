@@ -22,6 +22,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.dto.DocsTypeEnum;
 import cn.tycoding.langchat.biz.entity.*;
 import cn.tycoding.langchat.biz.listener.StructExcelListener;
+import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.biz.service.*;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
@@ -54,6 +55,7 @@ public class EmbeddingEndpoint {
 
     private final LangDocService langDocService;
     private final AigcKnowledgeService aigcKnowledgeService;
+    private final AigcDocsMapper aigcDocsMapper;
     private final AigcOssService aigcOssService;
     private final AigcExcelColService excelColService;
     private final AigcExcelRowService excelRowService;
@@ -61,13 +63,15 @@ public class EmbeddingEndpoint {
     private final EmbeddingService embeddingService;
 
     @PostMapping("/text")
-    @SaCheckPermission("aigc:embedding:chat")
+    @SaCheckPermission("aigc:embedding:text")
     public R text(@RequestBody AigcDocs data) {
         if (StrUtil.isBlankIfStr(data.getContent())) {
             throw new ServiceException("文档内容不能为空");
         }
         data.setType(DocsTypeEnum.INPUT.name()).setSliceStatus(false);
-        aigcKnowledgeService.addDocs(data);
+        if (StrUtil.isBlank(data.getId())) {
+            aigcKnowledgeService.addDocs(data);
+        }
         EmbeddingR embeddingR = langDocService.embeddingText(
                 new ChatReq().setMessage(data.getContent())
                         .setDocsName(data.getType())
@@ -87,7 +91,7 @@ public class EmbeddingEndpoint {
     }
 
     @PostMapping("/docs/{knowledgeId}")
-    @SaCheckPermission("aigc:embedding:embed")
+    @SaCheckPermission("aigc:embedding:docs")
     public R docs(MultipartFile file, @PathVariable String knowledgeId) {
         AigcOss oss = aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId()));
         AigcDocs data = new AigcDocs()
@@ -103,7 +107,7 @@ public class EmbeddingEndpoint {
         return R.ok();
     }
 
-    @PostMapping("/struct/excel/{knowledgeId}")
+    @PostMapping("/excel/{knowledgeId}")
     @SaCheckPermission("aigc:embedding:excel")
     public R structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
         byte[] bytes = file.getBytes();
@@ -123,7 +127,7 @@ public class EmbeddingEndpoint {
         return R.ok();
     }
 
-    @GetMapping("/struct/excel/rows/{docsId}")
+    @GetMapping("/excel/rows/{docsId}")
     public R getExcelRows(@PathVariable String docsId) {
         List<List<String>> rows = excelDataService.list(Wrappers.<AigcExcelData>lambdaQuery()
                 .eq(AigcExcelData::getDocsId, docsId).orderByAsc(AigcExcelData::getRowIndex)
@@ -136,8 +140,19 @@ public class EmbeddingEndpoint {
         return R.ok(Dict.create().set("cols", cols).set("rows", rows));
     }
 
+    @GetMapping("/re-embed/{docsId}")
+    public R reEmbed(@PathVariable String docsId) {
+        AigcDocs docs = aigcDocsMapper.selectById(docsId);
+        if (docs == null) {
+            throw new ServiceException("没有查询到文档数据");
+        }
+        if ("INPUT".equals(docs.getType())) {
+            text(docs);
+        }
+        return R.ok();
+    }
+
     @PostMapping("/search")
-    @SaCheckPermission("aigc:embedding:search")
     public R search(@RequestBody AigcDocs data) {
         return R.ok(embeddingService.search(data));
     }

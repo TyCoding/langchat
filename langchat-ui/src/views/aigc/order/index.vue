@@ -20,8 +20,10 @@
 </script>
 
 <template>
-  <n-card>
-    <Chart />
-    <List />
-  </n-card>
+  <div class="overflow-y-auto h-full">
+    <n-card>
+      <Chart />
+      <List />
+    </n-card>
+  </div>
 </template>

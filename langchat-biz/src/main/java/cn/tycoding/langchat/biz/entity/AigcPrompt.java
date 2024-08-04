@@ -49,11 +49,6 @@ public class AigcPrompt implements Serializable {
     private String prompt;
 
     /**
-     * 图标
-     */
-    private String icon;
-
-    /**
      * 应用描述
      */
     private String des;

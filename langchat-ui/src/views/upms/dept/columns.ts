@@ -14,20 +14,7 @@
  * limitations under the License.
  */
 
-import { BasicColumn } from '@/components/Table';
 import { FormSchema } from '@/components/Form';
-
-export const columns: BasicColumn[] = [
-  {
-    title: '部门名称',
-    key: 'name',
-  },
-  {
-    title: '角色描述',
-    key: 'des',
-    align: 'center',
-  },
-];
 
 export const searchSchemas: FormSchema[] = [
   {

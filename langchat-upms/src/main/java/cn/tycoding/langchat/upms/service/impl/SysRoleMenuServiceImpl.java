@@ -35,13 +35,13 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteRoleMenusByRoleId(Long roleId) {
+    public void deleteRoleMenusByRoleId(String roleId) {
         baseMapper.delete(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, roleId));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteRoleMenusByMenuId(Long menuId) {
+    public void deleteRoleMenusByMenuId(String menuId) {
         baseMapper.delete(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getMenuId, menuId));
     }
 }

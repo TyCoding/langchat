@@ -42,5 +42,5 @@ public interface CommonConst {
      */
     String MENU_ICON = "alert";
 
-    String LAYOUT = "LAYOUT";
+    String LAYOUT = "Layout";
 }

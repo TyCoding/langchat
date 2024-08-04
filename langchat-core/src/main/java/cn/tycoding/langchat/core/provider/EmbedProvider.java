@@ -63,6 +63,6 @@ public class EmbedProvider {
         if (context.containsBean(EmbedConst.CLAZZ_NAME_OLLAMA)) {
             return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OLLAMA);
         }
-        throw new RuntimeException("No matching embedding model information found, please check the model configuration.");
+        throw new RuntimeException("没有匹配到模型，请检查模型配置！");
     }
 }

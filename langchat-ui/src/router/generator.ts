@@ -24,7 +24,9 @@ import { BaseRoute } from '@/router/base';
 const Iframe = () => import('@/views/base/iframe/index.vue');
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
+LayoutMap.set('Layout', Layout);
 LayoutMap.set('LAYOUT', Layout);
+LayoutMap.set('Iframe', Iframe);
 LayoutMap.set('IFRAME', Iframe);
 
 /**

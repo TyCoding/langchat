@@ -44,13 +44,13 @@
           {
             type: 'info',
             icon: EditOutlined,
-            ifShow: record.alias !== RoleEnum.ADMINISTRATOR,
+            ifShow: record.code !== RoleEnum.ADMINISTRATOR,
             onClick: handleEdit.bind(null, record),
           },
           {
             type: 'error',
             icon: DeleteOutlined,
-            ifShow: record.alias !== RoleEnum.ADMINISTRATOR,
+            ifShow: record.code !== RoleEnum.ADMINISTRATOR && record.code !== RoleEnum.DEFAULT,
             onClick: handleDelete.bind(null, record),
           },
         ],

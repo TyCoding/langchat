@@ -55,7 +55,7 @@ export function update(params: any) {
   });
 }
 
-export function del(id?: String) {
+export function del(id?: string) {
   return http.request({
     url: `/aigc/knowledge/${id}`,
     method: 'delete',

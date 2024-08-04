@@ -39,7 +39,7 @@ public interface SysMenuService extends IService<SysMenu> {
     /**
      * 构建左侧权限菜单
      */
-    List<MenuTree<SysMenu>> build(Long userId);
+    List<MenuTree<SysMenu>> build(String userId);
 
     /**
      * 根据用户ID查询权限信息
@@ -64,6 +64,6 @@ public interface SysMenuService extends IService<SysMenu> {
     /**
      * 删除
      */
-    void delete(Long id);
+    void delete(String id);
 
 }

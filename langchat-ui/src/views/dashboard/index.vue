@@ -15,11 +15,11 @@
   -->
 
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+  import { onMounted, ref } from 'vue';
   import VisiTab from './components/VisiTab.vue';
   import { CountTo } from '@/components/CountTo';
   import { CaretUpOutlined } from '@vicons/antd';
-  import { getHomeData, getReqChart } from '@/api/aigc/statictic';
+  import { getHomeData } from '@/api/aigc/statictic';
 
   const loading = ref(true);
   const list = ref([
@@ -97,28 +97,28 @@
 <template>
   <div class="h-full overflow-y-auto">
     <!--数据卡片-->
-    <n-grid cols="1 s:2 m:3 l:4 xl:4 2xl:4" responsive="screen" :x-gap="12" :y-gap="8">
+    <n-grid :x-gap="12" :y-gap="8" cols="1 s:2 m:3 l:4 xl:4 2xl:4" responsive="screen">
       <n-grid-item v-for="item in list" :key="item.key">
         <NCard
-          :title="item.label"
-          :segmented="{ content: true, footer: true }"
-          size="small"
           :bordered="false"
+          :segmented="{ content: true, footer: true }"
+          :title="item.label"
+          size="small"
         >
           <template #header-extra>
-            <n-tag :type="item.type" :bordered="false">{{ item.category }}</n-tag>
+            <n-tag :bordered="false" :type="item.type">{{ item.category }}</n-tag>
           </template>
           <div class="flex justify-between px-1 py-1">
             <n-skeleton v-if="loading" :width="100" size="medium" />
-            <CountTo v-else :startVal="0" :endVal="item.value" class="text-2xl" />
+            <CountTo v-else :endVal="item.value" :startVal="0" class="text-2xl" />
           </div>
           <div class="flex justify-between px-1 py-1">
             <div class="text-gray-600">
               <n-skeleton v-if="loading" :width="100" size="medium" />
               <template v-else>
                 {{ item.totalLabel }}
-                <CountTo :startVal="0" suffix=" " :endVal="item.totalValue" />
-                <n-icon size="12" color="#00ff6f">
+                <CountTo :endVal="item.totalValue" :startVal="0" suffix=" " />
+                <n-icon color="#00ff6f" size="12">
                   <CaretUpOutlined />
                 </n-icon>
               </template>

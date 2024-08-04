@@ -50,7 +50,7 @@ public class UserInfo extends SysUser implements Serializable {
     /**
      * 角色ID列表
      */
-    private List<Long> roleIds;
+    private List<String> roleIds;
 
     /**
      * 用户角色列表

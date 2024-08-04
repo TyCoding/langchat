@@ -17,11 +17,12 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { AlertCircleOutline } from '@vicons/ionicons5';
-  import { tree as getPage, del } from '@/api/upms/dept';
+  import { del, tree as getPage } from '@/api/upms/dept';
   import 'vue3-tree-org/lib/vue3-tree-org.css';
   import { Vue3TreeOrg } from 'vue3-tree-org';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
+
   const message = useMessage();
   const dialog = useDialog();
 
@@ -70,7 +71,7 @@
       onPositiveClick: async () => {
         await del(record.id);
         message.success('删除成功');
-        reloadTable();
+        await reloadTable();
       },
       onNegativeClick: () => {},
     });
@@ -94,7 +95,7 @@
               右键或双击节点进行自定义操作
             </n-popover>
 
-            <n-icon size="14" class="ml-1">
+            <n-icon class="ml-1" size="14">
               <AlertCircleOutline />
             </n-icon>
           </div>
@@ -102,9 +103,9 @@
 
         <template #footer>
           <n-space>
-            <n-button v-if="data == null" type="info" secondary size="small">新增顶层部门</n-button>
-            <n-button type="info" secondary size="small">导入</n-button>
-            <n-button @click="onExpand" type="success" secondary size="small">展开/折叠</n-button>
+            <n-button v-if="data == null" secondary size="small" type="info">新增顶层部门</n-button>
+            <n-button secondary size="small" type="info" @click="handleAdd">新增</n-button>
+            <n-button secondary size="small" type="success" @click="onExpand">展开/折叠</n-button>
           </n-space>
         </template>
       </n-card>
@@ -112,16 +113,16 @@
 
     <n-spin :show="loading">
       <vue3-tree-org
-        :data="data"
-        :props="{ id: 'id', pid: 'parentId', label: 'name', children: 'children' }"
-        :define-menus="menus"
-        center
         :collapsable="collapsable"
-        :node-add="handleAdd"
-        :node-edit="handleEdit"
-        :node-delete="handleDelete"
-        @on-node-dblclick="handleClick"
+        :data="data"
+        :define-menus="menus"
         :expandAll="true"
+        :node-add="handleAdd"
+        :node-delete="handleDelete"
+        :node-edit="handleEdit"
+        :props="{ id: 'id', pid: 'parentId', label: 'name', children: 'children' }"
+        center
+        @on-node-dblclick="handleClick"
       />
     </n-spin>
 

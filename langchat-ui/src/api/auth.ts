@@ -82,7 +82,7 @@ export function getTokens(params: any) {
 /**
  * 删除Token
  */
-export function delToken(id?: String) {
+export function delToken(id?: string) {
   return http.request({
     url: `/auth/token/${id}`,
     method: 'delete',

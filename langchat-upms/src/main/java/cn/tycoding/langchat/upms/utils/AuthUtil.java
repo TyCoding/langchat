@@ -45,11 +45,7 @@ public class AuthUtil {
      * 使用：所有涉及根据角色查询的地方都排除对此角色的限制
      */
     public static final String ADMINISTRATOR = "administrator";
-
-    /**
-     * 客户端用户角色
-     */
-    public static final String CLIENT_ROLE = "client_role";
+    public static final String DEFAULT_ROLE = "default_env";
 
     /* 登录表单验证码Key标识 */
     public static final String CAPTCHA_FORM_KEY = "captcha";
@@ -109,7 +105,7 @@ public class AuthUtil {
     /**
      * 获取登录用户ID
      */
-    public static Long getUserId() {
+    public static String getUserId() {
         UserInfo userInfo = getUserInfo();
         if (userInfo == null) {
             return null;
@@ -120,7 +116,7 @@ public class AuthUtil {
     /**
      * 获取用户角色Id集合
      */
-    public static List<Long> getRoleIds() {
+    public static List<String> getRoleIds() {
         UserInfo userInfo = getUserInfo();
         if (userInfo == null || userInfo.getRoleIds() == null) {
             return new ArrayList<>();
@@ -136,7 +132,7 @@ public class AuthUtil {
         if (userInfo == null || userInfo.getRoles() == null) {
             return new ArrayList<>();
         }
-        return userInfo.getRoles().stream().map(SysRole::getAlias).toList();
+        return userInfo.getRoles().stream().map(SysRole::getCode).toList();
     }
 
     /**

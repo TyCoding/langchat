@@ -47,6 +47,11 @@ public class AigcStatisticsController {
         return R.ok(aigcMessageMapper.getReqChartBy30());
     }
 
+    @GetMapping("/tokenBy30")
+    public R token30Chart() {
+        return R.ok(aigcMessageMapper.getTokenChartBy30());
+    }
+
     @GetMapping("/token")
     public R tokenChart() {
         return R.ok(aigcMessageMapper.getTokenChart());
@@ -68,7 +73,7 @@ public class AigcStatisticsController {
         result.putAll(reqData);
         result.putAll(totalData);
         result.putAll(userData);
-        result.set("totalKnowledge", totalKnowledge).set("totalPrompt", totalPrompt);
+        result.set("totalKnowledge", totalKnowledge.intValue()).set("totalPrompt", totalPrompt.intValue());
         return R.ok(result);
     }
 }

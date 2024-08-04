@@ -36,10 +36,10 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
     /**
      * 根据RoleID查询User集合
      */
-    List<SysUser> getUserListByRoleId(Long roleId);
+    List<SysUser> getUserListByRoleId(String roleId);
 
     /**
      * 根据UserID查询Role集合
      */
-    List<SysRole> getRoleListByUserId(Long userId);
+    List<SysRole> getRoleListByUserId(String userId);
 }

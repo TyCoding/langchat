@@ -57,7 +57,7 @@ public class SysMenuController {
     }
 
     @GetMapping("/{id}")
-    public R<SysMenu> findById(@PathVariable Long id) {
+    public R<SysMenu> findById(@PathVariable String id) {
         return R.ok(sysMenuService.getById(id));
     }
 
@@ -80,7 +80,7 @@ public class SysMenuController {
     @DeleteMapping("/{id}")
     @ApiLog("删除菜单")
     @SaCheckPermission("upms:menu:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         sysMenuService.delete(id);
         return R.ok();
     }

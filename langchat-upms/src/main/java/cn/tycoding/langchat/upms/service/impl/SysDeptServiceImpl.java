@@ -66,14 +66,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             node.setExtra(Dict.create().set("orderNo", t.getOrderNo()).set("des", t.getDes()));
             nodeList.add(node);
         });
-        return TreeUtil.build(nodeList, 0L);
+        return TreeUtil.build(nodeList, "0");
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public void delete(String id) {
         List<SysDept> list = baseMapper.selectList(new LambdaQueryWrapper<SysDept>().eq(SysDept::getParentId, id));
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             throw new ServiceException("该部门包含子节点，不能删除");
         }
         baseMapper.deleteById(id);

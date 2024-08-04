@@ -37,11 +37,11 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             UNION ALL
             SELECT date - INTERVAL 1 DAY
             FROM DateRange
-            WHERE date > DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+            WHERE date > DATE_SUB(CURDATE(), INTERVAL 31 DAY)
         )
         SELECT
             d.date,
-            COALESCE(SUM(m.tokens), 0) AS tokens
+            COALESCE(COUNT(*), 0) AS tokens
         FROM
             DateRange d
         LEFT JOIN
@@ -71,6 +71,31 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             month ASC;
     """)
     List<Dict> getReqChart();
+
+    @Select("""
+        WITH RECURSIVE DateRange AS (
+            SELECT CURDATE() AS date
+            UNION ALL
+            SELECT date - INTERVAL 1 DAY
+            FROM DateRange
+            WHERE date > DATE_SUB(CURDATE(), INTERVAL 31 DAY)
+        )
+        SELECT
+            d.date,
+            COALESCE(SUM(m.tokens), 0) AS tokens
+        FROM
+            DateRange d
+        LEFT JOIN
+            aigc_message m
+        ON
+            DATE(m.create_time) = d.date
+            AND m.role = 'assistant'
+        GROUP BY
+            d.date
+        ORDER BY
+            d.date DESC;
+    """)
+    List<Dict> getTokenChartBy30();
 
     @Select("""
         SELECT

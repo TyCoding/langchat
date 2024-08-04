@@ -57,8 +57,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
 //    @Cacheable(value = CacheConst.MENU_DETAIL_KEY, key = "#userId")
-    public List<MenuTree<SysMenu>> build(Long userId) {
-        List<Long> roleIds = AuthUtil.getRoleIds();
+    public List<MenuTree<SysMenu>> build(String userId) {
+        List<String> roleIds = AuthUtil.getRoleIds();
         if (AuthUtil.getRoleNames().contains(AuthUtil.ADMINISTRATOR)) {
             // 超级管理员，不做权限过滤
             roleIds.clear();
@@ -86,13 +86,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> getUserMenuList(List<SysRole> sysRoleList) {
-        List<Long> roleIds = sysRoleList.stream().map(SysRole::getId).collect(Collectors.toList());
+        List<String> roleIds = sysRoleList.stream().map(SysRole::getId).collect(Collectors.toList());
         return baseMapper.build(roleIds, null);
     }
 
     @Override
     public List<SysMenu> list(SysMenu sysMenu) {
-        return baseMapper.selectList(new LambdaQueryWrapper<SysMenu>().like(sysMenu.getName() != null, SysMenu::getName, sysMenu.getName()).eq(sysMenu.getIsDisabled() != null, SysMenu::getIsDisabled, sysMenu.getIsDisabled()).orderByAsc(SysMenu::getOrderNo));
+        return baseMapper.selectList(new LambdaQueryWrapper<SysMenu>()
+                .like(sysMenu.getName() != null, SysMenu::getName, sysMenu.getName())
+                .eq(sysMenu.getIsDisabled() != null, SysMenu::getIsDisabled, sysMenu.getIsDisabled())
+                .orderByAsc(SysMenu::getOrderNo));
     }
 
     @Override
@@ -113,9 +116,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             if (sysMenu.getIsExt() == null) sysMenu.setIsExt(false);
             if (sysMenu.getIsKeepalive() == null) sysMenu.setIsKeepalive(true);
             if (sysMenu.getIsShow() == null) sysMenu.setIsShow(true);
-            if (sysMenu.getParentId() == null) sysMenu.setParentId(0L);
+            if (sysMenu.getParentId() == null) sysMenu.setParentId("0");
 
-            if (sysMenu.getParentId() == null || sysMenu.getParentId() == 0) {
+            if (sysMenu.getParentId() == null) {
                 // 父级节点
                 if (sysMenu.getComponent() == null) {
                     sysMenu.setComponent(CommonConst.LAYOUT);
@@ -151,7 +154,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
 //    @CacheEvict(value = CacheConst.MENU_DETAIL_KEY, allEntries = true)
-    public void delete(Long id) {
+    public void delete(String id) {
         List<SysMenu> list = baseMapper.selectList(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentId, id));
         if (!list.isEmpty()) {
             throw new ServiceException("该菜单包含子节点，不能删除");

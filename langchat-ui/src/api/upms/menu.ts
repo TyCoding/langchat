@@ -15,7 +15,6 @@
  */
 
 import { http } from '@/utils/http/axios';
-import { Menu } from '@/api/models/upms';
 
 export function list(params: any) {
   return http.request({
@@ -33,7 +32,7 @@ export function tree(params: any) {
   });
 }
 
-export function getById(id: string): Promise<Menu> {
+export function getById(id: string) {
   return http.request({
     url: `/upms/menu/${id}`,
     method: 'get',
@@ -56,7 +55,7 @@ export function update(params: any) {
   });
 }
 
-export function del(id?: String) {
+export function del(id?: string) {
   return http.request({
     url: `/upms/menu/${id}`,
     method: 'delete',

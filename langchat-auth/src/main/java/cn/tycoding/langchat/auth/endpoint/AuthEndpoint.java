@@ -32,7 +32,9 @@ import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.dto.UserInfo;
+import cn.tycoding.langchat.upms.entity.SysRole;
 import cn.tycoding.langchat.upms.entity.SysUser;
+import cn.tycoding.langchat.upms.service.SysRoleService;
 import cn.tycoding.langchat.upms.service.SysUserService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -58,6 +60,7 @@ import static cn.tycoding.langchat.common.constant.CacheConst.AUTH_SESSION_PREFI
 public class AuthEndpoint {
 
     private final SysUserService userService;
+    private final SysRoleService roleService;
     private final AuthProps authProps;
     private final StringRedisTemplate redisTemplate;
 
@@ -96,23 +99,29 @@ public class AuthEndpoint {
     @PostMapping("/register")
     public R emailRegister(@RequestBody SysUser data) {
         if (StrUtil.isBlank(data.getUsername()) || StrUtil.isBlank(data.getPassword())) {
-            throw new ServiceException("The user name or password is empty");
+            throw new ServiceException("用户名或密码为空");
         }
 
         // 校验用户名是否已存在
         List<SysUser> list = userService.list(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, data.getUsername()));
         if (!list.isEmpty()) {
-            throw new ServiceException("This username has already been registered");
+            throw new ServiceException("该用户名已存在");
         }
 
-        SysUser user = new SysUser()
+        List<SysRole> roles = roleService.list(Wrappers.<SysRole>lambdaQuery().eq(SysRole::getCode, AuthUtil.DEFAULT_ROLE));
+        if (roles.isEmpty()) {
+            throw new ServiceException("系统角色配置异常，请联系管理员");
+        }
+
+        UserInfo user = (UserInfo) new UserInfo()
+                .setRoleIds(roles.stream().map(SysRole::getId).toList())
                 .setUsername(data.getUsername())
                 .setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()))
                 .setRealName(data.getUsername())
                 .setPhone(data.getPhone())
                 .setStatus(true)
                 .setCreateTime(new Date());
-        userService.save(user);
+        userService.add(user);
         SysLogUtil.publish(1, "服务端注册", AuthUtil.getUsername());
         return R.ok();
     }
@@ -142,7 +151,13 @@ public class AuthEndpoint {
             Dict data = Dict.create();
             Map<String, Object> dataMap = StpUtil.getSessionByLoginId(id).getDataMap();
             UserInfo userInfo = (UserInfo)dataMap.get(CacheConst.AUTH_USER_INFO_KEY);
+            if (userInfo == null || Objects.equals(AuthUtil.getUserId(), userInfo.getId())) {
+                return;
+            }
             SaTokenInfo tokenInfo = (SaTokenInfo)dataMap.get(CacheConst.AUTH_TOKEN_INFO_KEY);
+            if (tokenInfo == null) {
+                return;
+            }
             data.set("token", tokenInfo.tokenValue);
             data.set("perms", userInfo.getPerms());
             data.set("roles", userInfo.getRoles());

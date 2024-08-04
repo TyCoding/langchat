@@ -30,7 +30,7 @@
   const router = useRouter();
   const form = reactive({
     username: 'langchat',
-    password: '123456',
+    password: 'langchat',
   });
 
   const rules = {

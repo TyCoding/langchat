@@ -63,7 +63,7 @@ public class SysUserController {
     }
 
     @GetMapping("/{id}")
-    public R<UserInfo> findById(@PathVariable Long id) {
+    public R<UserInfo> findById(@PathVariable String id) {
         return R.ok(sysUserService.findById(id));
     }
 
@@ -86,7 +86,7 @@ public class SysUserController {
     @DeleteMapping("/{id}")
     @ApiLog("删除用户")
     @SaCheckPermission("upms:user:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         SysUser user = sysUserService.getById(id);
         if (user != null) {
             sysUserService.delete(id, user.getUsername());

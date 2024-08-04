@@ -64,7 +64,7 @@ export const BaseRoute: Array<any> = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: 'LAYOUT',
+    component: 'Layout',
     meta: {
       icon: 'FileTrayOutline',
       title: 'Dashboard',
@@ -83,7 +83,7 @@ export const BaseRoute: Array<any> = [
   {
     path: '/profile',
     name: 'profile',
-    component: 'LAYOUT',
+    component: 'Layout',
     show: false,
     meta: {
       title: '个人中心',
@@ -104,7 +104,7 @@ export const BaseRoute: Array<any> = [
   {
     path: '/aigc',
     name: 'aigc',
-    component: 'LAYOUT',
+    component: 'Layout',
     show: false,
     meta: {
       title: '应用集成',

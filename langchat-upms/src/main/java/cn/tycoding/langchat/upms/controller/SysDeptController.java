@@ -51,7 +51,7 @@ public class SysDeptController {
     }
 
     @GetMapping("/{id}")
-    public R<SysDept> findById(@PathVariable Long id) {
+    public R<SysDept> findById(@PathVariable String id) {
         return R.ok(sysDeptService.getById(id));
     }
 
@@ -59,7 +59,7 @@ public class SysDeptController {
     @ApiLog("新增部门")
     @SaCheckPermission("upms:dept:add")
     public R add(@RequestBody SysDept sysDept) {
-        sysDept.setParentId(sysDept.getParentId() == null ? 0L : sysDept.getParentId());
+        sysDept.setParentId(sysDept.getParentId());
         sysDeptService.save(sysDept);
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class SysDeptController {
     @ApiLog("修改部门")
     @SaCheckPermission("upms:dept:update")
     public R update(@RequestBody SysDept sysDept) {
-        sysDept.setParentId(sysDept.getParentId() == null ? 0L : sysDept.getParentId());
+        sysDept.setParentId(sysDept.getParentId());
         sysDeptService.updateById(sysDept);
         return R.ok();
     }
@@ -76,7 +76,7 @@ public class SysDeptController {
     @DeleteMapping("/{id}")
     @ApiLog("删除部门")
     @SaCheckPermission("upms:dept:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         sysDeptService.delete(id);
         return R.ok();
     }

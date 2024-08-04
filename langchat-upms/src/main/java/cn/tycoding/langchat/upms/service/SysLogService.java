@@ -41,5 +41,5 @@ public interface SysLogService extends IService<SysLog> {
     /**
      * 删除
      */
-    void delete(Long id);
+    void delete(String id);
 }

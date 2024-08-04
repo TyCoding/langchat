@@ -218,7 +218,7 @@ public class ProviderInitialize implements ApplicationContextAware {
         String type = model.getType();
         String provider = model.getProvider();
 
-        if (ModelTypeEnum.CHAT.name().equals(type)) {
+        if (ModelTypeEnum.EMBEDDING.name().equals(type)) {
             if (ProviderEnum.OPENAI.name().equals(provider)) {
                 OpenAiEmbeddingModel build = OpenAiEmbeddingModel
                         .builder()

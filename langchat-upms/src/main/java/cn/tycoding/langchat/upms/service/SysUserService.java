@@ -40,7 +40,7 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 根据ID查询
      */
-    UserInfo findById(Long userId);
+    UserInfo findById(String userId);
 
     /**
      * 查询用户数据
@@ -66,7 +66,7 @@ public interface SysUserService extends IService<SysUser> {
 
     void update(UserInfo user);
 
-    void delete(Long id, String username);
+    void delete(String id, String username);
 
-    void reset(Long id, String password, String username);
+    void reset(String id, String password, String username);
 }

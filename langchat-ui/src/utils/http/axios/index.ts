@@ -223,6 +223,9 @@ const transform: AxiosTransform = {
         const LoginName = PageEnum.BASE_LOGIN_NAME;
 
         $loading.finish();
+        $message.destroyAll();
+        $message.error(response.data.message);
+
         if (router.currentRoute.value?.name === LoginName) return Promise.resolve(response);
 
         // 到登录页

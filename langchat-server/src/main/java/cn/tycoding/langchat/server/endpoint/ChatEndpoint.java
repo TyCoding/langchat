@@ -20,11 +20,11 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
-import cn.tycoding.langchat.server.service.ChatService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
+import cn.tycoding.langchat.server.service.ChatService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,17 +35,17 @@ import java.util.List;
  * @author tycoding
  * @since 2024/1/30
  */
-@RequestMapping("/aigc/chat/knowledge")
+@RequestMapping("/aigc")
 @RestController
 @AllArgsConstructor
-public class KnowledgeChatEndpoint {
+public class ChatEndpoint {
 
     private final ChatService chatService;
     private final AigcMessageService messageService;
 
-    @PostMapping
-    @SaCheckPermission("aigc:knowledge:chat")
-    public Object chat(@RequestBody ChatReq req) {
+    @PostMapping("/chat/completions")
+    @SaCheckPermission("chat:completions")
+    public Object chatCompletions(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setUserId(String.valueOf(AuthUtil.getUserId()));
@@ -64,14 +64,14 @@ public class KnowledgeChatEndpoint {
         return emitter.get();
     }
 
-    @GetMapping("/messages/{conversationId}")
+    @GetMapping("/chat/messages/{conversationId}")
     public R messages(@PathVariable String conversationId) {
         List<AigcMessage> list = messageService.getMessages(conversationId, String.valueOf(AuthUtil.getUserId()));
         return R.ok(list);
     }
 
-    @DeleteMapping("/cleanMessage/{conversationId}")
-    @SaCheckPermission("aigc:knowledge:clean")
+    @DeleteMapping("/chat/messages/clean/{conversationId}")
+    @SaCheckPermission("chat:messages:clean")
     public R cleanMessage(@PathVariable String conversationId) {
         messageService.clearMessage(conversationId);
         return R.ok();

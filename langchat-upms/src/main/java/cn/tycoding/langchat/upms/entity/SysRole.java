@@ -19,6 +19,7 @@ package cn.tycoding.langchat.upms.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -29,14 +30,15 @@ import java.io.Serializable;
  * @since 2024/4/15
  */
 @Data
+@Accessors(chain = true)
 public class SysRole implements Serializable {
     private static final long serialVersionUID = 547891924677981054L;
 
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 角色名称
@@ -46,7 +48,7 @@ public class SysRole implements Serializable {
     /**
      * 角色别名
      */
-    private String alias;
+    private String code;
 
     /**
      * 描述

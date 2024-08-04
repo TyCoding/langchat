@@ -39,12 +39,12 @@ public class MenuTree<T> implements Serializable {
     /**
      * 节点ID
      */
-    private Long id;
+    private String id;
 
     /**
      * 父节点ID
      */
-    private Long parentId;
+    private String parentId;
 
     /**
      * 路由名称

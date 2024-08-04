@@ -20,15 +20,19 @@
 <script lang="ts" setup>
   import { onMounted, ref, Ref } from 'vue';
   import { useECharts } from '@/hooks/web/useECharts';
-  import { getTokenChart } from '@/api/aigc/statictic';
+  import { getTokenChartBy30 } from '@/api/aigc/statictic';
 
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   onMounted(async () => {
-    const list = await getTokenChart();
-    const xData = list.map((i) => i.month);
-    const yData = list.map((i) => Number(i.count));
+    const data = await getTokenChartBy30();
+    const xData: any = [];
+    const yData: any = [];
+    data.forEach((i: any) => {
+      xData.push(i.date);
+      yData.push(i.tokens);
+    });
 
     setOptions({
       tooltip: {

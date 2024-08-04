@@ -14,21 +14,22 @@
   - limitations under the License.
   -->
 
-<template>
-  <div ref="chartRef" class="w-full" style="height: calc(100vh - 400px)"></div>
-</template>
 <script lang="ts" setup>
   import { onMounted, ref, Ref } from 'vue';
   import { useECharts } from '@/hooks/web/useECharts';
-  import { getReqChart } from '@/api/aigc/statictic';
+  import { getReqChartBy30 } from '@/api/aigc/statictic';
 
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   onMounted(async () => {
-    const list = await getReqChart();
-    const xData = list.map((i) => i.month);
-    const yData = list.map((i) => Number(i.count));
+    const data = await getReqChartBy30();
+    const xData: any = [];
+    const yData: any = [];
+    data.forEach((i: any) => {
+      xData.push(i.date);
+      yData.push(i.tokens);
+    });
 
     setOptions({
       tooltip: {
@@ -85,3 +86,7 @@
     });
   });
 </script>
+
+<template>
+  <div ref="chartRef" class="w-full" style="height: calc(100vh - 400px)"></div>
+</template>

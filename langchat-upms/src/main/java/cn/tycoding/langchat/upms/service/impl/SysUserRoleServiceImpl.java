@@ -38,24 +38,24 @@ import java.util.List;
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
     @Override
-    public List<SysUser> getUserListByRoleId(Long roleId) {
+    public List<SysUser> getUserListByRoleId(String roleId) {
         return baseMapper.getUserListByRoleId(roleId);
     }
 
     @Override
-    public List<SysRole> getRoleListByUserId(Long userId) {
+    public List<SysRole> getRoleListByUserId(String userId) {
         return baseMapper.getRoleListByUserId(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteUserRolesByUserId(Long userId) {
+    public void deleteUserRolesByUserId(String userId) {
         baseMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, userId));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteUserRolesByRoleId(Long roleId) {
+    public void deleteUserRolesByRoleId(String roleId) {
         baseMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, roleId));
     }
 }

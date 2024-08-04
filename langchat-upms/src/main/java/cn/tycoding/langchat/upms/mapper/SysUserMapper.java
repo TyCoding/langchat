@@ -31,5 +31,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    IPage<UserInfo> page(IPage<SysUser> page, UserInfo user, Long ignoreId, String ignoreName);
+    IPage<UserInfo> page(IPage<SysUser> page, UserInfo user, String ignoreId, String ignoreName);
 }
