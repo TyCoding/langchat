@@ -283,7 +283,6 @@ CREATE TABLE `aigc_model` (
 -- Records of aigc_model
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_model` (`id`, `type`, `model`, `provider`, `name`, `response_limit`, `temperature`, `top_p`, `api_key`, `base_url`, `secret_key`, `endpoint`, `azure_deployment_name`, `gemini_project`, `gemini_location`, `image_size`, `image_quality`, `image_style`, `dimensions`) VALUES ('0c21c2f8ebd3aa3757ef1bae81154cc4', 'CHAT', 'gpt-4o', 'OPENAI', 'GPT代理', 2000, 0.2, 0.8, 'sk-GOMtCEz7jaRUJ50n75B05a1e4027473fB70126A42dB01477', 'https://www.gptapi.us/v1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
