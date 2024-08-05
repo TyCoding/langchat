@@ -21,10 +21,12 @@ import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.biz.entity.AigcUser;
 import cn.tycoding.langchat.biz.service.AigcUserService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
+import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,7 @@ import java.util.List;
 public class AigcUserController {
 
     private final AigcUserService userService;
+    private final AuthProps authProps;
 
     @GetMapping("/info")
     public R<AigcUser> info() {
@@ -56,23 +59,30 @@ public class AigcUserController {
 
     @GetMapping("/list")
     public R<List<AigcUser>> list(AigcUser data) {
-        return R.ok(userService.list(Wrappers.lambdaQuery()));
+        List<AigcUser> list = userService.list(Wrappers.lambdaQuery());
+        list.forEach(i -> i.setPassword(null));
+        return R.ok(list);
     }
 
     @GetMapping("/page")
     public R<Dict> page(AigcUser user, QueryPage queryPage) {
-        return R.ok(MybatisUtil.getData(userService.page(user, queryPage)));
+        IPage<AigcUser> page = userService.page(user, queryPage);
+        page.getRecords().forEach(i -> i.setPassword(null));
+        return R.ok(MybatisUtil.getData(page));
     }
 
     @GetMapping("/{id}")
-    public R<AigcUser> findById(@PathVariable Long id) {
-        return R.ok(userService.getById(id));
+    public R<AigcUser> findById(@PathVariable String id) {
+        AigcUser user = userService.getById(id);
+        user.setPassword(null);
+        return R.ok(user);
     }
 
     @PostMapping
     @ApiLog("新增客户端用户")
     @SaCheckPermission("aigc:user:add")
     public R<AigcUser> add(@RequestBody AigcUser data) {
+        data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
         userService.save(data);
         return R.ok();
     }
@@ -81,6 +91,7 @@ public class AigcUserController {
     @ApiLog("修改客户端用户")
     @SaCheckPermission("aigc:user:update")
     public R update(@RequestBody AigcUser data) {
+        data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
         userService.updateById(data);
         return R.ok();
     }
@@ -88,7 +99,7 @@ public class AigcUserController {
     @DeleteMapping("/{id}")
     @ApiLog("删除客户端用户")
     @SaCheckPermission("aigc:user:delete")
-    public R delete(@PathVariable Long id) {
+    public R delete(@PathVariable String id) {
         AigcUser user = userService.getById(id);
         if (user != null) {
             userService.removeById(id);

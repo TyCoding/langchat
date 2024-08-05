@@ -32,6 +32,17 @@ export const rules = {
       return;
     },
   },
+  username: {
+    key: 'username',
+    required: true,
+    trigger: ['blur'],
+    validator: (rule: any, value: string) => {
+      if (isBlank(value)) {
+        return new Error('请输入用户名');
+      }
+      return true;
+    },
+  },
   code: {
     key: 'code',
     required: true,

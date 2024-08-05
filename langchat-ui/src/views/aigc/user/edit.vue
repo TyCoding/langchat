@@ -51,7 +51,7 @@
     if (id) {
       setFieldsValue(await getById(id));
     } else {
-      setFieldsValue({ status: true, sex: '男' });
+      setFieldsValue({ isPerms: true });
     }
   }
 

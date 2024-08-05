@@ -117,6 +117,16 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入用户名', trigger: ['blur'] }],
   },
   {
+    field: 'password',
+    label: '密码',
+    component: 'NInput',
+    componentProps: {
+      type: 'password',
+      placeholder: '请输入密码',
+    },
+    rules: [{ required: true, message: '请输入密码', trigger: ['blur'] }],
+  },
+  {
     field: 'nickname',
     label: '用户昵称',
     component: 'NInput',
@@ -129,23 +139,6 @@ export const formSchemas: FormSchema[] = [
     field: 'isPerms',
     component: 'NRadioGroup',
     label: '操作权限',
-    componentProps: {
-      options: [
-        {
-          label: '启用',
-          value: true,
-        },
-        {
-          label: '禁用',
-          value: false,
-        },
-      ],
-    },
-  },
-  {
-    field: 'status',
-    component: 'NRadioGroup',
-    label: '用户状态',
     componentProps: {
       options: [
         {
