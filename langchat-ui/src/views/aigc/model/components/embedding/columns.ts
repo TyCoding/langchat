@@ -15,11 +15,52 @@
  */
 
 import { FormSchema } from '@/components/Form';
-import { LLMProviders } from '@/views/aigc/model/components/chat/data';
+import { ProviderEnum } from '@/views/aigc/model/components/chat/data';
 import { ModelTypeEnum } from '@/api/models';
 import { isNullOrWhitespace } from '@/utils/is';
 
-export const schemas: FormSchema[] = [
+export const LLMProviders: any[] = [
+  {
+    model: ProviderEnum.OPENAI,
+    name: 'OpenAI',
+    models: ['text-embedding-3-small', 'text-embedding-3-large', 'text-embedding-ada-002'],
+  },
+  {
+    model: ProviderEnum.AZURE_OPENAI,
+    name: 'Azure OpenAI',
+    models: [
+      'text-embedding-3-small',
+      'text-embedding-3-small-1',
+      'text-embedding-3-large',
+      'text-embedding-3-large-1',
+      'text-embedding-ada-002',
+      'text-embedding-ada-002-1',
+      'text-embedding-ada-002-2',
+    ],
+  },
+  {
+    model: ProviderEnum.OLLAMA,
+    name: 'Ollama',
+    models: [],
+  },
+  {
+    model: ProviderEnum.Q_FAN,
+    name: '百度千帆大模型',
+    models: ['Embedding-V1', 'bge-large-zh', 'bge-large-en', 'tao-8k'],
+  },
+  {
+    model: ProviderEnum.Q_WEN,
+    name: '阿里千问大模型',
+    models: ['text-embedding-v1', 'text-embedding-v2'],
+  },
+  {
+    model: ProviderEnum.ZHIPU,
+    name: '智普AI',
+    models: ['embedding-2', 'text_embedding'],
+  },
+];
+
+export const baseSchemas: FormSchema[] = [
   {
     field: 'id',
     label: 'ID',
@@ -37,6 +78,7 @@ export const schemas: FormSchema[] = [
     field: 'provider',
     label: 'LLM供应商',
     component: 'NSelect',
+    slot: 'providerSlot',
     componentProps: {
       options: LLMProviders,
       labelField: 'name',
@@ -89,25 +131,14 @@ export const schemas: FormSchema[] = [
     ],
   },
   {
-    field: 'temperature',
-    label: '生成随机性',
-    labelMessage: '调高参数会使得模型的输出更多样性和创新性，反之降低参数将会减少多样性',
-    component: 'NSlider',
-    rules: [{ type: 'number', required: true, message: '请输入生成随机性', trigger: ['blur'] }],
-    componentProps: {
-      defaultValue: 0.8,
-      step: 0.05,
-      min: 0,
-      max: 2,
-    },
-  },
-  {
     field: 'dimensions',
     label: 'Dimensions',
     labelMessage: '此参数代表向量纬数，注意此参数需要和向量数据库匹配',
     component: 'NSelect',
     rules: [{ type: 'number', required: true, message: '请选择向量维数', trigger: ['blur'] }],
     componentProps: {
+      tag: true,
+      filterable: true,
       options: [
         {
           label: '384',
@@ -125,3 +156,43 @@ export const schemas: FormSchema[] = [
     },
   },
 ];
+
+export const openaiSchemas: FormSchema[] = [...baseSchemas];
+export const azureOpenaiSchemas: FormSchema[] = [...baseSchemas];
+export const ollamaSchemas: FormSchema[] = [...baseSchemas];
+export const qfanSchemas: FormSchema[] = [
+  ...baseSchemas,
+  {
+    field: 'secretKey',
+    label: 'Secret Key',
+    labelMessage: '对于某些模型需要此配置',
+    isHidden: false,
+    component: 'NInput',
+  },
+];
+export const qwenSchemas: FormSchema[] = [...baseSchemas];
+export const zhipuSchemas: FormSchema[] = [...baseSchemas];
+
+export function getSchemas(provider: string) {
+  switch (provider) {
+    case ProviderEnum.OPENAI: {
+      return openaiSchemas;
+    }
+    case ProviderEnum.AZURE_OPENAI: {
+      return azureOpenaiSchemas;
+    }
+    case ProviderEnum.OLLAMA: {
+      return ollamaSchemas;
+    }
+    case ProviderEnum.Q_FAN: {
+      return qfanSchemas;
+    }
+    case ProviderEnum.Q_WEN: {
+      return qwenSchemas;
+    }
+    case ProviderEnum.ZHIPU: {
+      return zhipuSchemas;
+    }
+  }
+  return baseSchemas;
+}

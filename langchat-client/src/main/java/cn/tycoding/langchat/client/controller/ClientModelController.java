@@ -50,14 +50,20 @@ public class ClientModelController {
     @GetMapping("/getChatModels")
     public R<List<AigcModel>> getChatModels() {
         List<AigcModel> list = aigcModelService.getChatModels();
-        list.forEach(i -> i.setApiKey(null));
+        list.forEach(i -> {
+            i.setApiKey(null);
+            i.setSecretKey(null);
+        });
         return R.ok(list);
     }
 
     @GetMapping("/getImageModels")
     public R<List<AigcModel>> getImageModels() {
         List<AigcModel> list = aigcModelService.getImageModels();
-        list.forEach(i -> i.setApiKey(null));
+        list.forEach(i -> {
+            i.setApiKey(null);
+            i.setSecretKey(null);
+        });
         return R.ok(list);
     }
 }

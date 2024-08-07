@@ -60,6 +60,12 @@ public class AigcModelController {
         }
         String key = StrUtil.hide(model.getApiKey(), 3, model.getApiKey().length() - 4);
         model.setApiKey(key);
+
+        if (StrUtil.isBlank(model.getSecretKey())) {
+            return;
+        }
+        String sec = StrUtil.hide(model.getSecretKey(), 3, model.getSecretKey().length() - 4);
+        model.setApiKey(sec);
     }
 
     @GetMapping("/page")

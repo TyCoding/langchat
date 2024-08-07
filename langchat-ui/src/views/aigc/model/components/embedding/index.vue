@@ -16,12 +16,13 @@
 
 <script lang="ts" setup>
   import { BasicForm, useForm } from '@/components/Form';
-  import { schemas } from './columns';
+  import { getSchemas, LLMProviders } from './columns';
   import { isNullOrWhitespace } from '@/utils/is';
   import { add, list as getModels, update } from '@/api/aigc/model';
   import { useMessage } from 'naive-ui';
   import { onMounted } from 'vue';
   import { ModelTypeEnum } from '@/api/models';
+  import { ref } from 'vue-demi';
 
   const ms = useMessage();
   const [register, { setFieldsValue }] = useForm({
@@ -30,13 +31,19 @@
     layout: 'horizontal',
     submitButtonText: '提交',
   });
+  const schemas = ref();
 
   onMounted(async () => {
     const data = await getModels({ type: ModelTypeEnum.EMBEDDING });
     if (data != null && data.length >= 0) {
       setFieldsValue({ ...data[0] });
+      schemas.value = getSchemas(data[0].provider);
     }
   });
+
+  function onChange(val) {
+    schemas.value = getSchemas(val);
+  }
 
   async function onSubmit(values: any) {
     if (values !== false) {
@@ -62,7 +69,17 @@
         title="如果需要使用知识库的能力，则必须配置Embedding向量模型。Dimensions代表向量纬度，不同的模型配置不一样，此值和VectorStore的配置要完全对应，如果在application.yml已经配置了VectorStore的Dimensions参数，那么这里也应该保持相同，否则需要删除VectorStore表重新启动项目"
         type="info"
       />
-      <BasicForm :schemas="schemas" class="mt-5" @register="register" @submit="onSubmit" />
+      <BasicForm :schemas="schemas" class="mt-5" @register="register" @submit="onSubmit">
+        <template #providerSlot="{ model, field }">
+          <n-select
+            v-model:value="model[field]"
+            :options="LLMProviders"
+            label-field="name"
+            value-field="model"
+            @change="onChange"
+          />
+        </template>
+      </BasicForm>
     </div>
   </div>
 </template>
