@@ -15,59 +15,52 @@
   -->
 
 <script lang="ts" setup>
-  import { nextTick, ref } from 'vue';
-  import { BasicForm, useForm } from '@/components/Form';
-  import { isNullOrWhitespace } from '@/utils/is';
-  import { add as addApi, update as updateApi } from '@/api/app/appApi';
-  import { add as addWeb, update as updateWeb } from '@/api/app/appWeb';
+  import { nextTick } from 'vue';
+  import { add, getById, update } from '@/api/app/app';
   import { useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { basicModal, useModal } from '@/components/Modal';
+  import { isNullOrWhitespace } from '@/utils/is';
 
   const emit = defineEmits(['reload']);
-  const isShow = ref(false);
-  const info = ref();
   const message = useMessage();
 
-  async function show(record?: any) {
-    isShow.value = true;
-    await nextTick();
-    info.value = record;
-    setFieldsValue({ ...record });
-  }
-
+  const [
+    modalRegister,
+    { openModal: openModal, closeModal: closeModal, setSubLoading: setSubLoading },
+  ] = useModal({
+    title: '新增/编辑',
+    closable: true,
+    maskClosable: false,
+    showCloseBtn: false,
+    showSubBtn: false,
+  });
   const [register, { setFieldsValue }] = useForm({
-    labelWidth: 120,
     gridProps: { cols: 1 },
+    labelWidth: 120,
     layout: 'horizontal',
     submitButtonText: '提交',
+    schemas: formSchemas,
   });
 
-  async function onSubmit(values: any) {
+  async function show(id: string) {
+    openModal();
+    await nextTick();
+    if (id) {
+      setFieldsValue(await getById(id));
+    }
+  }
+
+  async function handleSubmit(values: any) {
     if (values !== false) {
-      isShow.value = false;
-      const data = { ...values };
-      if (isNullOrWhitespace(data.id)) {
-        if (values.channel === 'CHANNEL_API') {
-          await addApi(data);
-        }
-        if (values.channel === 'CHANNEL_WEB') {
-          await addWeb(data);
-        }
-        if (values.channel === 'CHANNEL_WEIXIN') {
-          // await addWeb(data);
-        }
+      closeModal();
+      if (isNullOrWhitespace(values.id)) {
+        await add(values);
         emit('reload');
         message.success('新增成功');
       } else {
-        if (values.channel === 'CHANNEL_API') {
-          await updateApi(data);
-        }
-        if (values.channel === 'CHANNEL_WEB') {
-          await updateWeb(data);
-        }
-        if (values.channel === 'CHANNEL_WEIXIN') {
-          // await updateWeb(data);
-        }
+        await update(values);
         emit('reload');
         message.success('修改成功');
       }
@@ -75,16 +68,13 @@
       message.error('请完善表单');
     }
   }
-
   defineExpose({ show });
 </script>
 
 <template>
-  <n-drawer v-model:show="isShow" placement="right" width="40%">
-    <n-drawer-content closable title="编辑应用">
-      <BasicForm :schemas="formSchemas" class="mt-5" @register="register" @submit="onSubmit" />
-    </n-drawer-content>
-  </n-drawer>
+  <basicModal style="width: 45%" @register="modalRegister">
+    <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
+  </basicModal>
 </template>
 
 <style lang="less" scoped></style>

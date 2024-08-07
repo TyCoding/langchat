@@ -127,6 +127,7 @@ public class ClientAuthEndpoint {
                 .setPassword(AuthUtil.encode(props.getSaltKey(), data.getPassword()))
                 .setNickname(data.getEmail())
                 .setEmail(data.getEmail())
+                .setChatLimit(props.getChatLimit())
                 .setIsPerms(props.getAigcRegUserIsPerms())
                 .setStatus(true)
                 .setCreateTime(new Date());

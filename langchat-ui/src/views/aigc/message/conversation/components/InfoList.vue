@@ -17,7 +17,7 @@
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { getMessages } from '@/api/aigc/conversation';
-  import Message from '@/views/aigc/chat/components/message/Message.vue';
+  import Message from '@/views/chat/message/Message.vue';
 
   const messageRef = ref();
   const contentRef = ref();

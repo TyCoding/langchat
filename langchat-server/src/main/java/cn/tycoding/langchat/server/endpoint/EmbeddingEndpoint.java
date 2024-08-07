@@ -17,13 +17,14 @@
 package cn.tycoding.langchat.server.endpoint;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.dto.DocsTypeEnum;
-import cn.tycoding.langchat.biz.entity.*;
-import cn.tycoding.langchat.biz.listener.StructExcelListener;
+import cn.tycoding.langchat.biz.entity.AigcDocs;
+import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
+import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
-import cn.tycoding.langchat.biz.service.*;
+import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
+import cn.tycoding.langchat.biz.service.AigcOssService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
@@ -31,17 +32,10 @@ import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.service.LangDocService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.enums.CellExtraTypeEnum;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @author tycoding
@@ -57,9 +51,6 @@ public class EmbeddingEndpoint {
     private final AigcKnowledgeService aigcKnowledgeService;
     private final AigcDocsMapper aigcDocsMapper;
     private final AigcOssService aigcOssService;
-    private final AigcExcelColService excelColService;
-    private final AigcExcelRowService excelRowService;
-    private final AigcExcelDataService excelDataService;
     private final EmbeddingService embeddingService;
 
     @PostMapping("/text")
@@ -105,39 +96,6 @@ public class EmbeddingEndpoint {
         // embedding docs
         embeddingService.embedDocsSlice(data, oss.getUrl());
         return R.ok();
-    }
-
-    @PostMapping("/excel/{knowledgeId}")
-    @SaCheckPermission("aigc:embedding:excel")
-    public R structExcel(MultipartFile file, @PathVariable String knowledgeId) throws IOException {
-        byte[] bytes = file.getBytes();
-        AigcOss oss = aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId()));
-        AigcDocs data = new AigcDocs()
-                .setName(oss.getOriginalFilename())
-                .setSliceStatus(true)
-                .setSize(file.getSize())
-                .setType(DocsTypeEnum.UPLOAD.name())
-                .setKnowledgeId(knowledgeId);
-        aigcKnowledgeService.addDocs(data);
-
-        EasyExcel.read(new ByteArrayInputStream(bytes), new StructExcelListener(excelDataService, excelColService, excelRowService, knowledgeId, data.getId()))
-                .extraRead(CellExtraTypeEnum.MERGE)
-                .sheet()
-                .doRead();
-        return R.ok();
-    }
-
-    @GetMapping("/excel/rows/{docsId}")
-    public R getExcelRows(@PathVariable String docsId) {
-        List<List<String>> rows = excelDataService.list(Wrappers.<AigcExcelData>lambdaQuery()
-                .eq(AigcExcelData::getDocsId, docsId).orderByAsc(AigcExcelData::getRowIndex)
-        ).stream().map(AigcExcelData::getData).toList();
-
-        List<String> cols = excelColService.list(Wrappers.<AigcExcelCol>lambdaQuery()
-                        .eq(AigcExcelCol::getDocsId, docsId)
-                        .orderByAsc(AigcExcelCol::getColIndex))
-                .stream().map(AigcExcelCol::getLabel).toList();
-        return R.ok(Dict.create().set("cols", cols).set("rows", rows));
     }
 
     @GetMapping("/re-embed/{docsId}")

@@ -44,25 +44,6 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入知识库名称', trigger: ['blur'] }],
   },
   {
-    field: 'isExcel',
-    component: 'NRadioGroup',
-    label: '结构化文档',
-    labelMessage: '是否填充的结构化文档数据',
-    defaultValue: false,
-    componentProps: {
-      options: [
-        {
-          label: '非结构化数据',
-          value: false,
-        },
-        {
-          label: '结构化数据',
-          value: true,
-        },
-      ],
-    },
-  },
-  {
     field: 'des',
     component: 'NInput',
     label: '知识库描述',

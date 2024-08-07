@@ -21,6 +21,9 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.service.AigcAppService;
+import cn.tycoding.langchat.biz.entity.AigcKnowledge;
+import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
+import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -30,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -38,11 +42,13 @@ import java.util.List;
 public class AigcAppController {
 
     private final AigcAppService aigcAppService;
+    private final AigcModelService aigcModelService;
+    private final AigcKnowledgeService aigcKnowledgeService;
 
     @GetMapping("/list")
     public R<List<AigcApp>> list(AigcApp data) {
         return R.ok(aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
-                .eq(StrUtil.isNotBlank(data.getChannel()), AigcApp::getChannel, data.getChannel())));
+                .like(StrUtil.isNotBlank(data.getName()), AigcApp::getName, data.getName())));
     }
 
     @GetMapping("/page")
@@ -50,19 +56,31 @@ public class AigcAppController {
         return R.ok(MybatisUtil.getData(aigcAppService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcApp>lambdaQuery()
                         .like(StringUtils.isNotEmpty(data.getName()), AigcApp::getName, data.getName())
-                        .eq(StrUtil.isNotBlank(data.getChannel()), AigcApp::getChannel, data.getChannel())
         )));
     }
 
     @GetMapping("/{id}")
     public R<AigcApp> findById(@PathVariable String id) {
-        return R.ok(aigcAppService.getById(id));
+        AigcApp app = aigcAppService.getById(id);
+        if (app != null) {
+            String modelId = app.getModelId();
+            if (modelId != null) {
+                app.setModel(aigcModelService.getById(modelId));
+            }
+            List<String> knowledgeIds = app.getKnowledgeIds();
+            if (knowledgeIds != null && !knowledgeIds.isEmpty()) {
+                app.setKnowledges(aigcKnowledgeService.list(Wrappers.<AigcKnowledge>lambdaQuery().in(AigcKnowledge::getId, knowledgeIds)));
+            }
+        }
+        return R.ok(app);
     }
 
     @PostMapping
     @ApiLog("新增应用")
     @SaCheckPermission("aigc:app:add")
     public R add(@RequestBody AigcApp data) {
+        data.setCreateTime(new Date());
+        data.setSaveTime(new Date());
         aigcAppService.save(data);
         return R.ok();
     }
@@ -71,6 +89,7 @@ public class AigcAppController {
     @ApiLog("修改应用")
     @SaCheckPermission("aigc:app:update")
     public R update(@RequestBody AigcApp data) {
+        data.setSaveTime(new Date());
         aigcAppService.updateById(data);
         return R.ok();
     }

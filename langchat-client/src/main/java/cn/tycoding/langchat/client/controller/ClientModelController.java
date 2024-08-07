@@ -16,10 +16,10 @@
 
 package cn.tycoding.langchat.client.controller;
 
+import cn.tycoding.langchat.app.entity.AigcApp;
+import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.biz.entity.AigcModel;
-import cn.tycoding.langchat.biz.entity.AigcPrompt;
 import cn.tycoding.langchat.biz.service.AigcModelService;
-import cn.tycoding.langchat.biz.service.AigcPromptService;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
@@ -38,12 +38,12 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientModelController {
 
-    private final AigcPromptService aigcPromptService;
+    private final AigcAppService aigcAppService;
     private final AigcModelService aigcModelService;
 
     @GetMapping("/prompt/list")
-    public R list(AigcPrompt data) {
-        List<AigcPrompt> list = aigcPromptService.list(Wrappers.<AigcPrompt>lambdaQuery().orderByDesc(AigcPrompt::getCreateTime));
+    public R list(AigcApp data) {
+        List<AigcApp> list = aigcAppService.list(Wrappers.<AigcApp>lambdaQuery().orderByDesc(AigcApp::getCreateTime));
         return R.ok(list);
     }
 

@@ -17,9 +17,9 @@
 package cn.tycoding.langchat.server.controller;
 
 import cn.hutool.core.lang.Dict;
+import cn.tycoding.langchat.app.mapper.AigcAppMapper;
 import cn.tycoding.langchat.biz.mapper.AigcKnowledgeMapper;
 import cn.tycoding.langchat.biz.mapper.AigcMessageMapper;
-import cn.tycoding.langchat.biz.mapper.AigcPromptMapper;
 import cn.tycoding.langchat.biz.mapper.AigcUserMapper;
 import cn.tycoding.langchat.common.utils.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -40,7 +40,7 @@ public class AigcStatisticsController {
     private final AigcMessageMapper aigcMessageMapper;
     private final AigcUserMapper aigcUserMapper;
     private final AigcKnowledgeMapper aigcKnowledgeMapper;
-    private final AigcPromptMapper aigcPromptMapper;
+    private final AigcAppMapper aigcAppMapper;
 
     @GetMapping("/requestBy30")
     public R request30Chart() {
@@ -68,7 +68,7 @@ public class AigcStatisticsController {
         Dict totalData = aigcMessageMapper.getTotalSum();
         Dict userData = aigcUserMapper.getCount();
         Long totalKnowledge = aigcKnowledgeMapper.selectCount(Wrappers.query());
-        Long totalPrompt = aigcPromptMapper.selectCount(Wrappers.query());
+        Long totalPrompt = aigcAppMapper.selectCount(Wrappers.query());
         Dict result = Dict.create();
         result.putAll(reqData);
         result.putAll(totalData);

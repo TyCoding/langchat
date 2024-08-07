@@ -15,26 +15,22 @@
   -->
 
 <script lang="ts" setup>
-  import { useChatStore } from '@/views/chat/store/useChatStore';
   import { onMounted, ref, toRaw } from 'vue';
-  import SvgIcon from '@/components/SvgIcon/index.vue';
   import { list as getModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/components/chat/data';
   import { ModelTypeEnum } from '@/api/models';
+  import SvgIcon from '@/components/SvgIcon/index.vue';
 
-  const chatStore = useChatStore();
-  const modelList = ref([]);
+  const props = defineProps<{
+    id: any;
+  }>();
+  const emit = defineEmits(['update']);
+  const options = ref([]);
+  const modelId = ref('');
 
   onMounted(async () => {
-    const providers = (await getModels({ type: ModelTypeEnum.CHAT })) as any;
+    const providers = await getModels({ type: ModelTypeEnum.CHAT });
     const data: any = [];
-    if (chatStore.modelName === '') {
-      if (providers != null && providers.length != 0) {
-        chatStore.modelId = providers[0].id;
-        chatStore.modelName = providers[0].model;
-        chatStore.modelProvider = providers[0].provider;
-      }
-    }
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
       if (children.length === 0) {
@@ -47,14 +43,17 @@
         children: children,
       });
     });
-    modelList.value = data;
+    options.value = data;
+    modelId.value = props.id;
   });
 
-  function onUpdate(val, opt) {
+  function onUpdate(val: any, opt) {
     const obj = toRaw(opt);
-    chatStore.modelId = obj.id;
-    chatStore.modelName = obj.model;
-    chatStore.modelProvider = obj.provider;
+    emit('update', {
+      id: obj.id,
+      modelName: obj.model,
+      modelProvider: obj.provider,
+    });
   }
 </script>
 
@@ -62,13 +61,13 @@
   <div class="flex items-center">
     <SvgIcon class="text-xl" icon="bitcoin-icons:magic-wand-outline" />
     <n-select
-      v-model:value="chatStore.modelId"
+      v-model:value="modelId"
       :consistent-menu-width="false"
       :label-field="'name'"
-      :options="modelList"
+      :options="options"
       :value-field="'id'"
       class="min-w-[100px]"
-      placeholder="请先完成模型配置"
+      placeholder="请选择关联模型"
       @update:value="onUpdate"
     />
   </div>

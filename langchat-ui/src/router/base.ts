@@ -155,6 +155,15 @@ export const BaseRoute: Array<any> = [
           title: '微信渠道',
         },
       },
+      {
+        path: 'app/info/:id?',
+        name: 'appInfo',
+        component: '/app/info',
+        show: false,
+        meta: {
+          title: '应用配置',
+        },
+      },
     ],
   },
 ];

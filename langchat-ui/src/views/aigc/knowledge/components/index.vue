@@ -25,10 +25,10 @@
   import { useRouter } from 'vue-router';
   import { renderIcon } from '@/utils';
   import {
+    AlbumsOutline,
     ArrowUndoOutline,
     CloudUploadOutline,
     DocumentTextOutline,
-    AlbumsOutline,
     SearchOutline,
   } from '@vicons/ionicons5';
   import { getById } from '@/api/aigc/knowledge';
@@ -54,21 +54,19 @@
     const id = router.currentRoute.value.params.id;
     knowledge.value = await getById(String(id));
     menu.value = menuOptions.value[0].key;
-    console.log(!knowledge.value.isExcel);
-    if (!knowledge.value.isExcel) {
-      menuOptions.value.push(
-        {
-          label: '切片管理',
-          key: 'slice-list',
-          icon: renderIcon(AlbumsOutline),
-        },
-        {
-          label: '向量搜索',
-          key: 'slice-search',
-          icon: renderIcon(SearchOutline),
-        }
-      );
-    }
+
+    menuOptions.value.push(
+      {
+        label: '切片管理',
+        key: 'slice-list',
+        icon: renderIcon(AlbumsOutline),
+      },
+      {
+        label: '向量搜索',
+        key: 'slice-search',
+        icon: renderIcon(SearchOutline),
+      }
+    );
   });
 
   function handleSelect(key: string, item: MenuOption) {
@@ -112,7 +110,7 @@
           <DocList v-if="menu == 'doc-list'" />
           <DocsSlice v-if="menu == 'slice-list'" />
           <DocsSliceSearch v-if="menu == 'slice-search'" />
-          <ImportFile :data="knowledge" v-if="menu == 'import-file'" />
+          <ImportFile v-if="menu == 'import-file'" :data="knowledge" />
         </n-gi>
       </n-grid>
     </div>

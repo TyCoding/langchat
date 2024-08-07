@@ -15,36 +15,56 @@
  */
 
 import { http } from '@/utils/http/axios';
-import { AxiosProgressEvent } from 'axios';
 
-export function embeddingText(params: any) {
+export function list(params: any) {
   return http.request({
-    url: '/aigc/embedding/text',
+    url: '/aigc/app/list',
+    method: 'get',
+    params,
+  });
+}
+
+export function page(params: any) {
+  return http.request({
+    url: '/aigc/app/page',
+    method: 'get',
+    params,
+  });
+}
+
+export function getById(id: string) {
+  return http.request({
+    url: `/aigc/app/${id}`,
+    method: 'get',
+  });
+}
+
+export function getByModelId(id: string) {
+  return http.request({
+    url: `/aigc/app/byModelId/${id}`,
+    method: 'get',
+  });
+}
+
+export function add(params: any) {
+  return http.request({
+    url: '/aigc/app',
     method: 'post',
     params,
   });
 }
 
-export function embeddingSearch(data: any) {
+export function update(params: any) {
   return http.request({
-    url: '/aigc/embedding/search',
-    method: 'post',
-    data,
+    url: '/aigc/app',
+    method: 'put',
+    params,
   });
 }
 
-export function embeddingDocs(
-  knowledgeId: string,
-  data: any,
-  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
+export function del(id: string) {
   return http.request({
-    url: `/aigc/embedding/docs/${knowledgeId}`,
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    onUploadProgress,
+    url: `/aigc/app/${id}`,
+    method: 'delete',
   });
 }

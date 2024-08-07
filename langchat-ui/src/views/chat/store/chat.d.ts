@@ -14,34 +14,13 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.common.properties;
-
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * @author tycoding
- * @since 2024/1/15
- */
-@Data
-@ConfigurationProperties("langchat.auth")
-public class AuthProps {
-
-    /**
-     * 默认忽略拦截的URL集合
-     */
-    private List<String> skipUrl = new ArrayList();
-
-    private Integer chatLimit = 10;
-    private Boolean aigcRegUserIsPerms = false;
-
-    private EmailProps email = new EmailProps();
-
-    /**
-     * salt
-     */
-    private String saltKey = "langchat-salt";
+export interface ChatState {
+  messages: any[];
+  modelId: string | null;
+  modelName: string | null;
+  modelProvider: string | null;
+  conversationId: string | null;
+  prompt: any;
+  knowledge: any;
+  isGoogleSearch: boolean;
 }

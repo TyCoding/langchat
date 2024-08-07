@@ -16,16 +16,12 @@
 
 package cn.tycoding.langchat.core.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.service.AigcExcelColService;
-import cn.tycoding.langchat.biz.service.AigcExcelRowService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.core.provider.EmbedProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.service.Assistant;
 import cn.tycoding.langchat.core.service.LangDocService;
-import cn.tycoding.langchat.core.tools.StructTools;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
@@ -68,8 +64,6 @@ public class LangDocServiceImpl implements LangDocService {
     private final EmbedProvider embedProvider;
     private final ModelProvider modelProvider;
     private final PgVectorEmbeddingStore embeddingStore;
-    private final AigcExcelColService excelColService;
-    private final AigcExcelRowService excelRowService;
 
     @Override
     public EmbeddingR embeddingText(ChatReq req) {
@@ -113,19 +107,14 @@ public class LangDocServiceImpl implements LangDocService {
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
                 .streamingChatLanguageModel(chatLanguageModel);
 
-        if (StrUtil.isNotBlank(req.getDocsId())) {
-            // for excel, add function tool
-            aiServices.tools(new StructTools(req, excelColService, excelRowService));
-        } else {
-            EmbeddingModel model = embedProvider.embed();
-            Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
-            ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-                    .embeddingStore(embeddingStore)
-                    .embeddingModel(model)
-                    .dynamicFilter(filterByUserId)
-                    .build();
-            aiServices.contentRetriever(contentRetriever);
-        }
+        EmbeddingModel model = embedProvider.embed();
+        Function<Query, Filter> filterByUserId = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
+        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(model)
+                .dynamicFilter(filterByUserId)
+                .build();
+        aiServices.contentRetriever(contentRetriever);
 
         Assistant assistant = aiServices.build();
         return assistant.stream(req.getConversationId(), req.getMessage());

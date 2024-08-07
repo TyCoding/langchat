@@ -82,6 +82,7 @@ public class AigcUserController {
     @ApiLog("新增客户端用户")
     @SaCheckPermission("aigc:user:add")
     public R<AigcUser> add(@RequestBody AigcUser data) {
+        data.setChatLimit(authProps.getChatLimit());
         data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
         userService.save(data);
         return R.ok();

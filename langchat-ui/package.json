@@ -45,7 +45,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "mitt": "^3.0.1",
     "mockjs": "^1.1.0",
-    "naive-ui": "^2.38.2",
+    "naive-ui": "^2.39.0",
     "pinia": "^2.1.6",
     "qs": "^6.11.2",
     "uuid": "^9.0.0",

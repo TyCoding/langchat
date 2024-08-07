@@ -93,8 +93,8 @@ export const LLMProviders: any[] = [
     model: ProviderEnum.Q_FAN,
     name: '百度千帆大模型',
     models: [
-      'ERNIE-4.0-8K',
-      'ERNIE-3.5-8K',
+      'ERNIE-Bot',
+      'ERNIE-Bot 4.0',
       'ERNIE-Bot-8K',
       'ERNIE-Bot-turbo',
       'ERNIE-Speed-128K',
