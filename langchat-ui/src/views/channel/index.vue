@@ -22,7 +22,7 @@
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { copyToClip } from '@/utils/copy';
-  import { ChannelEnum, getKey, onInfo, renderIcon, renderTitle } from '@/views/channel/columns';
+  import { ChannelEnum, onInfo, renderIcon, renderTitle } from '@/views/channel/columns';
 
   const editRef = ref();
   const dialog = useDialog();
@@ -39,8 +39,6 @@
     groups.value = [
       { key: ChannelEnum.CHANNEL_API, value: apiArr as any[] },
       { key: ChannelEnum.CHANNEL_WEB, value: webArr as any[] },
-      { key: ChannelEnum.CHANNEL_WEIXIN, value: [] as any[] },
-      { key: ChannelEnum.CHANNEL_DING, value: [] as any[] },
     ];
   }
 
@@ -57,8 +55,6 @@
         if (channel === 'CHANNEL_WEB') {
           await delWeb(id);
         }
-        if (channel === 'CHANNEL_WEIXIN') {
-        }
         await fetchData();
         ms.success('删除成功');
       },
@@ -72,14 +68,14 @@
 </script>
 
 <template>
-  <div class="dot-bg overflow-y-auto">
+  <div class="overflow-y-auto h-full">
     <div class="n-layout-page-header">
       <n-card :bordered="false" title="应用集成能力">
         简单配置应用，快速通过IFRAME嵌套、HTTP接口、微信、钉钉等多种渠道接入LangChat
       </n-card>
     </div>
 
-    <div class="mt-2 w-full mb-10 px-6 !h-auto">
+    <n-card :bordered="false" class="mt-4 overflow-y-auto h-full">
       <div class="flex items-center gap-2 justify-start">
         <n-button dashed type="primary" @click="editRef.show()"> 新增应用 </n-button>
         <n-button tertiary type="primary" @click="fetchData">
@@ -131,7 +127,7 @@
               <div class="flex items-center justify-between w-full mt-3 gap-x-2">
                 <input
                   v-if="items.key === 'CHANNEL_API'"
-                  :value="getKey(item.apiKey)"
+                  :value="item.apiKey"
                   class="flex-1 block h-8 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                   type="text"
                 />
@@ -153,7 +149,7 @@
           </n-card>
         </div>
       </div>
-    </div>
+    </n-card>
 
     <Edit ref="editRef" @reload="fetchData" />
   </div>

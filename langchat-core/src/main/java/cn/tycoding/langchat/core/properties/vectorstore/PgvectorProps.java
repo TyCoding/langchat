@@ -39,5 +39,5 @@ public class PgvectorProps {
     private Boolean useIndex;
     private Integer indexListSize;
     private Boolean createTable = true;
-    private Boolean dropTableFirst = true;
+    private Boolean dropTableFirst = false;
 }

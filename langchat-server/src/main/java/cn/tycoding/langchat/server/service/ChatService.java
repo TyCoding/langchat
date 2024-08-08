@@ -24,14 +24,6 @@ import cn.tycoding.langchat.common.dto.ChatReq;
  */
 public interface ChatService {
 
-    /**
-     * 聊天接口
-     */
     void chat(ChatReq req);
-
-    /**
-     * 文档聊天
-     */
-    void docsChat(ChatReq req);
 
 }

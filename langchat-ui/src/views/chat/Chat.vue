@@ -24,7 +24,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { chat } from '@/api/aigc/chat';
-  import { AttachOutline, SparklesOutline } from '@vicons/ionicons5';
+  import { SparklesOutline } from '@vicons/ionicons5';
 
   const dialog = useDialog();
   const ms = useMessage();
@@ -37,12 +37,6 @@
   const aiChatId = ref<string>('');
   let controller = new AbortController();
 
-  const menuOptions = ref([
-    {
-      label: 'Upload File',
-      value: 'Upload File',
-    },
-  ]);
   const footerClass = computed(() => {
     let classes = ['p-4'];
     if (isMobile.value) {
@@ -51,9 +45,7 @@
     return classes;
   });
 
-  // 初始化加载数据
   const dataSources = computed(() => {
-    // 获取当前聊天窗口的数据
     scrollToBottom();
     return chatStore.messages;
   });
@@ -105,10 +97,7 @@
         {
           chatId: chatId.value,
           conversationId: chatStore.conversationId,
-          promptId: chatStore.prompt?.id,
-          promptText: chatStore.prompt?.prompt,
-          docsId: chatStore.docsId,
-          knowledgeId: chatStore.knowledge?.id,
+          appId: chatStore.appId,
           message,
           role: 'user',
           isGoogleSearch: chatStore.isGoogleSearch,
@@ -173,7 +162,6 @@
     }
   }
 
-  // 删除
   function handleDelete(item: any) {
     if (loading.value) {
       return;
@@ -193,7 +181,6 @@
 
 <template>
   <div class="flex flex-col w-full h-full">
-    <!-- 聊天记录窗口 -->
     <main class="flex-1 overflow-hidden">
       <div ref="contentRef" class="h-full overflow-hidden overflow-y-auto">
         <div
@@ -216,14 +203,13 @@
               <template #icon>
                 <SvgIcon icon="ri:stop-circle-line" />
               </template>
-              Stop Responding
+              停止响应
             </NButton>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- 底部 -->
     <footer :class="footerClass">
       <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-6 relative">
         <div class="flex items-center justify-between space-x-2">
@@ -232,20 +218,11 @@
             v-model:value="message"
             :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
             class="!rounded-full px-2 py-1"
-            placeholder="搜索"
+            placeholder="今天想聊些什么~"
             size="large"
             type="textarea"
             @keypress="handleEnter"
           >
-            <template #prefix>
-              <n-popselect :options="menuOptions" placement="top" trigger="click">
-                <n-button class="!mr-2" text>
-                  <template #icon>
-                    <n-icon :component="AttachOutline" class="text-2xl" />
-                  </template>
-                </n-button>
-              </n-popselect>
-            </template>
             <template #suffix>
               <n-button :loading="loading" text @click="handleSubmit">
                 <template #icon>

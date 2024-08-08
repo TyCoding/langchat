@@ -17,6 +17,8 @@
 package cn.tycoding.langchat.biz.service;
 
 import cn.tycoding.langchat.biz.entity.AigcModel;
+import cn.tycoding.langchat.common.utils.QueryPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -32,5 +34,11 @@ public interface AigcModelService extends IService<AigcModel> {
     List<AigcModel> getImageModels();
 
     List<AigcModel> getEmbeddingModels();
+
+    List<AigcModel> list(AigcModel data);
+
+    Page<AigcModel> page(AigcModel data, QueryPage queryPage);
+
+    AigcModel selectById(String id);
 }
 

@@ -20,7 +20,9 @@
   import { basicModal, useModal } from '@/components/Modal';
   import { list as getList } from '@/api/aigc/knowledge';
   import { useAppStore } from '@/views/app/store';
+  import { useMessage } from 'naive-ui';
 
+  const ms = useMessage();
   const knowledges = ref();
   const appStore = useAppStore();
 
@@ -41,9 +43,11 @@
 
   function onAdd(item) {
     appStore.addKnowledge(item);
+    ms.success('关联成功');
   }
   function onRemove(item) {
     appStore.removeKnowledge(item);
+    ms.success('移除成功');
   }
 
   defineExpose({ show });

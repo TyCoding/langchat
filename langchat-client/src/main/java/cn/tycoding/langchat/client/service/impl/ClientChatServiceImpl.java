@@ -27,7 +27,6 @@ import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
-import cn.tycoding.langchat.core.service.LangDocService;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.model.output.TokenUsage;
@@ -46,7 +45,6 @@ import org.springframework.stereotype.Service;
 public class ClientChatServiceImpl implements ClientChatService {
 
     private final LangChatService langChatService;
-    private final LangDocService langDocService;
     private final AigcMessageService aigcMessageService;
 
     @Override
@@ -101,7 +99,7 @@ public class ClientChatServiceImpl implements ClientChatService {
         saveMessage(req, 0, 0);
 
         try {
-            langDocService.chat(req)
+            langChatService.chat(req)
                     .onNext(e -> {
                         text.append(e);
                         emitter.send(new ChatRes(e));

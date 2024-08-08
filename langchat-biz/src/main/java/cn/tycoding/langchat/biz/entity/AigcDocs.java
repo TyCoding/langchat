@@ -58,6 +58,7 @@ public class AigcDocs implements Serializable {
      * 来源
      */
     private String origin;
+    private String url;
 
     /**
      * 文件大小

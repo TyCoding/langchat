@@ -20,10 +20,11 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author tycoding
@@ -59,11 +60,6 @@ public class AigcMessage implements Serializable {
      * 用户名
      */
     private String username;
-
-    /**
-     * 应用ID
-     */
-    private String promptId;
 
     /**
      * 请求IP

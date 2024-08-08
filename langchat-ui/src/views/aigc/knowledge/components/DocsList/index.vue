@@ -20,7 +20,7 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { del, page as getPage, reEmbed } from '@/api/aigc/docs';
   import { columns, searchSchemas } from './columns';
-  import { AlbumsOutline } from '@vicons/ionicons5';
+  import { Refresh } from '@vicons/ionicons5';
   import { DeleteOutlined, EditOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
@@ -44,7 +44,7 @@
         actions: [
           {
             type: 'info',
-            icon: AlbumsOutline,
+            icon: Refresh,
             onClick: handleReEmbed.bind(null, record),
           },
           {

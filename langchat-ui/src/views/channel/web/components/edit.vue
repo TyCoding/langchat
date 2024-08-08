@@ -25,7 +25,6 @@
   import { copyToClip } from '@/utils/copy';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
   import KnowledgeSelect from '@/views/channel/KnowledgeSelect.vue';
-  import PromptSelect from '@/views/channel/PromptSelect.vue';
 
   const emit = defineEmits(['reload']);
   const formRef = ref();
@@ -48,10 +47,6 @@
     if (data.expired == null) {
       isExpired.value = true;
     }
-    data.apiKey =
-      data.apiKey.slice(0, 13) +
-      data.apiKey.slice(13, -4).replace(/./g, '*') +
-      data.apiKey.slice(-4);
     form.value = { ...data };
 
     modelOptions.value = await getModelList({});
@@ -92,15 +87,10 @@
       trigger: ['blur', 'change'],
       message: '请选择关联模型',
     },
-    knowledgeId: {
+    appId: {
       required: true,
       trigger: ['blur', 'change'],
-      message: '请选择关联知识库',
-    },
-    promptId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联提示词',
+      message: '请选择关联应用',
     },
   };
 
@@ -122,14 +112,11 @@
     ms.success('Api Key复制成功');
   }
 
-  function onSelectKnowledge(val) {
-    form.value.knowledgeId = val.id;
+  function onSelectApp(val) {
+    form.value.appId = val.id;
   }
   function onSelectModel(val) {
     form.value.modelId = val.id;
-  }
-  function onSelectPrompt(val) {
-    form.value.promptId = val.id;
   }
 
   function onCheckExpired(val: boolean) {
@@ -181,19 +168,8 @@
       <n-form-item label="关联模型" path="modelId">
         <ModelSelect v-if="form.modelId !== undefined" :id="form.modelId" @update="onSelectModel" />
       </n-form-item>
-      <n-form-item label="关联知识库" path="knowledgeId">
-        <KnowledgeSelect
-          v-if="form.knowledgeId !== undefined"
-          :id="form.knowledgeId"
-          @update="onSelectKnowledge"
-        />
-      </n-form-item>
-      <n-form-item label="关联知提示词" path="promptId">
-        <PromptSelect
-          v-if="form.promptId !== undefined"
-          :id="form.promptId"
-          @update="onSelectPrompt"
-        />
+      <n-form-item label="关联应用" path="appId">
+        <KnowledgeSelect v-if="form.appId !== undefined" :id="form.appId" @update="onSelectApp" />
       </n-form-item>
 
       <n-form-item label="请求限额 / 天" path="limit">

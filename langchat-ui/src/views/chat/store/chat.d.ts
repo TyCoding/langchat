@@ -20,7 +20,6 @@ export interface ChatState {
   modelName: string | null;
   modelProvider: string | null;
   conversationId: string | null;
-  prompt: any;
-  knowledge: any;
+  appId: any;
   isGoogleSearch: boolean;
 }

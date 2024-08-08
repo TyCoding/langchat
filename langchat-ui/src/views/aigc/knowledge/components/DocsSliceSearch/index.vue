@@ -16,6 +16,7 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
+  import SvgIcon from '@/components/SvgIcon/index.vue';
   import { embeddingSearch } from '@/api/aigc/embedding';
   import router from '@/router';
 
@@ -42,25 +43,26 @@
   <n-card class="h-full w-full">
     <div class="flex h-full gap-4">
       <div class="w-1/3 flex flex-col gap-3">
-        <n-button @click="onSearch" :loading="loading" secondary type="success">向量搜索</n-button>
-        <n-input v-model:value="content" type="textarea" rows="10" />
+        <n-button :loading="loading" secondary type="success" @click="onSearch">向量搜索</n-button>
+        <n-input v-model:value="content" rows="10" type="textarea" />
       </div>
       <div class="w-full">
         <n-spin :show="loading">
           <div class="grid grid-cols-3 gap-4">
             <n-card
-              hoverable
               v-for="item in list"
               :key="item.index"
-              embedded
               :bordered="false"
-              class="rounded-lg"
+              class="rounded-lg cursor-pointer"
+              embedded
+              hoverable
             >
               <template #header>
                 <n-skeleton v-if="loading" text width="60%" />
-                <template v-else>
-                  <n-ellipsis> 📖 {{ item.docsName }} </n-ellipsis>
-                </template>
+                <div v-else class="flex items-center gap-1">
+                  <SvgIcon class="text-3xl" icon="flat-color-icons:document" />
+                  <n-ellipsis> {{ item.docsName }} </n-ellipsis>
+                </div>
               </template>
               <n-scrollbar style="max-height: 200px">
                 {{ item.text }}

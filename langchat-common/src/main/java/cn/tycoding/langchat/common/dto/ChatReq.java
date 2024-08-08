@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ChatReq {
 
+    private String appId;
     private String modelId;
     private String modelName;
     private String modelProvider;
@@ -42,8 +43,6 @@ public class ChatReq {
     private String username;
 
     private String chatId;
-
-    private String promptId;
 
     private String promptText;
 

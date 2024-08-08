@@ -22,6 +22,9 @@ package cn.tycoding.langchat.core.consts;
  */
 public interface EmbedConst {
 
+    String ORIGIN_TYPE_INPUT = "INPUT";
+    String ORIGIN_TYPE_UPLOAD = "UPLOAD";
+
     String KNOWLEDGE = "knowledgeId";
     String FILENAME = "docsName";
 

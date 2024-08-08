@@ -48,7 +48,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             aigc_message m
         ON
             DATE(m.create_time) = d.date
-            AND m.role = 'assistant'
+            AND m.role = 'agent'
         GROUP BY
             d.date
         ORDER BY
@@ -64,7 +64,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             aigc_message
         WHERE
             create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-            AND role = 'assistant'
+            AND role = 'agent'
         GROUP BY
             month
         ORDER BY
@@ -89,7 +89,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             aigc_message m
         ON
             DATE(m.create_time) = d.date
-            AND m.role = 'assistant'
+            AND m.role = 'agent'
         GROUP BY
             d.date
         ORDER BY
@@ -105,7 +105,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
             aigc_message
         WHERE
             create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-            AND role = 'assistant'
+            AND role = 'agent'
         GROUP BY
             month
         ORDER BY
@@ -120,7 +120,7 @@ public interface AigcMessageMapper extends BaseMapper<AigcMessage> {
         FROM
             aigc_message
         WHERE
-            role = 'assistant'
+            role = 'agent'
     """)
     Dict getCount();
 

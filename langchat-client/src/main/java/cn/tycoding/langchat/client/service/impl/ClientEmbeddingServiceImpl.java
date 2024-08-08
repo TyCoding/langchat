@@ -18,7 +18,7 @@ package cn.tycoding.langchat.client.service.impl;
 
 import cn.tycoding.langchat.client.service.ClientEmbeddingService;
 import cn.tycoding.langchat.common.dto.ChatReq;
-import cn.tycoding.langchat.core.service.LangDocService;
+import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
@@ -38,13 +38,13 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
 @AllArgsConstructor
 public class ClientEmbeddingServiceImpl implements ClientEmbeddingService {
 
-    private final LangDocService langDocService;
+    private final LangEmbeddingService langEmbeddingService;
     private final PgVectorEmbeddingStore embeddingStore;
 
     @Async
     @Override
     public void embedDocs(ChatReq data) {
-        langDocService.embeddingDocs(data);
+        langEmbeddingService.embeddingDocs(data);
     }
 
     @Override

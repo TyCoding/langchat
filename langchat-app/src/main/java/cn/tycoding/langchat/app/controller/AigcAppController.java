@@ -21,7 +21,9 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.service.AigcAppService;
+import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.biz.entity.AigcKnowledge;
+import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
@@ -33,8 +35,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,11 +49,32 @@ public class AigcAppController {
     private final AigcAppService aigcAppService;
     private final AigcModelService aigcModelService;
     private final AigcKnowledgeService aigcKnowledgeService;
+    private final AppStore appStore;
 
     @GetMapping("/list")
     public R<List<AigcApp>> list(AigcApp data) {
-        return R.ok(aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
-                .like(StrUtil.isNotBlank(data.getName()), AigcApp::getName, data.getName())));
+        List<AigcApp> list = aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
+                .like(StrUtil.isNotBlank(data.getName()), AigcApp::getName, data.getName()));
+
+        Map<String, List<AigcModel>> modelMap = aigcModelService.list(new AigcModel()).stream().collect(Collectors.groupingBy(AigcModel::getId));
+        Map<String, List<AigcKnowledge>> knowledgeMap = aigcKnowledgeService.list().stream().collect(Collectors.groupingBy(AigcKnowledge::getId));
+        list.forEach(i -> {
+            List<AigcModel> models = modelMap.get(i.getModelId());
+            if (models != null) {
+                i.setModel(models.get(0));
+            }
+            if (i.getKnowledgeIds() != null) {
+                List<AigcKnowledge> knowledges = new ArrayList<>();
+                i.getKnowledgeIds().forEach(k -> {
+                    List<AigcKnowledge> items = knowledgeMap.get(k);
+                    if (items != null) {
+                        knowledges.add(items.get(0));
+                    }
+                });
+                i.setKnowledges(knowledges);
+            }
+        });
+        return R.ok(list);
     }
 
     @GetMapping("/page")
@@ -65,7 +91,7 @@ public class AigcAppController {
         if (app != null) {
             String modelId = app.getModelId();
             if (modelId != null) {
-                app.setModel(aigcModelService.getById(modelId));
+                app.setModel(aigcModelService.selectById(modelId));
             }
             List<String> knowledgeIds = app.getKnowledgeIds();
             if (knowledgeIds != null && !knowledgeIds.isEmpty()) {
@@ -82,6 +108,7 @@ public class AigcAppController {
         data.setCreateTime(new Date());
         data.setSaveTime(new Date());
         aigcAppService.save(data);
+        appStore.init();
         return R.ok();
     }
 
@@ -91,6 +118,7 @@ public class AigcAppController {
     public R update(@RequestBody AigcApp data) {
         data.setSaveTime(new Date());
         aigcAppService.updateById(data);
+        appStore.init();
         return R.ok();
     }
 
@@ -99,6 +127,7 @@ public class AigcAppController {
     @SaCheckPermission("aigc:app:delete")
     public R delete(@PathVariable String id) {
         aigcAppService.removeById(id);
+        appStore.init();
         return R.ok();
     }
 }

@@ -43,8 +43,8 @@ export const useAppStore = defineStore('app-store', {
     },
 
     removeKnowledge(item: any) {
-      this.knowledgeIds.filter((i) => i !== item.id);
-      this.knowledges.filter((i) => i.id !== item.id);
+      this.knowledgeIds = this.knowledgeIds.filter((i) => i !== item.id);
+      this.knowledges = this.knowledges.filter((i) => i.id !== item.id);
       this.updateInfo();
     },
 

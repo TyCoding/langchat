@@ -56,7 +56,7 @@
 
 <template>
   <div v-if="form.name !== undefined" class="rounded bg-[#f9f9f9] w-full h-full pb-10">
-    <div class="p-4 border-b flex justify-between items-center">
+    <div class="p-4 flex justify-between items-center bg-white rounded">
       <div class="flex gap-5 items-center min-w-20">
         <n-button text type="primary" @click="router.back()">
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
@@ -103,7 +103,7 @@
             <SettingsPage />
           </template>
           <template #2>
-            <div class="pb-10 h-full w-full bg-white">
+            <div class="pb-10 h-full w-full bg-white border-t">
               <Chat />
             </div>
           </template>

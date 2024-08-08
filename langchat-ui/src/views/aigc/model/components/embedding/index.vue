@@ -32,12 +32,16 @@
     submitButtonText: '提交',
   });
   const schemas = ref();
+  const isLocalEmbedding = ref(false);
 
   onMounted(async () => {
     const data = await getModels({ type: ModelTypeEnum.EMBEDDING });
-    if (data != null && data.length >= 0) {
+    if (data != null && data.length >= 1) {
       setFieldsValue({ ...data[0] });
       schemas.value = getSchemas(data[0].provider);
+    } else {
+      isLocalEmbedding.value = true;
+      schemas.value = getSchemas('');
     }
   });
 
@@ -62,13 +66,36 @@
 </script>
 
 <template>
-  <div class="flex justify-center items-center mb-10">
-    <div class="w-2/4">
+  <div class="flex gap-16 mb-10 h-full">
+    <n-card class="w-1/4 h-full">
+      <div class="pb-4 text-lg text-gray-800">注意事项</div>
       <n-alert
         class="w-full mb-4 mt-2 min-alert"
-        title="如果需要使用知识库的能力，则必须配置Embedding向量模型。Dimensions代表向量纬度，不同的模型配置不一样，此值和VectorStore的配置要完全对应，如果在application.yml已经配置了VectorStore的Dimensions参数，那么这里也应该保持相同，否则需要删除VectorStore表重新启动项目"
-        type="info"
+        title="默认提供本地化Embedding向量模型方案：BgeSmallEnV15QuantizedEmbeddingModel，此模型仅占用20M的内存。此模型使用384向量纬度"
+        type="warning"
       />
+      <n-alert
+        class="w-full mb-4 mt-2 min-alert"
+        title="如果不使用默认Embedding模型则需要配置供应商信息。Dimensions代表向量纬度，不同的模型配置不一样，此值和VectorStore的配置要完全对应，如果在application.yml已经配置了VectorStore的Dimensions参数，那么这里也应该保持相同，否则需要删除VectorStore表重新启动项目"
+        type="warning"
+      />
+      <n-alert
+        class="w-full mb-4 mt-2 min-alert"
+        title="一旦切换Embedding模型，很可能由于向量纬度不同导致VectorStore中原有数据不可用，请谨慎操作"
+        type="warning"
+      />
+    </n-card>
+    <div class="flex-1 mr-[30vh]">
+      <div class="mb-4">
+        <n-tag class="mr-2 rounded-2xl px-5" type="success">
+          是否启用本地Embedding向量模型：
+        </n-tag>
+        <n-switch v-model:value="isLocalEmbedding" disabled>
+          <template #checked> 启用 </template>
+          <template #unchecked> 不启用 </template>
+        </n-switch>
+      </div>
+
       <BasicForm :schemas="schemas" class="mt-5" @register="register" @submit="onSubmit">
         <template #providerSlot="{ model, field }">
           <n-select
@@ -76,7 +103,7 @@
             :options="LLMProviders"
             label-field="name"
             value-field="model"
-            @change="onChange"
+            @change:value="onChange"
           />
         </template>
       </BasicForm>

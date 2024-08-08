@@ -23,9 +23,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
   import { copyToClip } from '@/utils/copy';
-  import ModelSelect from '@/views/channel/ModelSelect.vue';
-  import KnowledgeSelect from '@/views/channel/KnowledgeSelect.vue';
-  import PromptSelect from '@/views/channel/PromptSelect.vue';
+  import { list as getAppList } from '@/api/app/app';
 
   const emit = defineEmits(['reload']);
   const formRef = ref();
@@ -33,28 +31,25 @@
   const ms = useMessage();
   const dialog = useDialog();
   const router = useRouter();
-  const apiKey = ref('');
   const isExpired = ref(false);
   const isLimit = ref(false);
   const modelOptions = ref([]);
+  const apps = ref([]);
 
   onMounted(async () => {
     const id = router.currentRoute.value.params.id;
     const data = await getById(id);
     if (data.apiKey === undefined || data.apiKey === null) {
-      data.apiKey = await generateKey();
+      const { apiKey } = await generateKey();
+      data.apiKey = apiKey;
     }
-    apiKey.value = data.apiKey;
     if (data.expired == null) {
       isExpired.value = true;
     }
-    data.apiKey =
-      data.apiKey.slice(0, 13) +
-      data.apiKey.slice(13, -4).replace(/./g, '*') +
-      data.apiKey.slice(-4);
     form.value = { ...data };
 
     modelOptions.value = await getModelList({});
+    apps.value = await getAppList({});
   });
 
   async function onSubmit(e: MouseEvent) {
@@ -87,20 +82,10 @@
       trigger: ['blur', 'change'],
       message: '请输入应用Key',
     },
-    modelId: {
+    appId: {
       required: true,
       trigger: ['blur', 'change'],
-      message: '请选择关联模型',
-    },
-    knowledgeId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联知识库',
-    },
-    promptId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联提示词',
+      message: '请选择关联应用',
     },
   };
 
@@ -118,18 +103,8 @@
   }
 
   async function onCopy() {
-    await copyToClip(apiKey.value);
+    await copyToClip(form.value.apiKey);
     ms.success('Api Key复制成功');
-  }
-
-  function onSelectKnowledge(val) {
-    form.value.knowledgeId = val.id;
-  }
-  function onSelectModel(val) {
-    form.value.modelId = val.id;
-  }
-  function onSelectPrompt(val) {
-    form.value.promptId = val.id;
   }
 
   function onCheckExpired(val: boolean) {
@@ -178,21 +153,14 @@
         <n-button secondary size="small" type="primary" @click="resetKey">重置Key</n-button>
       </n-form-item>
 
-      <n-form-item label="关联模型" path="modelId">
-        <ModelSelect v-if="form.modelId !== undefined" :id="form.modelId" @update="onSelectModel" />
-      </n-form-item>
-      <n-form-item label="关联知识库" path="knowledgeId">
-        <KnowledgeSelect
-          v-if="form.knowledgeId !== undefined"
-          :id="form.knowledgeId"
-          @update="onSelectKnowledge"
-        />
-      </n-form-item>
-      <n-form-item label="关联知提示词" path="promptId">
-        <PromptSelect
-          v-if="form.promptId !== undefined"
-          :id="form.promptId"
-          @update="onSelectPrompt"
+      <n-form-item label="关联应用" path="appId">
+        <n-select
+          v-model:value="form.appId"
+          :consistent-menu-width="false"
+          :label-field="'name'"
+          :options="apps"
+          :value-field="'id'"
+          placeholder="请选择关联应用"
         />
       </n-form-item>
 

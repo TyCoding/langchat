@@ -24,7 +24,7 @@ import dev.langchain4j.service.UserMessage;
  * @author tycoding
  * @since 2024/3/8
  */
-public interface Assistant {
+public interface Agent {
 
     TokenStream stream(@MemoryId String id, @UserMessage String message);
 }

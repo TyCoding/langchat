@@ -40,8 +40,7 @@ public class AigcAppApi implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     private String modelId;
-    private String knowledgeId;
-    private String promptId;
+    private String appId;
 
     private String channel;
     private String apiKey;

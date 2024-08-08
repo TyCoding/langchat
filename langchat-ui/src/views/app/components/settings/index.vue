@@ -26,11 +26,15 @@
   function onShowKbPane() {
     knowledgeRef.value.show();
   }
+
+  function onRemove(item) {
+    appStore.removeKnowledge(item);
+  }
 </script>
 
 <template>
   <div class="p-2 py-4 flex flex-col gap-3">
-    <n-collapse>
+    <n-collapse :default-expanded-names="['1']">
       <n-collapse-item name="1" title="知识库">
         <template #header-extra>
           <n-button text @click.stop="onShowKbPane">
@@ -49,12 +53,16 @@
                   <SvgIcon class="text-3xl" icon="flat-color-icons:document" />
                   <div>{{ item.name }}</div>
                 </div>
-                <n-button text>
+                <n-button text @click="onRemove(item)">
                   <SvgIcon icon="gg:remove" />
                 </n-button>
               </div>
             </n-list-item>
           </n-list>
+          <div v-if="appStore.knowledges.length == 0" class="text-gray-400 text-md">
+            将文档、URL、三方数据源上传为文本知识库后，用户发送消息时，Bot
+            能够引用文本知识中的内容回答用户问题。
+          </div>
         </div>
       </n-collapse-item>
       <n-collapse-item name="2" title="插件">

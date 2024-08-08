@@ -52,7 +52,7 @@
     if (key === 'delete') {
       dialog.info({
         title: '提示',
-        content: `您想删除 ${item.name}`,
+        content: `您确定删除 ${item.name} 应用？`,
         positiveText: '确定',
         negativeText: '取消',
         onPositiveClick: async () => {
@@ -78,8 +78,14 @@
 </script>
 
 <template>
-  <section class="dot-bg overflow-y-auto h-full">
-    <div class="px-6 py-6">
+  <section class="overflow-y-auto h-full">
+    <div class="n-layout-page-header">
+      <n-card :bordered="false" title="应用配置能力">
+        LangChat支持动态增加各种AIGC应用，通过自定义Prompt和关联知识库来实现个性机器人
+      </n-card>
+    </div>
+
+    <n-card :bordered="false" class="my-4 pb-4">
       <div class="mb-4">
         <n-button dashed type="primary" @click="handleAdd">新增应用</n-button>
       </div>
@@ -110,7 +116,10 @@
 
           <div class="flex mt-4 -mx-2 px-4 text-gray-400 justify-between items-center">
             <div class="flex items-center">
-              <div>Gpt-4o</div>
+              <div v-if="item.model != null" class="flex items-center">
+                <SvgIcon class="text-xl" icon="bitcoin-icons:magic-wand-outline" />
+                <span>{{ item.model.model }}</span>
+              </div>
             </div>
             <div class="flex items-center">
               <n-popselect
@@ -125,7 +134,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </n-card>
   </section>
 </template>
 

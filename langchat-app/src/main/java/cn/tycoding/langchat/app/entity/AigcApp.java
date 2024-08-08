@@ -22,6 +22,7 @@ import cn.tycoding.langchat.biz.entity.AigcModel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -37,6 +38,7 @@ import java.util.List;
  * @since 2024/7/26
  */
 @Data
+@TableName(autoResultMap = true)
 @Accessors(chain = true)
 public class AigcApp implements Serializable {
     private static final long serialVersionUID = -94917153262781949L;

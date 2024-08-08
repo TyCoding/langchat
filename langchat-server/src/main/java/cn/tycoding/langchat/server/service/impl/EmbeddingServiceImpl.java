@@ -16,13 +16,14 @@
 
 package cn.tycoding.langchat.server.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
-import cn.tycoding.langchat.core.provider.EmbedProvider;
-import cn.tycoding.langchat.core.service.LangDocService;
+import cn.tycoding.langchat.core.provider.EmbeddingProvider;
+import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
@@ -52,15 +53,15 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
 @AllArgsConstructor
 public class EmbeddingServiceImpl implements EmbeddingService {
 
-    private final EmbedProvider embedProvider;
-    private final LangDocService langDocService;
+    private final EmbeddingProvider embeddingProvider;
+    private final LangEmbeddingService langEmbeddingService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final PgVectorEmbeddingStore embeddingStore;
 
     @Async
     @Override
     public void embedDocsSlice(AigcDocs data, String url) {
-        List<EmbeddingR> list = langDocService.embeddingDocs(
+        List<EmbeddingR> list = langEmbeddingService.embeddingDocs(
                 new ChatReq()
                         .setDocsName(data.getName())
                         .setKnowledgeId(data.getKnowledgeId())
@@ -80,10 +81,15 @@ public class EmbeddingServiceImpl implements EmbeddingService {
 
     @Override
     public List<Map<String, Object>> search(AigcDocs data) {
-        EmbeddingModel embeddingModel = embedProvider.embed();
+        if (StrUtil.isBlank(data.getKnowledgeId()) || StrUtil.isBlank(data.getContent())) {
+            return List.of();
+        }
+
+        EmbeddingModel embeddingModel = embeddingProvider.embed();
         Embedding queryEmbedding = embeddingModel.embed(data.getContent()).content();
         Filter filter = metadataKey(KNOWLEDGE).isEqualTo(data.getKnowledgeId());
-        EmbeddingSearchResult<TextSegment> list = embeddingStore.search(EmbeddingSearchRequest.builder()
+        EmbeddingSearchResult<TextSegment> list = embeddingStore.search(EmbeddingSearchRequest
+                .builder()
                 .queryEmbedding(queryEmbedding)
                 .filter(filter)
                 .build());

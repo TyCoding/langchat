@@ -22,30 +22,20 @@ import SvgIcon from '@/components/SvgIcon/index.vue';
 export enum ChannelEnum {
   CHANNEL_API = 'CHANNEL_API',
   CHANNEL_WEB = 'CHANNEL_WEB',
-  CHANNEL_WEIXIN = 'CHANNEL_WEIXIN',
-  CHANNEL_DING = 'CHANNEL_DING',
 }
 
 export async function onInfo(item: any) {
   if (item.channel === ChannelEnum.CHANNEL_API) {
-    await router.push('/aigc/app/api/' + item.id);
+    await router.push('/aigc/app/channel/api/' + item.id);
   }
   if (item.channel === ChannelEnum.CHANNEL_WEB) {
-    await router.push('/aigc/app/web/' + item.id);
-  }
-  if (item.channel === ChannelEnum.CHANNEL_WEIXIN) {
-    await router.push('/aigc/app/weixin/' + item.id);
-  }
-  if (item.channel === ChannelEnum.CHANNEL_DING) {
-    await router.push('/aigc/app/ding/' + item.id);
+    await router.push('/aigc/app/channel/web/' + item.id);
   }
 }
 
 export function renderTitle(channel: string) {
   if (channel === ChannelEnum.CHANNEL_API) return 'HTTP API渠道';
   if (channel === ChannelEnum.CHANNEL_WEB) return 'WEB渠道';
-  if (channel === ChannelEnum.CHANNEL_WEIXIN) return '微信渠道';
-  if (channel === ChannelEnum.CHANNEL_DING) return '钉钉渠道';
 }
 
 export function renderIcon(channel: string) {
@@ -63,25 +53,8 @@ export function renderIcon(channel: string) {
           icon: 'mdi:web-sync',
         });
       }
-      if (channel === ChannelEnum.CHANNEL_WEIXIN) {
-        return h(SvgIcon, {
-          class: 'text-4xl text-green-400',
-          icon: 'uiw:weixin',
-        });
-      }
-      if (channel === ChannelEnum.CHANNEL_DING) {
-        return h(SvgIcon, {
-          class: 'text-4xl text-blue-400',
-          icon: 'ri:dingding-fill',
-        });
-      }
     },
   };
-}
-
-export function getKey(apiKey: string) {
-  const key = apiKey;
-  return key.slice(0, 13) + key.slice(13, -4).replace(/./g, '*') + key.slice(-4);
 }
 
 export const formSchemas: FormSchema[] = [
@@ -107,40 +80,9 @@ export const formSchemas: FormSchema[] = [
           label: 'WEB渠道',
           value: ChannelEnum.CHANNEL_WEB,
         },
-        {
-          label: '微信渠道',
-          value: ChannelEnum.CHANNEL_WEIXIN,
-        },
-        {
-          label: '钉钉渠道',
-          value: ChannelEnum.CHANNEL_DING,
-        },
       ],
     },
   },
-  // {
-  //   field: 'type',
-  //   label: '应用类型',
-  //   component: 'NSelect',
-  //   rules: [{ required: true, message: '请选择应用类型', trigger: ['blur'] }],
-  //   componentProps: {
-  //     placeholder: '请选择应用类型',
-  //     options: [
-  //       {
-  //         label: '窗口模式',
-  //         value: 'WEB_WINDOW',
-  //       },
-  //       {
-  //         label: '浮窗模式',
-  //         value: 'WEB_FLOAT',
-  //       },
-  //       {
-  //         label: 'API模式',
-  //         value: 'WEB_API',
-  //       },
-  //     ],
-  //   },
-  // },
   {
     field: 'des',
     label: '应用描述',

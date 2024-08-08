@@ -18,7 +18,6 @@ package cn.tycoding.langchat.server.endpoint;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.dto.DocsTypeEnum;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.entity.AigcOss;
@@ -29,7 +28,8 @@ import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
-import cn.tycoding.langchat.core.service.LangDocService;
+import cn.tycoding.langchat.core.consts.EmbedConst;
+import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.AllArgsConstructor;
@@ -47,7 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/aigc/embedding")
 public class EmbeddingEndpoint {
 
-    private final LangDocService langDocService;
+    private final LangEmbeddingService langEmbeddingService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final AigcDocsMapper aigcDocsMapper;
     private final AigcOssService aigcOssService;
@@ -59,11 +59,12 @@ public class EmbeddingEndpoint {
         if (StrUtil.isBlankIfStr(data.getContent())) {
             throw new ServiceException("文档内容不能为空");
         }
-        data.setType(DocsTypeEnum.INPUT.name()).setSliceStatus(false);
+        data.setType(EmbedConst.ORIGIN_TYPE_INPUT).setSliceStatus(false);
         if (StrUtil.isBlank(data.getId())) {
             aigcKnowledgeService.addDocs(data);
         }
-        EmbeddingR embeddingR = langDocService.embeddingText(
+
+        EmbeddingR embeddingR = langEmbeddingService.embeddingText(
                 new ChatReq().setMessage(data.getContent())
                         .setDocsName(data.getType())
                         .setDocsId(data.getId())
@@ -88,8 +89,9 @@ public class EmbeddingEndpoint {
         AigcDocs data = new AigcDocs()
                 .setName(oss.getOriginalFilename())
                 .setSliceStatus(false)
+                .setUrl(oss.getUrl())
                 .setSize(file.getSize())
-                .setType(DocsTypeEnum.UPLOAD.name())
+                .setType(EmbedConst.ORIGIN_TYPE_UPLOAD)
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
 
@@ -104,8 +106,11 @@ public class EmbeddingEndpoint {
         if (docs == null) {
             throw new ServiceException("没有查询到文档数据");
         }
-        if ("INPUT".equals(docs.getType())) {
+        if (EmbedConst.ORIGIN_TYPE_INPUT.equals(docs.getType())) {
             text(docs);
+        }
+        if (EmbedConst.ORIGIN_TYPE_UPLOAD.equals(docs.getType())) {
+            embeddingService.embedDocsSlice(docs, docs.getUrl());
         }
         return R.ok();
     }

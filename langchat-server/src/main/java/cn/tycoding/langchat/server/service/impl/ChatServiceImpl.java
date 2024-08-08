@@ -16,15 +16,19 @@
 
 package cn.tycoding.langchat.server.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.app.entity.AigcApp;
+import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
 import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
+import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
-import cn.tycoding.langchat.core.service.LangDocService;
 import cn.tycoding.langchat.server.service.ChatService;
 import dev.langchain4j.model.output.TokenUsage;
 import lombok.AllArgsConstructor;
@@ -42,14 +46,24 @@ import org.springframework.stereotype.Service;
 public class ChatServiceImpl implements ChatService {
 
     private final LangChatService langChatService;
-    private final LangDocService langDocService;
     private final AigcMessageService aigcMessageService;
+    private final AppStore appStore;
 
     @Override
     public void chat(ChatReq req) {
         StreamEmitter emitter = req.getEmitter();
         long startTime = System.currentTimeMillis();
         StringBuilder text = new StringBuilder();
+
+        if (StrUtil.isNotBlank(req.getAppId())) {
+            AigcApp app = appStore.get(req.getAppId());
+            if (app == null) {
+                throw new ServiceException("没有配置应用信息");
+            }
+            req.setModelId(app.getModelId());
+            req.setPromptText(req.getPromptText());
+        }
+        req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
 
         // save user message
         req.setRole(RoleEnum.USER.getName());
@@ -77,47 +91,6 @@ public class ChatServiceImpl implements ChatService {
                     .onError((e) -> {
                         emitter.error(e.getMessage());
                         throw new RuntimeException(e.getMessage());
-                    })
-                    .start();
-        } catch (Exception e) {
-            e.printStackTrace();
-            emitter.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void docsChat(ChatReq req) {
-        long startTime = System.currentTimeMillis();
-        StreamEmitter emitter = req.getEmitter();
-        StringBuilder text = new StringBuilder();
-
-        // save user message
-        req.setRole(RoleEnum.USER.getName());
-        saveMessage(req, 0, 0);
-
-        try {
-            langDocService.chat(req)
-                    .onNext(e -> {
-                        text.append(e);
-                        emitter.send(new ChatRes(e));
-                    })
-                    .onComplete(e -> {
-                        TokenUsage tokenUsage = e.tokenUsage();
-                        emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
-                        emitter.complete();
-
-                        // save message
-                        if (req.getConversationId() != null) {
-                            req.setMessage(text.toString());
-                            req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(),
-                                    tokenUsage.outputTokenCount());
-                        }
-                    })
-                    .onError((e) -> {
-                        e.printStackTrace();
-                        emitter.error(e.getMessage());
                     })
                     .start();
         } catch (Exception e) {

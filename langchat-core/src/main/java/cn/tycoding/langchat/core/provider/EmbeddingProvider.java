@@ -22,8 +22,10 @@ import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.azure.AzureOpenAiTokenizer;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +33,10 @@ import org.springframework.stereotype.Component;
  * @author tycoding
  * @since 2024/3/8
  */
+@Slf4j
 @Component
 @AllArgsConstructor
-public class EmbedProvider {
+public class EmbeddingProvider {
 
     private final ApplicationContext context;
 
@@ -63,6 +66,6 @@ public class EmbedProvider {
         if (context.containsBean(EmbedConst.CLAZZ_NAME_OLLAMA)) {
             return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OLLAMA);
         }
-        throw new RuntimeException("没有匹配到模型，请检查模型配置！");
+        return new BgeSmallEnV15QuantizedEmbeddingModel();
     }
 }

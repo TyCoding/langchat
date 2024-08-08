@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat.app.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
 import cn.tycoding.langchat.app.consts.AppConst;
@@ -66,32 +67,26 @@ public class AigcAppWebController {
     }
 
     @PostMapping
-    @ApiLog("新增WEB渠道")
-//    @SaCheckPermission("aigc:app:iframe:add")
+    @ApiLog("新增Web渠道")
+    @SaCheckPermission("aigc:app:web:add")
     public R add(@RequestBody AigcAppWeb data) {
-        if (data.getApiKey().contains("*")) {
-            data.setApiKey(null);
-        }
         aigcAppService.save(data);
         appChannelStore.init();
         return R.ok();
     }
 
     @PutMapping
-    @ApiLog("修改WEB渠道")
-//    @SaCheckPermission("aigc:app:iframe:update")
+    @ApiLog("修改Web渠道")
+    @SaCheckPermission("aigc:app:web:update")
     public R update(@RequestBody AigcAppWeb data) {
-        if (data.getApiKey().contains("*")) {
-            data.setApiKey(null);
-        }
         aigcAppService.updateById(data);
         appChannelStore.init();
         return R.ok();
     }
 
     @DeleteMapping("/{id}")
-    @ApiLog("删除WEB渠道")
-//    @SaCheckPermission("aigc:app:iframe:delete")
+    @ApiLog("删除Web渠道")
+    @SaCheckPermission("aigc:app:web:delete")
     public R delete(@PathVariable String id) {
         aigcAppService.removeById(id);
         appChannelStore.init();

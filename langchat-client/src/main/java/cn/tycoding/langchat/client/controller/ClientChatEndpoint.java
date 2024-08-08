@@ -61,7 +61,7 @@ public class ClientChatEndpoint {
         req.setUserId(ClientAuthUtil.getUserId());
         req.setUsername(ClientAuthUtil.getUsername());
 
-        if (StrUtil.isBlank(req.getPromptId())) {
+        if (StrUtil.isBlank(req.getPromptText())) {
             req.setPrompt(PromptUtil.build(req.getMessage()));
         } else {
             req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
