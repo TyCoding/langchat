@@ -103,7 +103,6 @@
 
         <n-button size="small" tertiary type="info" @click="handleExport">
           <SvgIcon class="text-xl" icon="material-symbols:download" />
-          <span>{{ t('chat.exportImage') }}</span>
         </n-button>
       </div>
     </div>

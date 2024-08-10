@@ -95,7 +95,7 @@
   <div ref="textRef" class="middle w-full flex-1 py-3 z-0 overflow-y-auto">
     <div v-if="messages.length == 0" class="flex-1 flex h-full justify-center">
       <div class="w-1/2 flex flex-col justify-center text-xs items-center gap-2">
-        <n-icon color="#e4e4e7" size="70">
+        <n-icon color="#b4b4b9" size="70">
           <SvgIcon icon="et:chat" />
         </n-icon>
         <n-button secondary size="small" type="success">开始聊天</n-button>

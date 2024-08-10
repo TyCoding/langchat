@@ -68,4 +68,19 @@
   />
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  ::v-deep(
+      .n-base-selection .n-base-selection__border,
+      .n-base-selection .n-base-selection__state-border
+    ) {
+    border: none !important;
+  }
+  ::v-deep(.n-base-selection-label) {
+    font-weight: 600 !important;
+    gap: 6px !important;
+    display: flex !important;
+  }
+  ::v-deep(.n-base-selection-input) {
+    margin-right: 4px;
+  }
+</style>

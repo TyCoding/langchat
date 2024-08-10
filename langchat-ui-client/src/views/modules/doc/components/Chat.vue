@@ -34,7 +34,6 @@
   const { isMobile } = useBasicLayout();
   const emits = defineEmits(['focus-active']);
   const messageRef = ref();
-  const model = ref('gpt-4o');
   const message = ref('');
   const isGoogleSearch = ref(false);
   const loading = ref(false);
@@ -172,19 +171,6 @@
         class="relative flex items-center justify-between min-w-0 overflow-hidden h-12 ml-2 mr-2 gap-2"
       >
         <ModelProvider />
-
-        <n-tag
-          v-model:checked="isGoogleSearch"
-          :bordered="false"
-          checkable
-          class="border"
-          type="primary"
-        >
-          <div class="text-sm flex items-center gap-1">
-            <SvgIcon icon="devicon:google" />
-            <div>Google Search</div>
-          </div>
-        </n-tag>
       </div>
     </header>
     <Message ref="messageRef" :messages="messages" />
