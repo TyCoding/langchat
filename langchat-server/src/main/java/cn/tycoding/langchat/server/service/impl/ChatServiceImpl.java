@@ -61,7 +61,7 @@ public class ChatServiceImpl implements ChatService {
                 throw new ServiceException("没有配置应用信息");
             }
             req.setModelId(app.getModelId());
-            req.setPromptText(req.getPromptText());
+            req.setPromptText(app.getPrompt());
             req.setKnowledgeIds(app.getKnowledgeIds());
         }
         req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));

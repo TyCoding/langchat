@@ -19,7 +19,9 @@
   import { list as getModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/components/chat/data';
   import { ModelTypeEnum } from '@/api/models';
+  import { useChatStore } from '@/views/chat/store/useChatStore';
 
+  const chatStore = useChatStore();
   const props = defineProps<{
     id: any;
   }>();
@@ -53,6 +55,7 @@
       modelName: obj.model,
       modelProvider: obj.provider,
     });
+    chatStore.modelId = obj.id;
   }
 </script>
 

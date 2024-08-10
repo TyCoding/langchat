@@ -25,8 +25,10 @@
   import { useMessage } from 'naive-ui';
   import { useAppStore } from './store';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
+  import { useChatStore } from '@/views/chat/store/useChatStore';
 
   const appStore = useAppStore();
+  const chatStore = useChatStore();
   const form = ref<any>({});
   const loading = ref(false);
   const ms = useMessage();
@@ -44,6 +46,9 @@
     appStore.knowledgeIds = data.knowledgeIds == null ? [] : data.knowledgeIds;
     appStore.modelId = data.modelId == null ? null : data.modelId;
     appStore.knowledges = data.knowledges == null ? [] : data.knowledges;
+    chatStore.modelId = data.modelId == null ? null : data.modelId;
+    chatStore.appId = data.id;
+    chatStore.conversationId = data.id;
     loading.value = false;
   }
 
