@@ -80,7 +80,7 @@ fetch(url, {
   <div class="p-4 bg-white h-full overflow-auto rounded">
     <n-config-provider :hljs="hljs" class="flex flex-col gap-4">
       <div>
-        <n-alert title="API URL" type="info" />
+        <n-alert title="API URL（API接口格式遵循OpenAI格式）" type="info" />
         <div class="bg-[#18181c] mt-2 py-2 px-4 overflow-x-auto rounded">
           <n-code :code="url" class="text-white" language="JavaScript" />
         </div>

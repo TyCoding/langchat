@@ -21,6 +21,9 @@ import dev.langchain4j.model.input.Prompt;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author tycoding
  * @since 2024/1/30
@@ -49,6 +52,7 @@ public class ChatReq {
     private String docsName;
 
     private String knowledgeId;
+    private List<String> knowledgeIds = new ArrayList<>();
 
     private String docsId;
 

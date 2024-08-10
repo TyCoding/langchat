@@ -21,8 +21,10 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
 import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.entity.AigcAppWeb;
+import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.app.service.AigcAppWebService;
 import cn.tycoding.langchat.app.store.AppChannelStore;
+import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,8 +43,10 @@ import java.util.List;
 @RequestMapping("/aigc/app/web")
 public class AigcAppWebController {
 
-    private final AigcAppWebService aigcAppService;
+    private final AigcAppService aigcAppService;
+    private final AigcAppWebService aigcAppWebService;
     private final AppChannelStore appChannelStore;
+    private final AppStore appStore;
 
     @GetMapping("/generate/key")
     public R generateKey() {
@@ -51,26 +56,31 @@ public class AigcAppWebController {
 
     @GetMapping("/list")
     public R<List<AigcAppWeb>> list(AigcAppWeb data) {
-        return R.ok(aigcAppService.list(new LambdaQueryWrapper<AigcAppWeb>()));
+        List<AigcAppWeb> list = aigcAppWebService.list(new LambdaQueryWrapper<AigcAppWeb>().orderByDesc(AigcAppWeb::getCreateTime));
+        list.forEach(i -> {
+            i.setApp(appStore.get(i.getAppId()));
+        });
+        return R.ok(list);
     }
 
     @GetMapping("/page")
     public R<Dict> page(AigcAppWeb data, QueryPage queryPage) {
-        return R.ok(MybatisUtil.getData(aigcAppService.page(MybatisUtil.wrap(data, queryPage),
+        return R.ok(MybatisUtil.getData(aigcAppWebService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcAppWeb>lambdaQuery()
-                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppWeb::getName, data.getName()))));
+                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppWeb::getName, data.getName()).orderByDesc(AigcAppWeb::getCreateTime))));
     }
 
     @GetMapping("/{id}")
     public R<AigcAppWeb> findById(@PathVariable String id) {
-        return R.ok(aigcAppService.getById(id));
+        return R.ok(aigcAppWebService.getById(id));
     }
 
     @PostMapping
     @ApiLog("新增Web渠道")
     @SaCheckPermission("aigc:app:web:add")
     public R add(@RequestBody AigcAppWeb data) {
-        aigcAppService.save(data);
+        data.setCreateTime(new Date());
+        aigcAppWebService.save(data);
         appChannelStore.init();
         return R.ok();
     }
@@ -79,7 +89,7 @@ public class AigcAppWebController {
     @ApiLog("修改Web渠道")
     @SaCheckPermission("aigc:app:web:update")
     public R update(@RequestBody AigcAppWeb data) {
-        aigcAppService.updateById(data);
+        aigcAppWebService.updateById(data);
         appChannelStore.init();
         return R.ok();
     }
@@ -88,7 +98,7 @@ public class AigcAppWebController {
     @ApiLog("删除Web渠道")
     @SaCheckPermission("aigc:app:web:delete")
     public R delete(@PathVariable String id) {
-        aigcAppService.removeById(id);
+        aigcAppWebService.removeById(id);
         appChannelStore.init();
         return R.ok();
     }

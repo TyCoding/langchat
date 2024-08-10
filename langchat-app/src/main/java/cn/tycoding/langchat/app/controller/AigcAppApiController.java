@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,7 +53,7 @@ public class AigcAppApiController {
 
     @GetMapping("/list")
     public R<List<AigcAppApi>> list(AigcAppApi data) {
-        List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>());
+        List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>().orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(list);
     }
 
@@ -60,7 +61,7 @@ public class AigcAppApiController {
     public R<Dict> page(AigcAppApi data, QueryPage queryPage) {
         IPage<AigcAppApi> iPage = appApiService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcAppApi>lambdaQuery()
-                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppApi::getName, data.getName()));
+                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppApi::getName, data.getName()).orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(MybatisUtil.getData(iPage));
     }
 
@@ -74,6 +75,7 @@ public class AigcAppApiController {
     @ApiLog("新增API渠道")
     @SaCheckPermission("aigc:app:api:add")
     public R add(@RequestBody AigcAppApi data) {
+        data.setCreateTime(new Date());
         appApiService.save(data);
         appChannelStore.init();
         return R.ok();

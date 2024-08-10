@@ -131,6 +131,12 @@
                   class="flex-1 block h-8 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                   type="text"
                 />
+                <input
+                  v-if="items.key === 'CHANNEL_WEB'"
+                  :value="item.app == null ? '' : item.app.name"
+                  class="flex-1 block h-8 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                  type="text"
+                />
                 <button
                   class="rounded-md hidden sm:block p-1.5 text-gray-700 bg-white border border-gray-200 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring transition-colors duration-300 hover:text-blue-500 dark:hover:text-blue-500"
                   @click="onCopy(item.apiKey)"

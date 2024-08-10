@@ -23,7 +23,8 @@
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
   import { copyToClip } from '@/utils/copy';
-  import { list as getAppList } from '@/api/app/app';
+  import ModelSelect from '@/views/channel/ModelSelect.vue';
+  import AppSelect from '@/views/channel/AppSelect.vue';
 
   const emit = defineEmits(['reload']);
   const formRef = ref();
@@ -34,7 +35,6 @@
   const isExpired = ref(false);
   const isLimit = ref(false);
   const modelOptions = ref([]);
-  const apps = ref([]);
 
   onMounted(async () => {
     const id = router.currentRoute.value.params.id;
@@ -43,13 +43,13 @@
       const { apiKey } = await generateKey();
       data.apiKey = apiKey;
     }
+    if (data.appId === '') data.appId = null;
     if (data.expired == null) {
       isExpired.value = true;
     }
     form.value = { ...data };
 
     modelOptions.value = await getModelList({});
-    apps.value = await getAppList({});
   });
 
   async function onSubmit(e: MouseEvent) {
@@ -82,11 +82,6 @@
       trigger: ['blur', 'change'],
       message: '请输入应用Key',
     },
-    appId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联应用',
-    },
   };
 
   function resetKey() {
@@ -106,7 +101,12 @@
     await copyToClip(form.value.apiKey);
     ms.success('Api Key复制成功');
   }
-
+  function onSelectModel(val) {
+    form.value.modelId = val.id;
+  }
+  function onSelectApp(val) {
+    form.value.appId = val.id;
+  }
   function onCheckExpired(val: boolean) {
     if (val) {
       form.value.expired = null;
@@ -137,6 +137,9 @@
 
 <template>
   <div class="bg-white p-4 rounded">
+    <n-tag :bordered="false" class="mb-3 w-full rounded" type="warning">
+      自定义Model模型配置将优于关联应用本身的模型配置
+    </n-tag>
     <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" label-width="auto">
       <n-form-item label="应用名称" path="name">
         <n-input v-model:value="form.name" placeholder="请输入应用名称" />
@@ -153,14 +156,21 @@
         <n-button secondary size="small" type="primary" @click="resetKey">重置Key</n-button>
       </n-form-item>
 
+      <n-form-item label="自定义模型" path="modelId">
+        <ModelSelect
+          v-if="form.modelId !== undefined"
+          :id="form.modelId"
+          class="!w-full"
+          @update="onSelectModel"
+        />
+      </n-form-item>
+
       <n-form-item label="关联应用" path="appId">
-        <n-select
-          v-model:value="form.appId"
-          :consistent-menu-width="false"
-          :label-field="'name'"
-          :options="apps"
-          :value-field="'id'"
-          placeholder="请选择关联应用"
+        <AppSelect
+          v-if="form.appId !== undefined"
+          :id="form.appId"
+          class="!w-full"
+          @update="onSelectApp"
         />
       </n-form-item>
 

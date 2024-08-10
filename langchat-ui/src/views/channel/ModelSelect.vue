@@ -19,7 +19,6 @@
   import { list as getModels } from '@/api/aigc/model';
   import { LLMProviders } from '@/views/aigc/model/components/chat/data';
   import { ModelTypeEnum } from '@/api/models';
-  import SvgIcon from '@/components/SvgIcon/index.vue';
 
   const props = defineProps<{
     id: any;
@@ -59,14 +58,13 @@
 
 <template>
   <div class="flex items-center">
-    <SvgIcon class="text-xl" icon="bitcoin-icons:magic-wand-outline" />
     <n-select
       v-model:value="modelId"
       :consistent-menu-width="false"
       :label-field="'name'"
       :options="options"
       :value-field="'id'"
-      class="min-w-[100px]"
+      class="min-w-[150px]"
       placeholder="请选择关联模型"
       @update:value="onUpdate"
     />

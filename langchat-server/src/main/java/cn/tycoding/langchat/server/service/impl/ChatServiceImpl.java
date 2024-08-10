@@ -62,6 +62,7 @@ public class ChatServiceImpl implements ChatService {
             }
             req.setModelId(app.getModelId());
             req.setPromptText(req.getPromptText());
+            req.setKnowledgeIds(app.getKnowledgeIds());
         }
         req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
 

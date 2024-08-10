@@ -97,7 +97,11 @@ public class LangChatServiceImpl implements LangChatService {
         }
 
         if (StrUtil.isNotBlank(req.getKnowledgeId())) {
-            Function<Query, Filter> filter = (query) -> metadataKey(KNOWLEDGE).isEqualTo(req.getKnowledgeId());
+            req.getKnowledgeIds().add(req.getKnowledgeId());
+        }
+
+        if (StrUtil.isNotBlank(req.getKnowledgeId())) {
+            Function<Query, Filter> filter = (query) -> metadataKey(KNOWLEDGE).isIn(req.getKnowledgeIds());
             ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                     .embeddingStore(embeddingStore)
                     .embeddingModel(embeddingModel)

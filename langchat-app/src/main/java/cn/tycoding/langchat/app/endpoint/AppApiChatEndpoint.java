@@ -21,14 +21,16 @@ import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.endpoint.auth.CompletionReq;
 import cn.tycoding.langchat.app.endpoint.auth.CompletionRes;
 import cn.tycoding.langchat.app.endpoint.auth.OpenapiAuth;
+import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.entity.AigcAppApi;
 import cn.tycoding.langchat.app.entity.AigcAppWeb;
 import cn.tycoding.langchat.app.store.AppChannelStore;
+import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
-import dev.langchain4j.model.input.Prompt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +52,7 @@ import java.util.List;
 public class AppApiChatEndpoint {
 
     private final LangChatService langChatService;
+    private final AppStore appStore;
 
     @OpenapiAuth(AppConst.CHANNEL_API)
     @PostMapping(value = "/chat/completions")
@@ -57,22 +60,35 @@ public class AppApiChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         AigcAppApi appApi = AppChannelStore.getApiChannel();
 
-        return handler(emitter, appApi.getModelId(), req.getMessages());
+        return handler(emitter, appApi.getAppId(), appApi.getModelId(), req.getMessages());
     }
 
-    private SseEmitter handler(StreamEmitter emitter, String modelId, List<CompletionReq.Message> messages) {
+    private SseEmitter handler(StreamEmitter emitter, String appId, String modelId, List<CompletionReq.Message> messages) {
         if (messages == null || messages.isEmpty() || StrUtil.isBlank(modelId)) {
             throw new RuntimeException("Message is undefined. Or check the model configuration");
         }
         CompletionReq.Message message = messages.get(0);
+        ChatReq req = new ChatReq()
+                .setMessage(message.getContent())
+                .setRole(message.getRole())
+                .setModelId(modelId);
 
-        Prompt prompt = PromptUtil.build(message.getContent());
+        if (StrUtil.isNotBlank(appId)) {
+            if (StrUtil.isNotBlank(appId)) {
+                AigcApp app = appStore.get(appId);
+                if (app == null) {
+                    throw new ServiceException("没有配置应用信息");
+                }
+
+                req.setModelId(app.getModelId());
+                req.setPromptText(req.getPromptText());
+                req.setKnowledgeIds(app.getKnowledgeIds());
+            }
+        }
+        req.setPrompt(PromptUtil.build(message.getContent(), req.getPromptText()));
+
         langChatService
-                .singleChat(new ChatReq()
-                        .setPrompt(prompt)
-                        .setMessage(message.getContent())
-                        .setRole(message.getRole())
-                        .setModelId(modelId))
+                .singleChat(req)
                 .onNext(token -> {
                     CompletionRes res = CompletionRes.process(token);
                     emitter.send(res);
@@ -93,6 +109,6 @@ public class AppApiChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         AigcAppWeb appWeb = AppChannelStore.getWebChannel();
 
-        return handler(emitter, appWeb.getModelId(), req.getMessages());
+        return handler(emitter, appWeb.getAppId(), appWeb.getModelId(), req.getMessages());
     }
 }

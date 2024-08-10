@@ -18,6 +18,7 @@
 package cn.tycoding.langchat.app.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -49,4 +50,7 @@ public class AigcAppWeb implements Serializable {
     private String des;
     private Date expired = null;
     private Date createTime;
+
+    @TableField(exist = false)
+    private AigcApp app;
 }

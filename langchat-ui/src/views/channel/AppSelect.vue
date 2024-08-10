@@ -16,36 +16,43 @@
 
 <script lang="ts" setup>
   import { onMounted, ref, toRaw } from 'vue';
-  import { list } from '@/api/aigc/knowledge';
+  import { list } from '@/api/app/app';
 
   const props = defineProps<{
     id: any;
   }>();
   const emit = defineEmits(['update']);
   const options = ref([]);
-  const knowledgeId = ref('');
+  const appId = ref('');
 
   onMounted(async () => {
     options.value = await list({});
-    knowledgeId.value = props.id;
+    appId.value = props.id;
   });
 
   function onUpdate(val: any, opt) {
     const obj = toRaw(opt);
-    emit('update', {
-      id: obj.id,
-    });
+    if (obj == null) {
+      emit('update', {
+        id: '',
+      });
+    } else {
+      emit('update', {
+        id: obj.id,
+      });
+    }
   }
 </script>
 
 <template>
   <n-select
-    v-model:value="knowledgeId"
+    v-model:value="appId"
     :consistent-menu-width="false"
     :label-field="'name'"
     :options="options"
     :value-field="'id'"
-    placeholder="请选择关联知识库"
+    clearable
+    placeholder="请选择关联应用"
     @update:value="onUpdate"
   />
 </template>

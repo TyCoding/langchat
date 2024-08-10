@@ -24,7 +24,7 @@
   import { useRouter } from 'vue-router';
   import { copyToClip } from '@/utils/copy';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
-  import KnowledgeSelect from '@/views/channel/KnowledgeSelect.vue';
+  import AppSelect from '@/views/channel/AppSelect.vue';
 
   const emit = defineEmits(['reload']);
   const formRef = ref();
@@ -41,8 +41,10 @@
     const id = router.currentRoute.value.params.id;
     const data = await getById(id);
     if (data.apiKey === undefined || data.apiKey === null) {
-      data.apiKey = await generateKey();
+      const { apiKey } = await generateKey();
+      data.apiKey = apiKey;
     }
+    if (data.appId === '') data.appId = null;
     apiKey.value = data.apiKey;
     if (data.expired == null) {
       isExpired.value = true;
@@ -81,16 +83,6 @@
       required: true,
       trigger: ['blur', 'change'],
       message: '请输入应用Key',
-    },
-    modelId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联模型',
-    },
-    appId: {
-      required: true,
-      trigger: ['blur', 'change'],
-      message: '请选择关联应用',
     },
   };
 
@@ -149,6 +141,9 @@
 
 <template>
   <div class="bg-white p-4 rounded">
+    <n-tag :bordered="false" class="mb-3 w-full rounded" type="warning">
+      自定义Model模型配置将优于关联应用本身的模型配置
+    </n-tag>
     <n-form ref="formRef" :model="form" :rules="rules" label-placement="left" label-width="auto">
       <n-form-item label="应用名称" path="name">
         <n-input v-model:value="form.name" placeholder="请输入应用名称" />
@@ -165,11 +160,21 @@
         <n-button secondary size="small" type="primary" @click="resetKey">重置Key</n-button>
       </n-form-item>
 
-      <n-form-item label="关联模型" path="modelId">
-        <ModelSelect v-if="form.modelId !== undefined" :id="form.modelId" @update="onSelectModel" />
+      <n-form-item label="自定义模型" path="modelId">
+        <ModelSelect
+          v-if="form.modelId !== undefined"
+          :id="form.modelId"
+          class="!w-full"
+          @update="onSelectModel"
+        />
       </n-form-item>
       <n-form-item label="关联应用" path="appId">
-        <KnowledgeSelect v-if="form.appId !== undefined" :id="form.appId" @update="onSelectApp" />
+        <AppSelect
+          v-if="form.appId !== undefined"
+          :id="form.appId"
+          class="!w-full"
+          @update="onSelectApp"
+        />
       </n-form-item>
 
       <n-form-item label="请求限额 / 天" path="limit">
