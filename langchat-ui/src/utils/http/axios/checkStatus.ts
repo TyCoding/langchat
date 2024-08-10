@@ -18,7 +18,6 @@ export function checkStatus(status: number, msg: string | undefined): void {
   if (msg === '') {
     msg = undefined;
   }
-  console.log('进入', status, msg);
   const $message = window['$message'];
   switch (status) {
     case 400:

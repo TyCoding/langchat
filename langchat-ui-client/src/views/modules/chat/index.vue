@@ -46,11 +46,10 @@
     if (inputRef.value && !isMobile.value) {
       inputRef.value?.focus();
     }
-    await chatStore.loadData();
     if (chatStore.conversations.length == 0) {
       await chatStore.addConversation({ title: 'New Chat' });
-      await chatStore.loadData();
     }
+    await chatStore.loadData();
   });
   onUnmounted(() => {
     if (loading.value) {
@@ -102,8 +101,8 @@
   async function onChat(message: string, conversationId?: string) {
     try {
       let promptText = undefined;
-      if (chatStore.selectPromptId !== null && chatStore.selectPromptId !== '') {
-        const arr = chatStore.prompts.filter((i) => i.id === chatStore.selectPromptId);
+      if (chatStore.appId !== null && chatStore.appId !== '') {
+        const arr = chatStore.apps.filter((i) => i.id === chatStore.appId);
         if (arr.length) {
           promptText = arr[0].prompt;
         }
@@ -114,11 +113,12 @@
           chatId: chatId.value,
           message,
           role: 'user',
+          appId: chatStore.appId,
           modelId: chatStore.modelId,
           modelName: chatStore.modelName,
           modelProvider: chatStore.modelProvider,
           conversationId: conversationId,
-          promptId: chatStore.selectPromptId,
+          promptId: chatStore.appId,
           promptText,
         },
         async ({ event }) => {
@@ -286,7 +286,7 @@
 
           <footer :class="footerClass">
             <div
-              :class="isMobile ? 'pb-2' : ' px-20 pb-10 '"
+              :class="isMobile ? 'pb-2' : ' px-20 pb-2 '"
               class="w-full max-w-screen-2xl m-auto relative"
             >
               <div class="flex items-center justify-between">

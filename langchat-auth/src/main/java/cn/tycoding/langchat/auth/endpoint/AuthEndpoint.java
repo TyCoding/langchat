@@ -67,17 +67,20 @@ public class AuthEndpoint {
     @PostMapping("/login")
     public R login(@RequestBody UserInfo user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
-            throw new ServiceException("The user name or password is empty");
+            throw new ServiceException("用户名或密码为空");
         }
 
         UserInfo userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
-            throw new ServiceException("The username or password is error");
+            throw new ServiceException("用户名或密码错误");
+        }
+        if (!userInfo.getStatus()) {
+            throw new ServiceException("该用户已经禁用，请联系管理员");
         }
 
         String decryptPass = AuthUtil.decrypt(authProps.getSaltKey(), userInfo.getPassword());
         if (!decryptPass.equals(user.getPassword())) {
-            throw new ServiceException("The username or password is error");
+            throw new ServiceException("密码不正确");
         }
 
         StpUtil.login(userInfo.getId());

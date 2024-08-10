@@ -93,18 +93,6 @@
           <SvgIcon class="text-2xl" icon="solar:list-bold-duotone" />
         </n-button>
         <ModelProvider />
-        <n-tag
-          v-model:checked="chatStore.isGoogleSearch"
-          :bordered="false"
-          checkable
-          class="border"
-          type="primary"
-        >
-          <div class="text-sm flex items-center gap-1">
-            <SvgIcon icon="devicon:google" />
-            <div>Google Search</div>
-          </div>
-        </n-tag>
       </div>
 
       <div class="flex items-center space-x-2 overflow-x-auto">

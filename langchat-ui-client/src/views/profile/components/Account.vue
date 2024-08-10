@@ -15,10 +15,8 @@
   -->
 
 <script lang="ts" setup>
-  import { User } from '@/api/models';
-
-  const props = defineProps<{
-    form: User;
+  defineProps<{
+    form: any;
   }>();
 </script>
 

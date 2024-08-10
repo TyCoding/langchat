@@ -37,6 +37,12 @@
         chatStore.modelId = providers[0].id;
         chatStore.modelName = providers[0].model;
         chatStore.modelProvider = providers[0].provider;
+
+        if (props.id == null) {
+          modelId.value = providers[0].id;
+        } else {
+          modelId.value = props.id;
+        }
       }
     }
     LLMProviders.forEach((i) => {
@@ -52,7 +58,6 @@
       });
     });
     options.value = data;
-    modelId.value = props.id;
   });
 
   function onUpdate(val: any, opt) {

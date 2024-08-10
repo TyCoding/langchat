@@ -71,7 +71,7 @@ public class SysUser implements Serializable {
     /**
      * 部门ID
      */
-    private Long deptId;
+    private String deptId;
 
     /**
      * 头像

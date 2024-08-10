@@ -103,9 +103,9 @@
           <List />
           <div class="pb-2 px-4">
             <n-select
-              v-model:value="chatStore.selectPromptId"
+              v-model:value="chatStore.appId"
               :label-field="'name'"
-              :options="chatStore.prompts"
+              :options="chatStore.apps"
               :value-field="'id'"
             />
           </div>

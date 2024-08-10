@@ -19,15 +19,14 @@
   import { SvgIcon } from '@/components/common';
   import Typed from 'typed.js';
   import CardList from './components/CardList.vue';
-  import { Bot } from '@/api/models';
-  import { getPrompts } from '@/api/chat';
+  import { getApps } from '@/api/chat';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
 
   const router = useRouter();
-  const prompts = ref<Bot[]>([]);
+  const apps = ref<any[]>([]);
   const loading = ref(true);
-  const title = ref('');
+  const name = ref('');
 
   onMounted(async () => {
     const des = t('home.des');
@@ -42,7 +41,7 @@
   });
 
   async function fetchData() {
-    prompts.value = await getPrompts({ title: title.value });
+    apps.value = await getApps({ name: name.value });
     loading.value = false;
   }
 </script>
@@ -80,7 +79,7 @@
         </div>
 
         <n-input
-          v-model:value="title"
+          v-model:value="name"
           :placeholder="t('home.search')"
           round
           @keyup.enter="fetchData"
@@ -91,7 +90,7 @@
         </n-input>
 
         <n-spin :show="loading" size="large">
-          <CardList :list="prompts" />
+          <CardList :list="apps" />
         </n-spin>
       </div>
     </div>

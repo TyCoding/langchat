@@ -15,7 +15,6 @@
  */
 
 import { http } from '@/utils/request';
-import { TokenInfo, User } from '@/api/models';
 
 /**
  * @description: 获取邮箱验证码
@@ -36,14 +35,14 @@ export function emailRegister(data: any) {
   });
 }
 
-export function login(data: any): Promise<TokenInfo> {
+export function login(data: any) {
   return http.post({
     url: `/client/auth/login`,
     data,
   });
 }
 
-export function info(): Promise<User> {
+export function info() {
   return http.get({
     url: `/client/auth/info`,
   });

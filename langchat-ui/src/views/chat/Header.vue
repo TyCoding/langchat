@@ -66,7 +66,7 @@
           <div>Google Search</div>
         </div>
       </n-tag>
-      <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 120px" />
+      <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 140px" />
 
       <n-button secondary size="small" type="warning" @click="handleClear">
         <template #icon>

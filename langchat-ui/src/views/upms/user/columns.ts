@@ -157,7 +157,7 @@ export const formSchemas: FormSchema[] = [
   {
     field: 'status',
     component: 'NRadioGroup',
-    label: '角色状态',
+    label: '账号状态',
     componentProps: {
       options: [
         {

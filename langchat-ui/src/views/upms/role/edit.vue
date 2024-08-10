@@ -98,9 +98,9 @@
             :data="menuList"
             :default-checked-keys="model[field]"
             block-line
-            cascade
             checkable
             children-field="children"
+            default-expand-all
             expand-on-click
             key-field="id"
             label-field="name"

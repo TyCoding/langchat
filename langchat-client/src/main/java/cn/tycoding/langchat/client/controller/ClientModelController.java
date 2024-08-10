@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat.client.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.biz.entity.AigcModel;
@@ -41,9 +42,11 @@ public class ClientModelController {
     private final AigcAppService aigcAppService;
     private final AigcModelService aigcModelService;
 
-    @GetMapping("/prompt/list")
+    @GetMapping("/app/list")
     public R list(AigcApp data) {
-        List<AigcApp> list = aigcAppService.list(Wrappers.<AigcApp>lambdaQuery().orderByDesc(AigcApp::getCreateTime));
+        List<AigcApp> list = aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
+                .like(StrUtil.isNotBlank(data.getName()), AigcApp::getName, data.getName())
+                .orderByDesc(AigcApp::getCreateTime));
         return R.ok(list);
     }
 

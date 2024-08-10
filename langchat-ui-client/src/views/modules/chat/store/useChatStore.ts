@@ -25,7 +25,7 @@ import {
 import { ChatState } from './chat';
 import { formatToDateTime } from '@/utils/dateUtil';
 import { toRaw } from 'vue';
-import { getPrompts } from '@/api/chat';
+import { getApps } from '@/api/chat';
 
 export const useChatStore = defineStore('chat-store', {
   state: (): ChatState =>
@@ -35,15 +35,14 @@ export const useChatStore = defineStore('chat-store', {
       modelProvider: '',
       active: '',
       isEdit: '',
-      isGoogleSearch: false,
       siderCollapsed: true,
       sideIsLoading: true,
       chatIsLoading: true,
       conversations: [],
       curConversation: undefined,
       messages: [],
-      prompts: [],
-      selectPromptId: undefined,
+      apps: [],
+      appId: null,
     },
 
   getters: {},
@@ -71,7 +70,7 @@ export const useChatStore = defineStore('chat-store', {
           await this.selectConversation({ id: data[0].id });
         }
 
-        this.prompts = await getPrompts({});
+        this.apps = await getApps({});
       } finally {
         this.sideIsLoading = false;
         this.chatIsLoading = false;

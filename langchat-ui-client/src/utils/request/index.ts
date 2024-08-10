@@ -16,10 +16,8 @@
 
 import type { AxiosProgressEvent, AxiosResponse, GenericAbortSignal } from 'axios';
 import request from './axios';
-import { router } from '@/router';
 import { useUserStore } from '@/store';
 import { isNullOrWhitespace } from '@/utils/is';
-import { t } from '@/locales';
 
 export interface HttpOption {
   url: string;
@@ -54,7 +52,6 @@ function axios<T = any>({
 }: HttpOption): any {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
     const $message = window['$message'];
-
     if (res.status !== 200) {
       const message = res.data.message ?? res.statusText;
       $message!.error(message);
@@ -74,54 +71,27 @@ function axios<T = any>({
 
     if (res.data.code === 200) return res.data.result;
 
-    // if (res.data.status === 'Unauthorized') {
-    //   authStore.removeToken();
-    //   window.location.reload();
-    // }
-
     return Promise.reject(res.data);
   };
 
   const failHandler = async (error: any) => {
     console.error(error);
 
-    const $message = window['$message'];
-    const $dialog = window['$dialog'];
+    const $message = window['$message']!;
     const { status, data } = error.response;
     const userStore = useUserStore();
 
     if (data.code === 403) {
-      $message!.destroyAll();
-      $dialog!.destroyAll();
-      await userStore.logout();
-      $dialog!.warning({
-        title: t('login.title'),
-        content: t('login.content'),
-        positiveText: t('login.positiveText'),
-        negativeText: t('login.negativeText'),
-        onPositiveClick: async () => {
-          await router.push({ name: 'Login' });
-        },
-      });
+      $message!.error('未登录或没有操作权限');
+      if (userStore.token !== null) {
+        await userStore.logout();
+      }
       return;
     }
 
     if (status === 401) {
-      // $message!.error('Login failed, please login again');
-      // await router.push({ name: 'Login' });
-
       if (isNullOrWhitespace(userStore.token)) {
-        $message!.destroyAll();
-        $dialog!.destroyAll();
-        $dialog!.warning({
-          title: t('login.title'),
-          content: t('login.content'),
-          positiveText: t('login.positiveText'),
-          negativeText: t('login.negativeText'),
-          onPositiveClick: async () => {
-            await router.push({ name: 'Login' });
-          },
-        });
+        $message!.error('未登录或没有操作权限');
         throw new Error('unthorization');
       } else {
         $message!.warning('当前账号没有操作权限，请联系管理员授权');

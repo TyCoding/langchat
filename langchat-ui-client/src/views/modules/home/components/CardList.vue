@@ -15,22 +15,20 @@
   -->
 
 <script lang="ts" setup>
-  import { SvgIcon } from '@/components/common';
   import { NEmpty } from 'naive-ui';
-  import { Bot } from '@/api/models';
   import { useRouter } from 'vue-router';
   import { t } from '@/locales';
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
 
   interface Props {
-    list: Array<Bot>;
+    list: Array<any>;
   }
   const props = defineProps<Props>();
   const chatStore = useChatStore();
   const router = useRouter();
 
   async function onUse(id: string) {
-    chatStore.selectPromptId = id;
+    chatStore.appId = id;
     await router.push('/chat');
   }
 </script>
@@ -42,10 +40,7 @@
         <div>
           <n-thing class="inline-block bg-white dark:bg-[#34373f] p-4 rounded-[2px] cursor-pointer">
             <template #avatar>
-              <n-avatar :size="80">
-                <SvgIcon v-if="item.icon !== null" :icon="item.icon" class="text-2xl" />
-                <span v-else class="text-2xl">{{ String(item.name).substring(0, 1) }}</span>
-              </n-avatar>
+              <n-avatar :size="80" :src="item.cover" />
             </template>
             <template #header>
               <n-ellipsis class="text-[18px]" style="max-width: 200px">

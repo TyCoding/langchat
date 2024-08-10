@@ -15,16 +15,12 @@
  */
 
 import { http } from '@/utils/request';
-import { ChatR } from '@/api/models';
 import { AxiosProgressEvent } from 'axios';
 
 /**
  * @description: 聊天
  */
-export function chat(
-  data: ChatR,
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
-) {
+export function chat(data: any, onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void) {
   return http.post({
     url: '/client/chat',
     data,
@@ -47,9 +43,9 @@ export function docsChat(
   });
 }
 
-export function getPrompts(data: any) {
+export function getApps(data: any) {
   return http.get({
-    url: '/client/prompt/list',
+    url: '/client/app/list',
     data: data,
   });
 }
@@ -90,7 +86,7 @@ export function genImage(data: any) {
 /**
  * @description: 生成思维导图
  */
-export function genMindMap(data: ChatR) {
+export function genMindMap(data: any) {
   return http.post({
     url: '/client/chat/mindmap',
     data: data,

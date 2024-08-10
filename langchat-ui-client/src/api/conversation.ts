@@ -16,13 +16,6 @@
 
 import { http } from '@/utils/request';
 
-export function page(params: any) {
-  return http.get({
-    url: '/client/conversation/page',
-    params,
-  });
-}
-
 export function list(data: any) {
   return http.get({
     url: '/client/conversation/list',
