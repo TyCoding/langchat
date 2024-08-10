@@ -101,7 +101,7 @@
         >
           <div class="flex flex-col sm:-mx-4 sm:flex-row">
             <n-avatar
-              :src="item.icon"
+              :src="item.cover"
               class="flex-shrink-0 object-cover w-20 h-20 rounded sm:mx-4"
             />
 

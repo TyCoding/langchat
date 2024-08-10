@@ -32,6 +32,13 @@
   onMounted(async () => {
     const providers = await getModels({ type: ModelTypeEnum.CHAT });
     const data: any = [];
+    if (chatStore.modelName === '') {
+      if (providers != null && providers.length != 0) {
+        chatStore.modelId = providers[0].id;
+        chatStore.modelName = providers[0].model;
+        chatStore.modelProvider = providers[0].provider;
+      }
+    }
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
       if (children.length === 0) {
@@ -56,22 +63,21 @@
       modelProvider: obj.provider,
     });
     chatStore.modelId = obj.id;
+    chatStore.modelName = obj.model;
+    chatStore.modelProvider = obj.provider;
   }
 </script>
 
 <template>
-  <div class="flex items-center">
-    <n-select
-      v-model:value="modelId"
-      :consistent-menu-width="false"
-      :label-field="'name'"
-      :options="options"
-      :value-field="'id'"
-      class="min-w-[150px]"
-      placeholder="请选择关联模型"
-      @update:value="onUpdate"
-    />
-  </div>
+  <n-select
+    v-model:value="modelId"
+    :consistent-menu-width="false"
+    :label-field="'name'"
+    :options="options"
+    :value-field="'id'"
+    placeholder="请选择关联模型"
+    @update:value="onUpdate"
+  />
 </template>
 
 <style lang="less" scoped>

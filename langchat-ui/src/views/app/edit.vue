@@ -15,28 +15,27 @@
   -->
 
 <script lang="ts" setup>
-  import { nextTick } from 'vue';
+  import { nextTick, ref } from 'vue';
   import { add, getById, update } from '@/api/app/app';
-  import { useMessage } from 'naive-ui';
+  import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';
   import { basicModal, useModal } from '@/components/Modal';
   import { isNullOrWhitespace } from '@/utils/is';
+  import { uploadApi } from '@/api/aigc/oss';
 
   const emit = defineEmits(['reload']);
   const message = useMessage();
+  const fileList = ref<any>([]);
 
-  const [
-    modalRegister,
-    { openModal: openModal, closeModal: closeModal, setSubLoading: setSubLoading },
-  ] = useModal({
+  const [modalRegister, { openModal: openModal, closeModal: closeModal }] = useModal({
     title: '新增/编辑',
     closable: true,
     maskClosable: false,
     showCloseBtn: false,
     showSubBtn: false,
   });
-  const [register, { setFieldsValue }] = useForm({
+  const [register, { setFieldsValue, getFieldsValue }] = useForm({
     gridProps: { cols: 1 },
     labelWidth: 120,
     layout: 'horizontal',
@@ -48,7 +47,17 @@
     openModal();
     await nextTick();
     if (id) {
-      setFieldsValue(await getById(id));
+      const data = await getById(id);
+      setFieldsValue(data);
+      if (!isNullOrWhitespace(data.cover)) {
+        fileList.value = [
+          {
+            id: '1',
+            status: 'finished',
+            url: data.cover,
+          },
+        ];
+      }
     }
   }
 
@@ -68,12 +77,46 @@
       message.error('请完善表单');
     }
   }
+
+  const handleImport = ({ file, onFinish, onError, onProgress }: UploadCustomRequestOptions) => {
+    uploadApi(
+      {
+        file: file.file,
+      },
+      (progressEvent) => {
+        onProgress({
+          percent: Math.round((progressEvent.loaded * 100) / Number(progressEvent.total)),
+        });
+      }
+    )
+      .then((res) => {
+        console.log(res);
+        setFieldsValue({ ...getFieldsValue, cover: res.url });
+        message.success('上传成功，文档解析中...');
+        onFinish();
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error('上传失败');
+        onError();
+      });
+  };
+
   defineExpose({ show });
 </script>
 
 <template>
   <basicModal style="width: 45%" @register="modalRegister">
-    <BasicForm class="mt-5" @register="register" @submit="handleSubmit" />
+    <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
+      <template #coverSlot>
+        <n-upload
+          :custom-request="handleImport"
+          accept=".jpg,.jpeg,.png,.gif,.bmp,.webp"
+          directory-dnd
+          list-type="image-card"
+        />
+      </template>
+    </BasicForm>
   </basicModal>
 </template>
 

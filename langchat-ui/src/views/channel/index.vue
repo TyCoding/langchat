@@ -77,7 +77,7 @@
 
     <n-card :bordered="false" class="mt-4 overflow-y-auto h-full">
       <div class="flex items-center gap-2 justify-start">
-        <n-button dashed type="primary" @click="editRef.show()"> 新增应用 </n-button>
+        <n-button dashed type="primary" @click="editRef.show()"> 新增渠道 </n-button>
         <n-button tertiary type="primary" @click="fetchData">
           <SvgIcon class="text-xl" icon="material-symbols:refresh" />
         </n-button>

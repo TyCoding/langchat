@@ -41,6 +41,12 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入应用名称', trigger: ['blur'] }],
   },
   {
+    field: 'cover',
+    label: '应用封面',
+    slot: 'coverSlot',
+    component: 'NInput',
+  },
+  {
     field: 'des',
     label: '应用描述',
     component: 'NInput',

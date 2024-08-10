@@ -51,13 +51,13 @@ public class AigcApp implements Serializable {
     private String modelId;
 
     @TableField(typeHandler = FastjsonTypeHandler.class, jdbcType = JdbcType.VARCHAR)
-    private List<String> knowledgeIds = new ArrayList<>();
+    private List<String> knowledgeIds;
 
     /**
      * 名称
      */
     private String name;
-    private String icon;
+    private String cover;
 
     /**
      * Prompt

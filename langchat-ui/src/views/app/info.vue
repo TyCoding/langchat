@@ -26,6 +26,7 @@
   import { useAppStore } from './store';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
   import { useChatStore } from '@/views/chat/store/useChatStore';
+  import { getMessages } from '@/api/aigc/chat';
 
   const appStore = useAppStore();
   const chatStore = useChatStore();
@@ -49,13 +50,16 @@
     chatStore.modelId = data.modelId == null ? null : data.modelId;
     chatStore.appId = data.id;
     chatStore.conversationId = data.id;
+    chatStore.messages = await getMessages(chatStore.conversationId!);
     loading.value = false;
   }
 
   async function onSave(val) {
+    loading.value = true;
     appStore.modelId = val.id;
     await appStore.updateInfo();
     ms.success('应用配置保存成功');
+    loading.value = false;
   }
 </script>
 
@@ -67,7 +71,7 @@
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
         </n-button>
         <div class="flex gap-2 items-center pr-4">
-          <n-avatar />
+          <n-avatar :src="form.cover" class="w-14 h-14" />
           <div class="flex flex-col justify-between gap-2">
             <div class="font-bold text-lg">{{ form.name }}</div>
             <div v-if="!loading" class="text-gray-400 text-xs">自动保存：{{ form.saveTime }}</div>
@@ -78,7 +82,7 @@
         </div>
       </div>
       <div class="flex gap-2 items-center">
-        <ModelSelect :id="appStore.modelId" @update="onSave" />
+        <ModelSelect :id="appStore.modelId" class="!w-auto" @update="onSave" />
         <n-button class="px-6 rounded-lg" type="info" @click="onSave">保存应用</n-button>
       </div>
     </div>
@@ -86,12 +90,12 @@
       :default-size="0.3"
       :max="0.9"
       :min="0.2"
-      :resize-trigger-size="2"
+      :resize-trigger-size="1"
       class="h-full"
       direction="horizontal"
     >
       <template #1>
-        <div class="p-2 h-full">
+        <div class="p-2 h-full m-2 bg-white rounded-lg">
           <PromptPage />
         </div>
       </template>
@@ -100,15 +104,17 @@
           :default-size="0.4"
           :max="0.8"
           :min="0.2"
-          :resize-trigger-size="2"
+          :resize-trigger-size="1"
           direction="horizontal"
           style="height: 100%"
         >
           <template #1>
-            <SettingsPage />
+            <div class="p-2 h-full m-2 bg-white rounded-lg">
+              <SettingsPage />
+            </div>
           </template>
           <template #2>
-            <div class="pb-10 h-full w-full bg-white border-t">
+            <div class="pb-10 h-full w-full bg-white rounded-xl m-2">
               <Chat />
             </div>
           </template>

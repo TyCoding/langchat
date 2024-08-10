@@ -19,7 +19,7 @@
   import { useChatStore } from '@/views/chat/store/useChatStore';
   import { useDialog, useMessage } from 'naive-ui';
   import { clean } from '@/api/aigc/chat';
-  import ModelProvider from '@/views/aigc/ModelProvider.vue';
+  import ModelSelect from '@/views/channel/ModelSelect.vue';
 
   defineProps<{
     title: string;
@@ -66,7 +66,7 @@
           <div>Google Search</div>
         </div>
       </n-tag>
-      <ModelProvider />
+      <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 120px" />
 
       <n-button secondary size="small" type="warning" @click="handleClear">
         <template #icon>
