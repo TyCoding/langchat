@@ -74,7 +74,7 @@ public class AuthEndpoint {
         if (userInfo == null) {
             throw new ServiceException("用户名或密码错误");
         }
-        if (!userInfo.getStatus()) {
+        if (!AuthUtil.ADMINISTRATOR.equals(userInfo.getUsername()) && !userInfo.getStatus()) {
             throw new ServiceException("该用户已经禁用，请联系管理员");
         }
 
@@ -125,7 +125,7 @@ public class AuthEndpoint {
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.add(user);
-        SysLogUtil.publish(1, "服务端注册", AuthUtil.getUsername());
+        SysLogUtil.publish(1, "服务端注册", user.getUsername());
         return R.ok();
     }
 

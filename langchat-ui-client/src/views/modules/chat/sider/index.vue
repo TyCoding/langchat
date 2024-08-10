@@ -99,7 +99,7 @@
             <span>{{ t('chat.newChatButton') }}</span>
           </n-button>
         </div>
-        <div class="flex-1 min-h-0 pb-4 overflow-hidden flex flex-col gap-2">
+        <div class="flex-1 min-h-0 pb-6 overflow-hidden flex flex-col gap-2">
           <List />
           <div class="pb-2 px-4">
             <n-select

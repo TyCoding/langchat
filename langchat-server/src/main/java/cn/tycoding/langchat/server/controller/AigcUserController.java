@@ -18,9 +18,12 @@ package cn.tycoding.langchat.server.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcUser;
 import cn.tycoding.langchat.biz.service.AigcUserService;
+import cn.tycoding.langchat.biz.utils.ClientStpUtil;
 import cn.tycoding.langchat.common.annotation.ApiLog;
+import cn.tycoding.langchat.common.constant.CacheConst;
 import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -92,8 +95,12 @@ public class AigcUserController {
     @ApiLog("修改客户端用户")
     @SaCheckPermission("aigc:user:update")
     public R update(@RequestBody AigcUser data) {
-        data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
+        if (StrUtil.isNotBlank(data.getPassword())) {
+            data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
+        }
         userService.updateById(data);
+        ClientStpUtil.getSessionByLoginId(data.getId()).set(CacheConst.AUTH_USER_INFO_KEY, data);
+        ClientStpUtil.getSessionByLoginId(data.getId()).update();
         return R.ok();
     }
 

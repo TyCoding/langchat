@@ -98,7 +98,7 @@
         <n-icon color="#e4e4e7" size="70">
           <SvgIcon icon="et:chat" />
         </n-icon>
-        <n-button secondary size="small" type="success">Chat starting</n-button>
+        <n-button secondary size="small" type="success">开始聊天</n-button>
       </div>
     </div>
     <div v-else class="flex-1 overflow-y-auto mb-1">

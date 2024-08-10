@@ -46,10 +46,10 @@
     if (inputRef.value && !isMobile.value) {
       inputRef.value?.focus();
     }
+    await chatStore.loadData();
     if (chatStore.conversations.length == 0) {
       await chatStore.addConversation({ title: 'New Chat' });
     }
-    await chatStore.loadData();
   });
   onUnmounted(() => {
     if (loading.value) {

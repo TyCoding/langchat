@@ -22,7 +22,8 @@ export function setupPageGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     if (userStore.token != null) {
-      await info();
+      const data = await info();
+      userStore.setUser(data);
     }
     next();
   });

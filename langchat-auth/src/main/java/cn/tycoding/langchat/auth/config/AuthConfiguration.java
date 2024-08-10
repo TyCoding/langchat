@@ -57,7 +57,10 @@ public class AuthConfiguration {
     private final AuthProps authProps;
     private final String[] skipUrl = new String[]{
             "/auth/login",
-            "/aigc/auth/**",
+            "/auth/logout",
+            "/auth/register",
+            "/auth/info",
+            "/client/auth/**",
     };
 
     @Bean

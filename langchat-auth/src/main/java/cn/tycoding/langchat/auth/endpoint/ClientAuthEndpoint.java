@@ -95,7 +95,9 @@ public class ClientAuthEndpoint {
 
     @GetMapping("/info")
     public R info() {
-        return R.ok(ClientAuthUtil.getUserInfo());
+        AigcUser userInfo = ClientAuthUtil.getUserInfo();
+        userInfo.setPassword(null);
+        return R.ok(userInfo);
     }
 
     @DeleteMapping("/logout")
@@ -132,7 +134,7 @@ public class ClientAuthEndpoint {
                 .setStatus(true)
                 .setCreateTime(new Date());
         userService.save(user);
-        SysLogUtil.publish(1, "客户端注册", ClientAuthUtil.getUsername());
+        SysLogUtil.publish(1, "客户端注册", user.getUsername());
         return R.ok();
     }
 

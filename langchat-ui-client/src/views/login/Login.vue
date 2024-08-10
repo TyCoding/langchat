@@ -31,7 +31,7 @@
 
   const form = reactive({
     username: 'langchat@outlook.com',
-    password: '123456',
+    password: 'langchat',
   });
 
   const handleSubmit = (e: any) => {

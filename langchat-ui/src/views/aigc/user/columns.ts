@@ -124,7 +124,6 @@ export const formSchemas: FormSchema[] = [
       type: 'password',
       placeholder: '请输入密码',
     },
-    rules: [{ required: true, message: '请输入密码', trigger: ['blur'] }],
   },
   {
     field: 'nickname',

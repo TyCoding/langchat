@@ -20,7 +20,7 @@
   import { isString } from '@/utils/is';
   import { useUserStore } from '@/store/modules/user';
   import defaultAvatar from '@/assets/avatar.jpg';
-  import logoAvatar from '@/assets/login/logo.png';
+  import chatAvatar from '@/assets/login/chat.png';
 
   interface Props {
     image?: boolean;
@@ -46,8 +46,8 @@
     />
     <NAvatar v-else :src="defaultAvatar" round />
   </template>
-  <span v-else class="">
-    <n-avatar :src="logoAvatar" object-fit="contain" />
+  <span v-else class="flex justify-center items-center">
+    <n-avatar :src="chatAvatar" object-fit="contain" />
   </span>
 </template>
 
