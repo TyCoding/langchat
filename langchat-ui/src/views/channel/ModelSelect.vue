@@ -58,6 +58,7 @@
       });
     });
     options.value = data;
+    modelId.value = chatStore.modelId;
   });
 
   function onUpdate(val: any, opt) {

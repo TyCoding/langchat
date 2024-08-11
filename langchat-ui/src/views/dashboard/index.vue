@@ -25,9 +25,9 @@
   const list = ref([
     {
       key: 'req',
-      label: 'AI请求量',
+      label: 'LLM请求量',
       value: 0,
-      totalLabel: 'AI总请求量',
+      totalLabel: 'LLM总请求量',
       totalValue: 0,
       category: '日',
       type: 'success',
@@ -36,7 +36,7 @@
       key: 'token',
       label: 'Token消耗量',
       value: 0,
-      totalLabel: 'AI总消耗Token量',
+      totalLabel: 'Token总消耗量',
       totalValue: 0,
       category: '日',
       type: 'primary',
@@ -52,9 +52,9 @@
     },
     {
       key: 'knowledge',
-      label: 'AI知识库数量',
+      label: '知识库数量',
       value: 0,
-      totalLabel: 'Prompt提示词数量',
+      totalLabel: 'AI应用数量',
       totalValue: 0,
       category: '合',
       type: 'error',

@@ -67,6 +67,9 @@ public class AigcModelController {
         if (StrUtil.isNotBlank(data.getApiKey()) && data.getApiKey().contains("*")) {
             data.setApiKey(null);
         }
+        if (StrUtil.isNotBlank(data.getSecretKey()) && data.getSecretKey().contains("*")) {
+            data.setSecretKey(null);
+        }
         modelService.save(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));
         return R.ok();
@@ -78,6 +81,9 @@ public class AigcModelController {
     public R update(@RequestBody AigcModel data) {
         if (StrUtil.isNotBlank(data.getApiKey()) && data.getApiKey().contains("*")) {
             data.setApiKey(null);
+        }
+        if (StrUtil.isNotBlank(data.getSecretKey()) && data.getSecretKey().contains("*")) {
+            data.setSecretKey(null);
         }
         modelService.updateById(data);
         SpringContextHolder.publishEvent(new ProviderRefreshEvent(data));

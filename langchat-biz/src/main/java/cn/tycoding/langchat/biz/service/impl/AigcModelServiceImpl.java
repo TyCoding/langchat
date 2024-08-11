@@ -91,7 +91,7 @@ public class AigcModelServiceImpl extends ServiceImpl<AigcModelMapper, AigcModel
             return;
         }
         String sec = StrUtil.hide(model.getSecretKey(), 3, model.getSecretKey().length() - 4);
-        model.setApiKey(sec);
+        model.setSecretKey(sec);
     }
 }
 
