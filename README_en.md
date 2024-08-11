@@ -40,13 +40,25 @@ Support personal free access to learn to use, commercial applications please con
 
 ## Preview
 
-![](docs/imgs/MIK-fYD77Q.png)
+![](docs/imgs/MIK-VbWSZV.png)
 
-![](docs/imgs/MIK-HsjZrq.png)
+![](docs/imgs/MIK-bTXASC.png)
+
+![](docs/imgs/MIK-Zjmc9p.png)
+
+![](docs/imgs/MIK-Iy0atY.png)
+
+![](docs/imgs/MIK-aumvM8.png)
+
+![](docs/imgs/MIK-Fgq248.png)
+
+![](docs/imgs/MIK-K12unX.png)
+
+![](docs/imgs/MIK-AIgzOQ.png)
+
+![](docs/imgs/MIK-Jkc6jv.png)
 
 ![](docs/imgs/MIK-qmfti3.png)
-
-![](docs/imgs/MIK-pMyQJN.png)
 
 ![](docs/imgs/MIK-v4zoRt.png)
 

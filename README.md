@@ -19,11 +19,11 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 
 **欢迎Star、fork 持续关注**
 
-**LangChat部署、启动文档地址：** [http://www.langchat.cn/docs/introduction](http://www.langchat.cn/docs/introduction)
+**LangChat文档地址：** [http://www.langchat.cn/docs/introduction](http://www.langchat.cn/docs/introduction)
 
 ## 商业化支持
 
-> 为爱发电不持久，提供一些付费的技术支持希望理解
+> 提供一些列商业化服务&技术支持
 
 1. 提供项目部署服务，远程部署到服务器
 2. 提供Docker一键部署脚本、提供前后端nginx配置脚本
@@ -77,13 +77,25 @@ Copyright (c) 2024-present, TyCoding.
 
 ## 预览
 
-![](docs/imgs/MIK-fYD77Q.png)
+![](docs/imgs/MIK-VbWSZV.png)
 
-![](docs/imgs/MIK-HsjZrq.png)
+![](docs/imgs/MIK-bTXASC.png)
+
+![](docs/imgs/MIK-Zjmc9p.png)
+
+![](docs/imgs/MIK-Iy0atY.png)
+
+![](docs/imgs/MIK-aumvM8.png)
+
+![](docs/imgs/MIK-Fgq248.png)
+
+![](docs/imgs/MIK-K12unX.png)
+
+![](docs/imgs/MIK-AIgzOQ.png)
+
+![](docs/imgs/MIK-Jkc6jv.png)
 
 ![](docs/imgs/MIK-qmfti3.png)
-
-![](docs/imgs/MIK-pMyQJN.png)
 
 ![](docs/imgs/MIK-v4zoRt.png)
 
