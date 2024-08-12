@@ -25,7 +25,7 @@ CREATE TABLE `aigc_app` (
 -- Records of aigc_app
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_app` (`id`, `model_id`, `knowledge_ids`, `cover`, `name`, `prompt`, `des`, `save_time`, `create_time`) VALUES ('e16a582b47d3041cf14074d5451dff7a', '0c21c2f8ebd3aa3757ef1bae81154cc4', '[\"393704ac13f67fde5da674ddd0742b03\"]', 'http://127.0.0.1/langchat/2024081066b6e0fbcdb220c420fe6bae.JPEG', 'LangChat官方应用', '你是一个专业的文档分析师，你擅长从文档中提取关键内容并总结分析含义，下面你需要根据用户的问题做出解答。\n\n## 限制\n不要回答和文档无关的内容', '快速解答LangChat项目相关的内容，LangChat官方助手', '2024-08-10 11:39:41', '2024-08-04 17:49:24');
+INSERT INTO `aigc_app` (`id`, `model_id`, `knowledge_ids`, `cover`, `name`, `prompt`, `des`, `save_time`, `create_time`) VALUES ('e16a582b47d3041cf14074d5451dff7a', '0c21c2f8ebd3aa3757ef1bae81154cc4', '[\"393704ac13f67fde5da674ddd0742b03\"]', 'http://cdn.tycoding.cn/tycoding.jpg', 'LangChat官方应用', '你是一个专业的文档分析师，你擅长从文档中提取关键内容并总结分析含义，下面你需要根据用户的问题做出解答。\n\n## 限制\n不要回答和文档无关的内容', '快速解答LangChat项目相关的内容，LangChat官方助手', '2024-08-10 11:39:41', '2024-08-04 17:49:24');
 COMMIT;
 
 -- ----------------------------

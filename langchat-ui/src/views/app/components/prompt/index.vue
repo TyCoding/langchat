@@ -16,14 +16,13 @@
 
 <script lang="ts" setup>
   import SvgIcon from '@/components/SvgIcon/index.vue';
-  import { useMessage } from 'naive-ui';
   import { useAppStore } from '@/views/app/store';
 
+  const emit = defineEmits(['update']);
   const appStore = useAppStore();
-  const ms = useMessage();
 
   async function onUpdate() {
-    await appStore.updateInfo();
+    emit('update');
   }
 </script>
 

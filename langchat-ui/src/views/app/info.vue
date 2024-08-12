@@ -22,17 +22,19 @@
   import router from '@/router';
   import { onMounted, ref } from 'vue';
   import { getById } from '@/api/app/app';
-  import { useMessage } from 'naive-ui';
+  import { useDialog, useMessage } from 'naive-ui';
   import { useAppStore } from './store';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
   import { useChatStore } from '@/views/chat/store/useChatStore';
-  import { getMessages } from '@/api/aigc/chat';
+  import { clean, getMessages } from '@/api/aigc/chat';
+  import { formatToDateTime } from '@/utils/dateUtil';
 
   const appStore = useAppStore();
   const chatStore = useChatStore();
   const form = ref<any>({});
   const loading = ref(false);
   const ms = useMessage();
+  const dialog = useDialog();
 
   onMounted(async () => {
     await fetchData();
@@ -54,12 +56,34 @@
     loading.value = false;
   }
 
-  async function onSave(val) {
+  async function onSave() {
     loading.value = true;
-    appStore.modelId = val.id;
+    form.value.saveTime = formatToDateTime(new Date());
     await appStore.updateInfo();
     ms.success('应用配置保存成功');
     loading.value = false;
+  }
+
+  async function onSaveModel(val) {
+    appStore.modelId = val.id;
+    await onSave();
+  }
+
+  function handleClear() {
+    if (chatStore.conversationId == null) {
+      return;
+    }
+    dialog.warning({
+      title: '清除聊天',
+      content: '确认清除聊天',
+      positiveText: '是',
+      negativeText: '否',
+      onPositiveClick: async () => {
+        await clean(chatStore.conversationId);
+        await fetchData();
+        ms.success('聊天记录清除成功');
+      },
+    });
   }
 </script>
 
@@ -82,8 +106,14 @@
         </div>
       </div>
       <div class="flex gap-2 items-center">
-        <ModelSelect :id="appStore.modelId" class="!w-auto" @update="onSave" />
+        <ModelSelect :id="appStore.modelId" class="!w-auto" @update="onSaveModel" />
         <n-button class="px-6 rounded-lg" type="info" @click="onSave">保存应用</n-button>
+        <n-button secondary size="small" type="warning" @click="handleClear">
+          <template #icon>
+            <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
+          </template>
+          清空聊天
+        </n-button>
       </div>
     </div>
     <n-split
@@ -96,7 +126,7 @@
     >
       <template #1>
         <div class="p-2 h-full m-2 bg-white rounded-lg">
-          <PromptPage />
+          <PromptPage @update="onSave" />
         </div>
       </template>
       <template #2>
