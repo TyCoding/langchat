@@ -81,7 +81,7 @@ public class AigcModelServiceImpl extends ServiceImpl<AigcModelMapper, AigcModel
     }
 
     private void hide(AigcModel model) {
-        if (StrUtil.isBlank(model.getApiKey())) {
+        if (model == null || StrUtil.isBlank(model.getApiKey())) {
             return;
         }
         String key = StrUtil.hide(model.getApiKey(), 3, model.getApiKey().length() - 4);

@@ -24,6 +24,7 @@ import cn.tycoding.langchat.biz.mapper.AigcOssMapper;
 import cn.tycoding.langchat.biz.service.AigcOssService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ import java.util.Date;
  * @author tycoding
  * @since 2024/1/4
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AigcOssServiceImpl extends ServiceImpl<AigcOssMapper, AigcOss> implements AigcOssService {
@@ -43,9 +45,11 @@ public class AigcOssServiceImpl extends ServiceImpl<AigcOssMapper, AigcOss> impl
 
     @Override
     public AigcOss upload(MultipartFile file, String userId) {
+        log.info(">>>>>>>>>>>>>> OSS文件上传开始： {}", file.getOriginalFilename());
         FileInfo info = fileStorageService.of(file)
                 .setPath(DateUtil.format(new Date(), DatePattern.PURE_DATE_PATTERN))
                 .upload();
+        log.info(">>>>>>>>>>>>>> OSS文件上传结束： {} - {}", info.getFilename(), info.getUrl());
         AigcOss oss = BeanUtil.copyProperties(info, AigcOss.class);
         oss.setOssId(info.getId());
         oss.setUserId(userId);
