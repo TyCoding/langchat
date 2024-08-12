@@ -55,7 +55,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.ZHIPU,
-    name: '智普AI',
+    name: '智谱AI',
     models: ['embedding-2', 'text_embedding'],
   },
 ];

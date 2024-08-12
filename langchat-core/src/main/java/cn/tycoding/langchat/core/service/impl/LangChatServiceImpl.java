@@ -77,7 +77,7 @@ public class LangChatServiceImpl implements LangChatService {
 
         AiServices<Agent> aiServices = AiServices.builder(Agent.class)
                 .streamingChatLanguageModel(model)
-                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5));
+                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(20));
 
         EmbeddingModel embeddingModel = embeddingProvider.embed();
 
@@ -138,7 +138,7 @@ public class LangChatServiceImpl implements LangChatService {
             StreamingChatLanguageModel model = provider.stream(req.getModelId());
             Agent agent = AiServices.builder(Agent.class)
                     .streamingChatLanguageModel(model)
-                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(5))
+                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(20))
                     .build();
 
             StringBuilder text = new StringBuilder();

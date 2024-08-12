@@ -132,7 +132,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.ZHIPU,
-    name: '智普AI',
+    name: '智谱AI',
     models: ['glm-4', 'glm-3-turbo', 'chatglm_turbo'],
   },
 ];
