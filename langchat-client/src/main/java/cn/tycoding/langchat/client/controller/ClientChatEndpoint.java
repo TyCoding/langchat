@@ -18,7 +18,6 @@ package cn.tycoding.langchat.client.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.service.AigcOssService;
 import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
@@ -60,13 +59,6 @@ public class ClientChatEndpoint {
         req.setEmitter(emitter);
         req.setUserId(ClientAuthUtil.getUserId());
         req.setUsername(ClientAuthUtil.getUsername());
-
-        if (StrUtil.isBlank(req.getPromptText())) {
-            req.setPrompt(PromptUtil.build(req.getMessage()));
-        } else {
-            req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
-        }
-
         clientChatService.chat(req);
         return emitter.get();
     }

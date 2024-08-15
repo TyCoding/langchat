@@ -25,7 +25,6 @@ import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ChatRes;
 import cn.tycoding.langchat.common.exception.ServiceException;
-import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
@@ -64,7 +63,7 @@ public class ChatServiceImpl implements ChatService {
             req.setPromptText(app.getPrompt());
             req.setKnowledgeIds(app.getKnowledgeIds());
         }
-        req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
+//        req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
 
         // save user message
         req.setRole(RoleEnum.USER.getName());
@@ -85,8 +84,7 @@ public class ChatServiceImpl implements ChatService {
                         if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(),
-                                    tokenUsage.outputTokenCount());
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {

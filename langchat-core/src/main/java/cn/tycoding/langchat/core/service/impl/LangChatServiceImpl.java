@@ -74,10 +74,14 @@ public class LangChatServiceImpl implements LangChatService {
         if (StrUtil.isBlank(req.getConversationId())) {
             req.setConversationId(IdUtil.simpleUUID());
         }
-
         AiServices<Agent> aiServices = AiServices.builder(Agent.class)
                 .streamingChatLanguageModel(model)
-                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(20));
+                .systemMessageProvider(memoryId -> req.getPromptText())
+                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
+                        .id(req.getConversationId())
+                        .chatMemoryStore(new PersistentChatMemoryStore())
+                        .maxMessages(20)
+                        .build());
 
         EmbeddingModel embeddingModel = embeddingProvider.embed();
 
@@ -111,7 +115,7 @@ public class LangChatServiceImpl implements LangChatService {
         }
 
         Agent agent = aiServices.build();
-        return agent.stream(req.getConversationId(), req.getPrompt().text());
+        return agent.stream(req.getConversationId(), req.getMessage());
     }
 
     @Override
@@ -123,8 +127,14 @@ public class LangChatServiceImpl implements LangChatService {
 
         Agent agent = AiServices.builder(Agent.class)
                 .streamingChatLanguageModel(model)
+                .systemMessageProvider(memoryId -> req.getPromptText())
+                .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
+                        .id(req.getConversationId())
+                        .chatMemoryStore(new PersistentChatMemoryStore())
+                        .maxMessages(20)
+                        .build())
                 .build();
-        return agent.stream(req.getConversationId(), req.getPrompt().text());
+        return agent.stream(req.getConversationId(), req.getMessage());
     }
 
     @Override
@@ -138,11 +148,16 @@ public class LangChatServiceImpl implements LangChatService {
             StreamingChatLanguageModel model = provider.stream(req.getModelId());
             Agent agent = AiServices.builder(Agent.class)
                     .streamingChatLanguageModel(model)
-                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(20))
+                    .systemMessageProvider(memoryId -> req.getPromptText())
+                    .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
+                            .id(req.getConversationId())
+                            .chatMemoryStore(new PersistentChatMemoryStore())
+                            .maxMessages(20)
+                            .build())
                     .build();
 
             StringBuilder text = new StringBuilder();
-            agent.stream(req.getConversationId(), req.getPrompt().text())
+            agent.stream(req.getConversationId(), req.getMessage())
                     .onNext(text::append)
                     .onComplete((t) -> {
                         future.complete(null);

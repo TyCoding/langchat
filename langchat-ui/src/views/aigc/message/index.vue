@@ -66,7 +66,7 @@
   function handleDelete(record: Recordable) {
     dialog.info({
       title: '提示',
-      content: `您想删除 ${record.title}`,
+      content: `您确定删除这条数据吗`,
       positiveText: '确定',
       negativeText: '取消',
       onPositiveClick: async () => {
@@ -85,7 +85,7 @@
 
 <template>
   <n-card :bordered="false">
-    <n-tabs type="line" animated>
+    <n-tabs animated type="line">
       <n-tab-pane name="1" tab="会话消息列表">
         <div class="mt-2">
           <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />

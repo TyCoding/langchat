@@ -28,7 +28,6 @@ import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.exception.ServiceException;
-import cn.tycoding.langchat.common.utils.PromptUtil;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +64,7 @@ public class AppApiChatEndpoint {
 
     private SseEmitter handler(StreamEmitter emitter, String appId, String modelId, List<CompletionReq.Message> messages) {
         if (messages == null || messages.isEmpty() || StrUtil.isBlank(modelId)) {
-            throw new RuntimeException("Message is undefined. Or check the model configuration");
+            throw new RuntimeException("聊天消息为空，或者没有配置模型信息");
         }
         CompletionReq.Message message = messages.get(0);
         ChatReq req = new ChatReq()
@@ -85,7 +84,6 @@ public class AppApiChatEndpoint {
                 req.setKnowledgeIds(app.getKnowledgeIds());
             }
         }
-        req.setPrompt(PromptUtil.build(message.getContent(), req.getPromptText()));
 
         langChatService
                 .singleChat(req)

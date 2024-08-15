@@ -72,8 +72,7 @@ public class ClientChatServiceImpl implements ClientChatService {
                         if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(),
-                                    tokenUsage.outputTokenCount());
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {
@@ -113,8 +112,7 @@ public class ClientChatServiceImpl implements ClientChatService {
                         if (req.getConversationId() != null) {
                             req.setMessage(text.toString());
                             req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(),
-                                    tokenUsage.outputTokenCount());
+                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                         }
                     })
                     .onError((e) -> {
