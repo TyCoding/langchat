@@ -73,6 +73,7 @@
       return;
     }
     controller = new AbortController();
+    chatStore.metadata = null;
 
     // user
     chatId.value = uuidv4();
@@ -121,8 +122,11 @@
               return;
             }
 
-            const { done, message } = JSON.parse(i.substring(5, i.length));
+            const { done, message, metadata } = JSON.parse(i.substring(5, i.length));
             if (done || message === null) {
+              if (metadata != null && metadata != {}) {
+                chatStore.metadata = metadata;
+              }
               return;
             }
             text += message;
@@ -191,6 +195,7 @@
           <Message
             v-for="(item, index) of dataSources"
             :key="index"
+            :class="dataSources.length - 1 == index ? '!mb-2' : ''"
             :date-time="item.createTime"
             :error="item.isError"
             :inversion="item.role !== 'assistant'"
@@ -198,13 +203,22 @@
             :text="item.message"
             @delete="handleDelete(item)"
           />
-          <div class="sticky bottom-0 left-0 flex justify-center">
-            <NButton v-if="loading" type="warning" @click="handleStop">
-              <template #icon>
-                <SvgIcon icon="ri:stop-circle-line" />
-              </template>
-              停止响应
-            </NButton>
+          <div v-if="chatStore.metadata != null && chatStore.metadata.length != 0" class="w-fit">
+            <div
+              class="bg-[#f4f6f8] rounded-lg p-2 flex px-4 text-[12px] items-center gap-1 text-gray-500"
+            >
+              <SvgIcon class="text-blue-500 text-[14px]" icon="mingcute:document-2-fill" />
+              <span>引用知识库：</span>
+              <div class="flex items-center gap-2">
+                <span
+                  v-for="meta in chatStore.metadata"
+                  :key="meta"
+                  class="hover:bg-gray-200 cursor-pointer rounded-lg"
+                >
+                  {{ meta.docsName }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -217,18 +231,30 @@
             ref="inputRef"
             v-model:value="message"
             :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
-            class="!rounded-full px-2 py-1"
+            class="!rounded-full px-2 py-1 custom-input"
             placeholder="今天想聊些什么~"
             size="large"
             type="textarea"
             @keypress="handleEnter"
           >
             <template #suffix>
-              <n-button :loading="loading" text @click="handleSubmit">
+              <n-button
+                v-if="!loading"
+                class="!cursor-pointer"
+                size="large"
+                text
+                @click="handleSubmit"
+              >
                 <template #icon>
-                  <n-icon :component="SparklesOutline" />
+                  <n-icon :component="SparklesOutline" class="!cursor-pointer" />
                 </template>
               </n-button>
+              <div v-if="loading" class="!cursor-pointer" @click="handleStop">
+                <SvgIcon
+                  class="!text-3xl hover:text-gray-500 !cursor-pointer"
+                  icon="ri:stop-circle-line"
+                />
+              </div>
             </template>
           </n-input>
         </div>
@@ -240,11 +266,7 @@
 <style lang="less" scoped>
   ::v-deep(.custom-input) {
     .n-input-wrapper {
-      padding-right: 10px;
-    }
-    .n-input__suffix {
-      align-items: end;
-      padding-bottom: 6px;
+      padding-right: 6px !important;
     }
   }
 </style>

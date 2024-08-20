@@ -21,5 +21,6 @@ export interface ChatState {
   modelProvider: string | null;
   conversationId: string | null;
   appId: any;
+  metadata: any;
   isGoogleSearch: boolean;
 }

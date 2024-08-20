@@ -35,7 +35,6 @@ import dev.langchain4j.model.output.Response;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
 import dev.langchain4j.rag.query.Query;
 import dev.langchain4j.rag.query.router.DefaultQueryRouter;
@@ -104,9 +103,10 @@ public class LangChatServiceImpl implements LangChatService {
             req.getKnowledgeIds().add(req.getKnowledgeId());
         }
 
-        if (StrUtil.isNotBlank(req.getKnowledgeId())) {
+        if (req.getKnowledgeIds() != null && !req.getKnowledgeIds().isEmpty()) {
             Function<Query, Filter> filter = (query) -> metadataKey(KNOWLEDGE).isIn(req.getKnowledgeIds());
-            ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+            ContentRetriever contentRetriever = EmbeddingStoreContentRetrieverCustom.builder()
+                    .memoryId(req.getConversationId())
                     .embeddingStore(embeddingStore)
                     .embeddingModel(embeddingModel)
                     .dynamicFilter(filter)

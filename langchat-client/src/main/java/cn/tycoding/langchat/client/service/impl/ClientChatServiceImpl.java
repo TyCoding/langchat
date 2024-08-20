@@ -53,7 +53,6 @@ public class ClientChatServiceImpl implements ClientChatService {
         long startTime = System.currentTimeMillis();
         StringBuilder text = new StringBuilder();
 
-        // save user message
         req.setRole(RoleEnum.USER.getName());
         saveMessage(req, 0, 0);
 
