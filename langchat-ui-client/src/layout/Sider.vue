@@ -124,8 +124,8 @@
       </n-space>
 
       <template v-if="user == null">
-        <n-avatar class="cursor-pointer" round>
-          <SvgIcon class="text-lg" icon="solar:user-broken" />
+        <n-avatar class="cursor-pointer !text-black" round>
+          <SvgIcon class="text-2xl" icon="solar:user-broken" />
         </n-avatar>
         <n-button secondary size="tiny" type="success" @click="onLogin()">
           {{ t('side.login') }}

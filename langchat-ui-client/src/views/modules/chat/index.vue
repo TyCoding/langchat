@@ -213,13 +213,6 @@
     }
   }
 
-  const menuOptions = ref([
-    {
-      label: 'Upload File',
-      value: 'Upload File',
-    },
-  ]);
-
   const footerClass = computed(() => {
     let classes = ['p-4 pt-0'];
     if (isMobile.value) {
@@ -272,14 +265,6 @@
                   :text="item.message"
                   @delete="handleDelete(item)"
                 />
-                <div class="sticky bottom-0 left-0 flex justify-center">
-                  <NButton v-if="loading" type="warning" @click="handleStop">
-                    <template #icon>
-                      <SvgIcon icon="ri:stop-circle-line" />
-                    </template>
-                    Stop Responding
-                  </NButton>
-                </div>
               </div>
             </div>
           </main>
@@ -294,27 +279,30 @@
                   ref="inputRef"
                   v-model:value="prompt"
                   :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
-                  :placeholder="t('chat.placeholder')"
                   class="!rounded-full px-2 py-1"
+                  placeholder="今天想聊些什么~"
                   size="large"
                   type="textarea"
                   @keypress="handleEnter"
                 >
-                  <template #prefix>
-                    <n-popselect :options="menuOptions" placement="top" trigger="click">
-                      <n-button class="!mr-2" size="large" text>
-                        <template #icon>
-                          <SvgIcon icon="ion:attach" />
-                        </template>
-                      </n-button>
-                    </n-popselect>
-                  </template>
                   <template #suffix>
-                    <n-button :loading="loading" text @click="handleSubmit">
+                    <n-button
+                      v-if="!loading"
+                      class="!cursor-pointer"
+                      size="large"
+                      text
+                      @click="handleSubmit"
+                    >
                       <template #icon>
                         <SvgIcon icon="mdi:sparkles-outline" />
                       </template>
                     </n-button>
+                    <div v-if="loading" class="!cursor-pointer" @click="handleStop">
+                      <SvgIcon
+                        class="!text-3xl hover:text-gray-500 !cursor-pointer"
+                        icon="ri:stop-circle-line"
+                      />
+                    </div>
                   </template>
                 </n-input>
               </div>

@@ -31,7 +31,7 @@
 
   onMounted(async () => {
     const providers = await getModels({ type: ModelTypeEnum.CHAT });
-    if (chatStore.modelId === '') {
+    if (chatStore.modelId === '' || chatStore.modelId === null) {
       if (providers != null && providers.length != 0) {
         const item = providers[0];
         chatStore.modelId = item.id;

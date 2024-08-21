@@ -54,18 +54,6 @@
       <span>{{ title }}</span>
     </div>
     <n-space align="center">
-      <n-tag
-        v-model:checked="chatStore.isGoogleSearch"
-        :bordered="false"
-        checkable
-        class="border"
-        type="primary"
-      >
-        <div class="text-sm flex items-center gap-1">
-          <SvgIcon icon="devicon:google" />
-          <div>Google Search</div>
-        </div>
-      </n-tag>
       <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 140px" />
 
       <n-button secondary size="small" type="warning" @click="handleClear">

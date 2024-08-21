@@ -22,5 +22,4 @@ export interface ChatState {
   conversationId: string | null;
   appId: any;
   metadata: any;
-  isGoogleSearch: boolean;
 }

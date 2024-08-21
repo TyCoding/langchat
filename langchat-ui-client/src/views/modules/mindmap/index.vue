@@ -49,7 +49,7 @@
     }
   }
 
-  function onCase(text: string) {
+  function onRender(text: string) {
     genText.value = text;
   }
 </script>
@@ -69,7 +69,7 @@
 
         <ModelProvider />
       </div>
-      <Sider :genText="genText" :loading="loading" @case="onCase" @generate="onGenerate" />
+      <Sider :genText="genText" :loading="loading" @generate="onGenerate" @render="onRender" />
     </n-layout-sider>
 
     <MindMap :genText="genText" :loading="loading" />

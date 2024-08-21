@@ -28,7 +28,6 @@ export const useChatStore = defineStore('chat-store', {
       messages: [],
       metadata: null,
       appId: null,
-      isGoogleSearch: false,
     },
 
   getters: {},

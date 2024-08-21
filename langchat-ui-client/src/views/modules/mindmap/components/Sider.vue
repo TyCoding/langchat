@@ -26,7 +26,7 @@
   const loading = computed(() => {
     return props.loading;
   });
-  const emit = defineEmits(['generate', 'case']);
+  const emit = defineEmits(['generate', 'render']);
   const text = ref('');
   const gen = ref('');
 
@@ -36,6 +36,10 @@
       gen.value = val;
     }
   );
+
+  function onReRender() {
+    emit('render', gen.value);
+  }
 
   function onCase() {
     text.value = `番茄炒蛋怎么做`;
@@ -66,7 +70,7 @@
 - 注意控制火候，避免炒焦
 - 根据个人口味调整调料比例
 		`;
-    emit('case', gen.value);
+    emit('render', gen.value);
   }
 
   function onGenerate() {
@@ -94,8 +98,11 @@
 
     <div class="mt-6">
       <div class="flex flex-wrap justify-between items-center mb-2">
-        <div>{{ t('mindmap.output') }}</div>
-        <n-button text type="success" @click="onCase">{{ t('mindmap.example') }}</n-button>
+        <div class="flex items-center gap-1">
+          <span>{{ t('mindmap.output') }}</span>
+          <n-button text type="success" @click="onCase">{{ t('mindmap.example') }}</n-button>
+        </div>
+        <n-button secondary size="tiny" type="success" @click="onReRender">重新渲染</n-button>
       </div>
     </div>
     <n-input

@@ -107,6 +107,7 @@
               :label-field="'name'"
               :options="chatStore.apps"
               :value-field="'id'"
+              placeholder="请选择应用"
             />
           </div>
         </div>

@@ -35,7 +35,6 @@
   const emits = defineEmits(['focus-active']);
   const messageRef = ref();
   const message = ref('');
-  const isGoogleSearch = ref(false);
   const loading = ref(false);
   const docStore = useDocStore();
   const chatStore = useChatStore();
@@ -111,7 +110,6 @@
           modelId: chatStore.modelId,
           modelName: chatStore.modelName,
           modelProvider: chatStore.modelProvider,
-          isGoogleSearch: isGoogleSearch.value,
         },
         ({ event }) => {
           const list = event.target.responseText.split('\n\n');

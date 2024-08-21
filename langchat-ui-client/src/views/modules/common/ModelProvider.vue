@@ -27,7 +27,7 @@
   onMounted(async () => {
     const providers = await getChatModels();
     const data: any = [];
-    if (chatStore.modelName === '') {
+    if (chatStore.modelId === '' || chatStore.modelId === null) {
       chatStore.modelId = providers[0].id;
       chatStore.modelName = providers[0].model;
       chatStore.modelProvider = providers[0].provider;

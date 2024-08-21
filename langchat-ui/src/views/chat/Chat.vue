@@ -24,7 +24,6 @@
   import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { chat } from '@/api/aigc/chat';
-  import { SparklesOutline } from '@vicons/ionicons5';
 
   const dialog = useDialog();
   const ms = useMessage();
@@ -101,7 +100,6 @@
           appId: chatStore.appId,
           message,
           role: 'user',
-          isGoogleSearch: chatStore.isGoogleSearch,
           modelId: chatStore.modelId,
           modelName: chatStore.modelName,
           modelProvider: chatStore.modelProvider,
@@ -256,7 +254,7 @@
                 @click="handleSubmit"
               >
                 <template #icon>
-                  <n-icon :component="SparklesOutline" class="!cursor-pointer" />
+                  <SvgIcon icon="mdi:sparkles-outline" />
                 </template>
               </n-button>
               <div v-if="loading" class="!cursor-pointer" @click="handleStop">
