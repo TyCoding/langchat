@@ -3,14 +3,19 @@ package cn.tycoding.langchat.core.provider.model.config.strategy;
 import cn.hutool.core.lang.Pair;
 import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
+import cn.tycoding.langchat.common.enums.ChatErrorEnum;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.zhipu.ZhipuAiChatModel;
 import dev.langchain4j.model.zhipu.ZhipuAiEmbeddingModel;
 import dev.langchain4j.model.zhipu.ZhipuAiImageModel;
 import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class ZhiPuModelConfigHandler implements ModelConfigHandler{
+public class ZhiPuModelConfigHandler implements ModelConfigHandler {
     @Override
     public boolean whetherCurrentModel(AigcModel model) {
         return ProviderEnum.ZHIPU.name().equals(model.getProvider());
@@ -28,17 +33,24 @@ public class ZhiPuModelConfigHandler implements ModelConfigHandler{
 
     @Override
     public boolean basicCheck(AigcModel model) {
+        if (StringUtils.isBlank(model.getBaseUrl())) {
+            throw new ServiceException(ChatErrorEnum.BASE_URL_IS_NULL.getErrorCode(),
+                    ChatErrorEnum.BASE_URL_IS_NULL.getErrorDesc(ProviderEnum.ZHIPU.name(), model.getType()));
+        }
+        if (StringUtils.isBlank(model.getApiKey())) {
+            throw new ServiceException(ChatErrorEnum.API_KEY_IS_NULL.getErrorCode(),
+                    ChatErrorEnum.API_KEY_IS_NULL.getErrorDesc(ProviderEnum.ZHIPU.name(), model.getType()));
+        }
         return true;
     }
 
     @Override
-    public StreamingChatLanguageModel chatConfig(AigcModel model) {
-        try{
-            if(!whetherCurrentModel(model)){
+    public StreamingChatLanguageModel buildStreamingChat(AigcModel model) {
+        try {
+            if (!whetherCurrentModel(model)) {
                 return null;
             }
-            if(!basicCheck(model)){
-                log.error("zhipu 配置信息有误");
+            if (!basicCheck(model)) {
                 return null;
             }
             return ZhipuAiStreamingChatModel
@@ -52,7 +64,40 @@ public class ZhiPuModelConfigHandler implements ModelConfigHandler{
                     .logRequests(true)
                     .logResponses(true)
                     .build();
-        }catch(Exception e){
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("zhipu streaming chat 配置报错", e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public ChatLanguageModel buildChatLanguageModel(AigcModel model) {
+        try {
+            if (!whetherCurrentModel(model)) {
+                return null;
+            }
+            if (!basicCheck(model)) {
+                return null;
+            }
+            return ZhipuAiChatModel
+                    .builder()
+                    .apiKey(model.getApiKey())
+                    .baseUrl(model.getBaseUrl())
+                    .model(model.getModel())
+                    .maxToken(model.getResponseLimit())
+                    .temperature(model.getTemperature())
+                    .topP(model.getTopP())
+                    .logRequests(true)
+                    .logResponses(true)
+                    .build();
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
+        } catch (Exception e) {
             log.error("zhipu chat 配置报错", e);
             return null;
         }
@@ -60,13 +105,12 @@ public class ZhiPuModelConfigHandler implements ModelConfigHandler{
     }
 
     @Override
-    public Pair<String, DimensionAwareEmbeddingModel> embeddingConfig(AigcModel model) {
-        try{
-            if(!whetherCurrentModel(model)){
+    public Pair<String, DimensionAwareEmbeddingModel> buildEmbedding(AigcModel model) {
+        try {
+            if (!whetherCurrentModel(model)) {
                 return null;
             }
-            if(!basicCheck(model)){
-                log.error("zhipu 配置信息有误");
+            if (!basicCheck(model)) {
                 return null;
             }
             ZhipuAiEmbeddingModel zhipuAiEmbeddingModel = ZhipuAiEmbeddingModel
@@ -78,23 +122,25 @@ public class ZhiPuModelConfigHandler implements ModelConfigHandler{
                     .logResponses(true)
                     .build();
             return Pair.of(EmbedConst.CLAZZ_NAME_ZHIPU, zhipuAiEmbeddingModel);
-        }catch (Exception e){
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
+        } catch (Exception e) {
             log.error("zhipu embedding 配置报错", e);
             return null;
         }
     }
 
     @Override
-    public ImageModel imageConfig(AigcModel model) {
-        try{
-            if(!whetherCurrentModel(model)){
+    public ImageModel buildImage(AigcModel model) {
+        try {
+            if (!whetherCurrentModel(model)) {
                 return null;
             }
-            if(!basicCheck(model)){
-                log.error("zhipu 配置信息有误");
+            if (!basicCheck(model)) {
                 return null;
             }
-           return  ZhipuAiImageModel
+            return ZhipuAiImageModel
                     .builder()
                     .apiKey(model.getApiKey())
                     .model(model.getModel())
@@ -102,7 +148,10 @@ public class ZhiPuModelConfigHandler implements ModelConfigHandler{
                     .logRequests(true)
                     .logResponses(true)
                     .build();
-        }catch (Exception e){
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
+        } catch (Exception e) {
             log.error("zhipu image 配置报错", e);
             return null;
         }

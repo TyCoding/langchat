@@ -2,6 +2,7 @@ package cn.tycoding.langchat.core.provider.model.config.strategy;
 
 import cn.hutool.core.lang.Pair;
 import cn.tycoding.langchat.biz.entity.AigcModel;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
@@ -28,12 +29,14 @@ public interface ModelConfigHandler {
 
 
     /**
-     * chat config
+     * streaming chat config
      *
      * @param model
      * @return
      */
-    StreamingChatLanguageModel chatConfig(AigcModel model);
+    StreamingChatLanguageModel buildStreamingChat(AigcModel model);
+
+    ChatLanguageModel buildChatLanguageModel(AigcModel model);
 
     /**
      * embedding config
@@ -41,7 +44,7 @@ public interface ModelConfigHandler {
      * @param model
      * @return
      */
-    Pair<String, DimensionAwareEmbeddingModel> embeddingConfig(AigcModel model);
+    Pair<String, DimensionAwareEmbeddingModel> buildEmbedding(AigcModel model);
 
     /**
      * image config
@@ -49,7 +52,7 @@ public interface ModelConfigHandler {
      * @param model
      * @return
      */
-    ImageModel imageConfig(AigcModel model);
+    ImageModel buildImage(AigcModel model);
 
 
 }

@@ -4,10 +4,14 @@ import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
+import cn.tycoding.langchat.common.enums.ChatErrorEnum;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
@@ -29,20 +33,19 @@ public class OenAIModelConfigHandler implements ModelConfigHandler{
     public boolean basicCheck(AigcModel model) {
         String apiKey = model.getApiKey();
         if (StrUtil.isBlank(apiKey)) {
-            log.error("openai apikey is null");
-            return false;
+            throw new ServiceException(ChatErrorEnum.API_KEY_IS_NULL.getErrorCode(),
+                    ChatErrorEnum.API_KEY_IS_NULL.getErrorDesc(ProviderEnum.OPENAI.name(), model.getType()));
         }
         return true;
     }
 
     @Override
-    public StreamingChatLanguageModel chatConfig(AigcModel model) {
+    public StreamingChatLanguageModel buildStreamingChat(AigcModel model) {
         try {
             if(!whetherCurrentModel(model)){
                 return null;
             }
             if (!basicCheck(model)) {
-                log.error("openai 配置信息有误");
                 return null;
             }
             return OpenAiStreamingChatModel
@@ -56,21 +59,51 @@ public class OenAIModelConfigHandler implements ModelConfigHandler{
                     .logResponses(true)
                     .topP(model.getTopP())
                     .build();
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("openai chat 模型配置报错", e);
             return null;
         }
-
     }
 
     @Override
-    public Pair<String, DimensionAwareEmbeddingModel> embeddingConfig(AigcModel model) {
+    public ChatLanguageModel buildChatLanguageModel(AigcModel model) {
         try {
-            if(!whetherCurrentModel(model)){
+            if (!whetherCurrentModel(model)) {
                 return null;
             }
             if (!basicCheck(model)) {
-                log.error("openai 配置信息有误");
+                return null;
+            }
+            return OpenAiChatModel
+                    .builder()
+                    .apiKey(model.getApiKey())
+                    .baseUrl(model.getBaseUrl())
+                    .modelName(model.getModel())
+                    .maxTokens(model.getResponseLimit())
+                    .temperature(model.getTemperature())
+                    .logRequests(true)
+                    .logResponses(true)
+                    .topP(model.getTopP())
+                    .build();
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("openai chat 模型配置报错", e);
+            return null;
+        }
+    }
+
+    @Override
+    public Pair<String, DimensionAwareEmbeddingModel> buildEmbedding(AigcModel model) {
+        try {
+            if (!whetherCurrentModel(model)) {
+                return null;
+            }
+            if (!basicCheck(model)) {
                 return null;
             }
             OpenAiEmbeddingModel openAiEmbeddingModel = OpenAiEmbeddingModel
@@ -83,6 +116,9 @@ public class OenAIModelConfigHandler implements ModelConfigHandler{
                     .logResponses(true)
                     .build();
             return Pair.of(EmbedConst.CLAZZ_NAME_OPENAI,openAiEmbeddingModel);
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("openai embedding 模型配置报错", e);
             return null;
@@ -90,13 +126,12 @@ public class OenAIModelConfigHandler implements ModelConfigHandler{
     }
 
     @Override
-    public ImageModel imageConfig(AigcModel model) {
+    public ImageModel buildImage(AigcModel model) {
         try {
             if(!whetherCurrentModel(model)){
                 return null;
             }
             if (!basicCheck(model)) {
-                log.error("openai 配置信息有误");
                 return null;
             }
             return OpenAiImageModel
@@ -110,6 +145,9 @@ public class OenAIModelConfigHandler implements ModelConfigHandler{
                     .logRequests(true)
                     .logResponses(true)
                     .build();
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("openai image 模型配置报错", e);
             return null;

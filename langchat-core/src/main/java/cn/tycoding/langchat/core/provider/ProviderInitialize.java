@@ -18,34 +18,15 @@ package cn.tycoding.langchat.core.provider;
 
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.component.ModelTypeEnum;
-import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.core.consts.EmbedConst;
 import cn.tycoding.langchat.core.provider.model.config.strategy.ModelConfigHandler;
-import dev.langchain4j.model.anthropic.AnthropicStreamingChatModel;
-import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
-import dev.langchain4j.model.azure.AzureOpenAiImageModel;
-import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
-import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
-import dev.langchain4j.model.dashscope.QwenStreamingChatModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
-import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
-import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
-import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiImageModel;
-import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
-import dev.langchain4j.model.qianfan.QianfanEmbeddingModel;
-import dev.langchain4j.model.qianfan.QianfanStreamingChatModel;
-import dev.langchain4j.model.vertexai.VertexAiGeminiStreamingChatModel;
-import dev.langchain4j.model.zhipu.ZhipuAiEmbeddingModel;
-import dev.langchain4j.model.zhipu.ZhipuAiImageModel;
-import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -103,13 +84,13 @@ public class ProviderInitialize implements ApplicationContextAware {
                 return;
             }
             modelConfigHandlers.forEach(x -> {
-                StreamingChatLanguageModel streamingChatLanguageModel = x.chatConfig(model);
+                StreamingChatLanguageModel streamingChatLanguageModel = x.buildStreamingChat(model);
                 if (ObjectUtil.isNotEmpty(streamingChatLanguageModel)) {
                     contextHolder.registerBean(model.getId(), streamingChatLanguageModel);
                 }
             });
         } catch (Exception e) {
-            log.error("model 【id{} name{}】 chat 配置报错", model.getId(), model.getName());
+            log.error("model 【 id: {} name: {}】streaming chat 配置报错", model.getId(), model.getName());
         }
 
     }
@@ -121,7 +102,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                 return;
             }
             modelConfigHandlers.forEach(x -> {
-                Pair<String, DimensionAwareEmbeddingModel> embeddingModelPair = x.embeddingConfig(model);
+                Pair<String, DimensionAwareEmbeddingModel> embeddingModelPair = x.buildEmbedding(model);
                 if (ObjectUtil.isNotEmpty(embeddingModelPair)) {
                     contextHolder.registerBean(embeddingModelPair.getKey(), embeddingModelPair.getValue());
                 }
@@ -130,7 +111,6 @@ public class ProviderInitialize implements ApplicationContextAware {
         } catch (Exception e) {
             log.error("model 【id{} name{}】 embedding 配置报错", model.getId(), model.getName());
         }
-
     }
 
     private void imageHandler(AigcModel model) {
@@ -140,7 +120,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                 return;
             }
             modelConfigHandlers.forEach(x -> {
-                ImageModel imageModel = x.imageConfig(model);
+                ImageModel imageModel = x.buildImage(model);
                 if (ObjectUtil.isNotEmpty(imageModel)) {
                     contextHolder.registerBean(model.getId(), imageModel);
                 }
@@ -148,6 +128,5 @@ public class ProviderInitialize implements ApplicationContextAware {
         } catch (Exception e) {
             log.error("model 【id{} name{}】 image 配置报错", model.getId(), model.getName());
         }
-
     }
 }
