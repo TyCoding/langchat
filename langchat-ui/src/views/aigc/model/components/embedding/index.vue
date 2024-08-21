@@ -18,21 +18,24 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { getSchemas, LLMProviders } from './columns';
   import { isNullOrWhitespace } from '@/utils/is';
-  import { add, list as getModels, update } from '@/api/aigc/model';
-  import { useMessage } from 'naive-ui';
+  import { add, del, list as getModels, update } from '@/api/aigc/model';
+  import { useDialog, useMessage } from 'naive-ui';
   import { onMounted } from 'vue';
   import { ModelTypeEnum } from '@/api/models';
   import { ref } from 'vue-demi';
 
+  const message = useMessage();
+  const dialog = useDialog();
   const ms = useMessage();
-  const [register, { setFieldsValue }] = useForm({
+  const schemas = ref();
+  const isLocalEmbedding = ref(false);
+
+  const [register, { setFieldsValue, getFieldsValue }] = useForm({
     labelWidth: 120,
     gridProps: { cols: 1 },
     layout: 'horizontal',
     submitButtonText: '提交',
   });
-  const schemas = ref();
-  const isLocalEmbedding = ref(false);
 
   onMounted(async () => {
     const data = await getModels({ type: ModelTypeEnum.EMBEDDING });
@@ -63,6 +66,27 @@
       ms.error('请完善表单');
     }
   }
+
+  function onUseLocal(val: boolean) {
+    if (val) {
+      dialog.info({
+        title: '提示',
+        content: `启用本地Embedding模型将会删除下面表单中的模型配置，请谨慎操作`,
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          const data = getFieldsValue();
+          if (data.id !== undefined) {
+            await del(data.id);
+          }
+          message.success('本地模型已启用');
+        },
+        onNegativeClick: () => {},
+      });
+    } else {
+      message.success('本地模型已禁用');
+    }
+  }
 </script>
 
 <template>
@@ -90,7 +114,7 @@
         <n-tag class="mr-2 rounded-2xl px-5" type="success">
           是否启用本地Embedding向量模型：
         </n-tag>
-        <n-switch v-model:value="isLocalEmbedding" disabled>
+        <n-switch v-model:value="isLocalEmbedding" @update:value="onUseLocal">
           <template #checked> 启用 </template>
           <template #unchecked> 不启用 </template>
         </n-switch>

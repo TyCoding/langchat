@@ -93,7 +93,7 @@
   <div v-if="form.name !== undefined" class="rounded bg-[#f9f9f9] w-full h-full pb-10">
     <div class="p-4 flex justify-between items-center bg-white rounded">
       <div class="flex gap-5 items-center min-w-20">
-        <n-button text type="primary" @click="router.back()">
+        <n-button text type="primary" @click="router.push('/app/app')">
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
         </n-button>
         <div class="flex gap-2 items-center pr-4">

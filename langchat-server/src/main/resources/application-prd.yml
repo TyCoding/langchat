@@ -58,11 +58,5 @@ langchat:
       password: root
       port: 5432
       database: langchat
-      table: vector_1
+      table: langchat_store
       dimension: 384
-    # Google搜索
-#  web-search:
-#    google:
-#      api-key: <KEY>
-#      csi: <CSI>
-
