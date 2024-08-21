@@ -25,26 +25,28 @@
   const props = defineProps<{
     id: any;
   }>();
-  const emit = defineEmits(['update']);
+  const emit = defineEmits(['update', 'load']);
   const options = ref([]);
   const modelId = ref('');
 
   onMounted(async () => {
     const providers = await getModels({ type: ModelTypeEnum.CHAT });
-    const data: any = [];
-    if (chatStore.modelName === '') {
+    if (chatStore.modelId === '') {
       if (providers != null && providers.length != 0) {
-        chatStore.modelId = providers[0].id;
-        chatStore.modelName = providers[0].model;
-        chatStore.modelProvider = providers[0].provider;
+        const item = providers[0];
+        chatStore.modelId = item.id;
+        chatStore.modelName = item.model;
+        chatStore.modelProvider = item.provider;
 
         if (props.id == null) {
-          modelId.value = providers[0].id;
+          modelId.value = item.id;
+          emit('load', item);
         } else {
           modelId.value = props.id;
         }
       }
     }
+    const data: any = [];
     LLMProviders.forEach((i) => {
       const children = providers.filter((m) => m.provider == i.model);
       if (children.length === 0) {

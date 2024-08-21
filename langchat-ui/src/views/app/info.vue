@@ -21,12 +21,11 @@
   import Chat from '@/views/chat/Chat.vue';
   import router from '@/router';
   import { onMounted, ref } from 'vue';
-  import { getById } from '@/api/app/app';
   import { useDialog, useMessage } from 'naive-ui';
   import { useAppStore } from './store';
   import ModelSelect from '@/views/channel/ModelSelect.vue';
   import { useChatStore } from '@/views/chat/store/useChatStore';
-  import { clean, getMessages } from '@/api/aigc/chat';
+  import { clean, getAppInfo, getMessages } from '@/api/aigc/chat';
   import { formatToDateTime } from '@/utils/dateUtil';
 
   const appStore = useAppStore();
@@ -43,7 +42,10 @@
   async function fetchData() {
     loading.value = true;
     const id = router.currentRoute.value.params.id;
-    const data = await getById(id as string);
+    const data = await getAppInfo({
+      appId: id,
+      conversationId: null,
+    });
     form.value = data;
     appStore.info = data;
     appStore.knowledgeIds = data.knowledgeIds == null ? [] : data.knowledgeIds;
@@ -95,7 +97,10 @@
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
         </n-button>
         <div class="flex gap-2 items-center pr-4">
-          <n-avatar :src="form.cover" class="w-14 h-14" />
+          <img
+            :src="form.cover == null ? '/src/assets/icons/app.png' : form.cover"
+            class="w-14 h-14"
+          />
           <div class="flex flex-col justify-between gap-2">
             <div class="font-bold text-lg">{{ form.name }}</div>
             <div v-if="!loading" class="text-gray-400 text-xs">自动保存：{{ form.saveTime }}</div>

@@ -18,14 +18,9 @@ package cn.tycoding.langchat.app.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.app.store.AppStore;
-import cn.tycoding.langchat.biz.entity.AigcKnowledge;
-import cn.tycoding.langchat.biz.entity.AigcModel;
-import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
-import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
@@ -35,11 +30,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,34 +39,11 @@ import java.util.stream.Collectors;
 public class AigcAppController {
 
     private final AigcAppService aigcAppService;
-    private final AigcModelService aigcModelService;
-    private final AigcKnowledgeService aigcKnowledgeService;
     private final AppStore appStore;
 
     @GetMapping("/list")
     public R<List<AigcApp>> list(AigcApp data) {
-        List<AigcApp> list = aigcAppService.list(Wrappers.<AigcApp>lambdaQuery()
-                .like(StrUtil.isNotBlank(data.getName()), AigcApp::getName, data.getName()));
-
-        Map<String, List<AigcModel>> modelMap = aigcModelService.list(new AigcModel()).stream().collect(Collectors.groupingBy(AigcModel::getId));
-        Map<String, List<AigcKnowledge>> knowledgeMap = aigcKnowledgeService.list().stream().collect(Collectors.groupingBy(AigcKnowledge::getId));
-        list.forEach(i -> {
-            List<AigcModel> models = modelMap.get(i.getModelId());
-            if (models != null) {
-                i.setModel(models.get(0));
-            }
-            if (i.getKnowledgeIds() != null) {
-                List<AigcKnowledge> knowledges = new ArrayList<>();
-                i.getKnowledgeIds().forEach(k -> {
-                    List<AigcKnowledge> items = knowledgeMap.get(k);
-                    if (items != null) {
-                        knowledges.add(items.get(0));
-                    }
-                });
-                i.setKnowledges(knowledges);
-            }
-        });
-        return R.ok(list);
+        return R.ok(aigcAppService.list(data));
     }
 
     @GetMapping("/page")
@@ -88,16 +57,6 @@ public class AigcAppController {
     @GetMapping("/{id}")
     public R<AigcApp> findById(@PathVariable String id) {
         AigcApp app = aigcAppService.getById(id);
-        if (app != null) {
-            String modelId = app.getModelId();
-            if (modelId != null) {
-                app.setModel(aigcModelService.selectById(modelId));
-            }
-            List<String> knowledgeIds = app.getKnowledgeIds();
-            if (knowledgeIds != null && !knowledgeIds.isEmpty()) {
-                app.setKnowledges(aigcKnowledgeService.list(Wrappers.<AigcKnowledge>lambdaQuery().in(AigcKnowledge::getId, knowledgeIds)));
-            }
-        }
         return R.ok(app);
     }
 

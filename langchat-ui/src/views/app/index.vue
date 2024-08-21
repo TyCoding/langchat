@@ -100,12 +100,12 @@
           @click="onInfo(item)"
         >
           <div class="flex flex-col sm:-mx-4 sm:flex-row">
-            <n-avatar
-              :src="item.cover"
-              class="flex-shrink-0 object-cover w-20 h-20 rounded sm:mx-4"
+            <img
+              :src="item.cover == null ? '/src/assets/icons/app.png' : item.cover"
+              class="flex-shrink-0 object-cover w-16 h-16 rounded sm:mx-4"
             />
 
-            <div class="">
+            <div class="pr-4">
               <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
 
               <p class="mt-2 text-gray-500 capitalize text-xs">

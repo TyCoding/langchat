@@ -123,6 +123,7 @@
             }
 
             const { done, message, metadata } = JSON.parse(i.substring(5, i.length));
+            console.log('xxx', metadata);
             if (done || message === null) {
               if (metadata != null && metadata != {}) {
                 chatStore.metadata = metadata;
@@ -195,7 +196,7 @@
           <Message
             v-for="(item, index) of dataSources"
             :key="index"
-            :class="dataSources.length - 1 == index ? '!mb-2' : ''"
+            :class="dataSources.length - 1 == index ? '!mb-2' : 'mb-6'"
             :date-time="item.createTime"
             :error="item.isError"
             :inversion="item.role !== 'assistant'"
@@ -203,19 +204,18 @@
             :text="item.message"
             @delete="handleDelete(item)"
           />
-          <div v-if="chatStore.metadata != null && chatStore.metadata.length != 0" class="w-fit">
+          <div
+            v-if="chatStore.metadata != null && chatStore.metadata.length != 0"
+            class="w-fit ml-10"
+          >
             <div
               class="bg-[#f4f6f8] rounded-lg p-2 flex px-4 text-[12px] items-center gap-1 text-gray-500"
             >
               <SvgIcon class="text-blue-500 text-[14px]" icon="mingcute:document-2-fill" />
               <span>引用知识库：</span>
               <div class="flex items-center gap-2">
-                <span
-                  v-for="meta in chatStore.metadata"
-                  :key="meta"
-                  class="hover:bg-gray-200 cursor-pointer rounded-lg"
-                >
-                  {{ meta.docsName }}
+                <span class="hover:bg-gray-200 cursor-pointer rounded-lg">
+                  {{ chatStore.metadata.docsName }}
                 </span>
               </div>
             </div>

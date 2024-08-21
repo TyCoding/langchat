@@ -17,16 +17,27 @@
 package cn.tycoding.langchat.server.endpoint;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.util.StrUtil;
+import cn.tycoding.langchat.app.entity.AigcApp;
+import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.biz.entity.AigcMessage;
 import cn.tycoding.langchat.biz.service.AigcMessageService;
+import cn.tycoding.langchat.common.constant.RoleEnum;
 import cn.tycoding.langchat.common.dto.ChatReq;
+import cn.tycoding.langchat.common.properties.ChatProps;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.common.utils.StreamEmitter;
+import cn.tycoding.langchat.core.service.impl.PersistentChatMemoryStore;
 import cn.tycoding.langchat.server.service.ChatService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
+import dev.langchain4j.data.message.AiMessage;
+import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.data.message.SystemMessage;
+import dev.langchain4j.data.message.UserMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +51,8 @@ public class ChatEndpoint {
 
     private final ChatService chatService;
     private final AigcMessageService messageService;
+    private final AigcAppService appService;
+    private final ChatProps chatProps;
 
     @PostMapping("/chat/completions")
     @SaCheckPermission("chat:completions")
@@ -53,9 +66,39 @@ public class ChatEndpoint {
         return emitter.get();
     }
 
+    @GetMapping("/app/info")
+    public R<AigcApp> appInfo(@RequestParam String appId, String conversationId) {
+        AigcApp app = appService.getById(appId);
+        if (StrUtil.isBlank(conversationId)) {
+            conversationId = app.getId();
+        }
+
+        if (StrUtil.isNotBlank(app.getPrompt())) {
+            // initialize chat memory
+            SystemMessage message = new SystemMessage(app.getPrompt());
+            PersistentChatMemoryStore.init(conversationId, message);
+        }
+
+        return R.ok(app);
+    }
+
     @GetMapping("/chat/messages/{conversationId}")
     public R messages(@PathVariable String conversationId) {
         List<AigcMessage> list = messageService.getMessages(conversationId, String.valueOf(AuthUtil.getUserId()));
+
+        // initialize chat memory
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        list.forEach(item -> {
+            if (chatMessages.size() >= chatProps.getMemoryMaxMessage()) {
+                return;
+            }
+            if (item.getRole().equals(RoleEnum.ASSISTANT.getName())) {
+                chatMessages.add(new AiMessage(item.getMessage()));
+            } else {
+                chatMessages.add(new UserMessage(item.getMessage()));
+            }
+        });
+        PersistentChatMemoryStore.init(conversationId, chatMessages);
         return R.ok(list);
     }
 
@@ -63,6 +106,9 @@ public class ChatEndpoint {
     @SaCheckPermission("chat:messages:clean")
     public R cleanMessage(@PathVariable String conversationId) {
         messageService.clearMessage(conversationId);
+
+        // clean chat memory
+        PersistentChatMemoryStore.clean(conversationId);
         return R.ok();
     }
 }

@@ -23,7 +23,12 @@
   import { basicModal, useModal } from '@/components/Modal';
   import { isNullOrWhitespace } from '@/utils/is';
   import { uploadApi } from '@/api/aigc/oss';
+  import ModelSelect from '@/views/channel/ModelSelect.vue';
+  import { useAppStore } from '@/views/app/store';
+  import { useChatStore } from '@/views/chat/store/useChatStore';
 
+  const appStore = useAppStore();
+  const chatStore = useChatStore();
   const emit = defineEmits(['reload']);
   const message = useMessage();
   const fileList = ref<any>([]);
@@ -48,7 +53,7 @@
     await nextTick();
     if (id) {
       const data = await getById(id);
-      setFieldsValue(data);
+      setFieldsValue({ ...data });
       if (!isNullOrWhitespace(data.cover)) {
         fileList.value = [
           {
@@ -58,6 +63,7 @@
           },
         ];
       }
+    } else {
     }
   }
 
@@ -90,7 +96,6 @@
       }
     )
       .then((res) => {
-        console.log(res);
         setFieldsValue({ ...getFieldsValue, cover: res.url });
         message.success('上传成功，文档解析中...');
         onFinish();
@@ -101,6 +106,11 @@
         onError();
       });
   };
+  async function onSaveModel(val) {
+    appStore.modelId = val.id;
+    chatStore.modelId = val.id;
+    setFieldsValue({ ...getFieldsValue, modelId: val.id });
+  }
 
   defineExpose({ show });
 </script>
@@ -108,6 +118,9 @@
 <template>
   <basicModal style="width: 45%" @register="modalRegister">
     <BasicForm class="mt-5" @register="register" @submit="handleSubmit">
+      <template #modelIdSlot="{ model, field }">
+        <ModelSelect :id="model[field]" @load="onSaveModel" @update="onSaveModel" />
+      </template>
       <template #coverSlot>
         <n-upload
           :custom-request="handleImport"

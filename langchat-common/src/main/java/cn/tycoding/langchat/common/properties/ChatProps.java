@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.auth;
+package cn.tycoding.langchat.common.properties;
 
-import cn.tycoding.langchat.common.properties.AuthProps;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Auth 配置注入
- *
  * @author tycoding
- * @since 2024/1/5
+ * @since 2024/8/21
  */
-@Configuration
-@EnableConfigurationProperties({AuthProps.class})
-public class AuthAutoConfiguration {
+@Data
+@ConfigurationProperties("langchat.chat")
+public class ChatProps {
 
+    /**
+     * 上下文的长度
+     */
+    private Integer memoryMaxMessage = 20;
+
+    /**
+     * 前端渲染的消息长度（过长会导致页面渲染卡顿）
+     */
+    private Integer previewMaxMessage = 100;
 }

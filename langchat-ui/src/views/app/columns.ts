@@ -41,6 +41,13 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入应用名称', trigger: ['blur'] }],
   },
   {
+    field: 'modelId',
+    label: '关联模型',
+    component: 'NInput',
+    slot: 'modelIdSlot',
+    rules: [{ required: true, message: '请选择关联模型', trigger: ['blur'] }],
+  },
+  {
     field: 'cover',
     label: '应用封面',
     slot: 'coverSlot',
@@ -59,6 +66,6 @@ export const formSchemas: FormSchema[] = [
         maxRows: 8,
       },
     },
-    rules: [{ required: true, message: '请输入应用描述', trigger: ['blur'] }],
+    // rules: [{ required: true, message: '请输入应用描述', trigger: ['blur'] }],
   },
 ];

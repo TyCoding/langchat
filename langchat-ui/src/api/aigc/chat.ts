@@ -44,3 +44,11 @@ export function getMessages(conversationId?: string) {
     method: 'get',
   });
 }
+
+export function getAppInfo(params: any) {
+  return http.request({
+    url: `/aigc/app/info`,
+    method: 'get',
+    params,
+  });
+}

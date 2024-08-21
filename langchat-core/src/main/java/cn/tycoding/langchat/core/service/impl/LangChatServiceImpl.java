@@ -21,6 +21,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.ImageR;
 import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.properties.ChatProps;
 import cn.tycoding.langchat.core.provider.EmbeddingProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
 import cn.tycoding.langchat.core.provider.SearchProvider;
@@ -66,6 +67,7 @@ public class LangChatServiceImpl implements LangChatService {
     private final EmbeddingProvider embeddingProvider;
     private final SearchProvider searchProvider;
     private final PgVectorEmbeddingStore embeddingStore;
+    private final ChatProps chatProps;
 
     @Override
     public TokenStream chat(ChatReq req) {
@@ -79,7 +81,7 @@ public class LangChatServiceImpl implements LangChatService {
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
                         .id(req.getConversationId())
                         .chatMemoryStore(new PersistentChatMemoryStore())
-                        .maxMessages(20)
+                        .maxMessages(chatProps.getMemoryMaxMessage())
                         .build());
 
         EmbeddingModel embeddingModel = embeddingProvider.embed();
@@ -131,7 +133,7 @@ public class LangChatServiceImpl implements LangChatService {
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
                         .id(req.getConversationId())
                         .chatMemoryStore(new PersistentChatMemoryStore())
-                        .maxMessages(20)
+                        .maxMessages(chatProps.getMemoryMaxMessage())
                         .build())
                 .build();
         return agent.stream(req.getConversationId(), req.getMessage());
@@ -152,7 +154,7 @@ public class LangChatServiceImpl implements LangChatService {
                     .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
                             .id(req.getConversationId())
                             .chatMemoryStore(new PersistentChatMemoryStore())
-                            .maxMessages(20)
+                            .maxMessages(chatProps.getMemoryMaxMessage())
                             .build())
                     .build();
 

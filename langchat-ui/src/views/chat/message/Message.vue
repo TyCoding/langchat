@@ -104,7 +104,7 @@
   <div
     ref="messageRef"
     :class="[{ 'flex-row-reverse': inversion }]"
-    class="flex w-full mb-6 overflow-hidden"
+    class="flex w-full overflow-hidden"
   >
     <div
       :class="[inversion ? 'ml-2' : 'mr-2']"

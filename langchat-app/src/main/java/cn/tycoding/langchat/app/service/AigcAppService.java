@@ -19,10 +19,15 @@ package cn.tycoding.langchat.app.service;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author tycoding
  * @since 2024/7/26
  */
 public interface AigcAppService extends IService<AigcApp> {
 
+    List<AigcApp> list(AigcApp data);
+
+    AigcApp getById(String id);
 }
