@@ -24,7 +24,6 @@ import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.properties.ChatProps;
 import cn.tycoding.langchat.core.provider.EmbeddingProvider;
 import cn.tycoding.langchat.core.provider.ModelProvider;
-import cn.tycoding.langchat.core.provider.SearchProvider;
 import cn.tycoding.langchat.core.service.Agent;
 import cn.tycoding.langchat.core.service.LangChatService;
 import dev.langchain4j.data.image.Image;
@@ -34,13 +33,8 @@ import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.output.Response;
-import dev.langchain4j.rag.DefaultRetrievalAugmentor;
-import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
 import dev.langchain4j.rag.query.Query;
-import dev.langchain4j.rag.query.router.DefaultQueryRouter;
-import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
@@ -65,7 +59,6 @@ public class LangChatServiceImpl implements LangChatService {
 
     private final ModelProvider provider;
     private final EmbeddingProvider embeddingProvider;
-    private final SearchProvider searchProvider;
     private final PgVectorEmbeddingStore embeddingStore;
     private final ChatProps chatProps;
 
@@ -95,21 +88,6 @@ public class LangChatServiceImpl implements LangChatService {
 
         AiServices<Agent> aiServices = build(model, null, req);
         EmbeddingModel embeddingModel = embeddingProvider.embed();
-
-        if (req.getIsGoogleSearch()) {
-            ContentRetriever webSearchContentRetriever;
-            if (searchProvider.get() == null) {
-                webSearchContentRetriever = WebSearchContentRetriever.builder().maxResults(3).build();
-            } else {
-                webSearchContentRetriever = WebSearchContentRetriever.builder().maxResults(3).webSearchEngine(searchProvider.get()).build();
-            }
-
-            QueryRouter queryRouter = new DefaultQueryRouter(webSearchContentRetriever);
-            RetrievalAugmentor retrievalAugmentor = DefaultRetrievalAugmentor.builder()
-                    .queryRouter(queryRouter)
-                    .build();
-            aiServices.retrievalAugmentor(retrievalAugmentor);
-        }
 
         if (StrUtil.isNotBlank(req.getKnowledgeId())) {
             req.getKnowledgeIds().add(req.getKnowledgeId());

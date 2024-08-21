@@ -60,8 +60,6 @@ public class ChatReq {
 
     private String role;
 
-    private Boolean isGoogleSearch = false;
-
     private Prompt prompt;
 
     private StreamEmitter emitter;
