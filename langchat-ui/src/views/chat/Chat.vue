@@ -221,7 +221,7 @@
                     <div
                       v-for="item in chatStore.metadata"
                       :key="item"
-                      class="!bg-gray-200 rounded hover:bg-gray-300 cursor-pointer p-2 px-3"
+                      class="!bg-gray-200 text-[12px] rounded hover:bg-gray-300 cursor-pointer p-2 px-3"
                     >
                       {{ item.docsName }}
                     </div>

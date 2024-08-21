@@ -23,7 +23,9 @@ import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
 import cn.tycoding.langchat.core.consts.EmbedConst;
-import cn.tycoding.langchat.core.provider.model.config.strategy.ModelConfigHandler;
+import cn.tycoding.langchat.core.consts.ModelConst;
+import cn.tycoding.langchat.core.provider.build.ModelBuildHandler;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
@@ -45,9 +47,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @Slf4j
 public class ProviderInitialize implements ApplicationContextAware {
-    private List<ModelConfigHandler> modelConfigHandlers;
     private final AigcModelService aigcModelService;
     private final SpringContextHolder contextHolder;
+    private List<ModelBuildHandler> modelBuildHandlers;
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
@@ -83,16 +85,20 @@ public class ProviderInitialize implements ApplicationContextAware {
             if (!ModelTypeEnum.CHAT.name().equals(type)) {
                 return;
             }
-            modelConfigHandlers.forEach(x -> {
+            modelBuildHandlers.forEach(x -> {
                 StreamingChatLanguageModel streamingChatLanguageModel = x.buildStreamingChat(model);
                 if (ObjectUtil.isNotEmpty(streamingChatLanguageModel)) {
                     contextHolder.registerBean(model.getId(), streamingChatLanguageModel);
+                }
+
+                ChatLanguageModel languageModel = x.buildChatLanguageModel(model);
+                if (ObjectUtil.isNotEmpty(languageModel)) {
+                    contextHolder.registerBean(model.getId() + ModelConst.TEXT_SUFFIX, languageModel);
                 }
             });
         } catch (Exception e) {
             log.error("model 【 id: {} name: {}】streaming chat 配置报错", model.getId(), model.getName());
         }
-
     }
 
     private void embeddingHandler(AigcModel model) {
@@ -101,7 +107,7 @@ public class ProviderInitialize implements ApplicationContextAware {
             if (!ModelTypeEnum.EMBEDDING.name().equals(type)) {
                 return;
             }
-            modelConfigHandlers.forEach(x -> {
+            modelBuildHandlers.forEach(x -> {
                 Pair<String, DimensionAwareEmbeddingModel> embeddingModelPair = x.buildEmbedding(model);
                 if (ObjectUtil.isNotEmpty(embeddingModelPair)) {
                     contextHolder.registerBean(embeddingModelPair.getKey(), embeddingModelPair.getValue());
@@ -119,7 +125,7 @@ public class ProviderInitialize implements ApplicationContextAware {
             if (!ModelTypeEnum.TEXT_IMAGE.name().equals(type)) {
                 return;
             }
-            modelConfigHandlers.forEach(x -> {
+            modelBuildHandlers.forEach(x -> {
                 ImageModel imageModel = x.buildImage(model);
                 if (ObjectUtil.isNotEmpty(imageModel)) {
                     contextHolder.registerBean(model.getId(), imageModel);

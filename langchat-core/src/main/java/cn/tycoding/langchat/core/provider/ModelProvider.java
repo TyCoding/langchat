@@ -16,6 +16,8 @@
 
 package cn.tycoding.langchat.core.provider;
 
+import cn.tycoding.langchat.core.consts.ModelConst;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import lombok.AllArgsConstructor;
@@ -32,12 +34,17 @@ public class ModelProvider {
 
     private final ApplicationContext context;
 
-    /**
-     * Gets the Model of the streaming type
-     */
     public StreamingChatLanguageModel stream(String model) {
         try {
             return (StreamingChatLanguageModel) context.getBean(model);
+        } catch (Exception e) {
+            throw new RuntimeException("没有匹配到模型，请检查模型配置！");
+        }
+    }
+
+    public ChatLanguageModel text(String model) {
+        try {
+            return (ChatLanguageModel) context.getBean(model + ModelConst.TEXT_SUFFIX);
         } catch (Exception e) {
             throw new RuntimeException("没有匹配到模型，请检查模型配置！");
         }
