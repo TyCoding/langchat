@@ -29,12 +29,14 @@ import cn.tycoding.langchat.common.utils.StreamEmitter;
 import cn.tycoding.langchat.core.service.LangChatService;
 import cn.tycoding.langchat.core.service.impl.EmbeddingStoreContentRetrieverCustom;
 import cn.tycoding.langchat.server.service.ChatService;
-import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.model.output.TokenUsage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author tycoding
@@ -75,10 +77,10 @@ public class ChatServiceImpl implements ChatService {
                     })
                     .onComplete((e) -> {
                         TokenUsage tokenUsage = e.tokenUsage();
-                        Metadata metadata = EmbeddingStoreContentRetrieverCustom.getMetadata(req.getConversationId());
+                        List<Map<String, Object>> metadata = EmbeddingStoreContentRetrieverCustom.getMetadata(req.getConversationId());
                         ChatRes res = new ChatRes(tokenUsage.totalTokenCount(), startTime);
                         if (metadata != null) {
-                            res.setMetadata(metadata.toMap());
+                            res.setMetadata(metadata);
                         }
                         emitter.send(res);
                         emitter.complete();

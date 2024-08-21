@@ -208,17 +208,27 @@
             v-if="chatStore.metadata != null && chatStore.metadata.length != 0"
             class="w-fit ml-10"
           >
-            <div
-              class="bg-[#f4f6f8] rounded-lg p-2 flex px-4 text-[12px] items-center gap-1 text-gray-500"
-            >
-              <SvgIcon class="text-blue-500 text-[14px]" icon="mingcute:document-2-fill" />
-              <span>引用知识库：</span>
-              <div class="flex items-center gap-2">
-                <span class="hover:bg-gray-200 cursor-pointer rounded-lg">
-                  {{ chatStore.metadata.docsName }}
-                </span>
-              </div>
-            </div>
+            <n-collapse class="bg-[#f4f6f8] rounded-lg px-3 py-0.5 min-collapse pr-4">
+              <n-collapse-item>
+                <template #header>
+                  <div class="text-[12px] text-gray-500 p-2 pl-0 flex items-center gap-1">
+                    <SvgIcon class="text-blue-500 text-[14px]" icon="mingcute:document-2-fill" />
+                    <span>引用知识库文档：{{ chatStore.metadata.length }}条</span>
+                  </div>
+                </template>
+                <div class="pb-2">
+                  <div class="flex flex-col gap-2">
+                    <div
+                      v-for="item in chatStore.metadata"
+                      :key="item"
+                      class="!bg-gray-200 rounded hover:bg-gray-300 cursor-pointer p-2 px-3"
+                    >
+                      {{ item.docsName }}
+                    </div>
+                  </div>
+                </div>
+              </n-collapse-item>
+            </n-collapse>
           </div>
         </div>
       </div>
@@ -267,6 +277,11 @@
   ::v-deep(.custom-input) {
     .n-input-wrapper {
       padding-right: 6px !important;
+    }
+  }
+  ::v-deep(.min-collapse) {
+    .n-collapse-item__content-inner {
+      padding-top: 0 !important;
     }
   }
 </style>

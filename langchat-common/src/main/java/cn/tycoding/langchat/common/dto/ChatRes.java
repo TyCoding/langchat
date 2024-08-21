@@ -19,7 +19,8 @@ package cn.tycoding.langchat.common.dto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +39,7 @@ public class ChatRes {
 
     private long time;
 
-    private Map<String, Object> metadata = new HashMap<>();
+    private List<Map<String, Object>> metadata = new ArrayList<>();
 
     public ChatRes(String message) {
         this.message = message;
@@ -50,7 +51,7 @@ public class ChatRes {
         this.time = System.currentTimeMillis() - startTime;
     }
 
-    public ChatRes(Integer usedToken, long startTime, Map<String, Object> metadata) {
+    public ChatRes(Integer usedToken, long startTime, List<Map<String, Object>> metadata) {
         this.isDone = true;
         this.usedToken = usedToken;
         this.time = System.currentTimeMillis() - startTime;

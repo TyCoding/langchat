@@ -16,7 +16,6 @@
 
 package cn.tycoding.langchat.core.service.impl;
 
-import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
@@ -31,10 +30,7 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.filter.Filter;
 import lombok.Builder;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static dev.langchain4j.internal.Utils.getOrDefault;
@@ -150,12 +146,16 @@ public class EmbeddingStoreContentRetrieverCustom implements ContentRetriever {
         return builder().embeddingStore(embeddingStore).build();
     }
 
-    public static Metadata getMetadata(String memoryId) {
+    public static List<Map<String, Object>> getMetadata(String memoryId) {
         List<EmbeddingMatch<TextSegment>> sources = sourceMap.get(memoryId);
         if (sources == null || sources.isEmpty()) {
             return null;
         }
-        return sources.stream().findFirst().get().embedded().metadata();
+        List<Map<String, Object>> list = new ArrayList<>();
+        sources.forEach(i -> {
+            list.add(i.embedded().metadata().toMap());
+        });
+        return list;
     }
 
     @Override
