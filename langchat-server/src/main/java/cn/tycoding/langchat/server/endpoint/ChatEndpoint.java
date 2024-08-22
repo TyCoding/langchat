@@ -36,6 +36,7 @@ import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class ChatEndpoint {
 
     @PostMapping("/chat/completions")
     @SaCheckPermission("chat:completions")
-    public Object chat(@RequestBody ChatReq req) {
+    public SseEmitter chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setUserId(String.valueOf(AuthUtil.getUserId()));

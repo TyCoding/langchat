@@ -47,10 +47,10 @@
 </script>
 
 <template>
-  <div class="h-full w-full flex grid-mask">
-    <div class="w-full max-w-screen-2xl m-auto">
-      <div class="flex h-screen justify-center items-center flex-col p-2">
-        <div class="flex flex-col justify-center w-full items-center mt-14">
+  <div class="w-full flex">
+    <div class="w-full max-w-screen-xl m-auto">
+      <div class="flex justify-center items-center flex-col p-2">
+        <div class="flex flex-col justify-center w-full items-center mt-12">
           <NGradientText :size="37" type="success"> {{ $t('home.title') }} </NGradientText>
           <div class="text-[18px] h-[28px] text-gray-600">
             <span id="typed"></span>
@@ -98,12 +98,6 @@
 </template>
 
 <style lang="less" scoped>
-  .grid-mask {
-    height: 100%;
-    background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.13) 0.8px, transparent 0);
-    background-size: 16px 16px;
-    background-repeat: round;
-  }
   ::v-deep(.n-spin-container) {
     width: 100%;
     height: 100%;

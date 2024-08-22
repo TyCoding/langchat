@@ -45,8 +45,16 @@
   ];
 
   async function onLogout() {
-    await userStore.logout();
-    await router.push({ name: 'Login' });
+    dialog.warning({
+      title: '提示',
+      content: '你确定注销当前账户吗',
+      positiveText: '注销',
+      negativeText: '取消',
+      onPositiveClick: async () => {
+        await userStore.logout();
+        await router.push({ name: 'Login' });
+      },
+    });
   }
   async function onLogin() {
     dialog.warning({
@@ -59,69 +67,85 @@
       },
     });
   }
+
+  function onProfile() {
+    router.push({ name: 'Profile' });
+  }
 </script>
 
 <template>
-  <div class="h-full bg-gray-100 dark:bg-transparent flex flex-col">
-    <n-scrollbar class="flex-1">
-      <div class="flex flex-col gap-3 border-neutral-800 pt-3 pl-3 pr-3">
+  <div
+    class="h-full bg-[#fafafa] dark:bg-transparent flex border dark:border-[#ffffff17] flex-col w-full rounded-lg"
+  >
+    <n-scrollbar class="flex-1 w-full">
+      <div
+        class="flex flex-col gap-3 border-neutral-800 dark:border-[#ffffff17] pt-3 pl-3 pr-3 w-full"
+      >
+        <div class="text-lg gap-2 text-center flex justify-center items-center">
+          <img height="30" src="@/assets/login/logo.png" width="30" />
+          <span class="font-bold">LangChat</span>
+        </div>
+        <n-divider class="!my-0 !py-0" />
         <n-button
           v-for="item in routesConst"
           :key="item.name"
-          :class="router.currentRoute.value.name == item.name ? '!text-[#7fe7c4]' : ''"
+          :class="
+            router.currentRoute.value.name == item.name
+              ? '!text-[#18a058] w-full !bg-[#eff0f0] dark:!bg-[#ffffff1a] dark:border-[#ffffff17] !rounded-[8px]'
+              : 'w-full'
+          "
           text
           @click="router.push({ name: item.name })"
         >
-          <div
-            class="rounded-[10px] bg-white dark:bg-[#34373f] w-[60px] pt-2 pb-1 flex justify-center items-center cursor-pointer flex-col"
-          >
-            <SvgIcon :icon="item.meta?.icon" class="text-2xl" />
-            <div class="mt-1 mb-1 text-[11px]"> {{ item.meta?.label }} </div>
+          <div class="w-full px-4 py-3 flex items-center cursor-pointer gap-3.5">
+            <SvgIcon :icon="item.meta?.icon" class="text-lg" />
+            <div class="mt-1 mb-1 text-[14px]"> {{ item.meta?.label }} </div>
           </div>
         </n-button>
       </div>
     </n-scrollbar>
 
     <div class="m-2 flex flex-col justify-center items-center gap-2 mb-4 bottom-0">
-      <n-space class="mb-2" vertical>
-        <n-popover placement="right" trigger="hover">
-          <template #trigger>
-            <n-button
-              v-if="appStore.theme == 'light'"
-              size="small"
-              text
-              @click="appStore.setTheme('dark')"
-            >
-              <template #icon>
-                <SvgIcon icon="ri:sun-foggy-line" />
-              </template>
-            </n-button>
-            <n-button
-              v-if="appStore.theme == 'dark'"
-              size="small"
-              text
-              @click="appStore.setTheme('light')"
-            >
-              <template #icon>
-                <SvgIcon icon="ri:moon-foggy-line" />
-              </template>
-            </n-button>
-          </template>
-          <span>{{ t('side.theme') }}</span>
-        </n-popover>
+      <n-divider class="!my-0 !py-0" />
+      <!--      <n-space class="mb-2" vertical>
+				<n-popover placement="right" trigger="hover">
+					<template #trigger>
+						<n-button
+							v-if="appStore.theme == 'light'"
+							size="small"
+							text
+							@click="appStore.setTheme('dark')"
+						>
+							<template #icon>
+								<SvgIcon icon="ri:sun-foggy-line" />
+							</template>
+						</n-button>
+						<n-button
+							v-if="appStore.theme == 'dark'"
+							size="small"
+							text
+							@click="appStore.setTheme('light')"
+						>
+							<template #icon>
+								<SvgIcon icon="ri:moon-foggy-line" />
+							</template>
+						</n-button>
+					</template>
+					<span>{{ t('side.theme') }}</span>
+				</n-popover>
 
-        <n-popselect
-          v-model:value="language"
-          :options="languageOptions"
-          placement="right"
-          trigger="click"
-          @update-value="(value) => appStore.setLanguage(value)"
-        >
-          <n-button text>
-            <SvgIcon class="text-xl" icon="ph:translate-bold" />
-          </n-button>
-        </n-popselect>
-      </n-space>
+				<n-popselect
+					v-model:value="language"
+					:options="languageOptions"
+					placement="right"
+					trigger="click"
+					@update-value="(value) => appStore.setLanguage(value)"
+				>
+					<n-button text>
+						<SvgIcon class="text-xl" icon="ph:translate-bold" />
+					</n-button>
+				</n-popselect>
+			</n-space>-->
 
       <template v-if="user == null">
         <n-avatar class="cursor-pointer !text-black" round>
@@ -131,28 +155,39 @@
           {{ t('side.login') }}
         </n-button>
       </template>
-      <template v-else>
-        <n-popover placement="right" trigger="hover">
-          <template #trigger>
-            <n-avatar
-              :fallback-src="defaultAvatar"
-              :src="user.avatar ?? '/avatar.jpg'"
-              class="cursor-pointer"
-              round
-              @click="router.push({ name: 'Profile' })"
-            />
-          </template>
-          <span>{{ t('side.profile') }}</span>
-        </n-popover>
-        <n-ellipsis style="max-width: 70px">
-          {{ user.username }}
-        </n-ellipsis>
-        <n-button secondary size="tiny" type="warning" @click="onLogout()">
-          {{ t('side.logout') }}
+      <div v-else class="flex w-full flex-col gap-3 mb-2 px-2">
+        <div class="flex gap-2 items-center px-2">
+          <n-avatar
+            :fallback-src="defaultAvatar"
+            :src="user.avatar ?? '/avatar.jpg'"
+            class="cursor-pointer w-[30px]"
+            round
+          />
+          <n-ellipsis style="max-width: 85px">
+            {{ user.username }}
+          </n-ellipsis>
+        </div>
+
+        <n-button class="!rounded-lg" size="small" tertiary type="info" @click="onProfile()">
+          <div class="w-full text-center flex justify-center items-center gap-2">
+            <SvgIcon class="text-lg" icon="iconamoon:profile" />
+            <span>个人中心</span>
+          </div>
         </n-button>
-      </template>
+
+        <n-button class="!rounded-lg" secondary size="small" type="warning" @click="onLogout()">
+          <div class="w-full text-center flex justify-center items-center gap-2">
+            <SvgIcon class="text-lg" icon="material-symbols:logout" />
+            <span>注销账户</span>
+          </div>
+        </n-button>
+      </div>
     </div>
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  ::v-deep(.n-button .n-button__content) {
+    width: 100% !important;
+  }
+</style>

@@ -19,7 +19,6 @@ import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { Layout } from '@/layout';
 import { setupPageGuard } from '@/router/permission';
-import { t } from '@/locales';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -32,7 +31,7 @@ const routes: RouteRecordRaw[] = [
         path: '/home',
         name: 'Home',
         meta: {
-          label: t('menu.home'),
+          label: '首页',
           icon: 'tabler:smart-home',
         },
         component: () => import('@/views/modules/home/index.vue'),
@@ -41,7 +40,7 @@ const routes: RouteRecordRaw[] = [
         path: '/chat/:uuid?',
         name: 'Chat',
         meta: {
-          label: t('menu.chat'),
+          label: '聊天助手',
           icon: 'bx:chat',
         },
         component: () => import('@/views/modules/chat/index.vue'),
@@ -50,7 +49,7 @@ const routes: RouteRecordRaw[] = [
         path: '/doc',
         name: 'Doc',
         meta: {
-          label: t('menu.doc'),
+          label: '文档分析',
           icon: 'mingcute:doc-line',
         },
         component: () => import('@/views/modules/doc/index.vue'),
@@ -59,7 +58,7 @@ const routes: RouteRecordRaw[] = [
         path: '/write',
         name: 'Write',
         meta: {
-          label: t('menu.write'),
+          label: '文本撰写',
           icon: 'solar:document-add-linear',
         },
         component: () => import('@/views/modules/write/index.vue'),
@@ -68,7 +67,7 @@ const routes: RouteRecordRaw[] = [
         path: '/image',
         name: 'Image',
         meta: {
-          label: t('menu.image'),
+          label: 'AI 文生图',
           icon: 'radix-icons:image',
         },
         component: () => import('@/views/modules/image/index.vue'),
@@ -77,7 +76,7 @@ const routes: RouteRecordRaw[] = [
         path: '/mindmap',
         name: 'MindMap',
         meta: {
-          label: t('menu.mindmap'),
+          label: '思维导图',
           icon: 'ri:mind-map',
         },
         component: () => import('@/views/modules/mindmap/index.vue'),
@@ -95,7 +94,7 @@ const baseRoutes: RouteRecordRaw[] = [
         path: 'index',
         name: 'Profile',
         meta: {
-          label: t('menu.user'),
+          label: '个人中心',
         },
         component: () => import('@/views/profile/index.vue'),
       },

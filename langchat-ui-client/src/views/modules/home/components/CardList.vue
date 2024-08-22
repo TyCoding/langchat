@@ -36,11 +36,12 @@
 <template>
   <n-grid :x-gap="12" :y-gap="12" class="mt-4" cols="1 400:2 1200:3 1300:4">
     <n-grid-item v-for="item in props.list" :key="item">
-      <n-card content-style="padding:0px" hoverable>
+      <n-card class="!rounded-lg" content-style="padding:0px" hoverable>
         <div>
-          <n-thing class="inline-block bg-white dark:bg-[#34373f] p-4 rounded-[2px] cursor-pointer">
+          <n-thing class="inline-block bg-white dark:bg-[#34373f] p-3 rounded-[6px] cursor-pointer">
             <template #avatar>
-              <n-avatar :size="80" :src="item.cover" />
+              <n-avatar v-if="item.cover != null" :size="80" :src="item.cover" />
+              <img v-else alt="" height="80" src="@/assets/app.png" width="80" />
             </template>
             <template #header>
               <n-ellipsis class="text-[18px]" style="max-width: 200px">
@@ -48,13 +49,12 @@
               </n-ellipsis>
             </template>
             <template #description>
-              <n-ellipsis :line-clamp="3" class="text-[14px] text-gray-400 h-[68px]">
+              <n-ellipsis
+                :line-clamp="3"
+                :tooltip="false"
+                class="text-[14px] text-gray-400 h-[68px]"
+              >
                 {{ item.prompt }}
-                <template #tooltip>
-                  <div style="width: 400px">
-                    {{ item.prompt }}
-                  </div>
-                </template>
               </n-ellipsis>
             </template>
             <template #footer>

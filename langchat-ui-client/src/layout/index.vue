@@ -31,25 +31,31 @@
 </script>
 
 <template>
-  <n-layout class="h-full" has-sider>
-    <n-layout-sider
-      :collapsed="collapsed"
-      :collapsed-width="0"
-      :width="77"
-      bordered
-      collapse-mode="width"
-      show-trigger="bar"
-      @collapse="collapsed = true"
-      @expand="collapsed = false"
-    >
-      <Sider />
-    </n-layout-sider>
-    <n-layout-content>
-      <RouterView v-slot="{ Component, route }">
-        <keep-alive>
-          <component :is="Component" :key="route.fullPath" />
-        </keep-alive>
-      </RouterView>
-    </n-layout-content>
-  </n-layout>
+  <div class="h-screen w-full grid-mask">
+    <n-layout class="h-full" has-sider>
+      <n-layout-sider
+        :collapsed="collapsed"
+        :collapsed-width="0"
+        :width="200"
+        @collapse="collapsed = true"
+        @expand="collapsed = false"
+      >
+        <div class="m-4 mr-2" style="height: calc(100vh - 33px)">
+          <Sider />
+        </div>
+      </n-layout-sider>
+      <n-layout-content>
+        <RouterView v-slot="{ Component, route }">
+          <keep-alive>
+            <div
+              class="h-full m-4 ml-2 border rounded-lg bg-white dark:bg-transparent dark:border-[#ffffff17]"
+              style="height: calc(100vh - 33px)"
+            >
+              <component :is="Component" :key="route.fullPath" />
+            </div>
+          </keep-alive>
+        </RouterView>
+      </n-layout-content>
+    </n-layout>
+  </div>
 </template>
