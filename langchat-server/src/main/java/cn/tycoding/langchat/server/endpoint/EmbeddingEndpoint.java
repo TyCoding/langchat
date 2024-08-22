@@ -27,6 +27,7 @@ import cn.tycoding.langchat.biz.service.AigcOssService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.task.TaskManager;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.consts.EmbedConst;
 import cn.tycoding.langchat.core.service.LangEmbeddingService;
@@ -36,6 +37,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.concurrent.Executors;
 
 /**
  * @author tycoding
@@ -85,7 +88,8 @@ public class EmbeddingEndpoint {
     @PostMapping("/docs/{knowledgeId}")
     @SaCheckPermission("aigc:embedding:docs")
     public R docs(MultipartFile file, @PathVariable String knowledgeId) {
-        AigcOss oss = aigcOssService.upload(file, String.valueOf(AuthUtil.getUserId()));
+        String userId = String.valueOf(AuthUtil.getUserId());
+        AigcOss oss = aigcOssService.upload(file, userId);
         AigcDocs data = new AigcDocs()
                 .setName(oss.getOriginalFilename())
                 .setSliceStatus(false)
@@ -94,14 +98,14 @@ public class EmbeddingEndpoint {
                 .setType(EmbedConst.ORIGIN_TYPE_UPLOAD)
                 .setKnowledgeId(knowledgeId);
         aigcKnowledgeService.addDocs(data);
-
-        // embedding docs
-        embeddingService.embedDocsSlice(data, oss.getUrl());
+        TaskManager.submitTask(userId,
+                Executors.callable(() -> embeddingService.embedDocsSlice(data, oss.getUrl())));
         return R.ok();
     }
 
     @GetMapping("/re-embed/{docsId}")
     public R reEmbed(@PathVariable String docsId) {
+        String userId = String.valueOf(AuthUtil.getUserId());
         AigcDocs docs = aigcDocsMapper.selectById(docsId);
         if (docs == null) {
             throw new ServiceException("没有查询到文档数据");
@@ -110,7 +114,8 @@ public class EmbeddingEndpoint {
             text(docs);
         }
         if (EmbedConst.ORIGIN_TYPE_UPLOAD.equals(docs.getType())) {
-            embeddingService.embedDocsSlice(docs, docs.getUrl());
+            TaskManager.submitTask(userId,
+                    Executors.callable(() -> embeddingService.embedDocsSlice(docs, docs.getUrl())));
         }
         return R.ok();
     }
