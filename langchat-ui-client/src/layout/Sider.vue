@@ -99,7 +99,7 @@
         >
           <div class="w-full px-4 py-3 flex items-center cursor-pointer gap-3.5">
             <SvgIcon :icon="item.meta?.icon" class="text-lg" />
-            <div class="mt-1 mb-1 text-[14px]"> {{ item.meta?.label }} </div>
+            <div class="mt-1 mb-1 font-medium text-[14px]"> {{ item.meta?.label }} </div>
           </div>
         </n-button>
       </div>
