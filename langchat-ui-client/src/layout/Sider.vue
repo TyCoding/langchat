@@ -151,8 +151,15 @@
         <n-avatar class="cursor-pointer !text-black" round>
           <SvgIcon class="text-2xl" icon="solar:user-broken" />
         </n-avatar>
-        <n-button secondary size="tiny" type="success" @click="onLogin()">
-          {{ t('side.login') }}
+        <n-button
+          block
+          class="!rounded-lg"
+          secondary
+          size="small"
+          type="success"
+          @click="onLogin()"
+        >
+          <span class="text-center w-full">登录系统</span>
         </n-button>
       </template>
       <div v-else class="flex w-full flex-col gap-3 mb-2 px-2">
