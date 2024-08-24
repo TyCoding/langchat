@@ -32,13 +32,15 @@ import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * @author GB
  * @since 2024-08-19 10:08
  */
 @Slf4j
-public class OenAIModelBuildHandler implements ModelBuildHandler {
+@Component
+public class OpenAIModelBuildHandler implements ModelBuildHandler {
 
     @Override
     public boolean whetherCurrentModel(AigcModel model) {
