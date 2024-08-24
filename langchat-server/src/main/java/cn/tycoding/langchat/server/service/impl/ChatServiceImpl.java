@@ -70,7 +70,8 @@ public class ChatServiceImpl implements ChatService {
         saveMessage(req, 0, 0);
 
         try {
-            langChatService.chat(req)
+            langChatService
+                    .chat(req)
                     .onNext(e -> {
                         text.append(e);
                         emitter.send(new ChatRes(e));

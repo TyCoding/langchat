@@ -33,8 +33,10 @@ import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.output.Response;
+import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.query.Query;
+import dev.langchain4j.rag.query.router.DefaultQueryRouter;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.filter.Filter;
@@ -102,8 +104,13 @@ public class LangChatServiceImpl implements LangChatService {
                     .dynamicFilter(filter)
                     .build();
             aiServices.contentRetriever(contentRetriever);
+            aiServices.retrievalAugmentor(DefaultRetrievalAugmentor
+                    .builder()
+                    .contentRetriever(contentRetriever)
+                    .queryRouter(new DefaultQueryRouter())
+                    .executor(req.getExecutor())
+                    .build());
         }
-
         Agent agent = aiServices.build();
         return agent.stream(req.getConversationId(), req.getMessage());
     }

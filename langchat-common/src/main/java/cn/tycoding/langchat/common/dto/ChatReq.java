@@ -23,6 +23,7 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * @author tycoding
@@ -63,4 +64,5 @@ public class ChatReq {
     private Prompt prompt;
 
     private StreamEmitter emitter;
+    private Executor executor;
 }

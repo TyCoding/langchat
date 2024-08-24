@@ -247,7 +247,8 @@ const transform: AxiosTransform = {
         return Promise.reject(error);
       }
     } catch (error) {
-      throw new Error(error as any);
+      console.log(error);
+      // throw new Error(error as any);
     }
     // 请求是否被取消
     const isCancel = axios.isCancel(error);

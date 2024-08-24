@@ -35,16 +35,20 @@ import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author tycoding
  * @since 2024/1/30
  */
+@Slf4j
 @RequestMapping("/aigc")
 @RestController
 @AllArgsConstructor
@@ -60,11 +64,13 @@ public class ChatEndpoint {
     public SseEmitter chat(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
-        req.setUserId(String.valueOf(AuthUtil.getUserId()));
+        req.setUserId(AuthUtil.getUserId());
         req.setUsername(AuthUtil.getUsername());
-
-        chatService.chat(req);
-        return emitter.get();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        req.setExecutor(executor);
+        return emitter.streaming(executor, () -> {
+            chatService.chat(req);
+        });
     }
 
     @GetMapping("/app/info")

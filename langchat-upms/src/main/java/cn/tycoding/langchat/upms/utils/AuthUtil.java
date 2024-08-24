@@ -87,6 +87,7 @@ public class AuthUtil {
         try {
             return (UserInfo) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AuthException(403, "登录已失效，请重新登陆");
         }
     }

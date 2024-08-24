@@ -104,7 +104,9 @@
           modelName: chatStore.modelName,
           modelProvider: chatStore.modelProvider,
         },
+        controller,
         async ({ event }) => {
+          console.log('消息：', event);
           const list = event.target.responseText.split('\n\n');
 
           let text = '';
@@ -161,6 +163,7 @@
   function handleStop() {
     if (loading.value) {
       controller.abort();
+      controller = new AbortController();
       loading.value = false;
     }
   }

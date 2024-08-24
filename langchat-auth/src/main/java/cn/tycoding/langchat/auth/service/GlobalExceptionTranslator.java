@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
 /**
@@ -127,6 +128,14 @@ public class GlobalExceptionTranslator {
     @ExceptionHandler({NoResourceFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R handleError(NoResourceFoundException e) {
+        e.printStackTrace();
+        return R.fail(HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({IOException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public R handleError(IOException e) {
+        e.printStackTrace();
         return R.fail(HttpStatus.UNAUTHORIZED);
     }
 }
