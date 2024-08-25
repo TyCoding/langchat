@@ -22,6 +22,7 @@ import cn.dev33.satoken.exception.SaTokenException;
 import cn.tycoding.langchat.common.exception.AuthException;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -108,6 +109,10 @@ public class GlobalExceptionTranslator {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public R handleError(NotPermissionException e) {
         e.printStackTrace();
+        boolean isDemoEnv = AuthUtil.isDemoEnv();
+        if (isDemoEnv) {
+            return R.fail("演示环境请勿操作");
+        }
         return R.fail("没有操作权限");
     }
 

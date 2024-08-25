@@ -45,6 +45,7 @@ public class AuthUtil {
      * 使用：所有涉及根据角色查询的地方都排除对此角色的限制
      */
     public static final String ADMINISTRATOR = "administrator";
+    public static final String DEMO_ROLE = "demo_env";
     public static final String DEFAULT_ROLE = "default_env";
 
     /* 登录表单验证码Key标识 */
@@ -89,6 +90,19 @@ public class AuthUtil {
         } catch (Exception e) {
             e.printStackTrace();
             throw new AuthException(403, "登录已失效，请重新登陆");
+        }
+    }
+    public static boolean isDemoEnv() {
+        try {
+            UserInfo info =  (UserInfo) StpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
+            List<SysRole> roles = info.getRoles();
+            if (roles != null && !roles.isEmpty()) {
+                List<SysRole> list = roles.stream().filter(i -> i.getCode().equals(DEMO_ROLE)).toList();
+                return !list.isEmpty();
+            }
+            return true;
+        } catch (Exception ignored) {
+            return true;
         }
     }
 

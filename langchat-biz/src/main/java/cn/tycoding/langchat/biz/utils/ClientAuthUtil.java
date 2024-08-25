@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat.biz.utils;
 
+import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.tycoding.langchat.biz.entity.AigcUser;
 import cn.tycoding.langchat.common.constant.CacheConst;
@@ -66,6 +67,9 @@ public class ClientAuthUtil {
         try {
             return (AigcUser) ClientStpUtil.getSession().get(CacheConst.AUTH_USER_INFO_KEY);
         } catch (Exception e) {
+            if (e instanceof NotPermissionException) {
+                throw new AuthException(403, "没有操作权限");
+            }
             throw new AuthException(403, "登录已失效，请重新登陆");
         }
     }
