@@ -23,16 +23,21 @@ import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.biz.mapper.AigcDocsSliceMapper;
 import cn.tycoding.langchat.biz.mapper.AigcKnowledgeMapper;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author tycoding
  * @since 2024/4/15
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, AigcKnowledge> implements AigcKnowledgeService {
@@ -63,6 +68,27 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     @Override
     public void updateDocsSlice(AigcDocsSlice data) {
         aigcDocsSliceMapper.updateById(data);
+    }
+
+    @Override
+    public List<String> listSliceVectorIdsOfDoc(String docsId) {
+        LambdaQueryWrapper<AigcDocsSlice> selectWrapper = Wrappers.<AigcDocsSlice>lambdaQuery()
+                .select(AigcDocsSlice::getVectorId)
+                .eq(AigcDocsSlice::getDocsId, docsId);
+        List<String> vectorIds = aigcDocsSliceMapper.selectList(selectWrapper)
+                .stream()
+                .map(AigcDocsSlice::getVectorId)
+                .toList();
+        log.debug("slices of doc: [{}], count: [{}]", docsId, vectorIds.size());
+        return vectorIds;
+    }
+
+    @Override
+    public void removeSlicesOfDoc(String docsId) {
+        LambdaQueryWrapper<AigcDocsSlice> deleteWrapper = Wrappers.<AigcDocsSlice>lambdaQuery()
+                .eq(AigcDocsSlice::getDocsId, docsId);
+        int count = aigcDocsSliceMapper.delete(deleteWrapper);
+        log.debug("remove all slices of doc: [{}], count: [{}]", docsId, count);
     }
 }
 

@@ -36,6 +36,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,19 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     private final LangEmbeddingService langEmbeddingService;
     private final AigcKnowledgeService aigcKnowledgeService;
     private final PgVectorEmbeddingStore embeddingStore;
+
+    @Override
+    @Transactional
+    public void clearDocSlicesOfDoc(String docsId) {
+        if (StrUtil.isBlank(docsId)) {
+            return;
+        }
+        // remove from embedding store
+        List<String> vectorIds = aigcKnowledgeService.listSliceVectorIdsOfDoc(docsId);
+        embeddingStore.removeAll(vectorIds);
+        // remove from docSlice
+        aigcKnowledgeService.removeSlicesOfDoc(docsId);
+    }
 
     @Async
     @Override
