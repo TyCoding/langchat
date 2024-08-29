@@ -21,6 +21,8 @@ import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.entity.AigcKnowledge;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author tycoding
  * @since 2024/4/15
@@ -34,5 +36,9 @@ public interface AigcKnowledgeService extends IService<AigcKnowledge> {
     void addDocsSlice(AigcDocsSlice data);
 
     void updateDocsSlice(AigcDocsSlice data);
+
+    List<String> listSliceVectorIdsOfDoc(String docsId);
+
+    void removeSlicesOfDoc(String docsId);
 }
 
