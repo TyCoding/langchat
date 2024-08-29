@@ -69,7 +69,6 @@ public class QWenModelBuildHandler implements ModelBuildHandler {
                     .apiKey(model.getApiKey())
                     .modelName(model.getModel())
                     .baseUrl(model.getBaseUrl())
-                    .enableSearch(true)
                     .maxTokens(model.getResponseLimit())
                     .temperature(Float.parseFloat(model.getTemperature().toString()))
                     .topP(model.getTopP())
