@@ -22,7 +22,6 @@
   import { useRouter } from 'vue-router';
   import { useAppStore, useUserStore } from '@/store';
   import type { Language } from '@/store/modules/app/helper';
-  import { t } from '@/locales';
   import defaultAvatar from '@/assets/avatar.jpg';
 
   const appStore = useAppStore();
@@ -52,20 +51,12 @@
       negativeText: '取消',
       onPositiveClick: async () => {
         await userStore.logout();
-        await router.push({ name: 'Login' });
+        userStore.changeIsLogin();
       },
     });
   }
   async function onLogin() {
-    dialog.warning({
-      title: t('login.title'),
-      content: t('login.content'),
-      positiveText: t('login.positiveText'),
-      negativeText: t('login.negativeText'),
-      onPositiveClick: async () => {
-        await router.push({ name: 'Login' });
-      },
-    });
+    userStore.changeIsLogin();
   }
 
   function onProfile() {
@@ -91,7 +82,7 @@
           :key="item.name"
           :class="
             router.currentRoute.value.name == item.name
-              ? '!text-[#18a058] w-full !bg-[#eff0f0] dark:!bg-[#ffffff1a] dark:border-[#ffffff17] !rounded-[8px]'
+              ? '!text-[#0052CC] w-full !bg-[#eff0f0] dark:!bg-[#ffffff1a] dark:border-[#ffffff17] !rounded-[8px]'
               : 'w-full'
           "
           text
@@ -153,7 +144,7 @@
         </n-avatar>
         <n-button
           block
-          class="!rounded-lg"
+          class="!rounded-lg !py-4"
           secondary
           size="small"
           type="success"

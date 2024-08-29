@@ -141,5 +141,5 @@
 </template>
 
 <style lang="less">
-  @import 'styles';
+  @import '@/styles/lib/index';
 </style>

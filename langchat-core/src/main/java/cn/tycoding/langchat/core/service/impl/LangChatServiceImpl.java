@@ -123,7 +123,7 @@ public class LangChatServiceImpl implements LangChatService {
         }
 
         Agent agent = build(model, null, req).build();
-        return agent.stream(req.getConversationId(), req.getMessage());
+        return agent.stream(req.getConversationId(), req.getPrompt().text());
     }
 
     @Override

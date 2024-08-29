@@ -34,12 +34,23 @@ export function useTheme() {
   });
 
   const themeOverrides = computed<GlobalThemeOverrides>(() => {
-    if (isDark.value) {
-      return {
-        common: {},
-      };
-    }
-    return {};
+    // if (isDark.value) {
+    //   return {
+    //     common: {},
+    //   };
+    // }
+    return {
+      common: {
+        infoColor: '#0052CC',
+        primaryColor: '#0052CC',
+        successColor: '#0052CC',
+        // hoverColor: '#0052CC',
+        primaryColorHover: '#0052CC',
+        successColorHover: '#0052CC',
+        pressedColor: '#0052CC',
+        primaryColorPressed: '#0052CC',
+      },
+    };
   });
 
   watch(

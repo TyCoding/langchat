@@ -74,6 +74,7 @@ import {
   NPopover,
   NPopselect,
   NProgress,
+  NQrCode,
   NRadio,
   NRadioGroup,
   NResult,
@@ -188,6 +189,7 @@ const naive = create({
     NEmpty,
     NPopselect,
     NSplit,
+    NQrCode,
   ],
 });
 

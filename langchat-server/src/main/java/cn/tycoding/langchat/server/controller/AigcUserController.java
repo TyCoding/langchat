@@ -28,10 +28,12 @@ import cn.tycoding.langchat.common.properties.AuthProps;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.upms.dto.UserInfo;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -99,7 +101,9 @@ public class AigcUserController {
             data.setPassword(AuthUtil.encode(authProps.getSaltKey(), data.getPassword()));
         }
         userService.updateById(data);
-        ClientStpUtil.getSessionByLoginId(data.getId()).set(CacheConst.AUTH_USER_INFO_KEY, data);
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(data, userInfo);
+        ClientStpUtil.getSessionByLoginId(data.getId()).set(CacheConst.AUTH_USER_INFO_KEY, userInfo);
         ClientStpUtil.getSessionByLoginId(data.getId()).update();
         return R.ok();
     }
