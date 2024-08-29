@@ -81,7 +81,7 @@ public class GlobalExceptionTranslator {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R handleError(Exception e) {
         e.printStackTrace();
-        return R.fail(e);
+        return R.fail("服务器异常");
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
