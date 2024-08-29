@@ -28,11 +28,6 @@ export const columns: BasicColumn<any>[] = [
     align: 'center',
   },
   {
-    title: '姓名',
-    key: 'realName',
-    align: 'center',
-  },
-  {
     title: '过期时间',
     key: 'expiration',
     align: 'center',

@@ -42,6 +42,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -153,8 +154,10 @@ public class AuthEndpoint {
         ids.forEach(id -> {
             Dict data = Dict.create();
             Map<String, Object> dataMap = StpUtil.getSessionByLoginId(id).getDataMap();
-            UserInfo userInfo = (UserInfo)dataMap.get(CacheConst.AUTH_USER_INFO_KEY);
-            if (userInfo == null || Objects.equals(AuthUtil.getUserId(), userInfo.getId())) {
+            UserInfo userInfo = new UserInfo();
+            Object obj = dataMap.get(CacheConst.AUTH_USER_INFO_KEY);
+            BeanUtils.copyProperties(obj, userInfo);
+            if (Objects.equals(AuthUtil.getUserId(), userInfo.getId())) {
                 return;
             }
             SaTokenInfo tokenInfo = (SaTokenInfo)dataMap.get(CacheConst.AUTH_TOKEN_INFO_KEY);
