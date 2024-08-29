@@ -22,12 +22,14 @@ const TokenStoreKey = 'tokenStore';
 const UserStoreKey = 'userStore';
 
 export interface UserState {
+  isLogin: boolean;
   user: any;
   token: string | null;
 }
 
 export const useUserStore = defineStore('user-store', {
   state: (): UserState => ({
+    isLogin: false,
     user: storage.get(UserStoreKey),
     token: storage.get(TokenStoreKey),
   }),
@@ -39,6 +41,9 @@ export const useUserStore = defineStore('user-store', {
     resetUser() {
       this.user = null;
       storage.set(UserStoreKey, null);
+    },
+    changeIsLogin() {
+      this.isLogin = !this.isLogin;
     },
 
     setToken(token: string) {

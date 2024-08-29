@@ -24,6 +24,8 @@ export function setupPageGuard(router: Router) {
     if (userStore.token != null) {
       const data = await info();
       userStore.setUser(data);
+    } else {
+      userStore.changeIsLogin();
     }
     next();
   });

@@ -16,12 +16,10 @@
 
 package cn.tycoding.langchat.client.controller;
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.UUID;
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.service.AigcOssService;
 import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
-import cn.tycoding.langchat.client.dto.WriteR;
 import cn.tycoding.langchat.client.service.ClientChatService;
 import cn.tycoding.langchat.client.service.ClientEmbeddingService;
 import cn.tycoding.langchat.common.annotation.ClientPerm;
@@ -100,16 +98,11 @@ public class ClientChatEndpoint {
 
     @ClientPerm
     @PostMapping("/chat/write")
-    public SseEmitter write(@RequestBody WriteR req) {
+    public SseEmitter write(@RequestBody ChatReq req) {
         StreamEmitter emitter = new StreamEmitter();
         req.setEmitter(emitter);
         req.setConversationId(UUID.randomUUID().toString());
-        Dict params = Dict.create().set("profession", req.getProfession())
-                .set("type", req.getType())
-                .set("tone", req.getTone())
-                .set("language", req.getLanguage())
-                .set("length", req.getLength());
-        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.WRITE, params));
+        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.WRITE));
         clientChatService.singleChat(req);
         return emitter.get();
     }

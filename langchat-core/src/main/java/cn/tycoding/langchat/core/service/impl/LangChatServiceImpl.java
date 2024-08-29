@@ -103,12 +103,9 @@ public class LangChatServiceImpl implements LangChatService {
                     .embeddingModel(embeddingModel)
                     .dynamicFilter(filter)
                     .build();
-            aiServices.contentRetriever(contentRetriever);
             aiServices.retrievalAugmentor(DefaultRetrievalAugmentor
                     .builder()
                     .contentRetriever(contentRetriever)
-                    .queryRouter(new DefaultQueryRouter())
-                    .executor(req.getExecutor())
                     .build());
         }
         Agent agent = aiServices.build();
@@ -123,7 +120,7 @@ public class LangChatServiceImpl implements LangChatService {
         }
 
         Agent agent = build(model, null, req).build();
-        return agent.stream(req.getConversationId(), req.getMessage());
+        return agent.stream(req.getConversationId(), req.getPrompt().text());
     }
 
     @Override

@@ -63,17 +63,17 @@ public class ClientAuthEndpoint {
     @PostMapping("/login")
     public R login(@RequestBody AigcUser user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
-            throw new ServiceException("Username or password is empty");
+            throw new ServiceException("用户名和密码不能为空");
         }
 
         AigcUser userInfo = userService.info(user.getUsername());
         if (userInfo == null) {
-            throw new ServiceException("Username or password is not match");
+            throw new ServiceException("用户名或密码错误");
         }
 
         String decryptPass = AuthUtil.decrypt(props.getSaltKey(), userInfo.getPassword());
         if (!decryptPass.equals(user.getPassword())) {
-            throw new ServiceException("Username or password is not match");
+            throw new ServiceException("用户名或密码错误");
         }
 
         ClientStpUtil.login(userInfo.getId());
@@ -109,19 +109,19 @@ public class ClientAuthEndpoint {
     @PostMapping("/email/register")
     public R emailRegister(@RequestBody AigcUser data) {
         if (StrUtil.isBlank(data.getEmail()) || StrUtil.isBlank(data.getCode()) || StrUtil.isBlank(data.getPassword())) {
-            throw new ServiceException("The email address or password is empty");
+            throw new ServiceException("邮箱验证码和密码不能为空");
         }
 
         // 校验验证码是否正确
         String code = redisTemplate.opsForValue().get(CacheConst.CAPTCHA_PREFIX + data.getEmail());
         if (!data.getCode().equals(code)) {
-            throw new ServiceException("Verification code error");
+            throw new ServiceException("验证码无效");
         }
 
         // 校验用户名是否已存在
         List<AigcUser> list = userService.list(Wrappers.<AigcUser>lambdaQuery().eq(AigcUser::getUsername, data.getEmail()));
         if (!list.isEmpty()) {
-            throw new ServiceException("This email address has already been registered");
+            throw new ServiceException("该邮箱已经注册过");
         }
 
         AigcUser user = new AigcUser()
@@ -158,19 +158,19 @@ public class ClientAuthEndpoint {
     @PostMapping("/forget")
     public R forget(@RequestBody AigcUser data) {
         if (StrUtil.isBlank(data.getEmail()) || StrUtil.isBlank(data.getCode()) || StrUtil.isBlank(data.getPassword())) {
-            throw new ServiceException("The email address or password is empty");
+            throw new ServiceException("邮箱验证码和密码不能为空");
         }
 
         // 校验验证码是否正确
         String code = redisTemplate.opsForValue().get(CacheConst.CAPTCHA_PREFIX + data.getEmail());
         if (!data.getCode().equals(code)) {
-            throw new ServiceException("Verification code error");
+            throw new ServiceException("验证码无效");
         }
 
         // 校验用户名是否已存在
         List<AigcUser> list = userService.list(Wrappers.<AigcUser>lambdaQuery().eq(AigcUser::getUsername, data.getEmail()));
         if (list.isEmpty()) {
-            throw new ServiceException("Account does not exist");
+            throw new ServiceException("该邮箱已经注册过");
         }
 
         // 重置密码

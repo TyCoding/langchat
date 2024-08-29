@@ -34,7 +34,6 @@ import dev.langchain4j.store.embedding.filter.Filter;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +71,6 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         aigcKnowledgeService.removeSlicesOfDoc(docsId);
     }
 
-    @Async
     @Override
     public void embedDocsSlice(AigcDocs data, String url) {
         List<EmbeddingR> list = langEmbeddingService.embeddingDocs(

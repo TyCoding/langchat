@@ -17,6 +17,7 @@
 
 package cn.tycoding.langchat.app.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -45,7 +46,8 @@ public class AigcAppWeb implements Serializable {
 
     private String channel;
     private String apiKey;
-    private Integer reqLimit = 100;
+    @TableField(updateStrategy = FieldStrategy.ALWAYS)
+    private Integer reqLimit;
     private String name;
     private String des;
     private Date expired = null;

@@ -18,6 +18,7 @@
   import Sider from './Sider.vue';
   import { onMounted, ref, watch } from 'vue';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
+  import Login from '@/layout/Login.vue';
 
   const { isMobile } = useBasicLayout();
   const collapsed = ref(false);
@@ -32,6 +33,8 @@
 
 <template>
   <div class="h-screen w-full grid-mask">
+    <Login />
+
     <n-layout class="h-full" has-sider>
       <n-layout-sider
         :collapsed="collapsed"
@@ -48,7 +51,7 @@
         <RouterView v-slot="{ Component, route }">
           <keep-alive>
             <div
-              class="h-full m-4 ml-2 border rounded-lg bg-white dark:bg-transparent dark:border-[#ffffff17]"
+              class="h-full m-4 ml-2 border rounded-lg overflow-hidden bg-white dark:bg-transparent dark:border-[#ffffff17]"
               style="height: calc(100vh - 33px)"
             >
               <component :is="Component" :key="route.fullPath" />
