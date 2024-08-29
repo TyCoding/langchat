@@ -15,18 +15,18 @@
   -->
 
 <script lang="ts" setup>
-  import { onMounted, ref, toRaw } from 'vue';
-  import SvgIcon from '@/components/SvgIcon/index.vue';
-  import { isNullOrWhitespace } from '@/utils/is';
-  import { add, generateKey, getById, update } from '@/api/app/appApi';
-  import { list as getModelList } from '@/api/aigc/model';
-  import { useDialog, useMessage } from 'naive-ui';
-  import { useRouter } from 'vue-router';
-  import { copyToClip } from '@/utils/copy';
-  import ModelSelect from '@/views/channel/ModelSelect.vue';
-  import AppSelect from '@/views/channel/AppSelect.vue';
+import {onMounted, ref, toRaw} from 'vue';
+import SvgIcon from '@/components/SvgIcon/index.vue';
+import {isNullOrWhitespace} from '@/utils/is';
+import {add, generateKey, getById, update} from '@/api/app/appApi';
+import {list as getModelList} from '@/api/aigc/model';
+import {useDialog, useMessage} from 'naive-ui';
+import {useRouter} from 'vue-router';
+import {copyToClip} from '@/utils/copy';
+import ModelSelect from '@/views/channel/ModelSelect.vue';
+import AppSelect from '@/views/channel/AppSelect.vue';
 
-  const emit = defineEmits(['reload']);
+const emit = defineEmits(['reload']);
   const formRef = ref();
   const form = ref<any>({});
   const ms = useMessage();
@@ -174,7 +174,7 @@
         />
       </n-form-item>
 
-      <n-form-item label="请求限额 / 天" path="limit">
+      <n-form-item label="请求限额（次） / 分钟" path="limit">
         <n-slider
           v-model:value="form.reqLimit"
           :default-value="100"

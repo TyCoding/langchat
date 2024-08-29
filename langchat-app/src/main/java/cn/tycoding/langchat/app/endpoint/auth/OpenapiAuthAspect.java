@@ -43,8 +43,11 @@ public class OpenapiAuthAspect {
             throw new AuthException(401, "Authentication Token invalid");
         }
 
+
         try {
-            channelStore.isExpired(openapiAuth.value());
+            String value = openapiAuth.value();
+            channelStore.isExpired(value);
+            channelStore.currentLimiting(value);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
