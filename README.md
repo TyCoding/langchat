@@ -13,7 +13,6 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 - 网站文档：[http://langchat.cn/](http://langchat.cn/)
 - 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 - 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
-- LangChat源码：[https://github.com/tycoding/langchat](https://github.com/tycoding/langchat)
 
 **注意：** 如果想和作者深入交流LangChat开发规划、AIGC产品研发、变现等方式，**可以请作者喝一杯咖啡加入LangChat交流群**
 
@@ -28,7 +27,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 1. 提供项目部署服务，远程部署到服务器
 2. 提供Docker一键部署脚本、提供前后端nginx配置脚本
 3. 提供项目架构讲解和AIGC产品设计&技术支持
-4. 提供项目二开合作，本项目不可商用，商用请联系我
+4. 提供项目二开合作，本项目不可商用，商用请联系作者授权
 5. 更多支持...
 
 以上，希望有需要的朋友都可以加我微信 **LangchainChat** 跟我沟通。
