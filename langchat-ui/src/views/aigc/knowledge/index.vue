@@ -107,7 +107,11 @@
       <n-empty v-if="list == null || list.length == 0" class="mt-10" />
 
       <ul class="mt-6 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
-        <li v-for="(item, idx) in list" :key="idx" class="rounded-lg shadow-lg shadow-neutral-200">
+        <li
+          v-for="(item, idx) in list"
+          :key="idx"
+          class="rounded-lg border border-gray-200 hover:shadow-lg cursor-pointer"
+        >
           <div class="flex items-center justify-between p-4">
             <div class="flex items-center gap-2">
               <n-avatar v-if="item.cover" :size="48" :src="item.cover" round>

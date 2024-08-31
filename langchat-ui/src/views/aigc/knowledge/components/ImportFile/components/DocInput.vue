@@ -65,10 +65,10 @@
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <n-button :loading="loading" type="success" @click="handleSubmit">提交到知识库学习</n-button>
+      <n-button :loading="loading" type="primary" @click="handleSubmit">提交到知识库学习</n-button>
     </div>
 
-    <n-form :rules="rules" :model="form" label-placement="left" label-width="auto">
+    <n-form :model="form" :rules="rules" label-placement="left" label-width="auto">
       <n-form-item label="文件名称" path="name">
         <n-input v-model:value="form.name" />
       </n-form-item>

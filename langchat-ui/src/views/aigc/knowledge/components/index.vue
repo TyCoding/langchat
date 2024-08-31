@@ -84,7 +84,7 @@
       <n-card :bordered="false" size="medium">
         <template #header>
           <n-space class="flex items-center">
-            <n-button dashed type="success" @click="handleReturn">
+            <n-button dashed type="primary" @click="handleReturn">
               知识库列表
               <template #icon>
                 <n-icon>

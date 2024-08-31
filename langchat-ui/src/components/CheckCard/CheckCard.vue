@@ -1,15 +1,15 @@
 <template>
   <n-space :justify="justify">
     <template v-for="item in dataSource" :key="item.key">
-      <div @click="handleChecked(item)" style="height: 96px">
+      <div style="height: 96px" @click="handleChecked(item)">
         <n-list
           :class="checked == item.key ? 'check-list-checked' : ''"
-          class="check-list"
           bordered
+          class="check-list"
         >
           <n-list-item>
             <template #prefix>
-              <n-avatar>
+              <n-avatar class="!text-black">
                 <n-icon>
                   <component :is="item.icon" />
                 </n-icon>
@@ -20,7 +20,7 @@
               <template #description>{{ item.label }}</template>
             </n-thing>
             <template #suffix>
-              <n-icon size="20" :color="checked == item.key ? '#18a058' : '#eee'">
+              <n-icon :color="checked == item.key ? '#18a058' : '#eee'" size="20">
                 <CheckmarkCircle />
               </n-icon>
             </template>
@@ -31,7 +31,7 @@
   </n-space>
 </template>
 <script lang="ts">
-  import { ref, defineComponent, computed, onMounted, Component } from 'vue';
+  import { Component, computed, defineComponent, onMounted, ref } from 'vue';
   import { CheckmarkCircle } from '@vicons/ionicons5';
 
   export type CheckSource = {
@@ -92,7 +92,7 @@
     },
   });
 </script>
-<style scoped lang="less">
+<style lang="less" scoped>
   .check-list {
     width: 320px;
     cursor: pointer;

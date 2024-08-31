@@ -19,14 +19,17 @@
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { embeddingSearch } from '@/api/aigc/embedding';
   import router from '@/router';
+  import { useMessage } from 'naive-ui';
 
   const content = ref('');
   const loading = ref(false);
   const list = ref<any>([]);
+  const ms = useMessage();
 
   async function onSearch() {
     if (content.value === '') {
       list.value = [];
+      ms.warning('请先输入搜索内容');
       return;
     }
     loading.value = true;
@@ -43,8 +46,13 @@
   <n-card class="h-full w-full">
     <div class="flex h-full gap-4">
       <div class="w-1/3 flex flex-col gap-3">
-        <n-button :loading="loading" secondary type="success" @click="onSearch">向量搜索</n-button>
-        <n-input v-model:value="content" rows="10" type="textarea" />
+        <n-button :loading="loading" secondary type="primary" @click="onSearch">向量搜索</n-button>
+        <n-input
+          v-model:value="content"
+          placeholder="请输入关键词查询向量文本"
+          rows="10"
+          type="textarea"
+        />
       </div>
       <div class="w-full">
         <n-spin :show="loading">
