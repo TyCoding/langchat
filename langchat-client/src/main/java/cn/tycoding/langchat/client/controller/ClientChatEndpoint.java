@@ -81,6 +81,7 @@ public class ClientChatEndpoint {
         AigcOss oss = aigcOssService.upload(file, ClientAuthUtil.getUserId());
         clientEmbeddingService.embedDocs(
                 new ChatReq()
+                        .setUserId(ClientAuthUtil.getUserId())
                         .setDocsName(oss.getOriginalFilename())
                         .setKnowledgeId(oss.getId())
                         .setUrl(oss.getUrl()));

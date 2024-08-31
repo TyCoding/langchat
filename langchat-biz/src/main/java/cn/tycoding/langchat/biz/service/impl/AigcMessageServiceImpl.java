@@ -31,6 +31,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -89,6 +90,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     }
 
     @Override
+    @Transactional
     public AigcConversation addConversation(AigcConversation conversation) {
         conversation.setCreateTime(new Date());
         aigcConversationMapper.insert(conversation);
@@ -96,6 +98,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     }
 
     @Override
+    @Transactional
     public void updateConversation(AigcConversation conversation) {
         aigcConversationMapper.updateById(
                 new AigcConversation().setId(conversation.getId())
@@ -103,6 +106,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     }
 
     @Override
+    @Transactional
     public void delConversation(String conversationId) {
         aigcConversationMapper.deleteById(conversationId);
         baseMapper.delete(
@@ -111,6 +115,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     }
 
     @Override
+    @Transactional
     public AigcMessage addMessage(AigcMessage message) {
         message.setCreateTime(new Date());
         baseMapper.insert(message);
@@ -118,6 +123,7 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
     }
 
     @Override
+    @Transactional
     public void clearMessage(String conversationId) {
         baseMapper.delete(
                 Wrappers.<AigcMessage>lambdaQuery()

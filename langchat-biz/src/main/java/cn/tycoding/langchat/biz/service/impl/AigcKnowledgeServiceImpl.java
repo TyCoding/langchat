@@ -29,6 +29,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -46,17 +47,20 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     private final AigcDocsSliceMapper aigcDocsSliceMapper;
 
     @Override
+    @Transactional
     public void addDocs(AigcDocs data) {
         data.setCreateTime(new Date());
         aigcDocsMapper.insert(data);
     }
 
     @Override
+    @Transactional
     public void updateDocs(AigcDocs data) {
         aigcDocsMapper.updateById(data);
     }
 
     @Override
+    @Transactional
     public void addDocsSlice(AigcDocsSlice data) {
         data.setCreateTime(new Date())
                 .setWordNum(data.getContent().length())
@@ -66,6 +70,7 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     }
 
     @Override
+    @Transactional
     public void updateDocsSlice(AigcDocsSlice data) {
         aigcDocsSliceMapper.updateById(data);
     }
@@ -84,6 +89,7 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     }
 
     @Override
+    @Transactional
     public void removeSlicesOfDoc(String docsId) {
         LambdaQueryWrapper<AigcDocsSlice> deleteWrapper = Wrappers.<AigcDocsSlice>lambdaQuery()
                 .eq(AigcDocsSlice::getDocsId, docsId);
