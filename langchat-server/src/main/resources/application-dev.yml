@@ -27,7 +27,7 @@ langchat:
   oss:
     default-platform: local
     qiniu-kodo:
-      - platform: qiniu # 存储平台标识
+      - platform: qiniu # 存储平台标识，七牛：qiniu、阿里OSS：aliyun-oss、腾讯OSS：tencent-cos
         enable-storage: true  # 启用存储
         access-key: <ak>
         secret-key: <sk>
@@ -40,8 +40,8 @@ langchat:
         enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
         domain: http://127.0.0.1/ # 访问域名，例如：“http://127.0.0.1:8030/file/”，注意后面要和 path-patterns 保持一致，“/”结尾，本地存储建议使用相对路径，方便后期更换域名
         base-path: langchat/ # 基础路径
-        path-patterns: /Users/tycoding/data/software/nginx/ # 访问路径
-        storage-path: /Users/tycoding/data/software/nginx/ # 存储路径
+        path-patterns: /static/** # 访问路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
+        storage-path: ./static/ # 存储路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
   auth:
     # client端新注册的用户是否开启操作权限，如果为false，client端新用户默认只有页面预览权限没有操作权限
     # 需要在server端给指定用户授权后才能正常使用

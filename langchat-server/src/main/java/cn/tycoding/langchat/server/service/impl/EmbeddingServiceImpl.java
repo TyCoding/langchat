@@ -60,12 +60,15 @@ public class EmbeddingServiceImpl implements EmbeddingService {
 
     @Override
     @Transactional
-    public void clearDocSlicesOfDoc(String docsId) {
+    public void clearDocSlices(String docsId) {
         if (StrUtil.isBlank(docsId)) {
             return;
         }
         // remove from embedding store
         List<String> vectorIds = aigcKnowledgeService.listSliceVectorIdsOfDoc(docsId);
+        if (vectorIds.isEmpty()) {
+            return;
+        }
         embeddingStore.removeAll(vectorIds);
         // remove from docSlice
         aigcKnowledgeService.removeSlicesOfDoc(docsId);

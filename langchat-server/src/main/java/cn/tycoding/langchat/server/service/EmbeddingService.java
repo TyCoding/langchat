@@ -27,13 +27,7 @@ import java.util.Map;
  */
 public interface EmbeddingService {
 
-    /**
-     * 删除文档已有切片
-     *
-     * @param docsId 文档id
-     * @return true:已删除切片；false:切片删除失败
-     */
-    void clearDocSlicesOfDoc(String docsId);
+    void clearDocSlices(String docsId);
 
     void embedDocsSlice(AigcDocs data, String url);
 

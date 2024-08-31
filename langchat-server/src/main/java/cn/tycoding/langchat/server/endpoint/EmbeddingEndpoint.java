@@ -115,7 +115,7 @@ public class EmbeddingEndpoint {
         }
         if (EmbedConst.ORIGIN_TYPE_UPLOAD.equals(docs.getType())) {
             // clear before re-embed
-            embeddingService.clearDocSlicesOfDoc(docsId);
+            embeddingService.clearDocSlices(docsId);
             embeddingService.embedDocsSlice(docs, docs.getUrl());
             TaskManager.submitTask(userId,
                     Executors.callable(() -> embeddingService.embedDocsSlice(docs, docs.getUrl())));

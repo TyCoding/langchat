@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat;
 
+import cn.tycoding.langchat.common.oss.EnableFileStorage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -24,6 +25,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @author tycoding
  * @since 2024/2/4
  */
+@EnableFileStorage
 @EnableAsync
 @SpringBootApplication
 public class LangChatApp {
