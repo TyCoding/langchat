@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue';
-  import { darkTheme, dateZhCN, zhCN } from 'naive-ui';
+  import { darkTheme, dateZhCN, GlobalThemeOverrides, zhCN } from 'naive-ui';
   import { AppProvider } from '@/components/Application';
   import { useScreenLockStore } from '@/store/modules/screenLock.js';
   import { useRoute } from 'vue-router';
@@ -60,7 +60,7 @@
   /**
    * @type import('naive-ui').GlobalThemeOverrides
    */
-  const getThemeOverrides = computed(() => {
+  const getThemeOverrides = computed<GlobalThemeOverrides>(() => {
     const appTheme = designStore.appTheme;
     const lightenStr = lighten(designStore.appTheme, 6);
     return {
@@ -69,6 +69,7 @@
         primaryColorHover: lightenStr,
         primaryColorPressed: lightenStr,
         primaryColorSuppl: appTheme,
+        borderRadius: '10px',
       },
       LoadingBar: {
         colorLoading: appTheme,

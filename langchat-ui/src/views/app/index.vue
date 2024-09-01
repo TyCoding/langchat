@@ -78,63 +78,69 @@
 </script>
 
 <template>
-  <section class="overflow-y-auto h-full">
-    <div class="n-layout-page-header">
-      <n-card :bordered="false" title="应用配置能力">
-        LangChat支持动态增加各种AIGC应用，通过自定义Prompt和关联知识库来实现个性机器人
-      </n-card>
-    </div>
-
-    <n-card :bordered="false" class="my-4 pb-4">
-      <div class="mb-4">
-        <n-button dashed type="primary" @click="handleAdd">新增应用</n-button>
+  <section class="overflow-y-auto h-full px-3 py-4">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 mb-8">
+      <div
+        class="bg-gray-100 py-3 pt-4 transition-all duration-300 px-2 transform border cursor-pointer rounded-xl group"
+      >
+        <div class="font-bold text-xs mb-1.5 px-6 text-gray-500">创建应用</div>
+        <div
+          class="w-full transition-all hover:bg-white rounded-lg py-1.5 px-6 flex items-center gap-1 font-medium hover:text-blue-500"
+          @click="handleAdd"
+        >
+          <SvgIcon icon="line-md:file-plus" />
+          <span class="text-sm">创建空白应用</span>
+        </div>
       </div>
 
-      <Edit ref="editRef" @reload="fetchData" />
+      <div
+        v-for="item in list"
+        :key="item.id"
+        class="bg-white px-4 py-3 pt-4 transition-all duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:shadow-lg"
+        @click="onInfo(item)"
+      >
+        <div class="flex flex-col sm:-mx-4 sm:flex-row">
+          <div class="sm:mx-4">
+            <div class="relative bg-orange-100 p-4 rounded-lg">
+              <SvgIcon class="text-3xl" icon="prime:microchip-ai" />
 
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <div
-          v-for="item in list"
-          :key="item.id"
-          class="bg-white px-4 shadow-md py-3 pt-4 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:shadow-lg"
-          @click="onInfo(item)"
-        >
-          <div class="flex flex-col sm:-mx-4 sm:flex-row">
-            <img
-              :src="item.cover == null ? '/src/assets/icons/app.png' : item.cover"
-              class="flex-shrink-0 object-cover w-16 h-16 rounded sm:mx-4"
-            />
-
-            <div class="pr-4">
-              <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
-
-              <p class="mt-2 text-gray-500 capitalize text-xs">
-                {{ item.des }}
-              </p>
+              <div
+                class="absolute bottom-[-6px] p-1 right-[-5px] shadow bg-white mx-auto rounded-lg"
+              >
+                <SvgIcon class="text-sm text-orange-500" icon="lucide:bot" />
+              </div>
             </div>
           </div>
 
-          <div class="flex mt-4 -mx-2 px-4 text-gray-400 justify-between items-center">
-            <div class="flex items-center">
-              <div v-if="item.model != null" class="flex items-center">
-                <SvgIcon class="text-xl" icon="bitcoin-icons:magic-wand-outline" />
-                <span>{{ item.model.model }}</span>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <n-popselect
-                :options="actionOptions"
-                @update:value="(key) => onSelectAction(key, item)"
-              >
-                <n-button text>
-                  <SvgIcon class="text-xl" icon="heroicons-outline:dots-horizontal" />
-                </n-button>
-              </n-popselect>
-            </div>
+          <div class="pr-4">
+            <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
+
+            <p class="mt-2 text-gray-500 capitalize text-xs">
+              {{ item.des }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex mt-4 -mx-2 px-4 text-gray-400 justify-between items-center">
+          <div class="flex items-center gap-1">
+            <SvgIcon class="" icon="mdi:tag-outline" />
+            <span v-if="item.model != null" class="text-xs">{{ item.model.model }}</span>
+          </div>
+          <div class="flex items-center">
+            <n-popselect
+              :options="actionOptions"
+              @update:value="(key) => onSelectAction(key, item)"
+            >
+              <n-button text>
+                <SvgIcon class="text-xl" icon="heroicons-outline:dots-horizontal" />
+              </n-button>
+            </n-popselect>
           </div>
         </div>
       </div>
-    </n-card>
+    </div>
+
+    <Edit ref="editRef" @reload="fetchData" />
   </section>
 </template>
 
