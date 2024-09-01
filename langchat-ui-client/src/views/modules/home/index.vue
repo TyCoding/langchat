@@ -56,7 +56,7 @@
             <span id="typed"></span>
           </div>
 
-          <div class="flex flex-wrap gap-2 mt-4 mb-8">
+          <div class="flex flex-wrap gap-0.5 sm:gap-2 mt-4 mb-8">
             <n-button round secondary type="success" @click="router.push({ name: 'Chat' })">
               <template #icon>
                 <SvgIcon icon="bx:chat" />

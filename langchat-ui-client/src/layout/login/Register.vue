@@ -6,7 +6,7 @@
   import { useRouter } from 'vue-router';
   import { emailRegister, getEmailCode } from '@/api/auth';
   import { t } from '@/locales';
-  import { rules } from '@/layout/data';
+  import { rules } from '@/layout/login/data';
 
   const router = useRouter();
   const userStore = useUserStore();

@@ -49,6 +49,7 @@ export function useTheme() {
         successColorHover: '#0052CC',
         pressedColor: '#0052CC',
         primaryColorPressed: '#0052CC',
+        borderRadius: '15px',
       },
     };
   });

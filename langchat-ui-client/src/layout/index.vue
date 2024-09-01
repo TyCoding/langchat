@@ -16,9 +16,10 @@
 
 <script lang="ts" setup>
   import Sider from './Sider.vue';
+  import { SvgIcon } from '@/components/common';
   import { onMounted, ref, watch } from 'vue';
   import { useBasicLayout } from '@/hooks/useBasicLayout';
-  import Login from '@/layout/Login.vue';
+  import Login from '@/layout/login/Login.vue';
 
   const { isMobile } = useBasicLayout();
   const collapsed = ref(false);
@@ -34,6 +35,17 @@
 <template>
   <div class="h-screen w-full grid-mask">
     <Login />
+
+    <div
+      v-if="isMobile"
+      class="p-2 py-3 mb-0 bg-[#fafafa] border dark:border-[#ffffff17] bottom-b grid grid-cols-3"
+    >
+      <n-button class="flex !justify-start" text type="primary" @click="collapsed = !collapsed">
+        <SvgIcon class="text-2xl" icon="solar:list-linear" />
+      </n-button>
+      <div class="text-xl font-bold flex justify-center">LangChat</div>
+      <div class="flex justify-end"></div>
+    </div>
 
     <n-layout class="h-full" has-sider>
       <n-layout-sider

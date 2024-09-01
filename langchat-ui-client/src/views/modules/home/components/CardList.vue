@@ -36,7 +36,7 @@
 <template>
   <n-grid :x-gap="12" :y-gap="12" class="mt-4" cols="1 400:2 1200:3 1300:4">
     <n-grid-item v-for="item in props.list" :key="item">
-      <n-card class="!rounded-lg" content-style="padding:0px" hoverable>
+      <n-card content-style="padding:0px" hoverable>
         <div>
           <n-thing class="inline-block bg-white dark:bg-[#34373f] p-3 rounded-[6px] cursor-pointer">
             <template #avatar>

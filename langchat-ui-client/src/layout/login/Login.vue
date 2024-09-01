@@ -3,7 +3,7 @@
   import { SvgIcon } from '@/components/common';
   import { useMessage } from 'naive-ui';
   import { useUserStore } from '@/store';
-  import Register from '@/layout/Register.vue';
+  import Register from '@/layout/login/Register.vue';
 
   const userStore = useUserStore();
   const isRegister = ref(false);
@@ -56,7 +56,7 @@
         <div class="absolute right-3 top-3 cursor-pointer" @click="onClose">
           <SvgIcon class="text-black text-xl" icon="material-symbols:close" />
         </div>
-        <div class="bg-blue-500 h-full flex justify-center items-start w-[350px]">
+        <div class="hidden sm:flex bg-blue-500 h-full justify-center items-start w-[350px]">
           <div class="px-[40px] py-[80px] flex flex-col gap-4 text-center">
             <div class="text-2xl font-bold">欢迎登录LangChat</div>
             <div class="text-sm">开启你的AI创作之路吧！</div>

@@ -62,19 +62,11 @@
     :label-field="'name'"
     :options="modelList"
     :value-field="'id'"
-    class="!w-32"
-    size="small"
     @update:value="onUpdate"
   />
 </template>
 
 <style lang="less" scoped>
-  ::v-deep(
-      .n-base-selection .n-base-selection__border,
-      .n-base-selection .n-base-selection__state-border
-    ) {
-    border: none !important;
-  }
   ::v-deep(.n-base-selection-label) {
     font-weight: 600 !important;
     gap: 6px !important;
