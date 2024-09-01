@@ -53,7 +53,7 @@ export const useTabsViewStore = defineStore({
     addTab(route: RouteItem): boolean {
       // 添加标签页
       if (whiteList.includes(route.name)) return false;
-      const isExists = this.tabsList.some((item) => item.fullPath == route.fullPath);
+      const isExists = this.tabsList.some((item) => item.name == route.name);
       if (!isExists) {
         this.tabsList.push(route);
       }

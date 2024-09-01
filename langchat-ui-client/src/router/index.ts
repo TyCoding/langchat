@@ -16,7 +16,7 @@
 
 import type { App } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { Layout } from '@/layout';
 import { setupPageGuard } from '@/router/permission';
 
@@ -123,7 +123,7 @@ const baseRoutes: RouteRecordRaw[] = [
 export const routesConst: RouteRecordRaw[] = routes.flatMap((route) => route.children ?? []);
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [...baseRoutes, ...routes],
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
