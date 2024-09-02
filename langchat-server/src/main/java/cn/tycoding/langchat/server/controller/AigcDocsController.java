@@ -23,9 +23,11 @@ import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.server.service.EmbeddingService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +42,7 @@ import java.util.List;
 public class AigcDocsController {
 
     private final AigcDocsMapper docsMapper;
+    private final EmbeddingService embeddingService;
 
     @GetMapping("/list")
     public R<List<AigcDocs>> list(AigcDocs data) {
@@ -80,8 +83,11 @@ public class AigcDocsController {
     @DeleteMapping("/{id}")
     @ApiLog("删除文档")
     @SaCheckPermission("aigc:docs:delete")
+    @Transactional
     public R delete(@PathVariable String id) {
         docsMapper.deleteById(id);
+        // delete doc slices
+        embeddingService.clearDocSlices(id);
         return R.ok();
     }
 }
