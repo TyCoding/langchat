@@ -406,6 +406,7 @@ INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `ord
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('f5031ca9ca645316c6eb94f4ea8684f8', '修改文档', '97a5eac3bfeeabe4013d828b919786f7', null, 'aigc:docs:update', 'button', 11, null, null, 0, 0, 1, null);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('51ed9b1f27acc4695667821eac5f35cb', '删除文档', '97a5eac3bfeeabe4013d828b919786f7', null, 'aigc:docs:delete', 'button', 12, null, null, 0, 0, 1, null);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('03917f40dfafba8c7ecb2b8843522a9e', '新增文档', '97a5eac3bfeeabe4013d828b919786f7', null, 'aigc:docs:add', 'button', 10, null, null, 0, 0, 1, null);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('1c1fa2c50ff306144a0ea2528dcec96b', '重置密码', 'b29de942eeabc9419185951f57be11f3', null, 'upms:user:reset', 'button', 5, null, null, 0, 0, 1, null);
 COMMIT;
 
 -- ----------------------------
