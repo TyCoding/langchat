@@ -18,6 +18,7 @@
   import { SvgIcon } from '@/components/common';
   import { ref } from 'vue';
   import DALL from './component/DALL.vue';
+	import ZhiPu from "@/views/modules/image/component/ZhiPu.vue";
   import { downloadByUrl } from '@/utils/downloadFile';
   import { t } from '@/locales';
 
@@ -47,7 +48,10 @@
           <n-tab-pane display-directive="show" name="chap1" tab="OpenAI DALL·E">
             <DALL @ok="onOk" />
           </n-tab-pane>
-          <n-tab-pane display-directive="show" name="chap2" tab="Mj & More...">
+          <n-tab-pane display-directive="show" name="chap2" tab="智谱AI">
+            <ZhiPu @ok="onOk" />
+          </n-tab-pane>
+          <n-tab-pane display-directive="show" name="chap3" tab="Mj & More...">
             <n-empty description="更多文生图模型后续即将支持..." />
           </n-tab-pane>
         </n-tabs>
