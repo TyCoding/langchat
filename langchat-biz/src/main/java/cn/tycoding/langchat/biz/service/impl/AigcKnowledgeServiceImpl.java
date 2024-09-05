@@ -16,6 +16,8 @@
 
 package cn.tycoding.langchat.biz.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.tycoding.langchat.biz.dto.DocSliceNumDTO;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.entity.AigcKnowledge;
@@ -23,16 +25,24 @@ import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.biz.mapper.AigcDocsSliceMapper;
 import cn.tycoding.langchat.biz.mapper.AigcKnowledgeMapper;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
+import cn.tycoding.langchat.biz.vo.FileAnalysisMonitorVO;
+import cn.tycoding.langchat.common.exception.ServiceException;
+import cn.tycoding.langchat.common.utils.QueryPage;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author tycoding
@@ -95,6 +105,53 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
                 .eq(AigcDocsSlice::getDocsId, docsId);
         int count = aigcDocsSliceMapper.delete(deleteWrapper);
         log.debug("remove all slices of doc: [{}], count: [{}]", docsId, count);
+    }
+
+    @Override
+    public IPage<FileAnalysisMonitorVO> fileAnalysisMonitor(QueryPage queryPage, String userId) {
+        IPage<FileAnalysisMonitorVO> result = new Page<>();
+        List<FileAnalysisMonitorVO> resultList = new ArrayList<>();
+        IPage<AigcDocs> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        IPage<AigcDocs> iPage = aigcDocsMapper.selectPage(page,
+                new LambdaQueryWrapper<AigcDocs>()
+                        .select(AigcDocs::getName, AigcDocs::getId, AigcDocs::getSliceNum, AigcDocs::getSliceStatus)
+                        .eq(AigcDocs::getUserId, userId)
+        );
+        List<AigcDocs> records = iPage.getRecords();
+        if (CollectionUtil.isEmpty(records)) {
+            throw new ServiceException("未上传文档，无数据");
+        }
+        List<String> docIds = records.stream().map(AigcDocs::getId).toList();
+        List<DocSliceNumDTO> docSliceNumByDocId = aigcDocsSliceMapper.getDocSliceNumByDocId(docIds);
+        if (CollectionUtil.isEmpty(docSliceNumByDocId)) {
+            return null;
+        }
+        Map<String, Integer> coutMap = docSliceNumByDocId.stream().collect(Collectors.toMap(DocSliceNumDTO::getDocsId, DocSliceNumDTO::getCount));
+        for (AigcDocs aigcDocs : records) {
+            String docId = aigcDocs.getId();
+            FileAnalysisMonitorVO fileAnalysisMonitorVO = new FileAnalysisMonitorVO();
+            if (!aigcDocs.getSliceStatus()) {
+                fileAnalysisMonitorVO.setStatus(0);
+                fileAnalysisMonitorVO.setSpeed(0.0);
+            } else {
+                Integer sliceNum = coutMap.get(docId);
+                if (sliceNum.compareTo(aigcDocs.getSliceNum()) == 0) {
+                    fileAnalysisMonitorVO.setStatus(1);
+                } else {
+                    fileAnalysisMonitorVO.setStatus(0);
+                }
+                fileAnalysisMonitorVO.setSpeed((double) sliceNum / aigcDocs.getSliceNum() * 100);
+            }
+            fileAnalysisMonitorVO.setName(aigcDocs.getName());
+            fileAnalysisMonitorVO.setDocsId(docId);
+            resultList.add(fileAnalysisMonitorVO);
+        }
+        result.setRecords(resultList);
+        result.setTotal(iPage.getTotal());
+        result.setCurrent(iPage.getCurrent());
+        result.setSize(iPage.getSize());
+        result.setPages(iPage.getPages());
+        return result;
     }
 }
 

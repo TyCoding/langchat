@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tycoding.langchat.biz.mapper.AigcDocsSliceMapper">
+
+
+    <select id="getDocSliceNumByDocId" resultType="cn.tycoding.langchat.biz.dto.DocSliceNumDTO">
+        select
+        count(status) count,
+        docs_id docsId
+        from
+        aigc_docs_slice
+        where
+        docs_id in
+        <foreach collection="docIds" open="(" close=")" separator="," item="docId">
+            #{docId}
+        </foreach>
+        group by docs_id;
+    </select>
+</mapper>

@@ -22,20 +22,30 @@ import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.entity.AigcOss;
 import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
+import cn.tycoding.langchat.biz.mapper.AigcDocsSliceMapper;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.biz.service.AigcOssService;
+import cn.tycoding.langchat.biz.vo.FileAnalysisMonitorVO;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.task.TaskManager;
+import cn.tycoding.langchat.common.utils.MybatisUtil;
+import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
 import cn.tycoding.langchat.core.consts.EmbedConst;
 import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.concurrent.Executors;
@@ -55,6 +65,7 @@ public class EmbeddingEndpoint {
     private final AigcDocsMapper aigcDocsMapper;
     private final AigcOssService aigcOssService;
     private final EmbeddingService embeddingService;
+    private final AigcDocsSliceMapper aigcDocsSliceMapper;
 
     @PostMapping("/text")
     @SaCheckPermission("aigc:embedding:text")
@@ -94,6 +105,7 @@ public class EmbeddingEndpoint {
                 .setName(oss.getOriginalFilename())
                 .setSliceStatus(false)
                 .setUrl(oss.getUrl())
+                .setUserId(userId)
                 .setSize(file.getSize())
                 .setType(EmbedConst.ORIGIN_TYPE_UPLOAD)
                 .setKnowledgeId(knowledgeId);
@@ -127,5 +139,19 @@ public class EmbeddingEndpoint {
     @PostMapping("/search")
     public R search(@RequestBody AigcDocs data) {
         return R.ok(embeddingService.search(data));
+    }
+
+    @GetMapping("file-analysis-monitor")
+    public R fileAnalysisMonitor(QueryPage queryPage) {
+        try {
+            String userId = String.valueOf(AuthUtil.getUserId());
+            IPage<FileAnalysisMonitorVO> page = aigcKnowledgeService.fileAnalysisMonitor(queryPage, userId);
+            return R.ok(MybatisUtil.getData(page));
+        } catch (ServiceException e) {
+            return R.fail(e.getMessage());
+        } catch (Exception e) {
+            log.error("embedding 解析监控数据获取失败", e);
+            return R.fail("embedding 解析监控数据获取失败");
+        }
     }
 }

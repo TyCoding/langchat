@@ -16,9 +16,13 @@
 
 package cn.tycoding.langchat.biz.mapper;
 
+import cn.tycoding.langchat.biz.dto.DocSliceNumDTO;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author tycoding
@@ -26,6 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AigcDocsSliceMapper extends BaseMapper<AigcDocsSlice> {
+    List<DocSliceNumDTO> getDocSliceNumByDocId(@Param("docIds") List<String> docIds);
 
 }
 
