@@ -27,7 +27,7 @@ spring:
 
 # MybatisPlus配置
 mybatis-plus:
-  mapper-locations: classpath:mapper/**/*.xml
+  mapper-locations: classpath:mapper/**/*.xml,classpath:aigc-mapper/**/*.xml
   configuration:
     jdbc-type-for-null: null
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
