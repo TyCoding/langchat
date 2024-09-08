@@ -95,6 +95,7 @@ CREATE TABLE `aigc_conversation` (
 -- ----------------------------
 -- Table structure for aigc_docs
 -- ----------------------------
+DROP TABLE IF EXISTS `aigc_docs`;
 CREATE TABLE `aigc_docs` (
                              `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
                              `knowledge_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '知识库ID',
