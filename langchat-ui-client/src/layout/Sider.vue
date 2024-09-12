@@ -20,28 +20,13 @@
   import { useDialog } from 'naive-ui';
   import { routesConst } from '@/router';
   import { useRouter } from 'vue-router';
-  import { useAppStore, useUserStore } from '@/store';
-  import type { Language } from '@/store/modules/app/helper';
+  import { useUserStore } from '@/store';
   import defaultAvatar from '@/assets/avatar.jpg';
 
-  const appStore = useAppStore();
   const dialog = useDialog();
   const userStore = useUserStore();
   const router = useRouter();
   const user = computed(() => userStore.user);
-
-  const language = computed({
-    get() {
-      return appStore.language;
-    },
-    set(value: Language) {
-      appStore.setLanguage(value);
-    },
-  });
-  const languageOptions: { label: string; key: Language; value: Language }[] = [
-    { label: '简体中文', key: 'zh-CN', value: 'zh-CN' },
-    { label: 'English', key: 'en-US', value: 'en-US' },
-  ];
 
   async function onLogout() {
     dialog.warning({
