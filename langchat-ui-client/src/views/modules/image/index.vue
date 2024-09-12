@@ -18,7 +18,7 @@
   import { SvgIcon } from '@/components/common';
   import { ref } from 'vue';
   import DALL from './component/DALL.vue';
-	import ZhiPu from "@/views/modules/image/component/ZhiPu.vue";
+  import ZhiPu from '@/views/modules/image/component/ZhiPu.vue';
   import { downloadByUrl } from '@/utils/downloadFile';
   import { t } from '@/locales';
 

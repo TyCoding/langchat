@@ -280,6 +280,8 @@
     setContent,
     getContent,
   });
+
+  const height = 1;
 </script>
 
 <style lang="less" scoped>

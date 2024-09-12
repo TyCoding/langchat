@@ -28,7 +28,9 @@
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
   import ModelProvider from '@/views/modules/common/ModelProvider.vue';
   import { isBlank } from '@/utils/is';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const chatStore = useChatStore();
   const ms = useMessage();
   const editorRef = ref();
@@ -81,7 +83,7 @@
 </script>
 
 <template>
-  <div class="flex gap-2 h-full">
+  <div :class="isMobile ? 'flex-col' : ''" class="flex gap-2 h-full">
     <div class="flex-1">
       <div class="m-2 flex gap-2 items-center">
         <ModelProvider />

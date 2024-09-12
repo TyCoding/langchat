@@ -21,7 +21,9 @@
   import { t } from '@/locales';
   import FileView from './components/FileView.vue';
   import { useDocStore } from '@/views/modules/doc/store';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const chatRef = ref();
   const docStore = useDocStore();
 
@@ -32,7 +34,7 @@
 </script>
 
 <template>
-  <n-layout class="h-full w-full" has-sider>
+  <n-layout :class="isMobile ? 'flex flex-col gap-4' : ''" class="h-full w-full" has-sider>
     <n-layout-sider
       :collapsed-width="0"
       :width="280"
@@ -43,8 +45,13 @@
       <FileList @select="onSelect" />
     </n-layout-sider>
     <div class="w-full h-full">
-      <n-split :default-size="0.6" class="h-full" direction="horizontal">
-        <template #1>
+      <n-split
+        :default-size="isMobile ? 0 : 0.6"
+        :resize-trigger-size="0.5"
+        class="h-full"
+        direction="horizontal"
+      >
+        <template v-if="!isMobile" #1>
           <div class="w-full h-full">
             <div
               v-if="docStore.file.fileName"

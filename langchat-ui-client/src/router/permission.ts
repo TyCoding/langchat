@@ -25,7 +25,7 @@ export function setupPageGuard(router: Router) {
       const data = await info();
       userStore.setUser(data);
     } else {
-      userStore.changeIsLogin();
+      // userStore.changeIsLogin();
     }
     next();
   });
