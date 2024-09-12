@@ -131,7 +131,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = Exception.class)
     public void delete(String id) {
         SysRole sysRole = this.getById(id);
-        if (!checkCode((SysRoleDTO) sysRole)) {
+        if (!checkCode(BeanUtil.copyProperties(sysRole, SysRoleDTO.class))) {
             throw new ServiceException("该角色不可删除");
         }
         baseMapper.deleteById(id);
