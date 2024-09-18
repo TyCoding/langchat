@@ -37,7 +37,7 @@
       loop: true,
     });
 
-    await fetchData();
+    fetchData();
   });
 
   async function fetchData() {

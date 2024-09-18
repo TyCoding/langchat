@@ -23,8 +23,10 @@
 
   const form = ref();
   const loading = ref(true);
-  onMounted(async () => {
-    form.value = await info();
+  onMounted(() => {
+    info().then((res: any) => {
+      form.value = res;
+    });
     loading.value = false;
   });
 </script>

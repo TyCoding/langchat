@@ -29,8 +29,8 @@
   const isEdit = ref(0);
   const docStore = useDocStore();
 
-  onMounted(async () => {
-    await fetchData();
+  onMounted(() => {
+    fetchData();
   });
 
   async function fetchData() {

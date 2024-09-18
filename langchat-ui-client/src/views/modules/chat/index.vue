@@ -42,13 +42,13 @@
   const aiChatId = ref<string>('');
   const inputRef = ref();
 
-  onMounted(async () => {
+  onMounted(() => {
     if (inputRef.value && !isMobile.value) {
       inputRef.value?.focus();
     }
-    await chatStore.loadData();
+    chatStore.loadData();
     if (chatStore.conversations.length == 0) {
-      await chatStore.addConversation({ title: 'New Chat' });
+      chatStore.addConversation({ title: 'New Chat' });
     }
   });
   onUnmounted(() => {
