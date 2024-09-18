@@ -48,11 +48,9 @@
   import { darkTheme, dateZhCN, GlobalThemeOverrides, zhCN } from 'naive-ui';
   import { AppProvider } from '@/components/Application';
   import { useScreenLockStore } from '@/store/modules/screenLock.js';
-  import { useRoute } from 'vue-router';
   import { useDesignSettingStore } from '@/store/modules/designSetting';
   import { lighten } from '@/utils';
 
-  const route = useRoute();
   const useScreenLock = useScreenLockStore();
   const designStore = useDesignSettingStore();
   const isLock = computed(() => useScreenLock.isLocked);
@@ -69,7 +67,7 @@
         primaryColorHover: lightenStr,
         primaryColorPressed: lightenStr,
         primaryColorSuppl: appTheme,
-        borderRadius: '10px',
+        borderRadius: '7px',
       },
       LoadingBar: {
         colorLoading: appTheme,

@@ -90,7 +90,7 @@
 
 <style lang="less" scoped>
   ::v-deep(.n-base-selection-label) {
-    font-weight: 600 !important;
+    //font-weight: 600 !important;
     gap: 6px !important;
     display: flex !important;
   }
