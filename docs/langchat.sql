@@ -34,49 +34,11 @@ COMMIT;
 DROP TABLE IF EXISTS `aigc_app_api`;
 CREATE TABLE `aigc_app_api` (
                                 `id` varchar(50) NOT NULL COMMENT '主键',
-                                `model_id` varchar(50) DEFAULT NULL COMMENT 'model',
                                 `app_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '应用ID',
-                                `req_limit` int DEFAULT NULL COMMENT '请求限制',
-                                `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
-                                `channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '渠道',
                                 `api_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Key',
-                                `des` varchar(255) DEFAULT NULL COMMENT '描述',
-                                `expired` datetime DEFAULT NULL COMMENT '过期时间',
                                 `create_time` datetime DEFAULT NULL COMMENT '创建时间',
                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='应用';
-
--- ----------------------------
--- Records of aigc_app_api
--- ----------------------------
-BEGIN;
-INSERT INTO `aigc_app_api` (`id`, `model_id`, `app_id`, `req_limit`, `name`, `channel`, `api_key`, `des`, `expired`, `create_time`) VALUES ('de35cff226110a7f6e5dd77823411627', '0c21c2f8ebd3aa3757ef1bae81154cc4', '', 100, 'HTTP应用', 'CHANNEL_API', 'langchat-20b418833d0f4a5483c241dee39b47b2', '将OpenAI格式的接口暴露给外部应用调用', NULL, NULL);
-COMMIT;
-
--- ----------------------------
--- Table structure for aigc_app_web
--- ----------------------------
-DROP TABLE IF EXISTS `aigc_app_web`;
-CREATE TABLE `aigc_app_web` (
-                                `id` varchar(50) NOT NULL COMMENT '主键',
-                                `model_id` varchar(50) DEFAULT NULL COMMENT 'model',
-                                `app_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '应用ID',
-                                `req_limit` int DEFAULT NULL COMMENT '请求限制',
-                                `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
-                                `channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '渠道',
-                                `api_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Key',
-                                `des` varchar(255) DEFAULT NULL COMMENT '描述',
-                                `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                `expired` datetime DEFAULT NULL COMMENT '过期时间',
-                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='应用';
-
--- ----------------------------
--- Records of aigc_app_web
--- ----------------------------
-BEGIN;
-INSERT INTO `aigc_app_web` (`id`, `model_id`, `app_id`, `req_limit`, `name`, `channel`, `api_key`, `des`, `create_time`, `expired`) VALUES ('fcce651cf9fa3662dd6bfea4fd6e697e', '0c21c2f8ebd3aa3757ef1bae81154cc4', '', 100, 'Web应用', 'CHANNEL_WEB', 'langchat-337a293acb60477ea5496f49f8892b14', '通过Iframe、JS快速将应用集成到第三方应用中', NULL, NULL);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for aigc_conversation
