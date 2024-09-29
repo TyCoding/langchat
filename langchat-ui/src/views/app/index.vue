@@ -121,7 +121,7 @@
           </div>
         </div>
 
-        <div class="flex mt-4 -mx-2 px-4 text-gray-400 justify-between items-center">
+        <div class="flex mt-4 -mx-2 px-2 text-gray-400 justify-between items-center">
           <div class="flex items-center gap-1">
             <SvgIcon class="" icon="mdi:tag-outline" />
             <span v-if="item.model != null" class="text-xs">{{ item.model.model }}</span>

@@ -24,7 +24,9 @@
   const chatStore = useChatStore();
   const props = defineProps<{
     id: any;
+    size?: string;
   }>();
+  const size = props.size || 'medium';
   const emit = defineEmits(['update', 'load']);
   const options = ref([]);
   const modelId = ref('');
@@ -82,6 +84,7 @@
     :consistent-menu-width="false"
     :label-field="'name'"
     :options="options"
+    :size="size"
     :value-field="'id'"
     placeholder="请选择关联模型"
     @update:value="onUpdate"

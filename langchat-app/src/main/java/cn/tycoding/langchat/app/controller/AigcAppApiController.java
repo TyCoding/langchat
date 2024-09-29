@@ -16,14 +16,13 @@
 
 package cn.tycoding.langchat.app.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.app.consts.AppConst;
 import cn.tycoding.langchat.app.entity.AigcAppApi;
 import cn.tycoding.langchat.app.service.AigcAppApiService;
 import cn.tycoding.langchat.app.store.AppChannelStore;
-import cn.tycoding.langchat.common.annotation.ApiLog;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -31,7 +30,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -45,23 +43,26 @@ public class AigcAppApiController {
     private final AigcAppApiService appApiService;
     private final AppChannelStore appChannelStore;
 
-    @GetMapping("/generate/key")
-    public R generateKey() {
-        String uuid = IdUtil.simpleUUID();
-        return R.ok(Dict.create().set("apiKey", AppConst.PREFIX + uuid));
+    @GetMapping("/create/{id}")
+    public R create(@PathVariable String id) {
+        String uuid = AppConst.PREFIX + IdUtil.simpleUUID();
+        appApiService.save(new AigcAppApi().setAppId(id).setApiKey(uuid).setCreateTime(new Date()));
+        appChannelStore.init();
+        return R.ok();
     }
 
     @GetMapping("/list")
     public R<List<AigcAppApi>> list(AigcAppApi data) {
-        List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>().orderByDesc(AigcAppApi::getCreateTime));
+        List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>()
+                .eq(StrUtil.isNotBlank(data.getAppId()), AigcAppApi::getAppId, data.getAppId())
+                .orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(list);
     }
 
     @GetMapping("/page")
     public R<Dict> page(AigcAppApi data, QueryPage queryPage) {
         IPage<AigcAppApi> iPage = appApiService.page(MybatisUtil.wrap(data, queryPage),
-                Wrappers.<AigcAppApi>lambdaQuery()
-                        .like(StringUtils.isNotEmpty(data.getName()), AigcAppApi::getName, data.getName()).orderByDesc(AigcAppApi::getCreateTime));
+                Wrappers.<AigcAppApi>lambdaQuery().orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(MybatisUtil.getData(iPage));
     }
 
@@ -72,8 +73,6 @@ public class AigcAppApiController {
     }
 
     @PostMapping
-    @ApiLog("新增API渠道")
-    @SaCheckPermission("aigc:app:api:add")
     public R add(@RequestBody AigcAppApi data) {
         data.setCreateTime(new Date());
         appApiService.save(data);
@@ -82,8 +81,6 @@ public class AigcAppApiController {
     }
 
     @PutMapping
-    @ApiLog("修改API渠道")
-    @SaCheckPermission("aigc:app:api:update")
     public R update(@RequestBody AigcAppApi data) {
         appApiService.updateById(data);
         appChannelStore.init();
@@ -91,8 +88,6 @@ public class AigcAppApiController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiLog("删除API渠道")
-    @SaCheckPermission("aigc:app:api:delete")
     public R delete(@PathVariable String id) {
         appApiService.removeById(id);
         appChannelStore.init();

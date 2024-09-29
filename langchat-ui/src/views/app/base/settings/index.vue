@@ -17,11 +17,17 @@
 <script lang="ts" setup>
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import KnowledgeList from './KnowledgeList.vue';
+  import ModelSelect from '@/views/common/ModelSelect.vue';
   import { ref } from 'vue';
   import { useAppStore } from '@/views/app/store';
 
   const appStore = useAppStore();
   const knowledgeRef = ref();
+
+  async function onSaveModel(val) {
+    appStore.modelId = val.id;
+    // await onSave();
+  }
 
   function onShowKbPane() {
     knowledgeRef.value.show();
@@ -34,7 +40,14 @@
 
 <template>
   <div class="p-2 py-4 flex flex-col gap-3">
-    <n-collapse :default-expanded-names="['1']">
+    <n-collapse :default-expanded-names="['0', '1']">
+      <n-collapse-item name="0" title="基础配置">
+        <div class="flex items-center gap-2">
+          <div class="w-20">模型选择</div>
+          <ModelSelect :id="appStore.modelId" class="" @update="onSaveModel" />
+        </div>
+      </n-collapse-item>
+
       <n-collapse-item name="1" title="知识库">
         <template #header-extra>
           <n-button text @click.stop="onShowKbPane">

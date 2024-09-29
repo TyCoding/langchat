@@ -15,25 +15,23 @@
   -->
 
 <script lang="ts" setup>
-  import PromptPage from './components/prompt/index.vue';
-  import SettingsPage from './components/settings/index.vue';
+  import AppBase from './base/index.vue';
+  import ApiChannel from './channel-api/index.vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
-  import Chat from '@/views/chat/Chat.vue';
   import router from '@/router';
   import { onMounted, ref } from 'vue';
-  import { useDialog, useMessage } from 'naive-ui';
   import { useAppStore } from './store';
-  import ModelSelect from '@/views/channel/ModelSelect.vue';
   import { useChatStore } from '@/views/chat/store/useChatStore';
-  import { clean, getAppInfo, getMessages } from '@/api/aigc/chat';
-  import { formatToDateTime } from '@/utils/dateUtil';
+  import { getAppInfo, getMessages } from '@/api/aigc/chat';
 
   const appStore = useAppStore();
   const chatStore = useChatStore();
   const form = ref<any>({});
   const loading = ref(false);
-  const ms = useMessage();
-  const dialog = useDialog();
+  const activeMenus = [
+    { key: 1, icon: 'uil:setting', label: '应用配置' },
+    { key: 2, icon: 'hugeicons:api', label: 'API接入渠道' },
+  ];
 
   onMounted(async () => {
     await fetchData();
@@ -57,36 +55,6 @@
     chatStore.messages = await getMessages(chatStore.conversationId!);
     loading.value = false;
   }
-
-  async function onSave() {
-    loading.value = true;
-    form.value.saveTime = formatToDateTime(new Date());
-    await appStore.updateInfo();
-    ms.success('应用配置保存成功');
-    loading.value = false;
-  }
-
-  async function onSaveModel(val) {
-    appStore.modelId = val.id;
-    await onSave();
-  }
-
-  function handleClear() {
-    if (chatStore.conversationId == null) {
-      return;
-    }
-    dialog.warning({
-      title: '清除聊天',
-      content: '确认清除聊天',
-      positiveText: '是',
-      negativeText: '否',
-      onPositiveClick: async () => {
-        await clean(chatStore.conversationId);
-        await fetchData();
-        ms.success('聊天记录清除成功');
-      },
-    });
-  }
 </script>
 
 <template>
@@ -97,10 +65,18 @@
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
         </n-button>
         <div class="flex gap-2 items-center pr-4">
-          <img
-            :src="form.cover == null ? '/src/assets/icons/app.png' : form.cover"
-            class="w-14 h-14"
-          />
+          <div class="mr-3">
+            <div class="relative bg-orange-100 p-4 rounded-lg">
+              <SvgIcon class="text-3xl" icon="prime:microchip-ai" />
+
+              <div
+                class="absolute bottom-[-6px] p-1 right-[-5px] shadow bg-white mx-auto rounded-lg"
+              >
+                <SvgIcon class="text-sm text-orange-500" icon="lucide:bot" />
+              </div>
+            </div>
+          </div>
+
           <div class="flex flex-col justify-between gap-2">
             <div class="font-bold text-lg">{{ form.name }}</div>
             <div v-if="!loading" class="text-gray-400 text-xs">自动保存：{{ form.saveTime }}</div>
@@ -110,52 +86,27 @@
           </div>
         </div>
       </div>
-      <div class="flex gap-2 items-center">
-        <ModelSelect :id="appStore.modelId" class="!w-auto" @update="onSaveModel" />
-        <n-button class="px-6 rounded-lg" type="info" @click="onSave">保存应用</n-button>
-        <n-button secondary size="small" type="warning" @click="handleClear">
+
+      <div class="flex items-center gap-2">
+        <n-button
+          v-for="item in activeMenus"
+          :key="item.key"
+          :type="appStore.activeMenu === item.key ? 'primary' : 'default'"
+          class="!px-5 !rounded-2xl"
+          secondary
+          strong
+          @click="appStore.setActiveMenu(item.key)"
+        >
           <template #icon>
-            <SvgIcon class="text-[14px]" icon="fluent:delete-12-regular" />
+            <SvgIcon :icon="item.icon" />
           </template>
-          清空聊天
+          {{ item.label }}
         </n-button>
       </div>
     </div>
-    <n-split
-      :default-size="0.3"
-      :max="0.9"
-      :min="0.2"
-      :resize-trigger-size="1"
-      class="h-full"
-      direction="horizontal"
-    >
-      <template #1>
-        <div class="p-2 h-full m-2 bg-white rounded-lg">
-          <PromptPage @update="onSave" />
-        </div>
-      </template>
-      <template #2>
-        <n-split
-          :default-size="0.4"
-          :max="0.8"
-          :min="0.2"
-          :resize-trigger-size="1"
-          direction="horizontal"
-          style="height: 100%"
-        >
-          <template #1>
-            <div class="p-2 h-full m-2 bg-white rounded-lg">
-              <SettingsPage />
-            </div>
-          </template>
-          <template #2>
-            <div class="pb-10 h-full w-full bg-white rounded-xl m-2">
-              <Chat />
-            </div>
-          </template>
-        </n-split>
-      </template>
-    </n-split>
+
+    <AppBase v-if="appStore.activeMenu === 1" />
+    <ApiChannel v-if="appStore.activeMenu === 2" />
   </div>
 </template>
 

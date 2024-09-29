@@ -24,6 +24,13 @@ export function list(params: any) {
   });
 }
 
+export function getAppApiChannel(appId: any) {
+  return http.request({
+    url: `/aigc/app/channel/api/${appId}`,
+    method: 'get',
+  });
+}
+
 export function page(params: any) {
   return http.request({
     url: '/aigc/app/page',

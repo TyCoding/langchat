@@ -17,9 +17,7 @@
 
 package cn.tycoding.langchat.app.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -41,15 +39,7 @@ public class AigcAppApi implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
-    private String modelId;
     private String appId;
-
-    private String channel;
     private String apiKey;
-    @TableField(updateStrategy = FieldStrategy.ALWAYS)
-    private Integer reqLimit;
-    private String name;
-    private String des;
-    private Date expired = null;
     private Date createTime;
 }

@@ -157,11 +157,7 @@
           />
         </template>
         <template #componentSlot="{ model, field }">
-          <n-input
-            v-model:value="model[field]"
-            :disabled="model[field] === 'Layout'"
-            placeholder="请输入组件路径"
-          />
+          <n-input v-model:value="model[field]" placeholder="请输入组件路径" />
         </template>
       </BasicForm>
     </template>

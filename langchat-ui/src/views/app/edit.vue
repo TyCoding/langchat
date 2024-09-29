@@ -23,7 +23,7 @@
   import { basicModal, useModal } from '@/components/Modal';
   import { isNullOrWhitespace } from '@/utils/is';
   import { uploadApi } from '@/api/aigc/oss';
-  import ModelSelect from '@/views/channel/ModelSelect.vue';
+  import ModelSelect from '@/views/common/ModelSelect.vue';
   import { useAppStore } from '@/views/app/store';
   import { useChatStore } from '@/views/chat/store/useChatStore';
 

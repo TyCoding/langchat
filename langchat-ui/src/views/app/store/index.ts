@@ -18,6 +18,7 @@ import { defineStore } from 'pinia';
 import { update } from '@/api/app/app';
 
 export interface AppState {
+  activeMenu: number;
   info: any;
   modelId: string | null;
   knowledgeIds: any[];
@@ -27,6 +28,7 @@ export interface AppState {
 export const useAppStore = defineStore('app-store', {
   state: (): AppState =>
     <AppState>{
+      activeMenu: 1,
       info: {},
       modelId: '',
       knowledgeIds: [],
@@ -36,6 +38,9 @@ export const useAppStore = defineStore('app-store', {
   getters: {},
 
   actions: {
+    setActiveMenu(active: number) {
+      this.activeMenu = active;
+    },
     addKnowledge(item: any) {
       this.knowledgeIds.push(item.id);
       this.knowledges.push(item);

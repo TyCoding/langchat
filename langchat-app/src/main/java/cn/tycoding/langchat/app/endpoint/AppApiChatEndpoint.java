@@ -23,7 +23,6 @@ import cn.tycoding.langchat.app.endpoint.auth.CompletionRes;
 import cn.tycoding.langchat.app.endpoint.auth.OpenapiAuth;
 import cn.tycoding.langchat.app.entity.AigcApp;
 import cn.tycoding.langchat.app.entity.AigcAppApi;
-import cn.tycoding.langchat.app.entity.AigcAppWeb;
 import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.common.dto.ChatReq;
@@ -59,31 +58,25 @@ public class AppApiChatEndpoint {
         StreamEmitter emitter = new StreamEmitter();
         AigcAppApi appApi = AppChannelStore.getApiChannel();
 
-        return handler(emitter, appApi.getAppId(), appApi.getModelId(), req.getMessages());
+        return handler(emitter, appApi.getAppId(), req.getMessages());
     }
 
-    private SseEmitter handler(StreamEmitter emitter, String appId, String modelId, List<CompletionReq.Message> messages) {
-        if (messages == null || messages.isEmpty() || StrUtil.isBlank(modelId)) {
+    private SseEmitter handler(StreamEmitter emitter, String appId, List<CompletionReq.Message> messages) {
+        if (messages == null || messages.isEmpty() || StrUtil.isBlank(appId)) {
             throw new RuntimeException("聊天消息为空，或者没有配置模型信息");
         }
         CompletionReq.Message message = messages.get(0);
+
+        AigcApp app = appStore.get(appId);
+        if (app == null) {
+            throw new ServiceException("没有配置应用信息");
+        }
         ChatReq req = new ChatReq()
                 .setMessage(message.getContent())
                 .setRole(message.getRole())
-                .setModelId(modelId);
-
-        if (StrUtil.isNotBlank(appId)) {
-            if (StrUtil.isNotBlank(appId)) {
-                AigcApp app = appStore.get(appId);
-                if (app == null) {
-                    throw new ServiceException("没有配置应用信息");
-                }
-
-                req.setModelId(app.getModelId());
-                req.setPromptText(req.getPromptText());
-                req.setKnowledgeIds(app.getKnowledgeIds());
-            }
-        }
+                .setModelId(app.getModelId())
+                .setPromptText(app.getPrompt())
+                .setKnowledgeIds(app.getKnowledgeIds());
 
         langChatService
                 .singleChat(req)
@@ -99,14 +92,5 @@ public class AppApiChatEndpoint {
                 }).start();
 
         return emitter.get();
-    }
-
-    @OpenapiAuth(AppConst.CHANNEL_WEB)
-    @PostMapping(value = "/chat/completions/channel/web")
-    public SseEmitter webChat(@RequestBody CompletionReq req) {
-        StreamEmitter emitter = new StreamEmitter();
-        AigcAppWeb appWeb = AppChannelStore.getWebChannel();
-
-        return handler(emitter, appWeb.getAppId(), appWeb.getModelId(), req.getMessages());
     }
 }

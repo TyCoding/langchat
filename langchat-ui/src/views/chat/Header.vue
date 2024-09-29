@@ -19,7 +19,7 @@
   import { useChatStore } from '@/views/chat/store/useChatStore';
   import { useDialog, useMessage } from 'naive-ui';
   import { clean } from '@/api/aigc/chat';
-  import ModelSelect from '@/views/channel/ModelSelect.vue';
+  import ModelSelect from '@/views/common/ModelSelect.vue';
 
   defineProps<{
     title: string;

@@ -118,7 +118,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             if (sysMenu.getIsShow() == null) sysMenu.setIsShow(true);
             if (sysMenu.getParentId() == null) sysMenu.setParentId("0");
 
-            if (sysMenu.getParentId() == null) {
+            if (sysMenu.getParentId() == null || sysMenu.getParentId().equals("0")) {
                 // 父级节点
                 if (sysMenu.getComponent() == null) {
                     sysMenu.setComponent(CommonConst.LAYOUT);

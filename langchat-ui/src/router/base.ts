@@ -129,33 +129,6 @@ export const BaseRoute: Array<any> = [
         },
       },
       {
-        path: 'app/channel/api/:id?',
-        name: 'API_CHANNEL',
-        component: '/channel/api/index',
-        show: false,
-        meta: {
-          title: 'API渠道',
-        },
-      },
-      {
-        path: 'app/channel/web/:id?',
-        name: 'WEB_CHANNEL',
-        component: '/channel/web/index',
-        show: false,
-        meta: {
-          title: 'Web渠道',
-        },
-      },
-      {
-        path: 'app/weixin/:id?',
-        name: 'WEIXIN_CHANNEL',
-        component: '/app/weixin/index',
-        show: false,
-        meta: {
-          title: '微信渠道',
-        },
-      },
-      {
         path: 'app/info/:id?',
         name: 'appInfo',
         component: '/app/info',

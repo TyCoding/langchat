@@ -39,6 +39,13 @@ export function getById(id: any) {
   });
 }
 
+export function createApi(id: any) {
+  return http.request({
+    url: `/aigc/app/api/create/${id}`,
+    method: 'get',
+  });
+}
+
 export function add(params: any) {
   return http.request({
     url: '/aigc/app/api',
@@ -59,12 +66,5 @@ export function del(id?: string) {
   return http.request({
     url: `/aigc/app/api/${id}`,
     method: 'delete',
-  });
-}
-
-export function generateKey() {
-  return http.request({
-    url: `/aigc/app/api/generate/key`,
-    method: 'get',
   });
 }

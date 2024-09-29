@@ -19,6 +19,8 @@ package cn.tycoding.langchat.app.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.Dict;
 import cn.tycoding.langchat.app.entity.AigcApp;
+import cn.tycoding.langchat.app.entity.AigcAppApi;
+import cn.tycoding.langchat.app.service.AigcAppApiService;
 import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.app.store.AppStore;
 import cn.tycoding.langchat.common.annotation.ApiLog;
@@ -39,7 +41,14 @@ import java.util.List;
 public class AigcAppController {
 
     private final AigcAppService aigcAppService;
+    private final AigcAppApiService aigcAppApiService;
     private final AppStore appStore;
+
+    @GetMapping("/channel/api/{appId}")
+    public R<AigcAppApi> getApiChanel(@PathVariable String appId) {
+        List<AigcAppApi> list = aigcAppApiService.list(Wrappers.<AigcAppApi>lambdaQuery().eq(AigcAppApi::getAppId, appId));
+        return R.ok(list.isEmpty() ? null : list.get(0));
+    }
 
     @GetMapping("/list")
     public R<List<AigcApp>> list(AigcApp data) {

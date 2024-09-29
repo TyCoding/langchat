@@ -18,7 +18,6 @@ package cn.tycoding.langchat.app.endpoint.auth;
 
 import cn.tycoding.langchat.app.store.AppChannelStore;
 import cn.tycoding.langchat.common.exception.AuthException;
-import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.ServletUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,14 +42,7 @@ public class OpenapiAuthAspect {
             throw new AuthException(401, "Authentication Token invalid");
         }
 
-
-        try {
-            String value = openapiAuth.value();
-            channelStore.isExpired(value);
-            channelStore.currentLimiting(value);
-        } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
-        }
+        channelStore.isExpired();
         return point.proceed();
     }
 
