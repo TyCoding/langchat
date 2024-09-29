@@ -38,7 +38,7 @@ langchat:
       - platform: local # 存储平台标识
         enable-storage: true  #启用存储
         enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
-        domain: http://127.0.0.1/ # 访问域名，例如：“http://127.0.0.1:8030/file/”，注意后面要和 path-patterns 保持一致，“/”结尾，本地存储建议使用相对路径，方便后期更换域名
+        domain: http://127.0.0.1:8100/ # 访问域名，例如：“http://127.0.0.1:8030/file/”，注意后面要和 path-patterns 保持一致，“/”结尾，本地存储建议使用相对路径，方便后期更换域名
         base-path: langchat/ # 基础路径
         path-patterns: /static/** # 访问路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
         storage-path: ./static/ # 存储路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
