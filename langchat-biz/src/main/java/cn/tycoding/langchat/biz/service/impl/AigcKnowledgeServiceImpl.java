@@ -89,6 +89,21 @@ public class AigcKnowledgeServiceImpl extends ServiceImpl<AigcKnowledgeMapper, A
     }
 
     @Override
+    public List<AigcDocs> getDocsByKb(String knowledgeId) {
+        return aigcDocsMapper.selectList(Wrappers.<AigcDocs>lambdaQuery()
+                .eq(AigcDocs::getKnowledgeId, knowledgeId));
+    }
+
+    @Override
+    @Transactional
+    public void removeKnowledge(String knowledgeId) {
+        baseMapper.deleteById(knowledgeId);
+        // del docs & docsSlice
+        List<String> docsIds = getDocsByKb(knowledgeId).stream().map(AigcDocs::getId).toList();
+        docsIds.forEach(this::removeSlicesOfDoc);
+    }
+
+    @Override
     @Transactional
     public void removeSlicesOfDoc(String docsId) {
         LambdaQueryWrapper<AigcDocsSlice> deleteWrapper = Wrappers.<AigcDocsSlice>lambdaQuery()

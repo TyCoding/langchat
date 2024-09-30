@@ -62,26 +62,33 @@ public class EmbeddingEndpoint {
         if (StrUtil.isBlankIfStr(data.getContent())) {
             throw new ServiceException("文档内容不能为空");
         }
-        data.setType(EmbedConst.ORIGIN_TYPE_INPUT).setSliceStatus(false);
         if (StrUtil.isBlank(data.getId())) {
             aigcKnowledgeService.addDocs(data);
         }
+        data.setType(EmbedConst.ORIGIN_TYPE_INPUT).setSliceStatus(false);
 
-        EmbeddingR embeddingR = langEmbeddingService.embeddingText(
-                new ChatReq().setMessage(data.getContent())
-                        .setDocsName(data.getType())
-                        .setDocsId(data.getId())
-                        .setKnowledgeId(data.getKnowledgeId()));
+        try {
+            EmbeddingR embeddingR = langEmbeddingService.embeddingText(
+                    new ChatReq().setMessage(data.getContent())
+                            .setDocsName(data.getType())
+                            .setDocsId(data.getId())
+                            .setKnowledgeId(data.getKnowledgeId()));
 
-        aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
-                .setKnowledgeId(data.getKnowledgeId())
-                .setDocsId(data.getId())
-                .setVectorId(embeddingR.getVectorId())
-                .setName(data.getName())
-                .setContent(embeddingR.getText())
-        );
+            aigcKnowledgeService.addDocsSlice(new AigcDocsSlice()
+                    .setKnowledgeId(data.getKnowledgeId())
+                    .setDocsId(data.getId())
+                    .setVectorId(embeddingR.getVectorId())
+                    .setName(data.getName())
+                    .setContent(embeddingR.getText())
+            );
 
-        aigcKnowledgeService.updateDocs(new AigcDocs().setId(data.getId()).setSliceStatus(true).setSliceNum(1));
+            aigcKnowledgeService.updateDocs(new AigcDocs().setId(data.getId()).setSliceStatus(true).setSliceNum(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            // del data
+            aigcKnowledgeService.removeSlicesOfDoc(data.getId());
+        }
         return R.ok();
     }
 

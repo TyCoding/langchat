@@ -115,7 +115,7 @@ public class AigcKnowledgeController {
     @ApiLog("删除知识库")
     @SaCheckPermission("aigc:knowledge:delete")
     public R delete(@PathVariable String id) {
-        kbService.removeById(id);
+        kbService.removeKnowledge(id);
         return R.ok();
     }
 }

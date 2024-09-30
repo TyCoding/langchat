@@ -39,6 +39,10 @@ public interface AigcKnowledgeService extends IService<AigcKnowledge> {
 
     List<String> listSliceVectorIdsOfDoc(String docsId);
 
+    List<AigcDocs> getDocsByKb(String knowledgeId);
+
+    void removeKnowledge(String knowledgeId);
+
     void removeSlicesOfDoc(String docsId);
 }
 
