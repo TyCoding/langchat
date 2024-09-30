@@ -40,20 +40,26 @@ public class AigcModelServiceImpl extends ServiceImpl<AigcModelMapper, AigcModel
 
     @Override
     public List<AigcModel> getChatModels() {
-        return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
+        List<AigcModel> list = baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
                 .eq(AigcModel::getType, ModelTypeEnum.CHAT.name()));
+        list.forEach(this::hide);
+        return list;
     }
 
     @Override
     public List<AigcModel> getImageModels() {
-        return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
+        List<AigcModel> list = baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
                 .eq(AigcModel::getType, ModelTypeEnum.TEXT_IMAGE.name()));
+        list.forEach(this::hide);
+        return list;
     }
 
     @Override
     public List<AigcModel> getEmbeddingModels() {
-        return baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
+        List<AigcModel> list = baseMapper.selectList(Wrappers.<AigcModel>lambdaQuery()
                 .eq(AigcModel::getType, ModelTypeEnum.EMBEDDING.name()));
+        list.forEach(this::hide);
+        return list;
     }
 
     @Override
