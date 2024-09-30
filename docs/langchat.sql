@@ -70,6 +70,7 @@ CREATE TABLE `aigc_docs` (
                              `slice_num` int DEFAULT NULL COMMENT '切片数量',
                              `slice_status` tinyint(1) DEFAULT NULL COMMENT '切片状态',
                              `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                             `user_id` varchar(50) DEFAULT NULL COMMENT '上传文档用户id',
                              PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文档表';
 

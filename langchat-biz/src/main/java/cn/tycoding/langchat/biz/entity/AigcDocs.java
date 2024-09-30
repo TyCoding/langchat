@@ -81,6 +81,11 @@ public class AigcDocs implements Serializable {
     private String content;
 
     /**
+     * 上传文档用户ID
+     */
+    private String userId;
+
+    /**
      * 创建时间
      */
     private Date createTime;
