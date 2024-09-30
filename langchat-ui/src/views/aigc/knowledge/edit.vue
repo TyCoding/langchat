@@ -27,7 +27,7 @@
   const message = useMessage();
 
   const [modalRegister, { openModal, closeModal }] = useModal({
-    title: '新增/编辑',
+    title: '新增/编辑知识库',
     closable: true,
     maskClosable: false,
     showCloseBtn: false,

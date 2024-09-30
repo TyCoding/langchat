@@ -146,7 +146,8 @@
           <div class="flex mt-4 -mx-2 px-2 text-gray-400 justify-between items-center">
             <div class="flex items-center gap-1">
               <SvgIcon class="" icon="mdi:tag-outline" />
-              <span class="text-xs">文档数：{{ item.docsNum }}</span>
+              <span class="text-xs">文档数:{{ item.docsNum }}</span>
+              <n-divider vertical />
               <span class="text-xs">{{ (Number(item.totalSize) / 1000000).toFixed(2) }} MB</span>
             </div>
             <div class="flex items-center">
