@@ -21,7 +21,9 @@
   import ZhiPu from '@/views/modules/image/component/ZhiPu.vue';
   import { downloadByUrl } from '@/utils/downloadFile';
   import { t } from '@/locales';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const image = ref<string>('');
   function onOk(data: any) {
     if (data.url !== undefined) {
@@ -35,32 +37,23 @@
 </script>
 
 <template>
-  <n-layout class="h-full w-full" has-sider>
-    <n-layout-sider
-      :collapsed-width="0"
-      :width="500"
-      bordered
-      collapse-mode="width"
-      show-trigger="arrow-circle"
-    >
-      <div class="flex justify-center items-center m-4 rounded">
-        <n-tabs type="segment">
-          <n-tab-pane display-directive="show" name="chap1" tab="OpenAI DALL·E">
+  <div :class="isMobile ? '!flex-col' : 'flex'" class="w-full h-full">
+    <div :class="isMobile ? 'border-b' : 'border-r w-[65%]'" class="h-full">
+      <div class="flex justify-center items-center p-4 rounded">
+        <n-tabs :size="isMobile ? 'small' : 'medium'" type="segment">
+          <n-tab-pane display-directive="show" name="chap1" tab="DALL·E">
             <DALL @ok="onOk" />
           </n-tab-pane>
           <n-tab-pane display-directive="show" name="chap2" tab="智谱AI">
             <ZhiPu @ok="onOk" />
           </n-tab-pane>
-          <n-tab-pane display-directive="show" name="chap3" tab="Mj & More...">
-            <n-empty description="更多文生图模型后续即将支持..." />
-          </n-tab-pane>
         </n-tabs>
       </div>
-    </n-layout-sider>
+    </div>
 
-    <div class="flex justify-center items-center w-full mt-4 dot-bg">
-      <div class="p-8 w-full h-full mb-14">
-        <div class="mb-2 flex flex-wrap justify-between items-center">
+    <div class="flex justify-center items-center w-full">
+      <div class="p-4 w-full h-full dot-bg flex flex-col">
+        <div class="flex flex-wrap justify-between items-center">
           <div class="font-bold flex justify-center items-center flex-wrap gap-2">
             <SvgIcon class="text-lg" icon="ion:sparkles-outline" />
             <span>图片预览</span>
@@ -74,12 +67,9 @@
             </n-button>
           </div>
         </div>
-        <div class="w-full h-full rounded-md p-2 flex items-center justify-center">
-          <div
-            v-if="image"
-            class="flex justify-center items-center"
-            style="height: calc(100vh - 20%)"
-          >
+
+        <div class="rounded-md flex items-center flex-1 justify-center">
+          <div v-if="image" class="flex justify-center items-center">
             <img :src="image" class="max-w-full max-h-full" />
           </div>
           <div v-else class="h-full w-full flex flex-col justify-center items-center gap-3">
@@ -90,7 +80,7 @@
         </div>
       </div>
     </div>
-  </n-layout>
+  </div>
 </template>
 
 <style lang="less" scoped></style>

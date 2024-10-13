@@ -18,7 +18,10 @@
   import { computed, ref, watch } from 'vue';
   import { SvgIcon } from '@/components/common';
   import { t } from '@/locales';
+  import ModelProvider from '@/views/modules/common/ModelProvider.vue';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const props = defineProps<{
     loading: boolean;
     genText: string;
@@ -79,7 +82,13 @@
 </script>
 
 <template>
-  <div class="p-4">
+  <div :class="isMobile ? '' : 'w-[65%] border-r'" class="p-4 pt-2">
+    <div class="py-2 flex items-center justify-between gap-1">
+      <div class="text-nowrap">内容描述</div>
+
+      <ModelProvider />
+    </div>
+
     <n-input
       v-model:value="text"
       :disabled="loading"

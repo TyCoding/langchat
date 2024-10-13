@@ -88,7 +88,7 @@
     position="absolute"
     @update-collapsed="handleUpdateCollapsed"
   >
-    <div :style="mobileSafeArea" class="flex flex-col h-full">
+    <div :style="mobileSafeArea" class="flex flex-col h-full bg-white">
       <div v-if="loading" class="w-full h-full flex items-center justify-center">
         <n-spin :show="loading" />
       </div>

@@ -21,7 +21,9 @@
   import { onMounted, watch } from 'vue';
   import { t } from '@/locales';
   import { downloadPdf, downloadPng, downloadSvg } from '@/utils/downloadFile';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const props = defineProps<{
     genText: string;
   }>();
@@ -64,8 +66,11 @@
 </script>
 
 <template>
-  <div :class="genText == '' ? 'overflow-hidden' : ''" class="dot-bg w-full h-full">
-    <div class="absolute top-0 z-10 p-2 flex flex-wrap justify-center gap-2">
+  <div :class="genText == '' ? 'overflow-hidden' : ''" class="dot-bg w-full h-full relative">
+    <div
+      :class="isMobile ? 'block pb-6' : 'absolute'"
+      class="top-4 z-10 flex left-2 flex-wrap justify-center gap-2"
+    >
       <n-button text @click="onZoomIn">
         <SvgIcon class="text-2xl" icon="basil:zoom-in-outline" />
       </n-button>
@@ -101,7 +106,7 @@
       <div class="text-gray-400">{{ t('mindmap.titleDes') }}</div>
     </div>
 
-    <div id="mindmap-view" class="h-full w-full">
+    <div id="mindmap-view" :class="isMobile ? 'pb-6' : ''" class="h-full w-full">
       <svg id="mindmap" class="h-full w-full" />
     </div>
   </div>

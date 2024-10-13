@@ -51,12 +51,10 @@
 
 <template>
   <div
-    class="h-full bg-[#fafafa] dark:bg-transparent flex border dark:border-[#ffffff17] flex-col w-full rounded-lg"
+    class="w-[190px] h-full bg-[#fafafa] dark:bg-transparent flex border dark:border-[#ffffff17] flex-col rounded-lg"
   >
     <n-scrollbar class="flex-1 w-full">
-      <div
-        class="flex flex-col gap-3 border-neutral-800 dark:border-[#ffffff17] pt-3 pl-3 pr-3 w-full"
-      >
+      <div class="flex flex-col gap-3 border-neutral-800 dark:border-[#ffffff17] pt-3 px-3 w-full">
         <div class="text-lg gap-2 text-center flex justify-center items-center">
           <img height="30" src="@/assets/login/logo.png" width="30" />
           <span class="font-bold">LangChat</span>
@@ -81,47 +79,8 @@
       </div>
     </n-scrollbar>
 
-    <div class="m-2 flex flex-col justify-center items-center gap-2 mb-4 bottom-0">
+    <div class="p-2 flex flex-col justify-center items-center gap-2 pb-3 bottom-0">
       <n-divider class="!my-0 !py-0" />
-      <!--      <n-space class="mb-2" vertical>
-				<n-popover placement="right" trigger="hover">
-					<template #trigger>
-						<n-button
-							v-if="appStore.theme == 'light'"
-							size="small"
-							text
-							@click="appStore.setTheme('dark')"
-						>
-							<template #icon>
-								<SvgIcon icon="ri:sun-foggy-line" />
-							</template>
-						</n-button>
-						<n-button
-							v-if="appStore.theme == 'dark'"
-							size="small"
-							text
-							@click="appStore.setTheme('light')"
-						>
-							<template #icon>
-								<SvgIcon icon="ri:moon-foggy-line" />
-							</template>
-						</n-button>
-					</template>
-					<span>{{ t('side.theme') }}</span>
-				</n-popover>
-
-				<n-popselect
-					v-model:value="language"
-					:options="languageOptions"
-					placement="right"
-					trigger="click"
-					@update-value="(value) => appStore.setLanguage(value)"
-				>
-					<n-button text>
-						<SvgIcon class="text-xl" icon="ph:translate-bold" />
-					</n-button>
-				</n-popselect>
-			</n-space>-->
 
       <template v-if="user == null">
         <n-avatar class="cursor-pointer !text-black" round>

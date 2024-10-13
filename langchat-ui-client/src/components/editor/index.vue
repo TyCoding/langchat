@@ -130,7 +130,7 @@
     link_default_target: '_blank',
     link_context_toolbar: true,
     // 默认快捷菜单
-    quickbars_insert_toolbar: 'image codesample table',
+    quickbars_insert_toolbar: '',
     // 选中图片的快捷提示
     // quickbars_image_toolbar: 'alignleft aligncenter alignright | rotateleft rotateright | imageoptions',
     editimage_toolbar: 'rotateleft rotateright | flipv fliph | editimage imageoptions',

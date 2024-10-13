@@ -111,7 +111,7 @@
           </n-form-item>
           <div class="login-animation4 mb-3">
             <div class="w-full flex justify-end gap-2">
-              <n-button text type="info" @click="onCodeLogin">验证码登录</n-button>
+              <!--              <n-button text type="info" @click="onCodeLogin">验证码登录</n-button>-->
               <n-button text type="info" @click="router.push(PageEnum.BASE_REGISTER)">
                 注册账号
               </n-button>

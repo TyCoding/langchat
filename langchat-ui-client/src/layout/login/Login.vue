@@ -136,7 +136,7 @@
                       secondary
                       type="info"
                       @click="isPhone = !isPhone"
-                      >邮箱密码登录</n-button
+                      >账户密码登录</n-button
                     >
                   </div>
                 </n-form-item>
@@ -187,14 +187,14 @@
                     >
                       立即登录
                     </n-button>
-                    <n-button
-                      block
-                      class="!rounded-lg"
-                      secondary
-                      type="info"
-                      @click="isPhone = !isPhone"
-                      >手机验证码登录</n-button
-                    >
+                    <!--                    <n-button-->
+                    <!--                      block-->
+                    <!--                      class="!rounded-lg"-->
+                    <!--                      secondary-->
+                    <!--                      type="info"-->
+                    <!--                      @click="isPhone = !isPhone"-->
+                    <!--                      >手机验证码登录</n-button-->
+                    <!--                    >-->
                   </div>
                 </n-form-item>
               </n-form>

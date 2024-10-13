@@ -30,7 +30,7 @@
     :locale="language"
     :theme="theme"
     :theme-overrides="themeOverrides"
-    class="h-full w-full"
+    class="h-full w-full grid-mask"
   >
     <NaiveProvider>
       <RouterView />

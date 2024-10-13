@@ -50,12 +50,13 @@ code {
   padding: 0.1rem 0.2rem;
 }
 .mce-content-body {
-	padding: 5px 2em 30px !important;
+	padding: 0px !important;
+	/*padding: 5px 2em 30px !important;*/
 	overflow-y: auto !important;
 	height: 100%;
 }
 .mce-content-body:before {
-	margin-left: 33px;
+	/*margin-left: 33px;*/
 }
 .mce-content-body:not([dir=rtl]) blockquote {
   border-left: 2px solid #ccc;

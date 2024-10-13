@@ -47,7 +47,7 @@
     modelList.value = data;
   });
 
-  function onUpdate(val, opt) {
+  function onUpdate(val: any, opt: any) {
     const obj = toRaw(opt);
     chatStore.modelId = obj.id;
     chatStore.modelName = obj.model;
@@ -62,6 +62,7 @@
     :label-field="'name'"
     :options="modelList"
     :value-field="'id'"
+    class="!rounded-4xl"
     @update:value="onUpdate"
   />
 </template>
@@ -74,5 +75,17 @@
   }
   ::v-deep(.n-base-selection-input) {
     margin-right: 4px;
+  }
+  ::v-deep(
+      .n-base-selection .n-base-selection__border,
+      .n-base-selection .n-base-selection__state-border
+    ) {
+    border-radius: 30px !important;
+  }
+  ::v-deep(.n-base-selection .n-base-selection-label) {
+    border-radius: 30px !important;
+  }
+  ::v-deep(.n-base-selection .n-base-selection__state-border) {
+    border-radius: 30px !important;
   }
 </style>

@@ -216,7 +216,16 @@
   const footerClass = computed(() => {
     let classes = ['p-4 pt-0'];
     if (isMobile.value) {
-      classes = ['sticky', 'left-0', 'bottom-0', 'right-0', 'p-2', 'pr-3', 'overflow-hidden'];
+      classes = [
+        'sticky',
+        'absolute',
+        'left-0',
+        'bottom-0',
+        'right-0',
+        'p-2',
+        'pr-3',
+        'overflow-hidden',
+      ];
     }
     return classes;
   });
@@ -279,7 +288,8 @@
                   ref="inputRef"
                   v-model:value="prompt"
                   :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
-                  class="!rounded-full px-2 py-1"
+                  :class="isMobile ? '' : 'py-1'"
+                  class="!rounded-full px-2"
                   placeholder="今天想聊些什么~"
                   size="large"
                   type="textarea"

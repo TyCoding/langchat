@@ -22,7 +22,6 @@
   import mdKatex from '@traptitech/markdown-it-katex';
   import { ref } from 'vue';
   import { SvgIcon } from '@/components/common';
-  import Card from '@/views/modules/write/Card.vue';
   import { genWrite } from '@/api/chat';
   import { useMessage } from 'naive-ui';
   import { useChatStore } from '@/views/modules/chat/store/useChatStore';
@@ -85,31 +84,38 @@
 <template>
   <div :class="isMobile ? 'flex-col' : ''" class="flex gap-2 h-full">
     <div class="flex-1">
-      <div class="m-2 flex gap-2 items-center">
-        <ModelProvider />
+      <div :class="isMobile ? 'flex-col' : ''" class="m-2 flex gap-2 items-center">
         <n-input
           v-model:value="text"
           class="!rounded-3xl px-4 py-1"
           placeholder="请简单描述想要生成的文章内容"
         />
-        <n-button
-          :loading="loading"
-          class="!rounded-3xl"
-          size="large"
-          type="primary"
-          @click="onGenerate"
-        >
-          <template #icon>
-            <SvgIcon icon="mdi:sparkles-outline" />
-          </template>
-          生成
-        </n-button>
+        <div :class="isMobile ? 'w-full' : 'w-[40%] '" class="flex items-center gap-2">
+          <ModelProvider class="!rounded-4xl" size="large" />
+          <n-button
+            :loading="loading"
+            class="!rounded-3xl"
+            size="large"
+            type="primary"
+            @click="onGenerate"
+          >
+            <template #icon>
+              <SvgIcon icon="mdi:sparkles-outline" />
+            </template>
+            生成
+          </n-button>
+        </div>
       </div>
-      <Editor ref="editorRef" :text="genText" class="" />
+      <Editor
+        ref="editorRef"
+        :style="isMobile ? 'height: calc(60vh)' : ''"
+        :text="genText"
+        class=""
+      />
     </div>
-    <div class="w-1/3 h-full border-l">
-      <Card />
-    </div>
+    <!--    <div class="w-1/3 h-full border-l">-->
+    <!--      <Card />-->
+    <!--    </div>-->
   </div>
 </template>
 

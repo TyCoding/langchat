@@ -34,17 +34,12 @@
 </script>
 
 <template>
-  <n-layout :class="isMobile ? 'flex flex-col gap-4' : ''" class="h-full w-full" has-sider>
-    <n-layout-sider
-      :collapsed-width="0"
-      :width="280"
-      bordered
-      collapse-mode="width"
-      show-trigger="arrow-circle"
-    >
+  <div :class="isMobile ? 'flex flex-col' : ''" class="h-full w-full flex">
+    <div :class="isMobile ? '' : 'w-[30%] border-r'">
       <FileList @select="onSelect" />
-    </n-layout-sider>
-    <div class="w-full h-full">
+    </div>
+
+    <div v-if="!isMobile" class="w-full h-full">
       <n-split
         :default-size="isMobile ? 0 : 0.6"
         :resize-trigger-size="0.5"
@@ -76,7 +71,30 @@
         </template>
       </n-split>
     </div>
-  </n-layout>
+
+    <div v-else>
+      <div class="w-full h-full border-t border-b py-4 mb-2">
+        <div
+          v-if="docStore.file.fileName"
+          class="text-gray-700 text-[17px] border-b px-2 font-bold h-12 flex justify-between items-center dark:text-white"
+        >
+          <div>{{ docStore.file.fileName }}.{{ docStore.file.type }}</div>
+        </div>
+        <n-empty
+          v-if="docStore.file.url === undefined"
+          :description="t('doc.previewEmpty')"
+          class="h-full w-full justify-center"
+        />
+        <template v-else>
+          <FileView :url="docStore.file.url" />
+        </template>
+      </div>
+
+      <div class="w-full h-full border-l dark:border-l-[#1e1e20]">
+        <Chat ref="chatRef" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="less" scoped></style>
