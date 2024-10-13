@@ -20,6 +20,7 @@
   import { useBasicLayout } from '@/hooks/useBasicLayout';
   import Login from '@/layout/login/Login.vue';
   import MobileSider from '@/layout/MobileSider.vue';
+  import Profile from '@/layout/Profile.vue';
 
   const { isMobile } = useBasicLayout();
   const collapsed = ref(false);
@@ -39,26 +40,36 @@
   >
     <Login />
 
-    <div
-      :class="isMobile ? '' : 'flex'"
-      :style="isMobile ? 'height: calc(100vh - 54px)' : 'height: calc(100vh - 20px)'"
-      class="w-full overflow-y-auto"
-    >
-      <Sider v-if="!isMobile" />
+    <div :class="isMobile ? '' : 'flex'" class="w-full">
+      <div v-if="isMobile" class="flex items-center justify-between px-2 py-2">
+        <div class="w-[94px]"></div>
+        <div class="text-xl flex-1 font-bold flex items-center justify-center">LangChat</div>
+        <div class="flex justify-end">
+          <Profile />
+        </div>
+      </div>
 
-      <MobileSider v-if="isMobile" />
+      <div
+        :class="isMobile ? '' : 'flex'"
+        :style="isMobile ? 'height: calc(100vh - 100px)' : 'height: calc(100vh - 20px)'"
+        class="w-full overflow-y-auto"
+      >
+        <Sider v-if="!isMobile" />
 
-      <div class="overflow-y-auto w-full h-full">
-        <RouterView v-slot="{ Component, route }">
-          <keep-alive>
-            <div
-              :class="isMobile ? '' : 'ml-3'"
-              class="p-0 border h-full rounded-lg overflow-y-auto bg-white dark:bg-transparent dark:border-[#ffffff17]"
-            >
-              <component :is="Component" :key="route.fullPath" />
-            </div>
-          </keep-alive>
-        </RouterView>
+        <MobileSider v-if="isMobile" />
+
+        <div class="overflow-y-auto w-full h-full">
+          <RouterView v-slot="{ Component, route }">
+            <keep-alive>
+              <div
+                :class="isMobile ? '' : 'ml-3'"
+                class="p-0 border h-full rounded-lg overflow-y-auto bg-white dark:bg-transparent dark:border-[#ffffff17]"
+              >
+                <component :is="Component" :key="route.fullPath" />
+              </div>
+            </keep-alive>
+          </RouterView>
+        </div>
       </div>
     </div>
   </div>

@@ -67,7 +67,7 @@ const routes: RouteRecordRaw[] = [
         path: '/image',
         name: 'Image',
         meta: {
-          label: 'AI 文生图',
+          label: '文生图',
           icon: 'radix-icons:image',
         },
         component: () => import('@/views/modules/image/index.vue'),

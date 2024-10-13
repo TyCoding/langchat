@@ -38,7 +38,7 @@
 
 <template>
   <div :class="isMobile ? '!flex-col' : 'flex'" class="w-full h-full">
-    <div :class="isMobile ? 'border-b' : 'border-r w-[65%]'" class="h-full">
+    <div :class="isMobile ? 'border-b' : 'border-r w-[65%]'">
       <div class="flex justify-center items-center p-4 rounded">
         <n-tabs :size="isMobile ? 'small' : 'medium'" type="segment">
           <n-tab-pane display-directive="show" name="chap1" tab="DALL·E">

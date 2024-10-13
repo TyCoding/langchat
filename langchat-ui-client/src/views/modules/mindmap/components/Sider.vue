@@ -93,7 +93,7 @@
       v-model:value="text"
       :disabled="loading"
       :placeholder="t('mindmap.inputTips')"
-      :rows="6"
+      :rows="isMobile ? 2 : 6"
       type="textarea"
     />
     <div class="mt-2 mb-2">
@@ -117,7 +117,7 @@
     <n-input
       v-model:value="gen"
       :placeholder="t('mindmap.outputTips')"
-      :rows="16"
+      :rows="isMobile ? 6 : 16"
       type="textarea"
     />
   </div>

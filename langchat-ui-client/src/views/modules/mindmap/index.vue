@@ -56,7 +56,7 @@
 </script>
 
 <template>
-  <div :class="isMobile ? 'flex-col' : ''" class="w-full flex h-full">
+  <div :class="isMobile ? 'flex-col' : ''" class="w-full flex">
     <Sider :genText="genText" :loading="loading" @generate="onGenerate" @render="onRender" />
 
     <MindMap :genText="genText" :loading="loading" />

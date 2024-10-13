@@ -20,7 +20,9 @@
   import { onMounted, ref, toRaw } from 'vue';
   import { isBlank } from '@/utils/is';
   import { useMessage } from 'naive-ui';
+  import { useBasicLayout } from '@/hooks/useBasicLayout';
 
+  const { isMobile } = useBasicLayout();
   const emit = defineEmits(['ok']);
   const loading = ref(false);
   const ms = useMessage();
@@ -94,7 +96,12 @@
         <SvgIcon class="text-lg" icon="solar:pen-2-broken" />
         <span>图片内容描述</span>
       </div>
-      <n-input v-model:value="message" :disabled="loading" :rows="5" type="textarea" />
+      <n-input
+        v-model:value="message"
+        :disabled="loading"
+        :rows="isMobile ? 2 : 5"
+        type="textarea"
+      />
     </div>
 
     <div class="w-full">
