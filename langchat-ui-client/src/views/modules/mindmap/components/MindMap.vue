@@ -68,7 +68,7 @@
 <template>
   <div :class="genText == '' ? 'overflow-hidden' : ''" class="dot-bg w-full h-full relative">
     <div
-      :class="isMobile ? 'block pb-6' : 'absolute'"
+      :class="isMobile ? 'block' : 'absolute'"
       class="top-4 z-10 flex left-2 flex-wrap justify-center gap-2"
     >
       <n-button text @click="onZoomIn">
