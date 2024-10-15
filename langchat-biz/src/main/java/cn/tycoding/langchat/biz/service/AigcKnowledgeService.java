@@ -19,6 +19,9 @@ package cn.tycoding.langchat.biz.service;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
 import cn.tycoding.langchat.biz.entity.AigcKnowledge;
+import cn.tycoding.langchat.biz.vo.FileAnalysisMonitorVO;
+import cn.tycoding.langchat.common.utils.QueryPage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -44,5 +47,7 @@ public interface AigcKnowledgeService extends IService<AigcKnowledge> {
     void removeKnowledge(String knowledgeId);
 
     void removeSlicesOfDoc(String docsId);
+
+    IPage<FileAnalysisMonitorVO> fileAnalysisMonitor(QueryPage queryPage, String userId);
 }
 
