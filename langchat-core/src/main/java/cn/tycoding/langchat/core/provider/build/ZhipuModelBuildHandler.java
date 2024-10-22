@@ -34,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 /**
  * @author GB
  * @since 2024-08-19
@@ -49,10 +51,6 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
 
     @Override
     public boolean basicCheck(AigcModel model) {
-        if (StringUtils.isBlank(model.getBaseUrl())) {
-            throw new ServiceException(ChatErrorEnum.BASE_URL_IS_NULL.getErrorCode(),
-                    ChatErrorEnum.BASE_URL_IS_NULL.getErrorDesc(ProviderEnum.ZHIPU.name(), model.getType()));
-        }
         if (StringUtils.isBlank(model.getApiKey())) {
             throw new ServiceException(ChatErrorEnum.API_KEY_IS_NULL.getErrorCode(),
                     ChatErrorEnum.API_KEY_IS_NULL.getErrorDesc(ProviderEnum.ZHIPU.name(), model.getType()));
@@ -79,6 +77,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
+                    .callTimeout(Duration.ofMinutes(2))
+                    .connectTimeout(Duration.ofMinutes(2))
+                    .writeTimeout(Duration.ofMinutes(2))
+                    .readTimeout(Duration.ofMinutes(2))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -109,6 +111,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
+                    .callTimeout(Duration.ofMinutes(2))
+                    .connectTimeout(Duration.ofMinutes(2))
+                    .writeTimeout(Duration.ofMinutes(2))
+                    .readTimeout(Duration.ofMinutes(2))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -136,6 +142,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .baseUrl(model.getBaseUrl())
                     .logRequests(true)
                     .logResponses(true)
+                    .callTimeout(Duration.ofMinutes(2))
+                    .connectTimeout(Duration.ofMinutes(2))
+                    .writeTimeout(Duration.ofMinutes(2))
+                    .readTimeout(Duration.ofMinutes(2))
                     .build();
             return Pair.of(EmbedConst.CLAZZ_NAME_ZHIPU, zhipuAiEmbeddingModel);
         } catch (ServiceException e) {
@@ -163,6 +173,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .baseUrl(model.getBaseUrl())
                     .logRequests(true)
                     .logResponses(true)
+                    .callTimeout(Duration.ofMinutes(2))
+                    .connectTimeout(Duration.ofMinutes(2))
+                    .writeTimeout(Duration.ofMinutes(2))
+                    .readTimeout(Duration.ofMinutes(2))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
