@@ -94,8 +94,8 @@
 </script>
 
 <template>
-  <div class="flex gap-5">
-    <div class="w-52 flex flex-col gap-4 py-1">
+  <div class="flex gap-2">
+    <div class="w-52 flex flex-col gap-2 py-1">
       <div class="font-bold text-base">聊天模型列表</div>
       <n-menu
         v-model:value="provider"
@@ -110,7 +110,7 @@
     <div class="w-full">
       <n-alert
         class="w-full mb-4 mt-2 min-alert"
-        title="如果使用第三方代理，需要填写BaseUrl，并增加`/v1`后缀，官方Key不需要设置BaseUrl。如果你使用的第三方代理将所有供应商的接口格式都封装为openai的格式，只需要在OpenAI中自定义配置其他供应商模型即可"
+        title="对于完全适配OpenAI接口格式的模型都可在OpenAI中配置（只需要定义BaseUrl）"
         type="info"
       />
       <BasicTable

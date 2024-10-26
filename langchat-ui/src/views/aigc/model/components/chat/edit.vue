@@ -50,7 +50,6 @@
     isShow.value = true;
     await nextTick();
     info.value = record;
-    console.log(record);
     setFieldsValue({ ...form, ...record });
   }
 

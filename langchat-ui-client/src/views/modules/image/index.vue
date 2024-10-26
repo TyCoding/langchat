@@ -44,7 +44,7 @@
           <n-tab-pane display-directive="show" name="chap1" tab="DALL·E">
             <DALL @ok="onOk" />
           </n-tab-pane>
-          <n-tab-pane display-directive="show" name="chap2" tab="智谱AI">
+          <n-tab-pane display-directive="show" name="chap2" tab="智谱清言">
             <ZhiPu @ok="onOk" />
           </n-tab-pane>
         </n-tabs>

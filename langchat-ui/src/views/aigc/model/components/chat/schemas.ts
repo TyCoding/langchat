@@ -19,7 +19,7 @@ import { LLMProviders, ProviderEnum } from './data';
 import { ModelTypeEnum } from '@/api/models';
 import { isNullOrWhitespace } from '@/utils/is';
 
-const baseHeadSchemas: FormSchema[] = [
+const baseSchemas: FormSchema[] = [
   {
     field: 'id',
     label: 'ID',
@@ -37,21 +37,34 @@ const baseHeadSchemas: FormSchema[] = [
     field: 'provider',
     label: 'LLM供应商',
     component: 'NSelect',
+    isHidden: true,
     componentProps: {
+      placeholder: 'LLM供应商',
       options: LLMProviders,
       labelField: 'name',
       valueField: 'model',
     },
-    rules: [{ required: true, message: '请选择LLM供应商', trigger: ['blur'] }],
+    // rules: [{ required: true, message: '请选择LLM供应商', trigger: ['blur'] }],
   },
   {
     field: 'name',
     label: '模型别名',
     component: 'NInput',
     rules: [{ required: true, message: '请输入模型别名', trigger: ['blur'] }],
+    componentProps: {
+      placeholder: '请输入模型别名',
+    },
   },
-];
-const baseSchemas: FormSchema[] = [
+  {
+    field: 'apiKey',
+    label: 'Api Key',
+    labelMessage: '模型链接的秘钥，注意有些模型例如Gemini是本地认证方式，则不是通过这种方式',
+    component: 'NInput',
+    rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
+    componentProps: {
+      placeholder: '请输入Api Key',
+    },
+  },
   {
     field: 'responseLimit',
     label: '回复上限',
@@ -96,242 +109,6 @@ const baseSchemas: FormSchema[] = [
     },
   },
 ];
-const keySchemas: FormSchema[] = [
-  {
-    field: 'apiKey',
-    label: 'Api Key',
-    labelMessage: '模型链接的秘钥，注意有些模型例如Gemini是本地认证方式，则不是通过这种方式',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
-  },
-  {
-    field: 'baseUrl',
-    label: 'Base Url',
-    labelMessage: '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的',
-    component: 'NInput',
-    rules: [
-      {
-        required: false,
-        trigger: ['blur'],
-        validator: (_, value: string) => {
-          const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
-          if (isNullOrWhitespace(value) || urlRegex.test(value)) {
-            return true;
-          }
-          return new Error('URL格式错误');
-        },
-      },
-    ],
-  },
-];
-
-export const openaiSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      tag: true,
-      filterable: true,
-      options: getModels(ProviderEnum.OPENAI),
-    },
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export const azureOpenaiSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.AZURE_OPENAI),
-    },
-  },
-  {
-    field: 'endpoint',
-    label: 'Endpoint',
-    labelMessage: 'Endpoint',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入Endpoint', trigger: ['blur'] }],
-  },
-  {
-    field: 'azureDeploymentName',
-    label: 'Deployment Name',
-    labelMessage: 'Deployment Name',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入Deployment Name', trigger: ['blur'] }],
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export const geminiSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'geminiProject',
-    label: 'Project',
-    labelMessage: '对于Gemini模型，此参数代表模型的项目ID',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入Project ID', trigger: ['blur'] }],
-  },
-  {
-    field: 'geminiLocation',
-    label: 'Location',
-    labelMessage: '对于Gemini模型，瓷参数代表模型的区域',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入Location', trigger: ['blur'] }],
-  },
-  ...baseSchemas,
-];
-
-export const ollamaSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NInput',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-  },
-  {
-    field: 'baseUrl',
-    label: 'Base Url',
-    labelMessage: '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的',
-    component: 'NInput',
-    rules: [
-      {
-        required: true,
-        trigger: ['blur'],
-        validator: (_, value: string) => {
-          if (!value) {
-            return new Error('请输入baseUrl');
-          }
-          const urlRegex =
-            /^(https?:\/\/)?((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/.*)?)$/;
-          if (isNullOrWhitespace(value) || urlRegex.test(value)) {
-            return true;
-          }
-          return new Error('URL格式错误');
-        },
-      },
-    ],
-  },
-  ...baseSchemas,
-];
-
-export const claudeSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.CLAUDE),
-    },
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export const qfanSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.Q_FAN),
-    },
-  },
-  {
-    field: 'secretKey',
-    label: 'Secret Key',
-    labelMessage: '百度大模型认证需要的秘钥',
-    component: 'NInput',
-    rules: [{ required: true, message: '请输入秘钥', trigger: ['blur'] }],
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export const qwenSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.Q_WEN),
-    },
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export const zhipuSchemas: FormSchema[] = [
-  ...baseHeadSchemas,
-  {
-    field: 'model',
-    label: '模型',
-    labelMessage: '该LLM供应商对应的模型版本号',
-    component: 'NSelect',
-    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
-    componentProps: {
-      filterable: true,
-      options: getModels(ProviderEnum.ZHIPU),
-    },
-  },
-  ...keySchemas,
-  ...baseSchemas,
-];
-
-export function getSchemas(provider: string) {
-  switch (provider) {
-    case ProviderEnum.OPENAI: {
-      return openaiSchemas;
-    }
-    case ProviderEnum.AZURE_OPENAI: {
-      return azureOpenaiSchemas;
-    }
-    case ProviderEnum.GEMINI: {
-      return geminiSchemas;
-    }
-    case ProviderEnum.OLLAMA: {
-      return ollamaSchemas;
-    }
-    case ProviderEnum.CLAUDE: {
-      return claudeSchemas;
-    }
-    case ProviderEnum.Q_FAN: {
-      return qfanSchemas;
-    }
-    case ProviderEnum.Q_WEN: {
-      return qwenSchemas;
-    }
-    case ProviderEnum.ZHIPU: {
-      return zhipuSchemas;
-    }
-  }
-  return [];
-}
 
 export function getModels(provider: string) {
   const arr = LLMProviders.filter((i) => i.model === provider);
@@ -344,4 +121,79 @@ export function getModels(provider: string) {
       value: i,
     };
   });
+}
+
+export function getSchemas(provider: string) {
+  const list = JSON.parse(JSON.stringify(baseSchemas));
+  const modelSchema: any = {
+    field: 'model',
+    label: '模型',
+    labelMessage: '该LLM供应商对应的模型版本号',
+    component: 'NSelect',
+    rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
+    componentProps: {
+      placeholder: '模型名称（可以自由输入）',
+      filterable: true,
+      tag: true,
+      options: getModels(provider),
+    },
+  };
+  list.splice(1, 0, modelSchema);
+
+  let defaultValue: any = undefined;
+  let labelMessage: any =
+    '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的';
+  let disabled = false;
+  switch (provider) {
+    case ProviderEnum.DEEPSEEK:
+      disabled = true;
+      defaultValue = 'https://api.deepseek.com/v1';
+      labelMessage = '对于DeepSeek模型，此Url固定不可修改';
+      break;
+    case ProviderEnum.SILICON:
+      disabled = true;
+      defaultValue = 'https://api.siliconflow.cn/v1';
+      labelMessage = '对于硅基流动模型，此Url固定不可修改';
+      break;
+    case ProviderEnum.DOUYIN:
+      disabled = true;
+      defaultValue = 'https://ark.cn-beijing.volces.com/api/v3';
+      labelMessage = '对于抖音豆包模型，此Url固定不可修改';
+      break;
+    case ProviderEnum.YI:
+      disabled = true;
+      defaultValue = 'https://api.lingyiwanwu.com/v1';
+      labelMessage = '对于零一模型，此Url固定不可修改';
+      break;
+  }
+  const baseUlrSchema: any = {
+    field: 'baseUrl',
+    label: 'Base Url',
+    labelMessage,
+    component: 'NInput',
+    defaultValue,
+    componentProps: {
+      disabled,
+      placeholder: '请输入BaseUrl',
+    },
+    rules: [
+      {
+        required: false,
+        trigger: ['blur'],
+        validator: (_, value: string) => {
+          if (!value) {
+            return;
+          }
+          const urlRegex =
+            /^(https?:\/\/)?((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/.*)?)$/;
+          if (isNullOrWhitespace(value) || urlRegex.test(value)) {
+            return true;
+          }
+          return new Error('URL格式错误');
+        },
+      },
+    ],
+  };
+  list.splice(3, 0, baseUlrSchema);
+  return list;
 }

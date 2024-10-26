@@ -78,7 +78,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.Q_FAN,
-    name: '百度千帆大模型',
+    name: '百度千帆',
     models: [
       'ERNIE-Bot',
       'ERNIE-Bot 4.0',
@@ -100,7 +100,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.Q_WEN,
-    name: '阿里千问大模型',
+    name: '阿里百炼',
     models: [
       'qwen-turbo',
       'qwen-plus',
@@ -119,7 +119,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.ZHIPU,
-    name: '智谱AI',
+    name: '智谱清言',
     models: ['glm-4', 'glm-3-turbo', 'chatglm_turbo'],
   },
 ];

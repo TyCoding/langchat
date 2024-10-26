@@ -50,47 +50,11 @@ export const openaiColumns = [
   },
 ];
 
-export const azureOpenaiColumns = [
-  ...baseColumns,
-  {
-    title: 'Api Key',
-    key: 'apiKey',
-  },
-  {
-    title: 'Endpoint',
-    key: 'endpoint',
-  },
-  {
-    title: 'Deployment Name',
-    key: 'azureDeploymentName',
-  },
-];
-
-export const geminiColumns = [
-  ...baseColumns,
-  {
-    title: 'Project',
-    key: 'geminiProject',
-  },
-  {
-    title: 'Location',
-    key: 'geminiLocation',
-  },
-];
-
 export const ollamaColumns = [
   ...baseColumns,
   {
     title: 'Base Url',
     key: 'baseUrl',
-  },
-];
-
-export const claudeColumns = [
-  ...baseColumns,
-  {
-    title: 'Api Key',
-    key: 'apiKey',
   },
 ];
 
@@ -110,17 +74,8 @@ export function getColumns(provider: string) {
     case ProviderEnum.OPENAI: {
       return openaiColumns;
     }
-    case ProviderEnum.AZURE_OPENAI: {
-      return azureOpenaiColumns;
-    }
-    case ProviderEnum.GEMINI: {
-      return geminiColumns;
-    }
     case ProviderEnum.OLLAMA: {
       return ollamaColumns;
-    }
-    case ProviderEnum.CLAUDE: {
-      return claudeColumns;
     }
     case ProviderEnum.Q_FAN: {
       return qfanColumns;
@@ -132,5 +87,5 @@ export function getColumns(provider: string) {
       return zhipuColumns;
     }
   }
-  return [];
+  return openaiColumns;
 }

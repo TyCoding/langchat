@@ -33,6 +33,10 @@ public enum ProviderEnum {
     Q_FAN,
     Q_WEN,
     ZHIPU,
+    YI,
+    DOUYIN,
+    DEEPSEEK,
+    SILICON,
     ;
 
 }

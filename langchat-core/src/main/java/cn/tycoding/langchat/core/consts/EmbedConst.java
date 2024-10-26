@@ -29,7 +29,6 @@ public interface EmbedConst {
     String FILENAME = "docsName";
 
     String CLAZZ_NAME_OPENAI = "OpenAiEmbeddingModel";
-    String CLAZZ_NAME_AZURE_OPENAI = "AzureOpenAiEmbeddingModel";
     String CLAZZ_NAME_QIANFAN = "QianfanEmbeddingModel";
     String CLAZZ_NAME_QIANWEN = "QwenEmbeddingModel";
     String CLAZZ_NAME_ZHIPU = "ZhipuAiEmbeddingModel";

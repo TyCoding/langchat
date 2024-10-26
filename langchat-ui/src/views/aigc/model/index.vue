@@ -26,13 +26,7 @@
 
 <template>
   <div class="h-full overflow-y-auto">
-    <div class="n-layout-page-header">
-      <n-card :bordered="false" title="模型动态配置能力">
-        支持动态配置LLM大模型参数，支持每个模型使用不同的Key，编辑后的模型配置将立即生效。
-      </n-card>
-    </div>
-
-    <n-card :bordered="false" class="mt-4">
+    <n-card :bordered="false" class="mt-2">
       <n-tabs v-model:value="active" class="flex items-center">
         <n-tab name="1">
           <SvgIcon class="text-lg" icon="lets-icons:chat" />
@@ -46,6 +40,10 @@
           <SvgIcon class="text-lg" icon="ph:image" />
           <span class="pl-2 font-bold">Image文生图模型</span>
         </n-tab>
+        <n-tab name="4">
+          <SvgIcon class="text-lg" icon="icon-park-twotone:voice" />
+          <span class="pl-2 font-bold">TTS语音模型</span>
+        </n-tab>
       </n-tabs>
       <n-divider />
 
@@ -56,4 +54,8 @@
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  ::v-deep(.n-menu .n-menu-item) {
+    height: 40px !important;
+  }
+</style>

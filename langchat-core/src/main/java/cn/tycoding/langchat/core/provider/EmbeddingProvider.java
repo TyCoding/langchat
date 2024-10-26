@@ -20,7 +20,6 @@ import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.core.consts.EmbedConst;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
-import dev.langchain4j.model.azure.AzureOpenAiTokenizer;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
@@ -44,18 +43,12 @@ public class EmbeddingProvider {
         if (ProviderEnum.OPENAI.name().equals(modelProvider)) {
             return DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(modelName));
         }
-        if (ProviderEnum.AZURE_OPENAI.name().equals(modelProvider)) {
-            return DocumentSplitters.recursive(100, 0, new AzureOpenAiTokenizer(modelName));
-        }
         return DocumentSplitters.recursive(100, 0);
     }
 
     public EmbeddingModel embed() {
         if (context.containsBean(EmbedConst.CLAZZ_NAME_OPENAI)) {
             return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OPENAI);
-        }
-        if (context.containsBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI)) {
-            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
         }
         if (context.containsBean(EmbedConst.CLAZZ_NAME_QIANFAN)) {
             return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_QIANFAN);

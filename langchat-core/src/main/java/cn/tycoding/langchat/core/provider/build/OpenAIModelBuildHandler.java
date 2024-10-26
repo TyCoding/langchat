@@ -35,16 +35,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * @author GB
+ * @author tycoding
  * @since 2024-08-19 10:08
  */
 @Slf4j
 @Component
 public class OpenAIModelBuildHandler implements ModelBuildHandler {
 
+    /**
+     * 合并处理支持OpenAI接口的模型
+     */
     @Override
     public boolean whetherCurrentModel(AigcModel model) {
-        return ProviderEnum.OPENAI.name().equals(model.getProvider());
+        String provider = model.getProvider();
+        return ProviderEnum.OPENAI.name().equals(provider) ||
+                ProviderEnum.GEMINI.name().equals(provider) ||
+                ProviderEnum.CLAUDE.name().equals(provider) ||
+                ProviderEnum.AZURE_OPENAI.name().equals(provider) ||
+                ProviderEnum.DOUYIN.name().equals(provider) ||
+                ProviderEnum.YI.name().equals(provider) ||
+                ProviderEnum.SILICON.name().equals(provider) ||
+                ProviderEnum.DEEPSEEK.name().equals(provider)
+                ;
     }
 
     @Override
@@ -52,7 +64,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
         String apiKey = model.getApiKey();
         if (StrUtil.isBlank(apiKey)) {
             throw new ServiceException(ChatErrorEnum.API_KEY_IS_NULL.getErrorCode(),
-                    ChatErrorEnum.API_KEY_IS_NULL.getErrorDesc(ProviderEnum.OPENAI.name(), model.getType()));
+                    ChatErrorEnum.API_KEY_IS_NULL.getErrorDesc(model.getProvider().toUpperCase(), model.getType()));
         }
         return true;
     }
@@ -81,7 +93,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
             log.error(e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("openai chat 模型配置报错", e);
+            log.error(model.getProvider() + " Streaming Chat 模型配置报错", e);
             return null;
         }
     }
@@ -110,7 +122,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
             log.error(e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("openai chat 模型配置报错", e);
+            log.error(model.getProvider() + " Chat 模型配置报错", e);
             return null;
         }
     }
@@ -138,7 +150,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
             log.error(e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("openai embedding 模型配置报错", e);
+            log.error(model.getProvider() + " Embedding 模型配置报错", e);
             return null;
         }
     }
@@ -167,7 +179,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
             log.error(e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("openai image 模型配置报错", e);
+            log.error(model.getProvider() + " Image 模型配置报错", e);
             return null;
         }
 

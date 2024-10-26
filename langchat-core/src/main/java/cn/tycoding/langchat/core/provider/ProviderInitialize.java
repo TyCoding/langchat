@@ -36,6 +36,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +51,7 @@ public class ProviderInitialize implements ApplicationContextAware {
     private final AigcModelService aigcModelService;
     private final SpringContextHolder contextHolder;
     private List<ModelBuildHandler> modelBuildHandlers;
+    private List<AigcModel> modelStore = new ArrayList<>();
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
@@ -57,9 +59,10 @@ public class ProviderInitialize implements ApplicationContextAware {
     }
 
     public void init() {
+        modelStore = new ArrayList<>();
+
         // un register embedding model
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OPENAI);
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_AZURE_OPENAI);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANFAN);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_ZHIPU);
         contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANWEN);
@@ -77,6 +80,8 @@ public class ProviderInitialize implements ApplicationContextAware {
             embeddingHandler(model);
             imageHandler(model);
         });
+
+        list.forEach(i -> log.info("当前成功注册的模型信息：{}", i));
     }
 
     private void chatHandler(AigcModel model) {
@@ -89,6 +94,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                 StreamingChatLanguageModel streamingChatLanguageModel = x.buildStreamingChat(model);
                 if (ObjectUtil.isNotEmpty(streamingChatLanguageModel)) {
                     contextHolder.registerBean(model.getId(), streamingChatLanguageModel);
+                    modelStore.add(model);
                 }
 
                 ChatLanguageModel languageModel = x.buildChatLanguageModel(model);

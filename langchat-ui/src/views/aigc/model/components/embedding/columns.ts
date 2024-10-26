@@ -45,17 +45,17 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.Q_FAN,
-    name: '百度千帆大模型',
+    name: '百度千帆',
     models: ['Embedding-V1', 'bge-large-zh', 'bge-large-en', 'tao-8k'],
   },
   {
     model: ProviderEnum.Q_WEN,
-    name: '阿里千问大模型',
+    name: '阿里百炼',
     models: ['text-embedding-v1', 'text-embedding-v2'],
   },
   {
     model: ProviderEnum.ZHIPU,
-    name: '智谱AI',
+    name: '智谱清言',
     models: ['embedding-2', 'text_embedding'],
   },
 ];
@@ -121,7 +121,8 @@ export const baseSchemas: FormSchema[] = [
         required: false,
         trigger: ['blur'],
         validator: (_, value: string) => {
-          const urlRegex = /^(https?:\/\/)?(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/.*)?$/
+          const urlRegex =
+            /^(https?:\/\/)?(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/.*)?$/;
           //const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
           if (isNullOrWhitespace(value) || urlRegex.test(value)) {
             return true;

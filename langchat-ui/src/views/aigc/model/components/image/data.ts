@@ -33,7 +33,7 @@ export const LLMProviders: any[] = [
   },
   {
     model: ProviderEnum.ZHIPU,
-    name: '智谱AI',
+    name: '智谱清言',
     models: ['cogview-3'],
   },
 ];
