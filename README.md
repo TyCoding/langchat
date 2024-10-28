@@ -4,7 +4,7 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
-接入 OpenAI / Gemini / Ollama / Azure / Claude / 智谱清言 / 阿里通义大模型 / 百度千帆 等大模型。
+**支持的AI大模型：** 智谱清言 / 阿里通义 / 百度千帆 / DeepSeek / 抖音豆包 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
 
 **本项目前后端完全由TyCoding一个人开发，工作量庞大，可能存在一些问题请谅解，持续开发中...**
 
