@@ -421,6 +421,7 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES ('d0d0cab7c147d865d35e
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES ('d0d0cab7c147d865d35e70fc62f2f19e', 'bdd70f2c1ee068c13bd3288eff07c8e2');
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES ('d0d0cab7c147d865d35e70fc62f2f19e', 'c212381ae7a2333416a18e486f044777');
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES ('d0d0cab7c147d865d35e70fc62f2f19e', 'f1ad3c056ac91fa5292a99f223155afc');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES ('d0d0cab7c147d865d35e70fc62f2f19e', '0adfa2c3c4d278aedd88019236c1425e');
 COMMIT;
 
 -- ----------------------------
