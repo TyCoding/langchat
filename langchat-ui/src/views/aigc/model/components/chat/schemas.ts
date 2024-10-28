@@ -15,7 +15,8 @@
  */
 
 import { FormSchema } from '@/components/Form';
-import { LLMProviders, ProviderEnum } from './consts';
+import { LLMProviders } from './consts';
+import { getModels, ProviderEnum } from '@/views/aigc/model/provider';
 import { ModelTypeEnum } from '@/api/models';
 import { isNullOrWhitespace } from '@/utils/is';
 
@@ -58,7 +59,7 @@ const baseSchemas: FormSchema[] = [
   {
     field: 'apiKey',
     label: 'Api Key',
-    labelMessage: '模型链接的秘钥，注意有些模型例如Gemini是本地认证方式，则不是通过这种方式',
+    labelMessage: '模型的ApiKey',
     component: 'NInput',
     rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
     componentProps: {
@@ -110,43 +111,25 @@ const baseSchemas: FormSchema[] = [
   },
 ];
 
-export function getModels(provider: string) {
-  const arr = LLMProviders.filter((i) => i.model === provider);
-  if (arr.length === 0) {
-    return [];
-  }
-  if (typeof arr[0].models[0] === 'string') {
-    return arr[0].models.map((i) => {
-      return {
-        label: i,
-        value: i,
-      };
-    });
-  } else {
-    return arr[0].models;
-  }
-}
-
 export function getSchemas(provider: string) {
   const list = JSON.parse(JSON.stringify(baseSchemas));
   const modelSchema: any = {
     field: 'model',
-    label: '模型',
+    label: '模型版本',
     labelMessage: '该LLM供应商对应的模型版本号',
     component: 'NSelect',
     rules: [{ required: true, message: '请选择模型', trigger: ['blur'] }],
     componentProps: {
-      placeholder: '模型名称（可以自由输入）',
+      placeholder: '请选择模型版本（可以手动输入）',
       filterable: true,
       tag: true,
-      options: getModels(provider),
+      options: getModels(provider, LLMProviders),
     },
   };
   list.splice(1, 0, modelSchema);
 
   let defaultValue: any = undefined;
-  let labelMessage: any =
-    '注意对于大多数模型此参数仅代表中转地址，但是对于Ollama这类本地模型则是必填的';
+  let labelMessage: any = '模型的基础请求URL地址（或中转地址）';
   let disabled = false;
   switch (provider) {
     case ProviderEnum.DEEPSEEK:

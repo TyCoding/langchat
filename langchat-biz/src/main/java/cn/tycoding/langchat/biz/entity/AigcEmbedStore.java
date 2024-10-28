@@ -14,30 +14,37 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.core.properties.vectorstore;
+package cn.tycoding.langchat.biz.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.experimental.Accessors;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.io.Serializable;
 
 /**
  * @author tycoding
- * @since 2024/4/15
+ * @since 2024/10/28
  */
 @Data
-@Accessors(chain = true)
-@ConfigurationProperties(prefix = "langchat.vectorstore.pgvector")
-public class PgvectorProps {
+@TableName(autoResultMap = true)
+public class AigcEmbedStore implements Serializable {
+    private static final long serialVersionUID = 548724967827903685L;
 
+    /**
+     * 主键
+     */
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
+    private String name;
+
+    private String provider;
     private String host;
     private Integer port;
-    private String user;
+    private String username;
     private String password;
-    private String database;
-    private String table;
+    private String databaseName;
+    private String tableName;
     private Integer dimension;
-    private Boolean useIndex;
-    private Integer indexListSize;
-    private Boolean createTable = true;
-    private Boolean dropTableFirst = false;
 }

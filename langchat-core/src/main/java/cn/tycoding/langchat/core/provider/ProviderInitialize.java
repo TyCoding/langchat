@@ -81,7 +81,7 @@ public class ProviderInitialize implements ApplicationContextAware {
             imageHandler(model);
         });
 
-        list.forEach(i -> log.info("当前成功注册的模型信息：{}", i));
+        modelStore.forEach(i -> log.info("已成功注册模型：{}， 模型配置：{}", i.getProvider(), i));
     }
 
     private void chatHandler(AigcModel model) {
@@ -117,6 +117,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                 Pair<String, DimensionAwareEmbeddingModel> embeddingModelPair = x.buildEmbedding(model);
                 if (ObjectUtil.isNotEmpty(embeddingModelPair)) {
                     contextHolder.registerBean(embeddingModelPair.getKey(), embeddingModelPair.getValue());
+                    modelStore.add(model);
                 }
             });
 
@@ -135,6 +136,7 @@ public class ProviderInitialize implements ApplicationContextAware {
                 ImageModel imageModel = x.buildImage(model);
                 if (ObjectUtil.isNotEmpty(imageModel)) {
                     contextHolder.registerBean(model.getId(), imageModel);
+                    modelStore.add(model);
                 }
             });
         } catch (Exception e) {

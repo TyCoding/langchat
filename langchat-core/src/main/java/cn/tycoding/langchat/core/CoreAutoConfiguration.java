@@ -17,8 +17,6 @@
 package cn.tycoding.langchat.core;
 
 import cn.tycoding.langchat.core.properties.LangChatProps;
-import cn.tycoding.langchat.core.properties.vectorstore.PgvectorProps;
-import cn.tycoding.langchat.core.properties.vectorstore.VectorProps;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,8 +30,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties({
         LangChatProps.class,
-        VectorProps.class,
-        PgvectorProps.class,
 })
 @AllArgsConstructor
 public class CoreAutoConfiguration {

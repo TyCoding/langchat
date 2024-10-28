@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.core.properties;
+package cn.tycoding.langchat.biz.service;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import cn.tycoding.langchat.biz.entity.AigcEmbedStore;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author tycoding
- * @since 2024/4/15
+ * @since 2024/10/28
  */
-@Data
-@ConfigurationProperties(prefix = "langchat")
-public class LangChatProps {
+public interface AigcEmbedStoreService extends IService<AigcEmbedStore> {
+
 }

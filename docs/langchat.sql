@@ -362,6 +362,10 @@ INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `ord
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('51ed9b1f27acc4695667821eac5f35cb', '删除文档', '97a5eac3bfeeabe4013d828b919786f7', null, 'aigc:docs:delete', 'button', 12, null, null, 0, 0, 1, null);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('03917f40dfafba8c7ecb2b8843522a9e', '新增文档', '97a5eac3bfeeabe4013d828b919786f7', null, 'aigc:docs:add', 'button', 10, null, null, 0, 0, 1, null);
 INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('1c1fa2c50ff306144a0ea2528dcec96b', '重置密码', 'b29de942eeabc9419185951f57be11f3', null, 'upms:user:reset', 'button', 5, null, null, 0, 0, 1, null);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('0adfa2c3c4d278aedd88019236c1425e', '向量库管理', '374409ab56141b311ccb0f1847dd724a', 'aigc/embed-store', 'embed-store', 'menu', 1, '', '/aigc/embed-store/index', 0, 0, 0, 1);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('64a1109e89e060bd7018806c62c8e7d3', '修改向量库', '0adfa2c3c4d278aedd88019236c1425e', NULL, 'aigc:embed-store:update', 'button', 2, NULL, NULL, 0, 0, 0, NULL);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('757e0f3fb5e153c15f3355a97f731f1e', '删除向量库', '0adfa2c3c4d278aedd88019236c1425e', NULL, 'aigc:embed-store:delete', 'button', 3, NULL, NULL, 0, 0, 0, NULL);
+INSERT INTO `sys_menu` (`id`, `name`, `parent_id`, `path`, `perms`, `type`, `order_no`, `icon`, `component`, `is_disabled`, `is_ext`, `is_keepalive`, `is_show`) VALUES ('af8e11cdd57a935bbcf36f8e53cc889f', '新增向量库', '0adfa2c3c4d278aedd88019236c1425e', NULL, 'aigc:embed-store:add', 'button', 1, NULL, NULL, 0, 0, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -463,5 +467,23 @@ BEGIN;
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES ('827450c4a39b3c4c14fdfb06f454bfb3', 'd0d0cab7c147d865d35e70fc62f2f19e');
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES ('91b4524a46a949601e7f3b004ed76034', '2827e950043adf67b7fe10306d3e94e4');
 COMMIT;
+
+-- ----------------------------
+-- Table structure for aigc_embed_store
+-- ----------------------------
+DROP TABLE IF EXISTS `aigc_embed_store`;
+CREATE TABLE `aigc_embed_store` (
+                                    `id` varchar(50) NOT NULL COMMENT '主键',
+                                    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '别名',
+                                    `provider` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '供应商',
+                                    `host` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '地址',
+                                    `port` int DEFAULT NULL COMMENT '端口',
+                                    `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户名',
+                                    `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '密码',
+                                    `database_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '数据库名称',
+                                    `table_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '表名称',
+                                    `dimension` int DEFAULT NULL COMMENT '向量维数',
+                                    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Embedding向量数据库配置表';
 
 SET FOREIGN_KEY_CHECKS = 1;

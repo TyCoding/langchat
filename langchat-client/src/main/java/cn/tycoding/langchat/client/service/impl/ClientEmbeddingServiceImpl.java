@@ -21,7 +21,6 @@ import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.task.TaskManager;
 import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import dev.langchain4j.store.embedding.filter.Filter;
-import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
 public class ClientEmbeddingServiceImpl implements ClientEmbeddingService {
 
     private final LangEmbeddingService embeddingService;
-    private final PgVectorEmbeddingStore embeddingStore;
+//    private final PgVectorEmbeddingStore embeddingStore;
 
     @Override
     public void embedDocs(ChatReq data) {
@@ -53,6 +52,6 @@ public class ClientEmbeddingServiceImpl implements ClientEmbeddingService {
     @Override
     public void deleteVector(String knowledgeId) {
         Filter filter = metadataKey(KNOWLEDGE).isEqualTo(knowledgeId);
-        embeddingStore.removeAll(filter);
+//        embeddingStore.removeAll(filter);
     }
 }

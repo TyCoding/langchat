@@ -134,7 +134,7 @@
                 <PlusOutlined />
               </n-icon>
             </template>
-            新建账户
+            新增账户
           </n-button>
         </template>
       </BasicTable>

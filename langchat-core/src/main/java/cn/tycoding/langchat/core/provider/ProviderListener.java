@@ -16,6 +16,7 @@
 
 package cn.tycoding.langchat.core.provider;
 
+import cn.tycoding.langchat.biz.component.EmbeddingRefreshEvent;
 import cn.tycoding.langchat.biz.component.ProviderRefreshEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +33,19 @@ import org.springframework.stereotype.Component;
 public class ProviderListener {
 
     private final ProviderInitialize providerInitialize;
+    private final EmbeddingStoreInitialize embeddingStoreInitialize;
 
     @EventListener
     public void providerEvent(ProviderRefreshEvent event) {
         log.info("refresh provider beans begin......");
         providerInitialize.init();
         log.info("refresh provider beans success......");
+    }
+
+    @EventListener
+    public void providerEvent(EmbeddingRefreshEvent event) {
+        log.info("refresh embedding beans begin......");
+        embeddingStoreInitialize.init();
+        log.info("refresh embedding beans success......");
     }
 }

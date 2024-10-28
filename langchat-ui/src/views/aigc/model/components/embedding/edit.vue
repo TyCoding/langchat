@@ -38,8 +38,8 @@
   });
   const form: any = {
     responseLimit: 2000,
-    temperature: 0.2,
-    topP: 0.8,
+    temperature: 0.8,
+    topP: 1,
   };
 
   const schemas = computed(() => {

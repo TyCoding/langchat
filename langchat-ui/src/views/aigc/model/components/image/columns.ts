@@ -22,7 +22,7 @@ export const baseColumns = [
     key: 'name',
   },
   {
-    title: '模型名称',
+    title: '模型版本',
     key: 'model',
   },
 ];

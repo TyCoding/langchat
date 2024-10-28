@@ -122,7 +122,7 @@
                 <PlusOutlined />
               </n-icon>
             </template>
-            新建角色
+            新增角色
           </n-button>
         </template>
       </BasicTable>

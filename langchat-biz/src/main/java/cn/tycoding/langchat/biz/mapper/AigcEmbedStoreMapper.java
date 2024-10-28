@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.core.properties;
+package cn.tycoding.langchat.biz.mapper;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import cn.tycoding.langchat.biz.entity.AigcEmbedStore;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author tycoding
- * @since 2024/4/15
+ * @since 2024/10/28
  */
-@Data
-@ConfigurationProperties(prefix = "langchat")
-public class LangChatProps {
+@Mapper
+public interface AigcEmbedStoreMapper extends BaseMapper<AigcEmbedStore> {
+
 }

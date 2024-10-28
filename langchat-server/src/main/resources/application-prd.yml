@@ -51,12 +51,3 @@ langchat:
       port: 465
       from: <EMAIL>
       pass: <PASS>
-  vectorstore:
-    pgvector:
-      host: 127.0.0.1
-      user: root
-      password: root
-      port: 5432
-      database: langchat
-      table: langchat_store
-      dimension: 384

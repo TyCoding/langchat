@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-export enum ProviderEnum {
-  OPENAI = 'OPENAI',
-  AZURE_OPENAI = 'AZURE_OPENAI',
-  GEMINI = 'GEMINI',
-  OLLAMA = 'OLLAMA',
-  CLAUDE = 'CLAUDE',
-  Q_FAN = 'Q_FAN',
-  Q_WEN = 'Q_WEN',
-  ZHIPU = 'ZHIPU',
-  DEEPSEEK = 'DEEPSEEK',
-  DOUYIN = 'DOUYIN',
-  SILICON = 'SILICON',
-  YI = 'YI',
-  SPARK = 'SPARK',
-}
+import { ProviderEnum } from '@/views/aigc/model/provider';
 
 export const LLMProviders: any[] = [
   {
@@ -195,7 +181,3 @@ export const LLMProviders: any[] = [
     models: ['claude-3-opus', 'claude-3-opus-20240229', 'claude-3-sonnet', 'claude-3-haiku'],
   },
 ];
-
-export function getTitle(provider: string) {
-  return LLMProviders.filter((i) => i.model === provider)[0].name;
-}

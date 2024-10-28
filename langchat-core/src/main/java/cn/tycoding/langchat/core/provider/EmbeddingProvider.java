@@ -21,7 +21,6 @@ import cn.tycoding.langchat.core.consts.ProviderEnum;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +58,6 @@ public class EmbeddingProvider {
         if (context.containsBean(EmbedConst.CLAZZ_NAME_OLLAMA)) {
             return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OLLAMA);
         }
-        return new BgeSmallEnV15QuantizedEmbeddingModel();
+        return null;
     }
 }

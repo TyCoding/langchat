@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.core.properties;
+package cn.tycoding.langchat.biz.component;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * @author tycoding
- * @since 2024/4/15
+ * @since 2024/6/16
  */
-@Data
-@ConfigurationProperties(prefix = "langchat")
-public class LangChatProps {
+public class EmbeddingRefreshEvent extends ApplicationEvent {
+    private static final long serialVersionUID = 4109980679877560773L;
+
+    public EmbeddingRefreshEvent(Object source) {
+        super(source);
+    }
 }

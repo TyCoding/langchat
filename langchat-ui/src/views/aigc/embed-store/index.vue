@@ -15,23 +15,23 @@
   -->
 
 <script lang="ts" setup>
-  import { h, reactive, ref } from 'vue';
+  import { h, nextTick, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, useForm } from '@/components/Form/index';
-  import { del, tree as getPage } from '@/api/upms/menu';
-  import { columns, searchSchemas } from './columns';
+  import { del, page as getPage } from '@/api/aigc/embed-store';
+  import { columns, ProviderConst, searchSchemas } from './columns';
   import { DeleteOutlined, EditOutlined, PlusOutlined } from '@vicons/antd';
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
 
   const message = useMessage();
   const dialog = useDialog();
-
+  const provider = ref('');
   const actionRef = ref();
   const editRef = ref();
 
   const actionColumn = reactive({
-    width: 120,
+    width: 100,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -40,11 +40,6 @@
       return h(TableAction as any, {
         style: 'text',
         actions: [
-          {
-            type: 'success',
-            icon: PlusOutlined,
-            onClick: handlePlus.bind(null, record),
-          },
           {
             type: 'info',
             icon: EditOutlined,
@@ -62,7 +57,7 @@
 
   const [register, { getFieldsValue, setFieldsValue }] = useForm({
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
-    labelWidth: 80,
+    labelWidth: 100,
     schemas: searchSchemas,
     showAdvancedButton: false,
   });
@@ -75,19 +70,19 @@
     actionRef.value.reload();
   }
 
-  function handleAdd() {
+  async function handleAdd(val: any) {
+    provider.value = val;
+    await nextTick();
     editRef.value.show();
   }
 
-  function handleEdit(record: any) {
+  async function handleEdit(record: Recordable) {
+    provider.value = record.provider;
+    await nextTick();
     editRef.value.show(record.id);
   }
 
-  function handlePlus(record: any) {
-    editRef.value.show(null, record.id);
-  }
-
-  function handleDelete(record: any) {
+  function handleDelete(record: Recordable) {
     dialog.info({
       title: '提示',
       content: `您想删除 ${record.name}`,
@@ -102,7 +97,7 @@
     });
   }
 
-  function handleReset(values: any) {
+  function handleReset(values: Recordable) {
     reloadTable();
   }
 </script>
@@ -116,26 +111,32 @@
         ref="actionRef"
         :actionColumn="actionColumn"
         :columns="columns"
-        :pagination="false"
         :request="loadDataTable"
         :row-key="(row:any) => row.id"
         :single-line="false"
         :size="'small'"
       >
         <template #tableTitle>
-          <n-button type="primary" @click="handleAdd">
-            <template #icon>
-              <n-icon>
-                <PlusOutlined />
-              </n-icon>
-            </template>
-            新增菜单
-          </n-button>
+          <n-popselect
+            v-model:value="provider"
+            :options="ProviderConst"
+            trigger="click"
+            @update:value="handleAdd"
+          >
+            <n-button type="primary">
+              <template #icon>
+                <n-icon>
+                  <PlusOutlined />
+                </n-icon>
+              </template>
+              新增向量数据库
+            </n-button>
+          </n-popselect>
         </template>
       </BasicTable>
     </n-card>
 
-    <Edit ref="editRef" @reload="reloadTable" />
+    <Edit ref="editRef" :provider="provider" @reload="reloadTable" />
   </div>
 </template>
 
