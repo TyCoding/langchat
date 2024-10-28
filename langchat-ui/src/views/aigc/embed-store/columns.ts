@@ -51,7 +51,7 @@ export const columns: BasicColumn[] = [
     title: '供应商',
     key: 'provider',
     align: 'center',
-    width: '80',
+    width: '120',
     render(row) {
       return h(
         NTag,
@@ -189,7 +189,7 @@ export function getSchemas(provider: string) {
   const dimension: any = {
     field: 'dimension',
     label: '向量纬度',
-    component: 'NInputNumber',
+    component: 'NSelect',
     defaultValue: 1024,
     componentProps: {
       placeholder: '请输入向量纬度',
@@ -228,7 +228,7 @@ export function getSchemas(provider: string) {
       {
         field: 'databaseName',
         label: '数据库名',
-        component: 'NInputNumber',
+        component: 'NInput',
         componentProps: {
           placeholder: '请输入数据库名',
         },
