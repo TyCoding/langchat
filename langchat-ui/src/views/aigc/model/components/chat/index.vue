@@ -20,7 +20,7 @@
   import Edit from './edit.vue';
   import { computed, h, nextTick, reactive, ref } from 'vue';
   import { getColumns } from './columns';
-  import { LLMProviders } from './data';
+  import { LLMProviders } from './consts';
   import { del, list as getModels } from '@/api/aigc/model';
   import { useDialog, useMessage } from 'naive-ui';
   import { ModelTypeEnum } from '@/api/models';

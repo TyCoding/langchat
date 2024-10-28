@@ -17,11 +17,11 @@
 package cn.tycoding.langchat.core.provider.build;
 
 import cn.hutool.core.lang.Pair;
-import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.common.enums.ChatErrorEnum;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import cn.tycoding.langchat.core.consts.ProviderEnum;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;

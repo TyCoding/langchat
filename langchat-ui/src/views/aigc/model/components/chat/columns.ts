@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ProviderEnum } from './data';
+import { ProviderEnum } from './consts';
 
 export const baseColumns = [
   {
@@ -71,9 +71,6 @@ export const zhipuColumns = [...baseColumns];
 
 export function getColumns(provider: string) {
   switch (provider) {
-    case ProviderEnum.OPENAI: {
-      return openaiColumns;
-    }
     case ProviderEnum.OLLAMA: {
       return ollamaColumns;
     }

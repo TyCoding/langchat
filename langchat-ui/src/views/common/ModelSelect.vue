@@ -17,7 +17,7 @@
 <script lang="ts" setup>
   import { onMounted, ref, toRaw } from 'vue';
   import { list as getModels } from '@/api/aigc/model';
-  import { LLMProviders } from '@/views/aigc/model/components/chat/data';
+  import { LLMProviders } from '@/views/aigc/model/components/chat/consts';
   import { ModelTypeEnum } from '@/api/models';
   import { useChatStore } from '@/views/chat/store/useChatStore';
 

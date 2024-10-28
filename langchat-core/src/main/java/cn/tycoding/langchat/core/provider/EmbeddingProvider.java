@@ -16,8 +16,8 @@
 
 package cn.tycoding.langchat.core.provider;
 
-import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import cn.tycoding.langchat.core.consts.ProviderEnum;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.embedding.EmbeddingModel;

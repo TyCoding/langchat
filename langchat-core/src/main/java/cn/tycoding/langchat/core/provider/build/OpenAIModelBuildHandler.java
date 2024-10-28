@@ -18,11 +18,11 @@ package cn.tycoding.langchat.core.provider.build;
 
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.biz.component.ProviderEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.common.enums.ChatErrorEnum;
 import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.core.consts.EmbedConst;
+import cn.tycoding.langchat.core.consts.ProviderEnum;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
@@ -55,7 +55,8 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
                 ProviderEnum.DOUYIN.name().equals(provider) ||
                 ProviderEnum.YI.name().equals(provider) ||
                 ProviderEnum.SILICON.name().equals(provider) ||
-                ProviderEnum.DEEPSEEK.name().equals(provider)
+                ProviderEnum.DEEPSEEK.name().equals(provider) ||
+                ProviderEnum.SPARK.name().equals(provider)
                 ;
     }
 

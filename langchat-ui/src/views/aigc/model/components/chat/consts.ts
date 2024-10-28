@@ -27,6 +27,7 @@ export enum ProviderEnum {
   DOUYIN = 'DOUYIN',
   SILICON = 'SILICON',
   YI = 'YI',
+  SPARK = 'SPARK',
 }
 
 export const LLMProviders: any[] = [
@@ -161,8 +162,22 @@ export const LLMProviders: any[] = [
     ],
   },
   {
+    model: ProviderEnum.SPARK,
+    name: '讯飞星火',
+    // models: ['lite', 'generalv3', 'pro-128k', 'generalv3.5', 'max-32k', '4.0Ultra'],
+    models: [
+      { label: 'Spark Lite', value: 'lite' },
+      { label: 'Spark Pro', value: 'generalv3' },
+      { label: 'Spark Pro-128K', value: 'pro-128k' },
+      { label: 'Spark Max', value: 'generalv3.5' },
+      { label: 'Spark Max-32K', value: 'max-32k' },
+      { label: 'Spark4.0 Ultra', value: '4.0Ultra' },
+    ],
+  },
+  {
     model: ProviderEnum.OLLAMA,
     name: 'Ollama',
+    models: [],
   },
   {
     model: ProviderEnum.AZURE_OPENAI,
@@ -173,10 +188,6 @@ export const LLMProviders: any[] = [
     model: ProviderEnum.GEMINI,
     name: 'Gemini',
     models: ['gemini-1.5-pro'],
-  },
-  {
-    model: ProviderEnum.OLLAMA,
-    name: 'Ollama',
   },
   {
     model: ProviderEnum.CLAUDE,

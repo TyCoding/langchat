@@ -15,7 +15,7 @@
  */
 
 import { FormSchema } from '@/components/Form';
-import { ProviderEnum } from '@/views/aigc/model/components/chat/data';
+import { ProviderEnum } from '@/views/aigc/model/components/chat/consts';
 import { ModelTypeEnum } from '@/api/models';
 import { isNullOrWhitespace } from '@/utils/is';
 

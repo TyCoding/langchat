@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.tycoding.langchat.biz.component;
+package cn.tycoding.langchat.core.consts;
 
 import lombok.Getter;
 
@@ -37,6 +37,7 @@ public enum ProviderEnum {
     DOUYIN,
     DEEPSEEK,
     SILICON,
+    SPARK,
     ;
 
 }

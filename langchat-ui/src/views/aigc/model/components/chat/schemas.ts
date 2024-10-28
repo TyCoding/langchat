@@ -15,7 +15,7 @@
  */
 
 import { FormSchema } from '@/components/Form';
-import { LLMProviders, ProviderEnum } from './data';
+import { LLMProviders, ProviderEnum } from './consts';
 import { ModelTypeEnum } from '@/api/models';
 import { isNullOrWhitespace } from '@/utils/is';
 
@@ -115,12 +115,16 @@ export function getModels(provider: string) {
   if (arr.length === 0) {
     return [];
   }
-  return arr[0].models.map((i) => {
-    return {
-      label: i,
-      value: i,
-    };
-  });
+  if (typeof arr[0].models[0] === 'string') {
+    return arr[0].models.map((i) => {
+      return {
+        label: i,
+        value: i,
+      };
+    });
+  } else {
+    return arr[0].models;
+  }
 }
 
 export function getSchemas(provider: string) {
@@ -164,6 +168,11 @@ export function getSchemas(provider: string) {
       disabled = true;
       defaultValue = 'https://api.lingyiwanwu.com/v1';
       labelMessage = '对于零一模型，此Url固定不可修改';
+      break;
+    case ProviderEnum.SPARK:
+      disabled = true;
+      defaultValue = 'https://spark-api-open.xf-yun.com/v1';
+      labelMessage = '对于讯飞星火大模型，此Url固定不可修改';
       break;
   }
   const baseUlrSchema: any = {

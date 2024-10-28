@@ -21,7 +21,7 @@
   import { isNullOrWhitespace } from '@/utils/is';
   import { add, update } from '@/api/aigc/model';
   import { useMessage } from 'naive-ui';
-  import { getTitle } from './data';
+  import { getTitle } from './consts';
 
   const props = defineProps<{
     provider: string;
