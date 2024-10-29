@@ -38,7 +38,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,35 +61,15 @@ public class AigcKnowledgeController {
     @GetMapping("/list")
     public R<List<AigcKnowledge>> list(AigcKnowledge data) {
         List<AigcKnowledge> list = kbService.list(Wrappers.<AigcKnowledge>lambdaQuery().orderByDesc(AigcKnowledge::getCreateTime));
-        List<String> ids = list.stream().map(AigcKnowledge::getId).toList();
-        List<AigcDocs> docs = new ArrayList<>();
-        if (!ids.isEmpty()){
-            docs = docsMapper.selectList(Wrappers.<AigcDocs>lambdaQuery().in(AigcDocs::getKnowledgeId, ids));
-        }
-        Map<String, List<AigcDocs>> docsMap = docs.stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
-        list.forEach(i -> {
-            List<AigcDocs> val = docsMap.get(i.getId());
-            if (val != null) {
-                i.setDocs(val);
-                i.setDocsNum(val.size());
-            }
-
-        });
+        build(list);
         return R.ok(list);
     }
 
-    @GetMapping("/page")
-    public R list(AigcKnowledge data, QueryPage queryPage) {
-        Page<AigcKnowledge> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
-        LambdaQueryWrapper<AigcKnowledge> queryWrapper = Wrappers.<AigcKnowledge>lambdaQuery()
-                .like(!StrUtil.isBlank(data.getName()), AigcKnowledge::getName, data.getName())
-                .orderByDesc(AigcKnowledge::getCreateTime);
-        Page<AigcKnowledge> iPage = kbService.page(page, queryWrapper);
-
+    private void build(List<AigcKnowledge> records) {
         Map<String, List<AigcEmbedStore>> embedStoreMap = embedStoreService.list().stream().collect(Collectors.groupingBy(AigcEmbedStore::getId));
         Map<String, List<AigcModel>> embedModelMap = modelService.list().stream().collect(Collectors.groupingBy(AigcModel::getId));
         Map<String, List<AigcDocs>> docsMap = docsMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcDocs::getKnowledgeId));
-        iPage.getRecords().forEach(item -> {
+        records.forEach(item -> {
             List<AigcDocs> docs = docsMap.get(item.getId());
             if (docs != null) {
                 item.setDocsNum(docs.size());
@@ -105,6 +84,17 @@ public class AigcKnowledgeController {
                 item.setEmbedStore(list == null ? null : list.get(0));
             }
         });
+    }
+
+    @GetMapping("/page")
+    public R list(AigcKnowledge data, QueryPage queryPage) {
+        Page<AigcKnowledge> page = new Page<>(queryPage.getPage(), queryPage.getLimit());
+        LambdaQueryWrapper<AigcKnowledge> queryWrapper = Wrappers.<AigcKnowledge>lambdaQuery()
+                .like(!StrUtil.isBlank(data.getName()), AigcKnowledge::getName, data.getName())
+                .orderByDesc(AigcKnowledge::getCreateTime);
+        Page<AigcKnowledge> iPage = kbService.page(page, queryWrapper);
+
+        build(iPage.getRecords());
 
         return R.ok(MybatisUtil.getData(iPage));
     }

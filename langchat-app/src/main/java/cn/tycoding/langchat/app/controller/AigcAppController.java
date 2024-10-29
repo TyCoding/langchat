@@ -23,7 +23,10 @@ import cn.tycoding.langchat.app.entity.AigcAppApi;
 import cn.tycoding.langchat.app.service.AigcAppApiService;
 import cn.tycoding.langchat.app.service.AigcAppService;
 import cn.tycoding.langchat.app.store.AppStore;
+import cn.tycoding.langchat.biz.entity.AigcKnowledge;
+import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.common.annotation.ApiLog;
+import cn.tycoding.langchat.common.exception.ServiceException;
 import cn.tycoding.langchat.common.utils.MybatisUtil;
 import cn.tycoding.langchat.common.utils.QueryPage;
 import cn.tycoding.langchat.common.utils.R;
@@ -33,7 +36,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +48,7 @@ public class AigcAppController {
     private final AigcAppService aigcAppService;
     private final AigcAppApiService aigcAppApiService;
     private final AppStore appStore;
+    private final AigcKnowledgeService knowledgeService;
 
     @GetMapping("/channel/api/{appId}")
     public R<AigcAppApi> getApiChanel(@PathVariable String appId) {
@@ -84,6 +90,24 @@ public class AigcAppController {
     @ApiLog("修改应用")
     @SaCheckPermission("aigc:app:update")
     public R update(@RequestBody AigcApp data) {
+        // 校验知识库是否是同纬度
+        List<String> knowledgeIds = data.getKnowledgeIds();
+        if (knowledgeIds != null) {
+            List<AigcKnowledge> list = knowledgeService.list(Wrappers.<AigcKnowledge>lambdaQuery().in(AigcKnowledge::getId, knowledgeIds));
+            Set<String> modelIds = new HashSet<>();
+            Set<String> storeIds = new HashSet<>();
+            list.forEach(know -> {
+                modelIds.add(know.getEmbedModelId());
+                storeIds.add(know.getEmbedStoreId());
+            });
+            if (modelIds.size() > 1) {
+                throw new ServiceException("请选择相同向量库数据源配置的知识库");
+            }
+            if (storeIds.size() > 1) {
+                throw new ServiceException("请选择相同向量模型配置的知识库");
+            }
+        }
+
         data.setSaveTime(new Date());
         aigcAppService.updateById(data);
         appStore.init();

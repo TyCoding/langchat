@@ -54,14 +54,35 @@
 </script>
 
 <template>
-  <basicModal style="width: 35%" @register="modalRegister">
+  <basicModal style="width: 40%" @register="modalRegister">
+    <n-alert
+      class="w-full mb-2 mt-2 min-alert"
+      title="注意：只能选择相同纬度向量库配置（以及相同向量模型）的知识库"
+      type="info"
+    />
     <n-scrollbar>
       <n-list clickable hoverable>
-        <n-list-item v-for="item in knowledges" :key="item.id">
+        <n-list-item v-for="item in knowledges" :key="item.id" class="!px-1">
           <div class="flex items-center justify-between">
             <div class="flex gap-1 items-center">
               <SvgIcon class="text-3xl" icon="flat-color-icons:document" />
               <div>{{ item.name }}</div>
+
+              <n-divider v-if="item.embedModel != null" vertical />
+              <n-tag v-if="item.embedModel != null" round type="success" size="small">
+                <div class="!flex gap-1 px-1.5">
+                  <SvgIcon icon="octicon:ai-model-24" />
+                  <span>{{ item.embedModel.name }}</span>
+                </div>
+              </n-tag>
+
+              <n-divider v-if="item.embedStore != null" class="!mx-1" vertical />
+              <n-tag v-if="item.embedStore != null" round type="primary" size="small">
+                <div class="!flex gap-1 px-1.5">
+                  <SvgIcon icon="material-symbols:database-outline" />
+                  <span>{{ item.embedStore.name }}</span>
+                </div>
+              </n-tag>
             </div>
             <n-button
               v-if="!appStore.knowledgeIds.includes(item.id)"
