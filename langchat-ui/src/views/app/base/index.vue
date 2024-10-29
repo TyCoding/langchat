@@ -89,7 +89,7 @@
       >
         <template #1>
           <div class="p-2 h-full m-2 bg-white rounded-lg">
-            <SettingsPage />
+            <SettingsPage @update="onSave" />
           </div>
         </template>
         <template #2>

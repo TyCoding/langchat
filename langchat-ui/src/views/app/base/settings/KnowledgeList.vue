@@ -35,7 +35,6 @@
   });
 
   async function show() {
-    console.log(appStore.knowledgeIds);
     knowledges.value = await getList({});
     await nextTick();
     openModal();
