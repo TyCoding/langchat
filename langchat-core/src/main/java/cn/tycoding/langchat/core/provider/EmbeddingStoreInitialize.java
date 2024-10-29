@@ -84,6 +84,7 @@ public class EmbeddingStoreInitialize implements ApplicationContextAware {
                             .user(embed.getUsername())
                             .password(embed.getPassword())
                             .table(embed.getTableName())
+                            .indexListSize(1)
                             .useIndex(true)
                             .createTable(true)
                             .dropTableFirst(false)

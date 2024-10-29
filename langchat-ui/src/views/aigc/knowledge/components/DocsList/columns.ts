@@ -120,6 +120,5 @@ export const formSchemas: FormSchema[] = [
         maxRows: 12,
       },
     },
-    rules: [{ required: true, message: '请输入文档内容', trigger: ['blur'] }],
   },
 ];

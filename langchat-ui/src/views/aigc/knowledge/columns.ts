@@ -44,6 +44,20 @@ export const formSchemas: FormSchema[] = [
     rules: [{ required: true, message: '请输入知识库名称', trigger: ['blur'] }],
   },
   {
+    field: 'embedStoreId',
+    label: '向量数据库',
+    component: 'NInput',
+    slot: 'embedStoreSlot',
+    rules: [{ required: true, message: '请选择关联向量数据库', trigger: ['blur'] }],
+  },
+  {
+    field: 'embedModelId',
+    label: '向量模型',
+    component: 'NInput',
+    slot: 'embedModelSlot',
+    rules: [{ required: true, message: '请选择关联向量模型', trigger: ['blur'] }],
+  },
+  {
     field: 'des',
     component: 'NInput',
     label: '知识库描述',
@@ -51,9 +65,10 @@ export const formSchemas: FormSchema[] = [
       placeholder: '请输入知识库描述',
       type: 'textarea',
       autosize: {
-        minRows: 5,
-        maxRows: 8,
+        minRows: 3,
+        maxRows: 3,
       },
     },
+    rules: [{ required: true, message: '请输入知识库描述', trigger: ['blur'] }],
   },
 ];

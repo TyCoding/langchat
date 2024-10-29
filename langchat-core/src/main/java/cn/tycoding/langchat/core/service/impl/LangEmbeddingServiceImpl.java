@@ -28,6 +28,7 @@ import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,17 +50,17 @@ import static dev.langchain4j.data.document.Metadata.metadata;
 public class LangEmbeddingServiceImpl implements LangEmbeddingService {
 
     private final EmbeddingProvider embeddingProvider;
-//    private final PgVectorEmbeddingStore embeddingStore;
 
     @Override
     public EmbeddingR embeddingText(ChatReq req) {
         log.info(">>>>>>>>>>>>>> Text文本向量解析开始，KnowledgeId={}, DocsName={}", req.getKnowledgeId(), req.getDocsName());
         TextSegment segment = TextSegment.from(req.getMessage(),
                 metadata(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName()));
-        EmbeddingModel embeddingModel = embeddingProvider.embed();
+
+        EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(req.getKnowledgeId());
+        EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(req.getKnowledgeId());
         Embedding embedding = embeddingModel.embed(segment).content();
-//        String id = embeddingStore.add(embedding, segment);
-        String id = "";
+        String id = embeddingStore.add(embedding, segment);
 
         log.info(">>>>>>>>>>>>>> Text文本向量解析结束，KnowledgeId={}, DocsName={}", req.getKnowledgeId(), req.getDocsName());
         return new EmbeddingR().setVectorId(id).setText(segment.text());
@@ -67,7 +68,6 @@ public class LangEmbeddingServiceImpl implements LangEmbeddingService {
 
     @Override
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
-        EmbeddingModel model = embeddingProvider.embed();
 
         log.info(">>>>>>>>>>>>>> Docs文档向量解析开始，KnowledgeId={}, DocsName={}", req.getKnowledgeId(), req.getDocsName());
         Document document;
@@ -80,9 +80,11 @@ public class LangEmbeddingServiceImpl implements LangEmbeddingService {
 
         DocumentSplitter splitter = EmbeddingProvider.splitter(req.getModelName(), req.getModelProvider());
         List<TextSegment> segments = splitter.split(document);
-        List<Embedding> embeddings = model.embedAll(segments).content();
-//        List<String> ids = embeddingStore.addAll(embeddings, segments);
-        List<String> ids = new ArrayList<>();
+
+        EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(req.getKnowledgeId());
+        EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(req.getKnowledgeId());
+        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
+        List<String> ids = embeddingStore.addAll(embeddings, segments);
 
         List<EmbeddingR> list = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {

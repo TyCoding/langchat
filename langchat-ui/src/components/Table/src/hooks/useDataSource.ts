@@ -64,6 +64,8 @@ export function useDataSource(
         pageParams[sizeField] = pageSize;
       }
 
+      setPagination({ page: pageParams?.[pageField] });
+
       let params = {
         ...pageParams,
       };

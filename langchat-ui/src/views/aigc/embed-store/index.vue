@@ -106,6 +106,11 @@
   <div class="h-full">
     <n-card :bordered="false">
       <BasicForm @register="register" @reset="handleReset" @submit="reloadTable" />
+      <n-alert
+        class="w-full mb-4 mt-2 min-alert"
+        title="注意：请慎重修改模型的向量纬度参数（Dimension），此参数需要和向量库匹配（错误修改可能将影响已有的向量数据）"
+        type="info"
+      />
 
       <BasicTable
         ref="actionRef"

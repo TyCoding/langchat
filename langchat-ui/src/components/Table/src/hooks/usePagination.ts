@@ -1,6 +1,6 @@
 import type { PaginationProps } from '../types/pagination';
 import type { BasicTableProps } from '../types/table';
-import { computed, unref, ref, ComputedRef, watch } from 'vue';
+import { computed, ComputedRef, ref, unref, watch } from 'vue';
 
 import { isBoolean } from '@/utils/is';
 import { DEFAULTPAGESIZE, PAGESIZES } from '../const';

@@ -18,7 +18,7 @@
   import { computed, nextTick } from 'vue';
   import { add, getById, update } from '@/api/aigc/embed-store';
   import { useMessage } from 'naive-ui';
-  import { getSchemas } from './columns';
+  import { getProviderLabel, getSchemas } from './columns';
   import { basicModal, useModal } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { isNullOrWhitespace } from '@/utils/is';
@@ -32,7 +32,7 @@
     modalRegister,
     { openModal: openModal, closeModal: closeModal, setSubLoading: setSubLoading },
   ] = useModal({
-    title: props.provider + ' 新增/编辑',
+    title: getProviderLabel(props.provider) + ' 新增/编辑',
     closable: true,
     maskClosable: false,
     showCloseBtn: false,
@@ -85,6 +85,11 @@
 <template>
   <basicModal style="width: 45%" @register="modalRegister">
     <template #default>
+      <n-alert
+        class="w-full mb-4 mt-2 min-alert"
+        title="注意：请慎重修改模型的向量纬度参数（Dimension），此参数需要和向量库匹配（错误修改可能将影响已有的向量数据）"
+        type="info"
+      />
       <BasicForm :schemas="schemas" class="mt-5" @register="register" @submit="handleSubmit" />
     </template>
   </basicModal>

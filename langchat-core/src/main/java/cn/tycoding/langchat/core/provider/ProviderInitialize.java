@@ -16,18 +16,16 @@
 
 package cn.tycoding.langchat.core.provider;
 
-import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.ObjectUtil;
 import cn.tycoding.langchat.biz.component.ModelTypeEnum;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.biz.service.AigcModelService;
 import cn.tycoding.langchat.common.component.SpringContextHolder;
-import cn.tycoding.langchat.core.consts.EmbedConst;
 import cn.tycoding.langchat.core.consts.ModelConst;
 import cn.tycoding.langchat.core.provider.build.ModelBuildHandler;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
-import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,13 +59,6 @@ public class ProviderInitialize implements ApplicationContextAware {
     public void init() {
         modelStore = new ArrayList<>();
 
-        // un register embedding model
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OPENAI);
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANFAN);
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_ZHIPU);
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_QIANWEN);
-        contextHolder.unregisterBean(EmbedConst.CLAZZ_NAME_OLLAMA);
-
         List<AigcModel> list = aigcModelService.list();
         list.forEach(model -> {
             if (Objects.equals(model.getBaseUrl(), "")) {
@@ -81,7 +72,7 @@ public class ProviderInitialize implements ApplicationContextAware {
             imageHandler(model);
         });
 
-        modelStore.forEach(i -> log.info("已成功注册模型：{}， 模型配置：{}", i.getProvider(), i));
+        modelStore.forEach(i -> log.info("已成功注册模型：{} -- {}， 模型配置：{}", i.getProvider(), i.getType(),  i));
     }
 
     private void chatHandler(AigcModel model) {
@@ -114,9 +105,9 @@ public class ProviderInitialize implements ApplicationContextAware {
                 return;
             }
             modelBuildHandlers.forEach(x -> {
-                Pair<String, DimensionAwareEmbeddingModel> embeddingModelPair = x.buildEmbedding(model);
-                if (ObjectUtil.isNotEmpty(embeddingModelPair)) {
-                    contextHolder.registerBean(embeddingModelPair.getKey(), embeddingModelPair.getValue());
+                EmbeddingModel embeddingModel = x.buildEmbedding(model);
+                if (ObjectUtil.isNotEmpty(embeddingModel)) {
+                    contextHolder.registerBean(model.getId(), embeddingModel);
                     modelStore.add(model);
                 }
             });

@@ -41,6 +41,9 @@ public class AigcKnowledge implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
+    private String embedStoreId;
+    private String embedModelId;
+
     /**
      * 知识库名称
      */
@@ -67,5 +70,10 @@ public class AigcKnowledge implements Serializable {
     private Long totalSize = 0L;
     @TableField(exist = false)
     private List<AigcDocs> docs = new ArrayList<>();
+
+    @TableField(exist = false)
+    private AigcEmbedStore embedStore;
+    @TableField(exist = false)
+    private AigcModel embedModel;
 }
 

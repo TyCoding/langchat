@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { h } from 'vue';
+import { NTag } from 'naive-ui';
+
 export const baseColumns = [
   {
     title: '模型别名',
@@ -24,9 +27,26 @@ export const baseColumns = [
     key: 'model',
   },
   {
-    title: '回复上限',
-    key: 'responseLimit',
-    width: '120',
+    title: '向量纬度',
+    key: 'dimension',
+    align: 'center',
+    width: '100',
+    render(row) {
+      return h(
+        NTag,
+        {
+          size: 'small',
+          type: 'error',
+        },
+        {
+          default: () => row.dimension,
+        }
+      );
+    },
+  },
+  {
+    title: 'Base Url',
+    key: 'baseUrl',
   },
 ];
 

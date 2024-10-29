@@ -52,6 +52,6 @@ public class AigcModel implements Serializable {
     private String imageSize;
     private String imageQuality;
     private String imageStyle;
-    private Integer dimensions;
+    private Integer dimension;
 }
 

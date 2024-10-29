@@ -66,6 +66,24 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '向量纬度',
+    key: 'dimension',
+    align: 'center',
+    width: '80',
+    render(row) {
+      return h(
+        NTag,
+        {
+          size: 'small',
+          type: 'error',
+        },
+        {
+          default: () => row.dimension,
+        }
+      );
+    },
+  },
+  {
     title: '数据库地址',
     key: 'host',
     align: 'center',
@@ -96,12 +114,6 @@ export const columns: BasicColumn[] = [
     title: '表名称',
     key: 'tableName',
     align: 'center',
-  },
-  {
-    title: '向量纬度',
-    key: 'dimension',
-    align: 'center',
-    width: '80',
   },
 ];
 
@@ -191,6 +203,7 @@ export function getSchemas(provider: string) {
     label: '向量纬度',
     component: 'NSelect',
     defaultValue: 1024,
+    labelMessage: '慎重修改此参数，纬度高会消耗更多的算力，但纬度高并不代表搜索更精确',
     componentProps: {
       placeholder: '请输入向量纬度',
       options: [

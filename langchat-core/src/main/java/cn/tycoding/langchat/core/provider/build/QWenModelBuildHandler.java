@@ -16,18 +16,16 @@
 
 package cn.tycoding.langchat.core.provider.build;
 
-import cn.hutool.core.lang.Pair;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import cn.tycoding.langchat.common.enums.ChatErrorEnum;
 import cn.tycoding.langchat.common.exception.ServiceException;
-import cn.tycoding.langchat.core.consts.EmbedConst;
 import cn.tycoding.langchat.core.consts.ProviderEnum;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.dashscope.QwenChatModel;
 import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
 import dev.langchain4j.model.dashscope.QwenStreamingChatModel;
-import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -111,7 +109,7 @@ public class QWenModelBuildHandler implements ModelBuildHandler {
     }
 
     @Override
-    public Pair<String, DimensionAwareEmbeddingModel> buildEmbedding(AigcModel model) {
+    public EmbeddingModel buildEmbedding(AigcModel model) {
         try {
             if (!whetherCurrentModel(model)) {
                 return null;
@@ -119,12 +117,11 @@ public class QWenModelBuildHandler implements ModelBuildHandler {
             if (!basicCheck(model)) {
                 return null;
             }
-            QwenEmbeddingModel qwenEmbeddingModel = QwenEmbeddingModel
+            return QwenEmbeddingModel
                     .builder()
                     .apiKey(model.getApiKey())
                     .modelName(model.getModel())
                     .build();
-            return Pair.of(EmbedConst.CLAZZ_NAME_QIANWEN, qwenEmbeddingModel);
         } catch (ServiceException e) {
             log.error(e.getMessage());
             throw e;

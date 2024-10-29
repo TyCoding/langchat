@@ -58,13 +58,13 @@
 
   const columns = computed(() => {
     nextTick();
-    return getColumns(provider.value);
+    return getColumns();
   });
   const loadDataTable = async (params: any) => {
     if (provider.value === '') {
       provider.value = LLMProviders[0].model;
     }
-    return await getModels({ ...params, provider: provider.value, type: ModelTypeEnum.TEXT_IMAGE });
+    return await getModels({ ...params, provider: provider.value, type: ModelTypeEnum.EMBEDDING });
   };
   async function handleAdd() {
     editRef.value.show({ provider: provider.value });

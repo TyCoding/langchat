@@ -16,11 +16,10 @@
 
 package cn.tycoding.langchat.core.provider.build;
 
-import cn.hutool.core.lang.Pair;
 import cn.tycoding.langchat.biz.entity.AigcModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
-import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 
 /**
@@ -52,7 +51,7 @@ public interface ModelBuildHandler {
     /**
      * embedding config
      */
-    Pair<String, DimensionAwareEmbeddingModel> buildEmbedding(AigcModel model);
+    EmbeddingModel buildEmbedding(AigcModel model);
 
     /**
      * image config

@@ -19,6 +19,7 @@ package cn.tycoding.langchat.server.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.biz.entity.AigcDocs;
 import cn.tycoding.langchat.biz.entity.AigcDocsSlice;
+import cn.tycoding.langchat.biz.mapper.AigcDocsMapper;
 import cn.tycoding.langchat.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.common.dto.ChatReq;
 import cn.tycoding.langchat.common.dto.EmbeddingR;
@@ -26,7 +27,11 @@ import cn.tycoding.langchat.core.provider.EmbeddingProvider;
 import cn.tycoding.langchat.core.service.LangEmbeddingService;
 import cn.tycoding.langchat.server.service.EmbeddingService;
 import dev.langchain4j.data.embedding.Embedding;
+import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
+import dev.langchain4j.store.embedding.EmbeddingSearchResult;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.filter.Filter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +57,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     private final EmbeddingProvider embeddingProvider;
     private final LangEmbeddingService langEmbeddingService;
     private final AigcKnowledgeService aigcKnowledgeService;
-//    private final PgVectorEmbeddingStore embeddingStore;
+    private final AigcDocsMapper aigcDocsMapper;
 
     @Override
     @Transactional
@@ -65,7 +70,9 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         if (vectorIds.isEmpty()) {
             return;
         }
-//        embeddingStore.removeAll(vectorIds);
+        AigcDocs docs = aigcDocsMapper.selectById(docsId);
+        EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(docs.getKnowledgeId());
+        embeddingStore.removeAll(vectorIds);
         // remove from docSlice
         aigcKnowledgeService.removeSlicesOfDoc(docsId);
     }
@@ -96,22 +103,23 @@ public class EmbeddingServiceImpl implements EmbeddingService {
             return List.of();
         }
 
-        EmbeddingModel embeddingModel = embeddingProvider.embed();
+        EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(data.getKnowledgeId());
+        EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(data.getKnowledgeId());
         Embedding queryEmbedding = embeddingModel.embed(data.getContent()).content();
         Filter filter = metadataKey(KNOWLEDGE).isEqualTo(data.getKnowledgeId());
-//        EmbeddingSearchResult<TextSegment> list = embeddingStore.search(EmbeddingSearchRequest
-//                .builder()
-//                .queryEmbedding(queryEmbedding)
-//                .filter(filter)
-//                .build());
+        EmbeddingSearchResult<TextSegment> list = embeddingStore.search(EmbeddingSearchRequest
+                .builder()
+                .queryEmbedding(queryEmbedding)
+                .filter(filter)
+                .build());
 
         List<Map<String, Object>> result = new ArrayList<>();
-//        list.matches().forEach(i -> {
-//            TextSegment embedded = i.embedded();
-//            Map<String, Object> map = embedded.metadata().toMap();
-//            map.put("text", embedded.text());
-//            result.add(map);
-//        });
+        list.matches().forEach(i -> {
+            TextSegment embedded = i.embedded();
+            Map<String, Object> map = embedded.metadata().toMap();
+            map.put("text", embedded.text());
+            result.add(map);
+        });
         return result;
     }
 }

@@ -105,7 +105,7 @@
     <BasicForm @register="register" @reset="fetch" @submit="fetch" />
 
     <n-spin :show="loading">
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 mb-8">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 mb-8">
         <div
           class="bg-gray-100 py-3 pt-4 transition-all duration-300 px-2 transform border cursor-pointer rounded-xl group"
         >
@@ -124,7 +124,7 @@
         <div
           v-for="item in list"
           :key="item.id"
-          class="bg-white px-4 py-3 pt-4 transition-all duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:shadow-lg"
+          class="bg-white px-4 py-3 pt-4 relative transition-all duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:shadow-lg"
           @click="handleInfo(item)"
         >
           <div class="flex flex-col sm:-mx-4 sm:flex-row">
@@ -134,8 +134,17 @@
               </div>
             </div>
 
-            <div class="pr-4">
-              <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
+            <div class="pr-4 w-full">
+              <div class="flex items-center justify-between">
+                <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
+                <div
+                  v-if="item.embedModel != null"
+                  class="absolute right-0 px-2 flex items-center gap-1 py-1 bg-gray-200 text-gray-500 rounded-l-md text-xs"
+                >
+                  <SvgIcon icon="octicon:ai-model-24" />
+                  {{ item.embedModel.model }}
+                </div>
+              </div>
 
               <p class="mt-2 text-gray-500 capitalize text-xs">
                 {{ item.des }}
@@ -143,12 +152,17 @@
             </div>
           </div>
 
-          <div class="flex mt-4 -mx-2 px-2 text-gray-400 justify-between items-center">
+          <div class="flex mt-6 px-2 text-gray-400 justify-between items-center">
             <div class="flex items-center gap-1">
               <SvgIcon class="" icon="mdi:tag-outline" />
               <span class="text-xs">文档数:{{ item.docsNum }}</span>
-              <n-divider vertical />
+              <n-divider class="!m-0.5" vertical />
               <span class="text-xs">{{ (Number(item.totalSize) / 1000000).toFixed(2) }} MB</span>
+              <n-divider class="!m-0.5" vertical />
+              <SvgIcon icon="material-symbols:database-outline" />
+              <span v-if="item.embedStore != null" class="!text-xs">
+                {{ item.embedStore.name }}
+              </span>
             </div>
             <div class="flex items-center">
               <n-popselect

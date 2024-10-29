@@ -59,6 +59,27 @@ const baseSchemas: FormSchema[] = [
       placeholder: '请输入ApiKey',
     },
   },
+  {
+    field: 'dimension',
+    label: '向量纬度',
+    component: 'NSelect',
+    defaultValue: 1024,
+    labelMessage: '慎重修改此参数，纬度高会消耗更多的算力，但纬度高并不代表搜索更精确',
+    componentProps: {
+      placeholder: '请输入向量纬度',
+      options: [
+        {
+          label: '1024',
+          value: 1024,
+        },
+        {
+          label: '1536',
+          value: 1536,
+        },
+      ],
+    },
+    rules: [{ type: 'number', required: true, message: '请输入向量纬度', trigger: ['blur'] }],
+  },
 ];
 
 export function getSchemas(provider: string) {
