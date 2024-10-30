@@ -106,6 +106,9 @@ CREATE TABLE `aigc_docs_slice` (
 DROP TABLE IF EXISTS `aigc_knowledge`;
 CREATE TABLE `aigc_knowledge` (
                                   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+                                  `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户ID',
+                                  `embed_store_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '向量数据库ID',
+                                  `embed_model_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '向量模型ID',
                                   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '知识库名称',
                                   `des` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '描述',
                                   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '封面',
@@ -117,7 +120,7 @@ CREATE TABLE `aigc_knowledge` (
 -- Records of aigc_knowledge
 -- ----------------------------
 BEGIN;
-INSERT INTO `aigc_knowledge` (`id`, `name`, `des`, `cover`, `create_time`) VALUES ('393704ac13f67fde5da674ddd0742b03', 'LangChat文档', 'LangChat官方文档', NULL, '1722766331165');
+INSERT INTO `aigc_knowledge` (`id`, `user_id`, `embed_store_id`, `embed_model_id`, `name`, `des`, `cover`, `create_time`) VALUES ('393704ac13f67fde5da674ddd0742b03', NULL, '5d57795705faccdf0ea7095a63c5e463', '1f0525bcf8721689f6a81851e5a0068b', 'LangChat文档', 'LangChat官方文档', NULL, '1722766331165');
 COMMIT;
 
 -- ----------------------------
