@@ -25,6 +25,7 @@ export const baseColumns = [
   {
     title: '模型版本',
     key: 'model',
+    width: '160',
   },
   {
     title: '向量纬度',
@@ -43,6 +44,10 @@ export const baseColumns = [
         }
       );
     },
+  },
+  {
+    title: 'Api Key',
+    key: 'apiKey',
   },
   {
     title: 'Base Url',
