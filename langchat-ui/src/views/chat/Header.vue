@@ -54,7 +54,7 @@
       <span>{{ title }}</span>
     </div>
     <n-space align="center">
-      <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 140px" />
+      <ModelSelect :id="chatStore.modelId" class="w-auto" style="min-width: 180px" />
 
       <n-button secondary size="small" type="warning" @click="handleClear">
         <template #icon>

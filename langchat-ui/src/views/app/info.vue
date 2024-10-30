@@ -21,11 +21,9 @@
   import router from '@/router';
   import { onMounted, ref } from 'vue';
   import { useAppStore } from './store';
-  import { useChatStore } from '@/views/chat/store/useChatStore';
-  import { getAppInfo, getMessages } from '@/api/aigc/chat';
+  import { getAppInfo } from '@/api/aigc/chat';
 
   const appStore = useAppStore();
-  const chatStore = useChatStore();
   const form = ref<any>({});
   const loading = ref(false);
   const activeMenus = [
@@ -45,14 +43,6 @@
       conversationId: null,
     });
     form.value = data;
-    appStore.info = data;
-    appStore.knowledgeIds = data.knowledgeIds == null ? [] : data.knowledgeIds;
-    appStore.modelId = data.modelId == null ? null : data.modelId;
-    appStore.knowledges = data.knowledges == null ? [] : data.knowledges;
-    chatStore.modelId = data.modelId == null ? null : data.modelId;
-    chatStore.appId = data.id;
-    chatStore.conversationId = data.id;
-    chatStore.messages = await getMessages(chatStore.conversationId!);
     loading.value = false;
   }
 </script>
@@ -61,7 +51,7 @@
   <div v-if="form.name !== undefined" class="rounded bg-[#f9f9f9] w-full h-full pb-10">
     <div class="p-4 flex justify-between items-center bg-white rounded">
       <div class="flex gap-5 items-center min-w-20">
-        <n-button text type="primary" @click="router.push('/app/app')">
+        <n-button text type="primary" @click="router.push('/app/list')">
           <SvgIcon class="text-xl" icon="icon-park-outline:back" />
         </n-button>
         <div class="flex gap-2 items-center pr-4">

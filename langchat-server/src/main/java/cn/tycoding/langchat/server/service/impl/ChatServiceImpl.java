@@ -66,6 +66,10 @@ public class ChatServiceImpl implements ChatService {
             }
         }
 
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req, 0, 0);
+
         try {
             langChatService
                     .chat(req)
@@ -83,14 +87,10 @@ public class ChatServiceImpl implements ChatService {
                         emitter.send(res);
                         emitter.complete();
 
-                        if (req.getConversationId() != null) {
-                            req.setRole(RoleEnum.USER.getName());
-                            saveMessage(req, 0, 0);
-
-                            req.setMessage(text.toString());
-                            req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
-                        }
+                        // save assistant message
+                        req.setMessage(text.toString());
+                        req.setRole(RoleEnum.ASSISTANT.getName());
+                        saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                     })
                     .onError((e) -> {
                         emitter.error(e.getMessage());
@@ -105,11 +105,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private void saveMessage(ChatReq req, Integer inputToken, Integer outputToken) {
-        AigcMessage message = new AigcMessage();
-        BeanUtils.copyProperties(req, message);
-        message.setIp(ServletUtil.getIpAddr());
-        message.setPromptTokens(inputToken);
-        message.setTokens(outputToken);
-        aigcMessageService.addMessage(message);
+        if (req.getConversationId() != null) {
+            AigcMessage message = new AigcMessage();
+            BeanUtils.copyProperties(req, message);
+            message.setIp(ServletUtil.getIpAddr());
+            message.setPromptTokens(inputToken);
+            message.setTokens(outputToken);
+            aigcMessageService.addMessage(message);
+        }
     }
 }

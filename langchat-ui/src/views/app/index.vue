@@ -66,7 +66,7 @@
   }
 
   async function onInfo(item) {
-    await router.push('/aigc/app/info/' + item.id);
+    await router.push('/app/info/' + item.id);
   }
 
   function handleAdd() {

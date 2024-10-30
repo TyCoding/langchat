@@ -102,6 +102,26 @@ export const BaseRoute: Array<any> = [
   },
 
   {
+    path: '/app',
+    name: 'app',
+    component: 'Layout',
+    show: false,
+    meta: {
+      title: 'AI应用管理',
+    },
+    children: [
+      {
+        path: 'info/:id?',
+        name: 'appInfo',
+        component: '/app/info',
+        show: false,
+        meta: {
+          title: '应用配置',
+        },
+      },
+    ],
+  },
+  {
     path: '/aigc',
     name: 'aigc',
     component: 'Layout',
@@ -126,15 +146,6 @@ export const BaseRoute: Array<any> = [
         show: false,
         meta: {
           title: '知识库数据',
-        },
-      },
-      {
-        path: 'app/info/:id?',
-        name: 'appInfo',
-        component: '/app/info',
-        show: false,
-        meta: {
-          title: '应用配置',
         },
       },
     ],

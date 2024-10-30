@@ -19,7 +19,6 @@
   import { useMessage } from 'naive-ui';
   import TextComponent from './TextComponent.vue';
   import AvatarComponent from './Avatar.vue';
-  import SvgIcon from '@/components/SvgIcon/index.vue';
   import { useBasicLayout } from '../store/useBasicLayout';
   import { useIconRender } from '../store/useIconRender';
   import { copyToClip } from '@/utils/copy';
@@ -37,21 +36,14 @@
   }
 
   const props = defineProps<Props>();
-
   const emit = defineEmits<Emit>();
-
+  const isHover = ref(false);
   const { isMobile } = useBasicLayout();
-
   const { iconRender } = useIconRender();
-
   const message = useMessage();
-
   const textRef = ref<HTMLElement>();
-
   const asRawText = ref(props.inversion);
-
   const messageRef = ref<HTMLElement>();
-
   const options = computed(() => {
     const common = [
       {
@@ -59,15 +51,15 @@
         key: 'copyText',
         icon: iconRender({ icon: 'ri:file-copy-2-line' }),
       },
-      {
-        label: '删除',
-        key: 'delete',
-        icon: iconRender({ icon: 'ri:delete-bin-line' }),
-      },
+      // {
+      //   label: '删除',
+      //   key: 'delete',
+      //   icon: iconRender({ icon: 'ri:delete-bin-line' }),
+      // },
     ];
 
     if (!props.inversion) {
-      common.unshift({
+      common.push({
         label: asRawText.value ? '预览' : '显示原文',
         key: 'toggleRenderType',
         icon: iconRender({ icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code' }),
@@ -116,7 +108,12 @@
       <p :class="[inversion ? 'text-right' : 'text-left']" class="text-xs text-[#b4bbc4]">
         {{ dateTime }}
       </p>
-      <div :class="[inversion ? 'flex-row-reverse' : 'flex-row']" class="flex items-end gap-1 mt-2">
+      <div
+        @mouseover="isHover = true"
+        @mouseleave="isHover = false"
+        :class="[inversion ? 'flex-row-reverse' : 'flex-row']"
+        class="flex items-end gap-1 mt-2 transition-all"
+      >
         <TextComponent
           ref="textRef"
           :as-raw-text="asRawText"
@@ -125,17 +122,30 @@
           :loading="loading"
           :text="text"
         />
-        <div class="flex flex-col">
-          <NDropdown
-            :options="options"
-            :placement="!inversion ? 'right' : 'left'"
-            :trigger="isMobile ? 'click' : 'hover'"
-            @select="handleSelect"
-          >
-            <button class="transition text-neutral-300 hover:text-neutral-800">
-              <SvgIcon icon="ri:more-2-fill" />
-            </button>
-          </NDropdown>
+        <div class="flex flex-col transition-all w-[45px]">
+          <n-space v-if="isHover" class="transition-all gap-1.5 flex-nowrap justify-end">
+            <n-popover v-for="item in options" :key="item" class="custom-popover">
+              <template #trigger>
+                <button
+                  @click="handleSelect(item.key as any)"
+                  class="transition text-neutral-400 hover:text-neutral-800"
+                >
+                  <component :is="item.icon" />
+                </button>
+              </template>
+              {{ item.label }}
+            </n-popover>
+          </n-space>
+          <!--          <NDropdown-->
+          <!--            :options="options"-->
+          <!--            :placement="!inversion ? 'right' : 'left'"-->
+          <!--            :trigger="isMobile ? 'click' : 'hover'"-->
+          <!--            @select="handleSelect"-->
+          <!--          >-->
+          <!--            <button class="transition text-neutral-300 hover:text-neutral-800">-->
+          <!--              <SvgIcon icon="ri:more-2-fill" />-->
+          <!--            </button>-->
+          <!--          </NDropdown>-->
         </div>
       </div>
     </div>

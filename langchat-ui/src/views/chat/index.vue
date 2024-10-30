@@ -40,7 +40,7 @@
 
 <template>
   <n-card class="p-4 pt-1 w-full h-full">
-    <Header title="AI自由聊天" @reload="fetch" />
+    <Header title="AI聊天助手" @reload="fetch" />
     <div class="flex flex-col w-full overflow-hidden" style="height: calc(100vh - 180px)">
       <main ref="contentRef" class="flex-1 overflow-hidden overflow-y-auto">
         <Chat />

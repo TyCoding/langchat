@@ -53,6 +53,10 @@ public class ClientChatServiceImpl implements ClientChatService {
         long startTime = System.currentTimeMillis();
         StringBuilder text = new StringBuilder();
 
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req, 0, 0);
+
         try {
             langChatService.chat(req)
                     .onNext(e -> {
@@ -64,15 +68,10 @@ public class ClientChatServiceImpl implements ClientChatService {
                         emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
                         emitter.complete();
 
-                        // save message
-                        if (req.getConversationId() != null) {
-                            req.setRole(RoleEnum.USER.getName());
-                            saveMessage(req, 0, 0);
-
-                            req.setMessage(text.toString());
-                            req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
-                        }
+                        // save assistant message
+                        req.setMessage(text.toString());
+                        req.setRole(RoleEnum.ASSISTANT.getName());
+                        saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                     })
                     .onError((e) -> {
                         emitter.error(e.getMessage());
@@ -92,6 +91,10 @@ public class ClientChatServiceImpl implements ClientChatService {
         StreamEmitter emitter = req.getEmitter();
         StringBuilder text = new StringBuilder();
 
+        // save user message
+        req.setRole(RoleEnum.USER.getName());
+        saveMessage(req, 0, 0);
+
         try {
             langChatService.chat(req)
                     .onNext(e -> {
@@ -103,15 +106,10 @@ public class ClientChatServiceImpl implements ClientChatService {
                         emitter.send(new ChatRes(tokenUsage.totalTokenCount(), startTime));
                         emitter.complete();
 
-                        // save message
-                        if (req.getConversationId() != null) {
-                            req.setRole(RoleEnum.USER.getName());
-                            saveMessage(req, 0, 0);
-
-                            req.setMessage(text.toString());
-                            req.setRole(RoleEnum.ASSISTANT.getName());
-                            saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
-                        }
+                        // save assistant message
+                        req.setMessage(text.toString());
+                        req.setRole(RoleEnum.ASSISTANT.getName());
+                        saveMessage(req, tokenUsage.inputTokenCount(), tokenUsage.outputTokenCount());
                     })
                     .onError((e) -> {
                         e.printStackTrace();
@@ -126,12 +124,14 @@ public class ClientChatServiceImpl implements ClientChatService {
     }
 
     private void saveMessage(ChatReq req, Integer inputToken, Integer outputToken) {
-        AigcMessage message = new AigcMessage();
-        BeanUtils.copyProperties(req, message);
-        message.setIp(ServletUtil.getIpAddr());
-        message.setPromptTokens(inputToken);
-        message.setTokens(outputToken);
-        aigcMessageService.addMessage(message);
+        if (req.getConversationId() != null) {
+            AigcMessage message = new AigcMessage();
+            BeanUtils.copyProperties(req, message);
+            message.setIp(ServletUtil.getIpAddr());
+            message.setPromptTokens(inputToken);
+            message.setTokens(outputToken);
+            aigcMessageService.addMessage(message);
+        }
     }
 
     @Override
