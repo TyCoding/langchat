@@ -56,7 +56,7 @@
     <n-upload
       :custom-request="handleImport"
       directory-dnd
-      accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf"
+      accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,.txt,.md"
     >
       <n-upload-dragger>
         <div style="margin-bottom: 12px">

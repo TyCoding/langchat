@@ -78,17 +78,21 @@ public class LangEmbeddingServiceImpl implements LangEmbeddingService {
         }
         document.metadata().put(KNOWLEDGE, req.getKnowledgeId()).put(FILENAME, req.getDocsName());
 
-        DocumentSplitter splitter = EmbeddingProvider.splitter(req.getModelName(), req.getModelProvider());
-        List<TextSegment> segments = splitter.split(document);
-
-        EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(req.getKnowledgeId());
-        EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(req.getKnowledgeId());
-        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
-        List<String> ids = embeddingStore.addAll(embeddings, segments);
-
         List<EmbeddingR> list = new ArrayList<>();
-        for (int i = 0; i < ids.size(); i++) {
-            list.add(new EmbeddingR().setVectorId(ids.get(i)).setText(segments.get(i).text()));
+        try {
+            DocumentSplitter splitter = EmbeddingProvider.splitter(req.getModelName(), req.getModelProvider());
+            List<TextSegment> segments = splitter.split(document);
+
+            EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(req.getKnowledgeId());
+            EmbeddingStore<TextSegment> embeddingStore = embeddingProvider.getEmbeddingStore(req.getKnowledgeId());
+            List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
+            List<String> ids = embeddingStore.addAll(embeddings, segments);
+
+            for (int i = 0; i < ids.size(); i++) {
+                list.add(new EmbeddingR().setVectorId(ids.get(i)).setText(segments.get(i).text()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         log.info(">>>>>>>>>>>>>> Docs文档向量解析结束，KnowledgeId={}, DocsName={}", req.getKnowledgeId(), req.getDocsName());
