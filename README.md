@@ -42,7 +42,9 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 6. 多渠道发布：计划封装Web SDK，将AI智能客服快速嵌入任意第三方Web应用中；计划支持微信、飞书、钉钉等消息通信渠道（待完善）
 7. Workflows：计划开发可视化LLM流程设计器，高自定义机器人执行流程（待完善）
 8. 提供AIGC客户端应用，快速管理客户端数据
-9. 更多特性...
+9. 支持动态配置Embedding模型和向量数据库
+10. 支持不同的知识库关联不同的模型和向量数据库
+11. 更多特性...
 
 ## 赞助
 
@@ -76,23 +78,28 @@ Copyright (c) 2024-present, TyCoding.
 
 ## 预览
 
-![](docs/imgs/MIK-VbWSZV.png)
+![](docs/imgs/MIK-jJfiee.png)
 
-![](docs/imgs/MIK-bTXASC.png)
 
-![](docs/imgs/MIK-Zjmc9p.png)
+![](docs/imgs/MIK-qQTgUW.png)
 
-![](docs/imgs/MIK-Iy0atY.png)
+![](docs/imgs/MIK-hkimZf.png)
+
+
+![](docs/imgs/MIK-Axv453.png)
+
+![](docs/imgs/MIK-B0EgMc.png)
 
 ![](docs/imgs/MIK-aumvM8.png)
 
-![](docs/imgs/MIK-Fgq248.png)
+![](docs/imgs/MIK-D8rxTi.png)
 
-![](docs/imgs/MIK-K12unX.png)
+![](docs/imgs/MIK-nXe2mr.png)
 
-![](docs/imgs/MIK-AIgzOQ.png)
+![](docs/imgs/MIK-dwX7mz.png)
 
-![](docs/imgs/MIK-Jkc6jv.png)
+![](docs/imgs/MIK-KGG50l.png)
+
 
 ![](docs/imgs/MIK-qmfti3.png)
 
