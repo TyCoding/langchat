@@ -22,7 +22,6 @@
         <groupId>cn.tycoding</groupId>
         <artifactId>langchat</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>langchat-auth</artifactId>
@@ -31,11 +30,19 @@
     <dependencies>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-upms</artifactId>
+            <artifactId>langchat-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-biz</artifactId>
+            <artifactId>langchat-common-auth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-upms-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-ai-biz</artifactId>
         </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>

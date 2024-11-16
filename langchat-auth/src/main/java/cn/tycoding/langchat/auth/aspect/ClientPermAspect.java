@@ -17,9 +17,9 @@
 package cn.tycoding.langchat.auth.aspect;
 
 import cn.dev33.satoken.exception.NotPermissionException;
-import cn.tycoding.langchat.biz.entity.AigcUser;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
-import cn.tycoding.langchat.common.annotation.ClientPerm;
+import cn.tycoding.langchat.ai.biz.entity.AigcUser;
+import cn.tycoding.langchat.ai.biz.utils.ClientAuthUtil;
+import cn.tycoding.langchat.common.core.annotation.ClientPerm;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

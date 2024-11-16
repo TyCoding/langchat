@@ -34,11 +34,11 @@
 
     <properties>
         <java.version>17</java.version>
-        <revision>1.0</revision>
+        <revision>0.4.0</revision>
 
         <hutool.version>5.8.26</hutool.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
-        <druid.version>1.2.21</druid.version>
+        <druid.version>1.2.23</druid.version>
         <mysql-connector.version>8.3.0</mysql-connector.version>
         <fastjson.version>2.0.47</fastjson.version>
         <snakeyaml.version>2.1</snakeyaml.version>
@@ -47,69 +47,21 @@
     </properties>
 
     <modules>
-        <module>langchat-app</module>
+        <module>langchat-ai</module>
         <module>langchat-common</module>
-        <module>langchat-core</module>
-        <module>langchat-client</module>
-        <module>langchat-biz</module>
-        <module>langchat-server</module>
+        <module>langchat-boot</module>
         <module>langchat-upms</module>
         <module>langchat-auth</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Modules version -->
             <dependency>
                 <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-common</artifactId>
+                <artifactId>langchat-common-bom</artifactId>
                 <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-app</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-core</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-biz</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-client</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-upms</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-server</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tycoding</groupId>
-                <artifactId>langchat-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.mysql</groupId>
-                <artifactId>mysql-connector-j</artifactId>
-                <version>${mysql-connector.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

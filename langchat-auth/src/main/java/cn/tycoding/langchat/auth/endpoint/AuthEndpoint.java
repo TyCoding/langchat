@@ -23,14 +23,14 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import cn.tycoding.langchat.auth.service.TokenInfo;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
-import cn.tycoding.langchat.common.constant.CacheConst;
-import cn.tycoding.langchat.common.exception.ServiceException;
-import cn.tycoding.langchat.common.properties.AuthProps;
-import cn.tycoding.langchat.common.utils.MybatisUtil;
-import cn.tycoding.langchat.common.utils.QueryPage;
-import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.common.auth.service.TokenInfo;
+import cn.tycoding.langchat.common.core.constant.CacheConst;
+import cn.tycoding.langchat.common.core.exception.ServiceException;
+import cn.tycoding.langchat.common.core.properties.AuthProps;
+import cn.tycoding.langchat.common.core.utils.MybatisUtil;
+import cn.tycoding.langchat.common.core.utils.QueryPage;
+import cn.tycoding.langchat.common.core.utils.R;
 import cn.tycoding.langchat.upms.dto.UserInfo;
 import cn.tycoding.langchat.upms.entity.SysRole;
 import cn.tycoding.langchat.upms.entity.SysUser;
@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static cn.tycoding.langchat.common.constant.CacheConst.AUTH_SESSION_PREFIX;
+import static cn.tycoding.langchat.common.core.constant.CacheConst.AUTH_SESSION_PREFIX;
 
 /**
  * @author tycoding

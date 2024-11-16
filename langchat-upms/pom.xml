@@ -22,17 +22,14 @@
         <groupId>cn.tycoding</groupId>
         <artifactId>langchat</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>langchat-upms</artifactId>
-    <version>${revision}</version>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.tycoding</groupId>
-            <artifactId>langchat-common</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>langchat-upms-api</module>
+        <module>langchat-upms-biz</module>
+    </modules>
 
 </project>

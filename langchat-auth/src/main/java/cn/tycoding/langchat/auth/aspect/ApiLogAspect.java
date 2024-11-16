@@ -16,11 +16,11 @@
 
 package cn.tycoding.langchat.auth.aspect;
 
-import cn.tycoding.langchat.auth.event.LogEvent;
+import cn.tycoding.langchat.ai.biz.utils.ClientAuthUtil;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
-import cn.tycoding.langchat.common.annotation.ApiLog;
-import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.common.auth.event.LogEvent;
+import cn.tycoding.langchat.common.core.annotation.ApiLog;
+import cn.tycoding.langchat.common.core.component.SpringContextHolder;
 import cn.tycoding.langchat.upms.entity.SysLog;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import lombok.extern.slf4j.Slf4j;

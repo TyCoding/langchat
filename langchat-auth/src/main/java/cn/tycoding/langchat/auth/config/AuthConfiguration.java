@@ -23,13 +23,13 @@ import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.URLUtil;
-import cn.tycoding.langchat.auth.event.LogEvent;
+import cn.tycoding.langchat.ai.biz.utils.ClientAuthUtil;
+import cn.tycoding.langchat.ai.biz.utils.ClientStpUtil;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
-import cn.tycoding.langchat.biz.utils.ClientAuthUtil;
-import cn.tycoding.langchat.biz.utils.ClientStpUtil;
-import cn.tycoding.langchat.common.component.SpringContextHolder;
-import cn.tycoding.langchat.common.properties.AuthProps;
-import cn.tycoding.langchat.common.utils.R;
+import cn.tycoding.langchat.common.auth.event.LogEvent;
+import cn.tycoding.langchat.common.core.component.SpringContextHolder;
+import cn.tycoding.langchat.common.core.properties.AuthProps;
+import cn.tycoding.langchat.common.core.utils.R;
 import cn.tycoding.langchat.upms.entity.SysLog;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
 import com.alibaba.fastjson.JSON;
@@ -53,7 +53,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public class AuthConfiguration {
 
-    private final SpringContextHolder contextHolder;
     private final AuthProps authProps;
     private final String[] skipUrl = new String[]{
             "/auth/login",

@@ -19,8 +19,8 @@ package cn.tycoding.langchat.auth.utils;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.http.HttpUtil;
-import cn.tycoding.langchat.auth.event.LogEvent;
-import cn.tycoding.langchat.common.component.SpringContextHolder;
+import cn.tycoding.langchat.common.auth.event.LogEvent;
+import cn.tycoding.langchat.common.core.component.SpringContextHolder;
 import cn.tycoding.langchat.upms.entity.SysLog;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
@@ -38,10 +38,6 @@ import java.util.Objects;
  */
 public class SysLogUtil {
 
-    /**
-     * 字典表类型标识
-     */
-    public static final String DICT_TYPE = "sys_type";
     /**
      * 成功日志类型
      */
