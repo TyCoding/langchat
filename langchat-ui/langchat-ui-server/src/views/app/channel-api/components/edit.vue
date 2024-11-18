@@ -85,11 +85,7 @@
   }
 
   const loadDataTable = async (res: any) => {
-    const data = await getApiList({ appId: router.currentRoute.value.params.id });
-    data.forEach((item: any) => {
-      item.apiKey = hideKey(item.apiKey);
-    });
-    return data;
+    return await getApiList({ appId: router.currentRoute.value.params.id });
   };
 
   const columns = [
@@ -97,6 +93,9 @@
       title: '秘钥',
       key: 'apiKey',
       align: 'center',
+      render: (rows: any) => {
+        return hideKey(rows.apiKey);
+      },
     },
     {
       title: '创建时间',

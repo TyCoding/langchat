@@ -25,6 +25,7 @@ import cn.tycoding.langchat.ai.core.service.LangChatService;
 import cn.tycoding.langchat.common.ai.dto.ChatReq;
 import cn.tycoding.langchat.common.ai.dto.ImageR;
 import cn.tycoding.langchat.common.ai.properties.ChatProps;
+import cn.tycoding.langchat.common.ai.utils.PromptUtil;
 import cn.tycoding.langchat.common.core.exception.ServiceException;
 import dev.langchain4j.data.image.Image;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -115,6 +116,9 @@ public class LangChatServiceImpl implements LangChatService {
         }
 
         Agent agent = build(model, null, req).build();
+        if (req.getPrompt() == null) {
+            req.setPrompt(PromptUtil.build(req.getMessage(), req.getPromptText()));
+        }
         return agent.stream(req.getConversationId(), req.getPrompt().text());
     }
 

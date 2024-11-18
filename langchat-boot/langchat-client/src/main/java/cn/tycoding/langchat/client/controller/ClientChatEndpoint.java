@@ -16,7 +16,6 @@
 
 package cn.tycoding.langchat.client.controller;
 
-import cn.hutool.core.lang.UUID;
 import cn.tycoding.langchat.ai.biz.entity.AigcOss;
 import cn.tycoding.langchat.ai.biz.service.AigcOssService;
 import cn.tycoding.langchat.ai.biz.utils.ClientAuthUtil;
@@ -34,7 +33,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * @author tycoding
@@ -95,17 +93,6 @@ public class ClientChatEndpoint {
         // del vector store
         clientEmbeddingService.deleteVector(id);
         return R.ok();
-    }
-
-    @ClientPerm
-    @PostMapping("/chat/write")
-    public SseEmitter write(@RequestBody ChatReq req) {
-        StreamEmitter emitter = new StreamEmitter();
-        req.setEmitter(emitter);
-        req.setConversationId(UUID.randomUUID().toString());
-        req.setPrompt(PromptUtil.build(req.getMessage(), PromptConst.WRITE));
-        clientChatService.singleChat(req);
-        return emitter.get();
     }
 
     @ClientPerm

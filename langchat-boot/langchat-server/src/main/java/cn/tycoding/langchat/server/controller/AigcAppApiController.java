@@ -18,6 +18,7 @@ package cn.tycoding.langchat.server.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.ai.biz.entity.AigcAppApi;
 import cn.tycoding.langchat.ai.biz.service.AigcAppApiService;
 import cn.tycoding.langchat.common.core.annotation.ApiLog;
@@ -26,7 +27,6 @@ import cn.tycoding.langchat.common.core.utils.QueryPage;
 import cn.tycoding.langchat.common.core.utils.R;
 import cn.tycoding.langchat.server.consts.AppConst;
 import cn.tycoding.langchat.server.store.AppChannelStore;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,9 @@ public class AigcAppApiController {
 
     @GetMapping("/list")
     public R<List<AigcAppApi>> list(AigcAppApi data) {
-        List<AigcAppApi> list = appApiService.list(new LambdaQueryWrapper<AigcAppApi>().orderByDesc(AigcAppApi::getCreateTime));
+        List<AigcAppApi> list = appApiService.list(Wrappers.<AigcAppApi>lambdaQuery()
+                .eq(StrUtil.isNotBlank(data.getAppId()), AigcAppApi::getAppId, data.getAppId())
+                .orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(list);
     }
 
