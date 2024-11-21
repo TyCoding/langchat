@@ -44,7 +44,6 @@
     "types/**/*.ts",
     "build/**/*.ts",
     "build/**/*.d.ts",
-    "mock/**/*.ts",
     "public/**/*.ts",
     "components.d.ts",
     "vite.config.ts"
