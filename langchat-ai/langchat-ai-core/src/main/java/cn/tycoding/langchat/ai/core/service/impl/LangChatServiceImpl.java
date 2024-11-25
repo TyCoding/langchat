@@ -63,12 +63,14 @@ public class LangChatServiceImpl implements LangChatService {
 
     private AiServices<Agent> build(StreamingChatLanguageModel streamModel, ChatLanguageModel model, ChatReq req) {
         AiServices<Agent> aiServices = AiServices.builder(Agent.class)
-                .systemMessageProvider(memoryId -> req.getPromptText())
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.builder()
                         .id(req.getConversationId())
                         .chatMemoryStore(new PersistentChatMemoryStore())
                         .maxMessages(chatProps.getMemoryMaxMessage())
                         .build());
+        if (StrUtil.isNotBlank(req.getPromptText())) {
+            aiServices.systemMessageProvider(memoryId -> req.getPromptText());
+        }
         if (streamModel != null) {
             aiServices.streamingChatLanguageModel(streamModel);
         }
