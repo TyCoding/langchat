@@ -18,7 +18,7 @@ import { defineStore } from 'pinia';
 import { update } from '@/api/aigc/app';
 
 export interface AppState {
-  activeMenu: number;
+  activeMenu: string;
   info: any;
   modelId: string | null;
   knowledgeIds: any[];
@@ -28,7 +28,7 @@ export interface AppState {
 export const useAppStore = defineStore('app-store', {
   state: (): AppState =>
     <AppState>{
-      activeMenu: 1,
+      activeMenu: 'setting',
       info: {},
       modelId: '',
       knowledgeIds: [],
@@ -38,7 +38,7 @@ export const useAppStore = defineStore('app-store', {
   getters: {},
 
   actions: {
-    setActiveMenu(active: number) {
+    setActiveMenu(active: string) {
       this.activeMenu = active;
     },
     addKnowledge(item: any) {

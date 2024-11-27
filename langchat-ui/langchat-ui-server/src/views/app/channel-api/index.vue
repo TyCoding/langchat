@@ -16,6 +16,7 @@
 
 <script lang="ts" setup>
   import Docs from './components/docs.vue';
+  import ApiTable from '@/views/app/ApiTable.vue';
   import { CHANNEL } from '@/views/app/columns';
 </script>
 

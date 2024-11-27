@@ -132,6 +132,11 @@ export function getSchemas(provider: string) {
   let labelMessage: any = '模型的基础请求URL地址（或中转地址）';
   let disabled = false;
   switch (provider) {
+    case ProviderEnum.GITEEAI:
+      disabled = true;
+      defaultValue = 'https://ai.gitee.com/v1';
+      labelMessage = '对于Gitee AI，此Url固定不可修改';
+      break;
     case ProviderEnum.DEEPSEEK:
       disabled = true;
       defaultValue = 'https://api.deepseek.com/v1';

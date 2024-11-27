@@ -17,6 +17,7 @@
 <script lang="ts" setup>
   import AppBase from './base/index.vue';
   import ApiChannel from './channel-api/index.vue';
+  import WebChannel from './channel-web/index.vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import router from '@/router';
   import { onMounted, ref } from 'vue';
@@ -27,9 +28,9 @@
   const form = ref<any>({});
   const loading = ref(false);
   const activeMenus = [
-    { key: 1, icon: 'uil:setting', label: '应用配置' },
-    { key: 2, icon: 'hugeicons:api', label: 'API接入渠道' },
-    { key: 2, icon: 'hugeicons:api', label: 'Web接入渠道' },
+    { key: 'setting', icon: 'uil:setting', label: '应用配置' },
+    { key: 'api', icon: 'hugeicons:api', label: 'API接入渠道' },
+    { key: 'web', icon: 'hugeicons:api', label: 'Web接入渠道' },
   ];
 
   onMounted(async () => {
@@ -96,8 +97,11 @@
       </div>
     </div>
 
-    <AppBase v-if="appStore.activeMenu === 1" />
-    <ApiChannel v-if="appStore.activeMenu === 2" />
+    <AppBase v-if="appStore.activeMenu === 'setting'" />
+
+    <ApiChannel v-if="appStore.activeMenu === 'api'" />
+
+    <WebChannel v-if="appStore.activeMenu === 'web'" />
   </div>
 </template>
 

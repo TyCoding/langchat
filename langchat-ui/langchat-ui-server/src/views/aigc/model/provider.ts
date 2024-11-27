@@ -7,6 +7,7 @@ export enum ProviderEnum {
   Q_FAN = 'Q_FAN',
   Q_WEN = 'Q_WEN',
   ZHIPU = 'ZHIPU',
+  GITEEAI = 'GITEEAI',
   DEEPSEEK = 'DEEPSEEK',
   DOUYIN = 'DOUYIN',
   SILICON = 'SILICON',

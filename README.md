@@ -4,7 +4,7 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
-**支持的AI大模型：** 智谱清言 / 阿里通义 / 百度千帆 / DeepSeek / 抖音豆包 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
+**支持的AI大模型：** Gitee AI / 阿里通义 / 百度千帆 / DeepSeek / 抖音豆包 / 智谱清言 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
 
 [English](./README_en.md)
 
@@ -66,11 +66,12 @@ Copyright (c) 2024-present, TyCoding.
 
 ## 版本更新
 
-- 2024.7.15 LangChat正式发布、公开仓库
-- 2024.7.19 LangChat完成分离Server、Client端业务架构，保持业务分离
-- 2024.7.21 LangChat完成多存储方案，支持本地、七牛云、阿里云、腾讯云OSS服务
+- 2024.11.27 支持Gitee AI模型接入
+- 2024.11.16 重新调整项目结构设计、分包设计
 - 2024.7.30 LangChat开发Web SDK，接入API、WEB消息渠道，支持Iframe嵌入
-- 2024.11.16 重构项目架构
+- 2024.7.21 LangChat完成多存储方案，支持本地、七牛云、阿里云、腾讯云OSS服务
+- 2024.7.19 LangChat完成分离Server、Client端业务架构，保持业务分离
+- 2024.7.15 LangChat正式发布、公开仓库
 
 ## Star History
 

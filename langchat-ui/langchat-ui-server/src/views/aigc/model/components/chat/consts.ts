@@ -71,6 +71,21 @@ export const LLMProviders: any[] = [
     ],
   },
   {
+    model: ProviderEnum.GITEEAI,
+    name: 'Gitee AI',
+    models: [
+      'Qwen2-72B-Instruct',
+      'Qwen2-7B-Instruct',
+      'Qwen2.5-72B-Instruct',
+      'glm-4-9b-chat',
+      'deepseek-coder-33B-instruct',
+      'codegeex4-all-9b',
+      'Yi-34B-Chat',
+      'code-raccoon-v1',
+      'Qwen2.5-Coder-32B-Instruct',
+    ],
+  },
+  {
     model: ProviderEnum.DEEPSEEK,
     name: 'DeepSeek',
     models: ['deepseek-chat', 'deepseek-coder'],

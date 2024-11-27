@@ -20,7 +20,7 @@
   import CodePane from './CodePane.vue';
   import SettingPane from './SettingPane.vue';
   import WindowPane from './WindowPane.vue';
-  import ApiTable from '@/views/app/channel/ApiTable.vue';
+  import ApiTable from '@/views/app/ApiTable.vue';
   import { CHANNEL } from '@/views/app/columns';
 
   const emit = defineEmits(['reload']);

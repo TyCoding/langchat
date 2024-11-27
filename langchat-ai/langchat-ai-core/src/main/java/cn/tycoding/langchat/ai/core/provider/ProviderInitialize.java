@@ -33,6 +33,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class ProviderInitialize implements ApplicationContextAware {
         init();
     }
 
+    @Async
     public void init() {
         modelStore = new ArrayList<>();
 
