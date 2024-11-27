@@ -12,6 +12,11 @@ LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的
 - 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 - 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
 
+**开源地址：**
+
+- Gitee：https://gitee.com/langchat/langchat
+- Github：https://github.com/tycoding/langchat
+
 **注意：** 如果想和作者深入交流LangChat开发规划、AIGC产品研发、变现等方式，**可以请作者喝一杯咖啡加入LangChat交流群**
 
 **欢迎Star、fork 持续关注**
@@ -80,7 +85,6 @@ Copyright (c) 2024-present, TyCoding.
 ## 预览
 
 ![](docs/imgs/MIK-jJfiee.png)
-
 
 ![](docs/imgs/MIK-qQTgUW.png)
 

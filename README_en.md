@@ -40,7 +40,7 @@ Support personal free access to learn to use, commercial applications please con
 
 ## Preview
 
-![](docs/imgs/MIK-VbWSZV.png)
+![](docs/imgs/MIK-jJfiee.png)
 
 ![](docs/imgs/MIK-bTXASC.png)
 
