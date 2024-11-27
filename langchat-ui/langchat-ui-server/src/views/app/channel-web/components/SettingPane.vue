@@ -15,46 +15,40 @@
   -->
 
 <script lang="ts" setup>
-  import { onMounted, ref, toRaw } from 'vue';
-  import { list } from '@/api/aigc/app';
+  import SvgIcon from '@/components/SvgIcon/index.vue';
+  import { basicModal, useModal } from '@/components/Modal';
+  import { nextTick } from 'vue';
 
-  const props = defineProps<{
-    id: any;
-  }>();
-  const emit = defineEmits(['update']);
-  const options = ref([]);
-  const appId = ref('');
-
-  onMounted(async () => {
-    options.value = await list({});
-    appId.value = props.id;
+  const [modalRegister, { openModal: openModal, closeModal: closeModal }] = useModal({
+    title: '应用配置',
+    closable: true,
+    maskClosable: false,
+    showCloseBtn: false,
+    showSubBtn: false,
   });
 
-  function onUpdate(val: any, opt) {
-    const obj = toRaw(opt);
-    if (obj == null) {
-      emit('update', {
-        id: '',
-      });
+  async function show(id: string) {
+    openModal();
+    await nextTick();
+    if (id) {
     } else {
-      emit('update', {
-        id: obj.id,
-      });
     }
   }
+
+  async function handleSubmit() {}
 </script>
 
 <template>
-  <n-select
-    v-model:value="appId"
-    :consistent-menu-width="false"
-    :label-field="'name'"
-    :options="options"
-    :value-field="'id'"
-    clearable
-    placeholder="请选择关联应用"
-    @update:value="onUpdate"
-  />
+  <n-button @click="show">
+    <template #icon>
+      <SvgIcon icon="uil:setting" />
+    </template>
+    配置
+  </n-button>
+
+  <basicModal style="width: 500px" @register="modalRegister">
+    <div class="my-3 mx-2"></div>
+  </basicModal>
 </template>
 
 <style lang="less" scoped></style>

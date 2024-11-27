@@ -17,7 +17,7 @@
 <script lang="ts" setup>
   import { h, reactive, ref } from 'vue';
   import SvgIcon from '@/components/SvgIcon/index.vue';
-  import { createApi, del, list as getApiList } from '@/api/app/appApi';
+  import { createApi, del, list as getApiList } from '@/api/aigc/appApi';
   import { useDialog, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';
   import { copyToClip } from '@/utils/copy';
@@ -26,13 +26,20 @@
   import { hideKey } from '@/api/models';
 
   const emit = defineEmits(['reload']);
+  const props = defineProps({
+    channel: {
+      type: String,
+      required: true,
+    },
+  });
+
   const ms = useMessage();
   const dialog = useDialog();
   const router = useRouter();
   const actionRef = ref();
 
   async function onSubmit() {
-    await createApi(router.currentRoute.value.params.id);
+    await createApi(router.currentRoute.value.params.id, props.channel);
     ms.success('新增成功');
     reloadTable();
   }
@@ -85,7 +92,7 @@
   }
 
   const loadDataTable = async (res: any) => {
-    return await getApiList({ appId: router.currentRoute.value.params.id });
+    return await getApiList({ appId: router.currentRoute.value.params.id, channel: props.channel });
   };
 
   const columns = [
@@ -111,27 +118,25 @@
 </script>
 
 <template>
-  <div class="bg-white p-4 rounded">
-    <BasicTable
-      ref="actionRef"
-      :actionColumn="actionColumn"
-      :columns="columns"
-      :pagination="false"
-      :request="loadDataTable"
-      :row-key="(row:any) => row.id"
-      :single-line="false"
-      :size="'small'"
-    >
-      <template #tableTitle>
-        <n-button size="small" type="primary" @click="onSubmit">
-          <template #icon>
-            <SvgIcon icon="ic:round-plus" />
-          </template>
-          创建秘钥
-        </n-button>
-      </template>
-    </BasicTable>
-  </div>
+  <BasicTable
+    ref="actionRef"
+    :actionColumn="actionColumn"
+    :columns="columns"
+    :pagination="false"
+    :request="loadDataTable"
+    :row-key="(row:any) => row.id"
+    :single-line="false"
+    :size="'small'"
+  >
+    <template #tableTitle>
+      <n-button size="small" type="primary" @click="onSubmit">
+        <template #icon>
+          <SvgIcon icon="ic:round-plus" />
+        </template>
+        创建秘钥
+      </n-button>
+    </template>
+  </BasicTable>
 </template>
 
 <style lang="less" scoped></style>

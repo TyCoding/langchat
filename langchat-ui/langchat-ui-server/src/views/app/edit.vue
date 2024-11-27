@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { add, getById, update } from '@/api/app/app';
+  import { add, getById, update } from '@/api/aigc/app';
   import { UploadCustomRequestOptions, useMessage } from 'naive-ui';
   import { formSchemas } from './columns';
   import { BasicForm, useForm } from '@/components/Form';

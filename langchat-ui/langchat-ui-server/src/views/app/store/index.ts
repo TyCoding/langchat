@@ -15,7 +15,7 @@
  */
 
 import { defineStore } from 'pinia';
-import { update } from '@/api/app/app';
+import { update } from '@/api/aigc/app';
 
 export interface AppState {
   activeMenu: number;

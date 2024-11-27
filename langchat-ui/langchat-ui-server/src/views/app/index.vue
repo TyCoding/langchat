@@ -19,7 +19,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
   import { onMounted, ref, toRaw } from 'vue';
-  import { del, list as getList } from '@/api/app/app';
+  import { del, list as getList } from '@/api/aigc/app';
   import router from '@/router';
 
   const ms = useMessage();
@@ -75,13 +75,76 @@
   function handleEdit(record: Recordable) {
     editRef.value.show(toRaw(record.id));
   }
+
+  function getOptions(item: any) {
+    return [
+      { label: '编辑此应用', key: 'edit' },
+      { type: 'divider' },
+      {
+        key: 'delete',
+        type: 'render',
+        render: () => {
+          return h(
+            'div',
+            {
+              class:
+                'hover:text-red-500 transition-colors translation-all px-2.5 cursor-pointer hover:bg-[#f7f7f7] rounded-md py-1 mx-1',
+            },
+            [
+              h(
+                'span',
+                {
+                  class: 'w-full',
+                },
+                '删除应用'
+              ),
+            ]
+          );
+        },
+      },
+      { type: 'divider' },
+      {
+        key: 'header',
+        type: 'render',
+        render: () => {
+          return h(
+            'div',
+            {
+              class: 'flex flex-col gap-1 px-3.5 py-2',
+            },
+            [
+              h('span', null, '信息'),
+              h(
+                'span',
+                {
+                  class: 'text-xs text-stone-500',
+                },
+                `创建时间：${item.createTime}`
+              ),
+              h(
+                'span',
+                {
+                  class: 'text-xs mt-1 text-blue-500',
+                },
+                `LangChat Apps`
+              ),
+            ]
+          );
+        },
+      },
+    ];
+  }
+  const activeDropdownId = ref(null);
+  const handleDropdownShow = (show: boolean, itemId) => {
+    activeDropdownId.value = show ? itemId : null;
+  };
 </script>
 
 <template>
   <section class="overflow-y-auto h-full px-3 py-4">
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 mb-8">
       <div
-        class="bg-gray-100 py-3 pt-4 transition-all duration-300 px-2 transform border cursor-pointer rounded-xl group"
+        class="bg-[#eceef0] py-3 pt-4 transition-all duration-300 px-2 hover:border hover:border-blue-400 border border-transparent cursor-pointer rounded-xl group"
       >
         <div class="font-bold text-xs mb-1.5 px-6 text-gray-500">创建应用</div>
         <div
@@ -96,7 +159,8 @@
       <div
         v-for="item in list"
         :key="item.id"
-        class="bg-white px-4 py-3 pt-4 transition-all duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:shadow-lg"
+        :class="[activeDropdownId === item.id ? '!border-blue-400' : '']"
+        class="bg-white px-4 py-3 pt-4 transition-all hover:border hover:border-blue-400 border border-transparent duration-300 transform cursor-pointer rounded-xl group"
         @click="onInfo(item)"
       >
         <div class="flex flex-col sm:-mx-4 sm:flex-row">
@@ -126,15 +190,23 @@
             <SvgIcon class="" icon="mdi:tag-outline" />
             <span v-if="item.model != null" class="text-xs">{{ item.model.model }}</span>
           </div>
-          <div class="flex items-center">
-            <n-popselect
-              :options="actionOptions"
-              @update:value="(key) => onSelectAction(key, item)"
+          <div class="flex items-center" @click.stop>
+            <n-dropdown
+              :options="getOptions(item)"
+              class="justify-start min-w-[160px] transition-all"
+              placement="bottom-end"
+              size="small"
+              trigger="click"
+              @select="(key) => onSelectAction(key, item)"
+              @update:show="(show) => handleDropdownShow(show, item.id)"
             >
-              <n-button text>
-                <SvgIcon class="text-xl" icon="heroicons-outline:dots-horizontal" />
-              </n-button>
-            </n-popselect>
+              <div
+                :class="[activeDropdownId === item.id ? 'bg-gray-200' : 'hover:bg-gray-200']"
+                class="rounded p-1 transition-all"
+              >
+                <SvgIcon class="w-5 h-5" icon="ri:more-fill" />
+              </div>
+            </n-dropdown>
           </div>
         </div>
       </div>

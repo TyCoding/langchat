@@ -29,6 +29,7 @@
   const activeMenus = [
     { key: 1, icon: 'uil:setting', label: '应用配置' },
     { key: 2, icon: 'hugeicons:api', label: 'API接入渠道' },
+    { key: 2, icon: 'hugeicons:api', label: 'Web接入渠道' },
   ];
 
   onMounted(async () => {

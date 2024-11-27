@@ -16,6 +16,11 @@
 
 import { FormSchema } from '@/components/Form';
 
+export const CHANNEL = {
+  API: 'CHANNEL_API',
+  WEB: 'CHANNEL_WEB',
+};
+
 export const searchSchemas: FormSchema[] = [
   {
     field: 'title',

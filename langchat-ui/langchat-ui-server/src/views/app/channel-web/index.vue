@@ -15,17 +15,18 @@
   -->
 
 <script lang="ts" setup>
-  import Docs from './components/docs.vue';
-  import { CHANNEL } from '@/views/app/columns';
+  import Preview from './components/preview.vue';
+  import Edit from './components/edit.vue';
 </script>
 
 <template>
-  <div class="w-full my-3 pb-8 flex items-start justify-start gap-2 h-full">
-    <div class="bg-white p-4 rounded w-4/5 h-full">
-      <ApiTable :channel="CHANNEL.API" />
+  <div class="w-full my-3 pb-8 flex flex-col h-full">
+    <div class="flex-1 overflow-y-auto">
+      <div class="flex gap-4 h-full w-full">
+        <Edit class="w-4/5" />
+        <Preview class="w-full" />
+      </div>
     </div>
-
-    <Docs class="w-full" />
   </div>
 </template>
 

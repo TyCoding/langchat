@@ -15,18 +15,31 @@
   -->
 
 <script lang="ts" setup>
-  import Docs from './components/docs.vue';
-  import { CHANNEL } from '@/views/app/columns';
+  import { onMounted, onUnmounted } from 'vue';
+  import '@langchat/web-sdk/style.css';
+  import LangChatBot from '@langchat/web-sdk';
+
+  let langChatBotService: any;
+  onMounted(async () => {
+    langChatBotService = new LangChatBot({
+      apiUrl: 'http://localhost:8100/v1/chat/completions',
+      token: 'your-api-token',
+      layout: 'widget', // or 'fullpage'
+      position: 'bottom-right', // or 'bottom-left'
+      theme: {
+        primary: '#3B82F6',
+        secondary: '#1D4ED8',
+      },
+    });
+  });
+
+  onUnmounted(() => {
+    langChatBotService.destroy();
+  });
 </script>
 
 <template>
-  <div class="w-full my-3 pb-8 flex items-start justify-start gap-2 h-full">
-    <div class="bg-white p-4 rounded w-4/5 h-full">
-      <ApiTable :channel="CHANNEL.API" />
-    </div>
-
-    <Docs class="w-full" />
-  </div>
+  <div></div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less"></style>

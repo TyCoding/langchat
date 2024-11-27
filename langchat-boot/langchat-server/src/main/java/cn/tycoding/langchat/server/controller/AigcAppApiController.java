@@ -44,10 +44,14 @@ public class AigcAppApiController {
     private final AigcAppApiService appApiService;
     private final AppChannelStore appChannelStore;
 
-    @GetMapping("/create/{id}")
-    public R create(@PathVariable String id) {
+    @GetMapping("/create/{id}/{channel}")
+    public R create(@PathVariable String id, @PathVariable String channel) {
         String uuid = AppConst.PREFIX + IdUtil.simpleUUID();
-        appApiService.save(new AigcAppApi().setAppId(id).setApiKey(uuid).setCreateTime(new Date()));
+        appApiService.save(new AigcAppApi()
+                .setAppId(id)
+                .setApiKey(uuid)
+                .setChannel(channel)
+                .setCreateTime(new Date()));
         appChannelStore.init();
         return R.ok();
     }
@@ -56,6 +60,7 @@ public class AigcAppApiController {
     public R<List<AigcAppApi>> list(AigcAppApi data) {
         List<AigcAppApi> list = appApiService.list(Wrappers.<AigcAppApi>lambdaQuery()
                 .eq(StrUtil.isNotBlank(data.getAppId()), AigcAppApi::getAppId, data.getAppId())
+                .eq(StrUtil.isNotBlank(data.getChannel()), AigcAppApi::getChannel, data.getChannel())
                 .orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(list);
     }
@@ -65,6 +70,7 @@ public class AigcAppApiController {
         IPage<AigcAppApi> iPage = appApiService.page(MybatisUtil.wrap(data, queryPage),
                 Wrappers.<AigcAppApi>lambdaQuery()
                         .like(StringUtils.isNotEmpty(data.getAppId()), AigcAppApi::getAppId, data.getAppId())
+                        .eq(StrUtil.isNotBlank(data.getChannel()), AigcAppApi::getChannel, data.getChannel())
                         .orderByDesc(AigcAppApi::getCreateTime));
         return R.ok(MybatisUtil.getData(iPage));
     }

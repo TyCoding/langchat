@@ -42,6 +42,7 @@ public class AigcAppApi implements Serializable {
     private String id;
     private String appId;
     private String apiKey;
+    private String channel;
     private Date createTime;
 
     @TableField(exist = false)
