@@ -18,7 +18,7 @@
   import Edit from './edit.vue';
   import { useDialog, useMessage } from 'naive-ui';
   import SvgIcon from '@/components/SvgIcon/index.vue';
-  import { onMounted, ref, toRaw } from 'vue';
+  import { h, onMounted, ref, toRaw } from 'vue';
   import { del, list as getList } from '@/api/aigc/app';
   import router from '@/router';
 
@@ -26,16 +26,6 @@
   const dialog = useDialog();
   const editRef = ref();
   const list = ref();
-  const actionOptions = [
-    {
-      label: '修改',
-      value: 'edit',
-    },
-    {
-      label: '删除',
-      value: 'delete',
-    },
-  ];
 
   onMounted(async () => {
     await fetchData();
