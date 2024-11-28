@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 
 const DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 const DATE_FORMAT = 'yyyy-MM-dd ';
