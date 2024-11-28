@@ -50,7 +50,7 @@ export const RedirectRoute: RouteRecordRaw = {
   children: [
     {
       path: '/redirect/:path(.*)',
-      name: RedirectName,
+      name: RedirectName + '_index',
       component: () => import('@/views/base/redirect/index.vue'),
       meta: {
         title: RedirectName,
