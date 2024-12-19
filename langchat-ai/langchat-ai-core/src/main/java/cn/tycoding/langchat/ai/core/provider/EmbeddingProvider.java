@@ -17,7 +17,6 @@
 package cn.tycoding.langchat.ai.core.provider;
 
 import cn.tycoding.langchat.ai.biz.entity.AigcKnowledge;
-import cn.tycoding.langchat.ai.core.consts.EmbedConst;
 import cn.tycoding.langchat.ai.core.consts.ProviderEnum;
 import cn.tycoding.langchat.common.core.exception.ServiceException;
 import dev.langchain4j.data.document.DocumentSplitter;
@@ -51,22 +50,6 @@ public class EmbeddingProvider {
             return DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(modelName));
         }
         return DocumentSplitters.recursive(100, 0);
-    }
-
-    public EmbeddingModel embed() {
-        if (context.containsBean(EmbedConst.CLAZZ_NAME_OPENAI)) {
-            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OPENAI);
-        }
-        if (context.containsBean(EmbedConst.CLAZZ_NAME_QIANFAN)) {
-            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_QIANFAN);
-        }
-        if (context.containsBean(EmbedConst.CLAZZ_NAME_QIANWEN)) {
-            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_QIANWEN);
-        }
-        if (context.containsBean(EmbedConst.CLAZZ_NAME_OLLAMA)) {
-            return (EmbeddingModel) context.getBean(EmbedConst.CLAZZ_NAME_OLLAMA);
-        }
-        return null;
     }
 
     public EmbeddingModel getEmbeddingModel(List<String> knowledgeIds) {

@@ -19,10 +19,6 @@ package cn.tycoding.langchat.common.ai.dto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author tycoding
  * @since 2024/1/29
@@ -39,8 +35,6 @@ public class ChatRes {
 
     private long time;
 
-    private List<Map<String, Object>> metadata = new ArrayList<>();
-
     public ChatRes(String message) {
         this.message = message;
     }
@@ -49,12 +43,5 @@ public class ChatRes {
         this.isDone = true;
         this.usedToken = usedToken;
         this.time = System.currentTimeMillis() - startTime;
-    }
-
-    public ChatRes(Integer usedToken, long startTime, List<Map<String, Object>> metadata) {
-        this.isDone = true;
-        this.usedToken = usedToken;
-        this.time = System.currentTimeMillis() - startTime;
-        this.metadata = metadata;
     }
 }

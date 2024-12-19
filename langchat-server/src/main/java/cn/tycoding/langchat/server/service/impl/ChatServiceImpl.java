@@ -22,7 +22,6 @@ import cn.tycoding.langchat.ai.biz.entity.AigcMessage;
 import cn.tycoding.langchat.ai.biz.entity.AigcOss;
 import cn.tycoding.langchat.ai.biz.service.AigcMessageService;
 import cn.tycoding.langchat.ai.core.service.LangChatService;
-import cn.tycoding.langchat.ai.core.service.impl.EmbeddingStoreContentRetrieverCustom;
 import cn.tycoding.langchat.common.ai.dto.ChatReq;
 import cn.tycoding.langchat.common.ai.dto.ChatRes;
 import cn.tycoding.langchat.common.ai.dto.ImageR;
@@ -38,9 +37,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author tycoding
@@ -83,11 +79,7 @@ public class ChatServiceImpl implements ChatService {
                     })
                     .onComplete((e) -> {
                         TokenUsage tokenUsage = e.tokenUsage();
-                        List<Map<String, Object>> metadata = EmbeddingStoreContentRetrieverCustom.getMetadata(req.getConversationId());
                         ChatRes res = new ChatRes(tokenUsage.totalTokenCount(), startTime);
-                        if (metadata != null) {
-                            res.setMetadata(metadata);
-                        }
                         emitter.send(res);
                         emitter.complete();
 

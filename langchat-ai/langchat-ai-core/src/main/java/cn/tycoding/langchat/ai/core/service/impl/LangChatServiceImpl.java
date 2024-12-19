@@ -35,6 +35,7 @@ import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.query.Query;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.TokenStream;
@@ -95,8 +96,7 @@ public class LangChatServiceImpl implements LangChatService {
 
         if (req.getKnowledgeIds() != null && !req.getKnowledgeIds().isEmpty()) {
             Function<Query, Filter> filter = (query) -> metadataKey(KNOWLEDGE).isIn(req.getKnowledgeIds());
-            ContentRetriever contentRetriever = EmbeddingStoreContentRetrieverCustom.builder()
-                    .memoryId(req.getConversationId())
+            ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                     .embeddingStore(embeddingProvider.getEmbeddingStore(req.getKnowledgeIds()))
                     .embeddingModel(embeddingProvider.getEmbeddingModel(req.getKnowledgeIds()))
                     .dynamicFilter(filter)
