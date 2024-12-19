@@ -17,7 +17,6 @@
 package cn.tycoding.langchat.common.core;
 
 import cn.tycoding.langchat.common.core.properties.AuthProps;
-import cn.tycoding.langchat.common.core.properties.EmailProps;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,7 +27,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties({
         AuthProps.class,
-        EmailProps.class,
 })
 public class CommonAutoConfiguration {
 

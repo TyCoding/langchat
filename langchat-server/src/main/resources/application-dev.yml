@@ -42,14 +42,5 @@ langchat:
         base-path: langchat/ # 基础路径
         path-patterns: /static/** # 访问路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
         storage-path: ./static/ # 存储路径（默认本地target目录），注意：如果使用本地nginx容器，此路径要修改为nginx存储路径
-  auth:
-    # client端新注册的用户是否开启操作权限，如果为false，client端新用户默认只有页面预览权限没有操作权限
-    # 需要在server端给指定用户授权后才能正常使用
-    aigc-reg-user-is-perms: true
-    email:
-      host: smtp.qq.com
-      port: 465
-      from: <EMAIL>
-      pass: <PASS>
 
 

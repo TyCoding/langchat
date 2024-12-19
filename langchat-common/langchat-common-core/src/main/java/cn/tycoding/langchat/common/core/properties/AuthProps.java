@@ -35,11 +35,6 @@ public class AuthProps {
      */
     private List<String> skipUrl = new ArrayList();
 
-    private Integer chatLimit = 10;
-    private Boolean aigcRegUserIsPerms = true;
-
-    private EmailProps email = new EmailProps();
-
     /**
      * salt
      */
