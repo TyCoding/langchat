@@ -2,15 +2,14 @@
 
 > 快速构建企业级AIGC项目
 
-LangChat是Java生态下企业级AIGC项目解决方案，在RBAC权限体系的基础上，集成AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
+LangChat是Java生态下企业级AIGC项目解决方案，集成RBAC和AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
 **支持的AI大模型：** Gitee AI / 阿里通义 / 百度千帆 / DeepSeek / 抖音豆包 / 智谱清言 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
 
 [English](./README_en.md)
 
 - 网站文档：[http://langchat.cn/](http://langchat.cn/)
-- 后台地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
-- 前台地址：[http://front.langchat.cn/](http://front.langchat.cn/)
+- 预览地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 
 **开源地址：**
 
@@ -107,8 +106,6 @@ Copyright (c) 2024-present, TyCoding.
 
 
 ![](docs/imgs/MIK-qmfti3.png)
-
-![](docs/imgs/MIK-v4zoRt.png)
 
 
 ## 感谢

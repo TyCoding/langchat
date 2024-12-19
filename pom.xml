@@ -49,7 +49,7 @@
     <modules>
         <module>langchat-ai</module>
         <module>langchat-common</module>
-        <module>langchat-boot</module>
+        <module>langchat-server</module>
         <module>langchat-upms</module>
         <module>langchat-auth</module>
     </modules>

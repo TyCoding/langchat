@@ -64,7 +64,7 @@ public class AuthEndpoint {
     private final SysRoleService roleService;
     private final AuthProps authProps;
     private final StringRedisTemplate redisTemplate;
-
+    
     @PostMapping("/login")
     public R login(@RequestBody UserInfo user) {
         if (StrUtil.isBlank(user.getUsername()) || StrUtil.isBlank(user.getPassword())) {
@@ -185,5 +185,4 @@ public class AuthEndpoint {
         page.setTotal(keys == null ? 0 : keys.size());
         return R.ok(MybatisUtil.getData(page));
     }
-
 }

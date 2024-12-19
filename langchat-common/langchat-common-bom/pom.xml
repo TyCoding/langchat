@@ -33,6 +33,11 @@
             <!-- Modules version -->
             <dependency>
                 <groupId>cn.tycoding</groupId>
+                <artifactId>langchat-ai</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tycoding</groupId>
                 <artifactId>langchat-ai-core</artifactId>
                 <version>${revision}</version>
             </dependency>

@@ -23,8 +23,6 @@ import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.URLUtil;
-import cn.tycoding.langchat.ai.biz.utils.ClientAuthUtil;
-import cn.tycoding.langchat.ai.biz.utils.ClientStpUtil;
 import cn.tycoding.langchat.auth.utils.SysLogUtil;
 import cn.tycoding.langchat.common.auth.event.LogEvent;
 import cn.tycoding.langchat.common.core.component.SpringContextHolder;
@@ -59,7 +57,6 @@ public class AuthConfiguration {
             "/auth/logout",
             "/auth/register",
             "/auth/info",
-            "/client/auth/**",
     };
 
     @Bean
@@ -72,8 +69,6 @@ public class AuthConfiguration {
                     SaRouter
                             .match("/upms/**", "/aigc/**", "/app/**")
                             .check(StpUtil::checkLogin)
-                            .match("/client/**")
-                            .check(ClientStpUtil::checkLogin)
                             .notMatch(skipUrl)
                             .notMatch(authProps.getSkipUrl().toArray(new String[0]))
                     ;
@@ -83,12 +78,7 @@ public class AuthConfiguration {
 
     private String handleError(Throwable e) {
         if (e instanceof NotPermissionException || e instanceof NotRoleException) {
-            String username = null;
-            try {
-                username = AuthUtil.getUsername();
-            } catch (Exception err) {
-                username = ClientAuthUtil.getUsername();
-            }
+            String username = AuthUtil.getUsername();
             SysLog sysLog = SysLogUtil.build(SysLogUtil.TYPE_FAIL, HttpStatus.UNAUTHORIZED.getReasonPhrase(), null, null, username);
             SpringContextHolder.publishEvent(new LogEvent(sysLog));
         }

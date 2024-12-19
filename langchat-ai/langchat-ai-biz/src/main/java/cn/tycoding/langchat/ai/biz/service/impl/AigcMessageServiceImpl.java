@@ -19,12 +19,12 @@ package cn.tycoding.langchat.ai.biz.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.tycoding.langchat.ai.biz.entity.AigcConversation;
 import cn.tycoding.langchat.ai.biz.entity.AigcMessage;
-import cn.tycoding.langchat.ai.biz.entity.AigcUser;
 import cn.tycoding.langchat.ai.biz.mapper.AigcConversationMapper;
 import cn.tycoding.langchat.ai.biz.mapper.AigcMessageMapper;
-import cn.tycoding.langchat.ai.biz.mapper.AigcUserMapper;
 import cn.tycoding.langchat.ai.biz.service.AigcMessageService;
 import cn.tycoding.langchat.common.core.utils.QueryPage;
+import cn.tycoding.langchat.upms.entity.SysUser;
+import cn.tycoding.langchat.upms.mapper.SysUserMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcMessage> implements
         AigcMessageService {
     private final AigcConversationMapper aigcConversationMapper;
-    private final AigcUserMapper aigcUserMapper;
+    private final SysUserMapper userMapper;
 
     @Override
     public List<AigcConversation> conversations(String userId) {
@@ -66,14 +66,14 @@ public class AigcMessageServiceImpl extends ServiceImpl<AigcMessageMapper, AigcM
                 .orderByDesc(AigcConversation::getCreateTime));
 
         if (!iPage.getRecords().isEmpty()) {
-            Map<String, List<AigcUser>> map = aigcUserMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(AigcUser::getId));
+            Map<String, List<SysUser>> map = userMapper.selectList(Wrappers.lambdaQuery()).stream().collect(Collectors.groupingBy(SysUser::getId));
             Set<String> ids = iPage.getRecords().stream().map(AigcConversation::getId).collect(Collectors.toSet());
             List<AigcMessage> messages = baseMapper.selectList(Wrappers.<AigcMessage>lambdaQuery()
                     .in(AigcMessage::getConversationId, ids)
                     .orderByDesc(AigcMessage::getCreateTime));
 
             iPage.getRecords().forEach(i -> {
-                List<AigcUser> list = map.get(i.getUserId());
+                List<SysUser> list = map.get(i.getUserId());
                 if (list != null && !list.isEmpty()) {
                     i.setUsername(list.get(0).getUsername());
                 }

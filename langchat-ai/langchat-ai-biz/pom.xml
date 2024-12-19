@@ -41,6 +41,10 @@
             <groupId>cn.tycoding</groupId>
             <artifactId>langchat-common-auth</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.tycoding</groupId>
+            <artifactId>langchat-upms-biz</artifactId>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
