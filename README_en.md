@@ -60,8 +60,6 @@ Support personal free access to learn to use, commercial applications please con
 
 ![](docs/imgs/MIK-qmfti3.png)
 
-![](docs/imgs/MIK-v4zoRt.png)
-
 ## Thanks
 
 - [LangChain4j](https://github.com/langchain4j/langchain4j)
