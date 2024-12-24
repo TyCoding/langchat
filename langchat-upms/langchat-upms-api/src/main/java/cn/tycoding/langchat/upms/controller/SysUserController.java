@@ -71,6 +71,7 @@ public class SysUserController {
     @ApiLog("新增用户")
     @SaCheckPermission("upms:user:add")
     public R<SysUser> add(@RequestBody UserInfo user) {
+        user.setPassword(AuthUtil.encode(authProps.getSaltKey(), user.getPassword()));
         sysUserService.add(user);
         return R.ok();
     }

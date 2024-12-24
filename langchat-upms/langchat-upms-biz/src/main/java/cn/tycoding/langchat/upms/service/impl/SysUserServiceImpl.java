@@ -158,7 +158,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         user.setCreateTime(new Date());
-        user.setPassword(AuthUtil.encode(authProps.getSaltKey(), user.getPassword()));
 
         // 设置角色
         if (user.getRoleIds() == null || user.getRoleIds().isEmpty()) {

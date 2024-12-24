@@ -60,7 +60,7 @@
           if (value.length == 0) {
             reject(new Error('请输入手机号'));
           }
-          if (!/^[1]+[3,8]+\d{9}$/.test(value)) {
+          if (!/^[1][3-9]\d{9}$/.test(value)) {
             reject(new Error('手机号格式错误'));
           } else {
             resolve();

@@ -18,8 +18,6 @@ package cn.tycoding.langchat;
 
 import cn.tycoding.langchat.common.core.properties.AuthProps;
 import cn.tycoding.langchat.upms.utils.AuthUtil;
-import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
-import dev.langchain4j.model.embedding.EmbeddingModel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,11 +40,6 @@ public class AppTest {
     public static void main(String[] args) {
         String encode = AuthUtil.encode("langchat-salt", "123456");
         System.out.println(encode);
-
-        EmbeddingModel embeddingModel = QwenEmbeddingModel.builder()
-                .apiKey("demo")
-                .modelName("")
-                .build();
     }
 
     @Test
