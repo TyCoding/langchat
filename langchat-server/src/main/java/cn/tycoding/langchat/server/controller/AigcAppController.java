@@ -92,7 +92,7 @@ public class AigcAppController {
     public R update(@RequestBody AigcApp data) {
         // 校验知识库是否是同纬度
         List<String> knowledgeIds = data.getKnowledgeIds();
-        if (knowledgeIds != null) {
+        if (knowledgeIds != null && !knowledgeIds.isEmpty()) {
             List<AigcKnowledge> list = knowledgeService.list(Wrappers.<AigcKnowledge>lambdaQuery().in(AigcKnowledge::getId, knowledgeIds));
             Set<String> modelIds = new HashSet<>();
             Set<String> storeIds = new HashSet<>();

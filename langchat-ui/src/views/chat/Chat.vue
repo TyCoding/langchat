@@ -105,7 +105,6 @@
         },
         controller,
         async ({ event }) => {
-          console.log('消息：', event);
           const list = event.target.responseText.split('\n\n');
 
           let text = '';
