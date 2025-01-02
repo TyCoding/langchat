@@ -26,6 +26,10 @@
   const appStore = useAppStore();
   const form = ref<any>({});
   const loading = ref(false);
+  const activeMenus = [
+    { key: 'setting', icon: 'uil:setting', label: '应用配置' },
+    { key: 'api', icon: 'hugeicons:api', label: 'API接入渠道' },
+  ];
 
   onMounted(async () => {
     await fetchData();
@@ -71,6 +75,23 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <n-button
+          v-for="item in activeMenus"
+          :key="item.key"
+          :type="appStore.activeMenu === item.key ? 'primary' : 'default'"
+          class="!px-5 !rounded-2xl"
+          secondary
+          strong
+          @click="appStore.setActiveMenu(item.key)"
+        >
+          <template #icon>
+            <SvgIcon :icon="item.icon" />
+          </template>
+          {{ item.label }}
+        </n-button>
       </div>
     </div>
 
