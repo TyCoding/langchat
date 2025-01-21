@@ -15,6 +15,7 @@ LangChat是Java生态下企业级AIGC项目解决方案，集成RBAC和AIGC大�
 
 - Gitee：https://gitee.com/langchat/langchat
 - Github：https://github.com/tycoding/langchat
+- GitCode: https://gitcode.com/LangChat/LangChat
 
 **注意：** 如果想和作者深入交流LangChat开发规划、AIGC产品研发、变现等方式，**可以请作者喝一杯咖啡加入LangChat交流群**
 
