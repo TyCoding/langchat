@@ -25,12 +25,18 @@ spring:
     async:
       request-timeout: 3600000
 
+  # 自定义安全配置（如果不想用代码配置用户）
+  security:
+    user:
+      name: admin
+      password: admin
+
 # MybatisPlus配置
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     jdbc-type-for-null: null
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
 
@@ -44,3 +50,12 @@ logging:
       langchain4j: DEBUG
       ai4j:
         openai4j: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  health:
+    elasticsearch:
+      enabled: false

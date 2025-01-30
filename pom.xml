@@ -44,6 +44,7 @@
         <snakeyaml.version>2.1</snakeyaml.version>
         <langchain4j.version>0.36.0</langchain4j.version>
         <sa-token.version>1.37.0</sa-token.version>
+        <micrometer.version>1.12.3</micrometer.version>
     </properties>
 
     <modules>
