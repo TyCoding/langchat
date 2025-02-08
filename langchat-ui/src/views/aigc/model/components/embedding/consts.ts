@@ -42,4 +42,9 @@ export const LLMProviders: any[] = [
     name: '抖音豆包',
     models: ['text-240715', 'text-240515'],
   },
+  {
+    model: ProviderEnum.OLLAMA,
+    name: 'Ollama',
+    models: ['text2vec-bge-large-chinese:latest'],
+  },
 ];

@@ -4,11 +4,10 @@
 
 LangChat是Java生态下企业级AIGC项目解决方案，集成RBAC和AIGC大模型能力，帮助企业快速定制AI知识库、企业AI机器人。
  
-**支持的AI大模型：** Gitee AI / 阿里通义 / 百度千帆 / DeepSeek / 抖音豆包 / 智谱清言 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
+**支持的AI大模型：** DeepSeek / Gitee AI / 阿里通义 / 百度千帆 / 抖音豆包 / 智谱清言 / 零一万物 / 讯飞星火 / OpenAI / Gemini / Ollama / Azure / Claude 等大模型。
 
-[English](./README_en.md)
-
-- 网站文档：[http://langchat.cn/](http://langchat.cn/)
+- 产品官网：[http://langchat.cn/](http://langchat.cn/)
+- 文档地址：[http://docs.langchat.cn/](http://docs.langchat.cn/)
 - 预览地址：[http://backend.langchat.cn/](http://backend.langchat.cn/)
 
 **开源地址：**
@@ -19,9 +18,27 @@ LangChat是Java生态下企业级AIGC项目解决方案，集成RBAC和AIGC大�
 
 **注意：** 如果想和作者深入交流LangChat开发规划、AIGC产品研发、变现等方式，**可以请作者喝一杯咖啡加入LangChat交流群**
 
-**欢迎Star、fork 持续关注**
+**开源不易，欢迎Star、fork 持续关注**
 
-**LangChat文档地址：** [http://www.langchat.cn/docs/introduction](http://www.langchat.cn/docs/introduction)
+## V2版本说明
+
+> **LangChat正在全力开发v2版本，增加更多新特性**
+
+注意：如果文档中已经 `application-dev.yml` 中配置项和本地不同，是因为有部分配置已经迁移到Web端动态配置了，例如向量数据库
+
+**我们投入了大量的精力打磨LangChat产品（包括UI、架构和代码等），但是仅仅依靠开源是无法存活下去的，更希望大家能够支持一下LangChat（赞助），让LangChat更好的发展下去**
+
+LangChat V2版本产品形态如下：
+
+![](imgs/MIK-lsqJpo.png)
+
+![](imgs/MIK-fFMz5U.png)
+
+![](imgs/MIK-FLutGm.png)
+
+![](imgs/MIK-lSq51v.png)
+
+![](imgs/MIK-D1hnnY.png)
 
 ## 商业化支持
 
@@ -66,8 +83,6 @@ Licensed under the GNU License (GPL) v3.
 Copyright (c) 2024-present, TyCoding.
 
 采用GUN GPL-v3开源协议，可以免费学习使用，个人可以免费是接入使用，商业应用请联系作者授权。
-
-## 代码
 
 ## 版本更新
 

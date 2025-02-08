@@ -85,9 +85,11 @@ public class AigcDocsController {
     @SaCheckPermission("aigc:docs:delete")
     @Transactional
     public R delete(@PathVariable String id) {
-        docsMapper.deleteById(id);
-        // delete doc slices
+        // 删除切面数据
         embeddingService.clearDocSlices(id);
+
+        // 删除文档
+        docsMapper.deleteById(id);
         return R.ok();
     }
 }
