@@ -42,7 +42,7 @@
         <mysql-connector.version>8.3.0</mysql-connector.version>
         <fastjson.version>2.0.47</fastjson.version>
         <snakeyaml.version>2.1</snakeyaml.version>
-        <langchain4j.version>0.36.0</langchain4j.version>
+        <langchain4j.version>1.0.0-beta1</langchain4j.version>
         <sa-token.version>1.37.0</sa-token.version>
     </properties>
 

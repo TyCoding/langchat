@@ -18,8 +18,7 @@
   import { computed, ref } from 'vue';
   import { useMessage } from 'naive-ui';
   import TextComponent from './TextComponent.vue';
-  import AvatarComponent from './Avatar.vue';
-  import { useBasicLayout } from '../store/useBasicLayout';
+  import SvgIcon from '@/components/SvgIcon/index.vue';
   import { useIconRender } from '../store/useIconRender';
   import { copyToClip } from '@/utils/copy';
 
@@ -38,7 +37,6 @@
   const props = defineProps<Props>();
   const emit = defineEmits<Emit>();
   const isHover = ref(false);
-  const { isMobile } = useBasicLayout();
   const { iconRender } = useIconRender();
   const message = useMessage();
   const textRef = ref<HTMLElement>();
@@ -95,9 +93,10 @@
   >
     <div
       :class="[inversion ? 'ml-2' : 'mr-2']"
-      class="flex items-center justify-center flex-shrink-0 h-8 overflow-hidden rounded-full basis-8"
+      class="flex items-center justify-center bg-gray-200 flex-shrink-0 h-8 overflow-hidden rounded-full basis-8"
     >
-      <AvatarComponent :image="inversion" />
+      <SvgIcon v-if="inversion" icon="solar:user-broken" />
+      <SvgIcon v-else icon="mingcute:ai-line" />
     </div>
     <div :class="[inversion ? 'items-end' : 'items-start']" class="overflow-hidden text-sm">
       <p :class="[inversion ? 'text-right' : 'text-left']" class="text-xs text-[#b4bbc4]">

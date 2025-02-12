@@ -70,28 +70,7 @@
     return [
       { label: '编辑此应用', key: 'edit' },
       { type: 'divider' },
-      {
-        key: 'delete',
-        type: 'render',
-        render: () => {
-          return h(
-            'div',
-            {
-              class:
-                'hover:text-red-500 transition-colors translation-all px-2.5 cursor-pointer hover:bg-[#f7f7f7] rounded-md py-1 mx-1',
-            },
-            [
-              h(
-                'span',
-                {
-                  class: 'w-full',
-                },
-                '删除应用'
-              ),
-            ]
-          );
-        },
-      },
+      { key: 'delete', label: '删除此应用' },
       { type: 'divider' },
       {
         key: 'header',

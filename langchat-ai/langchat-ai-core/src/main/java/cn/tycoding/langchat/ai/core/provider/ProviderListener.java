@@ -32,8 +32,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ProviderListener {
 
-    private final ProviderInitialize providerInitialize;
-    private final EmbeddingStoreInitialize embeddingStoreInitialize;
+    private final ModelStoreFactory providerInitialize;
+    private final EmbeddingStoreFactory embeddingStoreInitialize;
 
     @EventListener
     public void providerEvent(ProviderRefreshEvent event) {

@@ -61,7 +61,7 @@ const baseSchemas: FormSchema[] = [
     label: 'Api Key',
     labelMessage: '模型的ApiKey',
     component: 'NInput',
-    rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
+    // rules: [{ required: true, message: '请输入API Key', trigger: ['blur'] }],
     componentProps: {
       placeholder: '请输入Api Key',
     },

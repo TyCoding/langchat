@@ -25,8 +25,8 @@ export const columns: BasicColumn[] = [
     key: 'name',
   },
   {
-    title: '文档内容/链接',
-    key: 'content',
+    title: '文档链接',
+    key: 'url',
   },
   {
     title: '文档来源',

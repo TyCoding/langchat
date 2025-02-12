@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 /**
  * @author GB
  * @since 2024-08-19 10:08
@@ -70,6 +72,7 @@ public class OllamaModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -97,6 +100,7 @@ public class OllamaModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -122,6 +126,7 @@ public class OllamaModelBuildHandler implements ModelBuildHandler {
                     .modelName(model.getModel())
                     .logRequests(true)
                     .logResponses(true)
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());

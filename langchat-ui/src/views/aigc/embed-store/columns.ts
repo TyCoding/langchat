@@ -23,14 +23,12 @@ export enum ProviderEnum {
   Redis = 'REDIS',
   PgVector = 'PGVECTOR',
   Milvus = 'MILVUS',
-  ElasticSearch = 'ELASTICSEARCH',
 }
 
 export const ProviderConst = [
   { label: 'Redis', value: ProviderEnum.Redis },
   { label: 'PgVector', value: ProviderEnum.PgVector },
   { label: 'Milvus', value: ProviderEnum.Milvus },
-  { label: 'ElasticSearch', value: ProviderEnum.ElasticSearch },
 ];
 
 export function getProviderLabel(value: any) {
@@ -208,6 +206,14 @@ export function getSchemas(provider: string) {
       placeholder: '请输入向量纬度',
       options: [
         {
+          label: '512',
+          value: 512,
+        },
+        {
+          label: '768',
+          value: 768,
+        },
+        {
           label: '1024',
           value: 1024,
         },
@@ -281,20 +287,6 @@ export function getSchemas(provider: string) {
       },
     ];
     schemas.push(...arr, dimension);
-  }
-  if (provider === ProviderEnum.ElasticSearch) {
-    const arr: any = [
-      {
-        field: 'databaseName',
-        label: '数据库名',
-        component: 'NInputNumber',
-        componentProps: {
-          placeholder: '请输入数据库名',
-        },
-        rules: [{ required: true, message: '请输入数据库名', trigger: ['blur'] }],
-      },
-    ];
-    schemas.push(...arr);
   }
   return schemas;
 }

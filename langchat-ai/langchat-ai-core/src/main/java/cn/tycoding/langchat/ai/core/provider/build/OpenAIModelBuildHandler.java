@@ -34,6 +34,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 /**
  * @author tycoding
  * @since 2024-08-19 10:08
@@ -92,6 +94,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
                     .logRequests(true)
                     .logResponses(true)
                     .topP(model.getTopP())
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -121,6 +124,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
                     .logRequests(true)
                     .logResponses(true)
                     .topP(model.getTopP())
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -149,6 +153,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
                     .logRequests(true)
                     .logResponses(true)
                     .dimensions(1024)
+                    .timeout(Duration.ofMinutes(10))
                     .build();
             return openAiEmbeddingModel;
         } catch (ServiceException e) {
@@ -179,6 +184,7 @@ public class OpenAIModelBuildHandler implements ModelBuildHandler {
                     .style(model.getImageStyle())
                     .logRequests(true)
                     .logResponses(true)
+                    .timeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());

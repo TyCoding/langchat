@@ -22,16 +22,15 @@ import cn.tycoding.langchat.ai.biz.entity.AigcModel;
 import cn.tycoding.langchat.ai.biz.service.AigcEmbedStoreService;
 import cn.tycoding.langchat.ai.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.ai.biz.service.AigcModelService;
-import cn.tycoding.langchat.common.core.component.SpringContextHolder;
-import lombok.AllArgsConstructor;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -40,20 +39,21 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
-public class KnowledgeStore implements ApplicationContextAware {
+public class KnowledgeStoreFactory {
 
-    private final AigcKnowledgeService knowledgeService;
-    private final SpringContextHolder contextHolder;
-    private final AigcModelService modelService;
-    private final AigcEmbedStoreService embedStoreService;
+    @Autowired
+    private AigcKnowledgeService knowledgeService;
+    @Autowired
+    private AigcModelService modelService;
+    @Autowired
+    private AigcEmbedStoreService embedStoreService;
 
-    @Override
-    public void setApplicationContext(ApplicationContext context) throws BeansException {
-        init();
-    }
+    private final Map<String, AigcKnowledge> knowledgeMap = new ConcurrentHashMap<>();
 
+    @Async
+    @PostConstruct
     public void init() {
+        knowledgeMap.clear();
         List<AigcKnowledge> list = knowledgeService.list();
         Map<String, List<AigcModel>> modelMap = modelService.list().stream().collect(Collectors.groupingBy(AigcModel::getId));
         Map<String, List<AigcEmbedStore>> storeMap = embedStoreService.list().stream().collect(Collectors.groupingBy(AigcEmbedStore::getId));
@@ -66,7 +66,15 @@ public class KnowledgeStore implements ApplicationContextAware {
                 List<AigcEmbedStore> stores = storeMap.get(know.getEmbedStoreId());
                 know.setEmbedStore(stores == null ? null : stores.get(0));
             }
-            contextHolder.registerBean(know.getId(), know);
+            knowledgeMap.put(know.getId(), know);
         });
+    }
+
+    public AigcKnowledge getKnowledge(String knowledgeId) {
+        return knowledgeMap.get(knowledgeId);
+    }
+
+    public boolean containsKnowledge(String knowledgeId) {
+        return knowledgeMap.containsKey(knowledgeId);
     }
 }

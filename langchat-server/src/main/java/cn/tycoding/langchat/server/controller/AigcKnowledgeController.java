@@ -27,7 +27,7 @@ import cn.tycoding.langchat.ai.biz.service.AigcEmbedStoreService;
 import cn.tycoding.langchat.ai.biz.service.AigcKnowledgeService;
 import cn.tycoding.langchat.ai.biz.service.AigcModelService;
 import cn.tycoding.langchat.ai.core.provider.EmbeddingProvider;
-import cn.tycoding.langchat.ai.core.provider.KnowledgeStore;
+import cn.tycoding.langchat.ai.core.provider.KnowledgeStoreFactory;
 import cn.tycoding.langchat.common.core.annotation.ApiLog;
 import cn.tycoding.langchat.common.core.utils.MybatisUtil;
 import cn.tycoding.langchat.common.core.utils.QueryPage;
@@ -56,7 +56,7 @@ public class AigcKnowledgeController {
     private final AigcEmbedStoreService embedStoreService;
     private final AigcModelService modelService;
     private final EmbeddingProvider embeddingProvider;
-    private final KnowledgeStore knowledgeStore;
+    private final KnowledgeStoreFactory knowledgeStore;
 
     @GetMapping("/list")
     public R<List<AigcKnowledge>> list(AigcKnowledge data) {

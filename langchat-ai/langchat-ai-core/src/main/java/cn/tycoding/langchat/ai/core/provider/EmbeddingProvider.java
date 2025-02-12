@@ -17,17 +17,14 @@
 package cn.tycoding.langchat.ai.core.provider;
 
 import cn.tycoding.langchat.ai.biz.entity.AigcKnowledge;
-import cn.tycoding.langchat.ai.core.consts.ProviderEnum;
 import cn.tycoding.langchat.common.core.exception.ServiceException;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -43,20 +40,19 @@ import java.util.List;
 @AllArgsConstructor
 public class EmbeddingProvider {
 
-    private final ApplicationContext context;
+    private final EmbeddingStoreFactory embeddingStoreFactory;
+    private final KnowledgeStoreFactory knowledgeStoreFactory;
+    private final ModelStoreFactory modelStoreFactory;
 
-    public static DocumentSplitter splitter(String modelName, String modelProvider) {
-        if (ProviderEnum.OPENAI.name().equals(modelProvider)) {
-            return DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(modelName));
-        }
-        return DocumentSplitters.recursive(100, 0);
+    public static DocumentSplitter splitter() {
+        return DocumentSplitters.recursive(300, 20);
     }
 
     public EmbeddingModel getEmbeddingModel(List<String> knowledgeIds) {
         List<String> storeIds = new ArrayList<>();
         knowledgeIds.forEach(id -> {
-            if (context.containsBean(id)) {
-                AigcKnowledge data = (AigcKnowledge) context.getBean(id);
+            if (knowledgeStoreFactory.containsKnowledge(id)) {
+                AigcKnowledge data = knowledgeStoreFactory.getKnowledge(id);
                 if (data.getEmbedModelId() != null) {
                     storeIds.add(data.getEmbedModelId());
                 }
@@ -71,24 +67,24 @@ public class EmbeddingProvider {
             throw new ServiceException("存在多个不同Embedding Model的知识库，请先检查配置");
         }
 
-        return (EmbeddingModel) context.getBean(storeIds.get(0));
+        return modelStoreFactory.getEmbeddingModel(storeIds.get(0));
     }
 
     public EmbeddingModel getEmbeddingModel(String knowledgeId) {
-        if (context.containsBean(knowledgeId)) {
-            AigcKnowledge data = (AigcKnowledge) context.getBean(knowledgeId);
-            if (context.containsBean(data.getEmbedModelId())) {
-                return (EmbeddingModel) context.getBean(data.getEmbedModelId());
+        if (knowledgeStoreFactory.containsKnowledge(knowledgeId)) {
+            AigcKnowledge data = knowledgeStoreFactory.getKnowledge(knowledgeId);
+            if (modelStoreFactory.containsEmbeddingModel(data.getEmbedModelId())) {
+                return modelStoreFactory.getEmbeddingModel(data.getEmbedModelId());
             }
         }
         throw new ServiceException("没有找到匹配的Embedding向量数据库");
     }
 
     public EmbeddingStore<TextSegment> getEmbeddingStore(String knowledgeId) {
-        if (context.containsBean(knowledgeId)) {
-            AigcKnowledge data = (AigcKnowledge) context.getBean(knowledgeId);
-            if (context.containsBean(data.getEmbedStoreId())) {
-                return (EmbeddingStore<TextSegment>) context.getBean(data.getEmbedStoreId());
+        if (knowledgeStoreFactory.containsKnowledge(knowledgeId)) {
+            AigcKnowledge data = knowledgeStoreFactory.getKnowledge(knowledgeId);
+            if (embeddingStoreFactory.containsEmbeddingStore(data.getEmbedStoreId())) {
+                return embeddingStoreFactory.getEmbeddingStore(data.getEmbedStoreId());
             }
         }
         throw new ServiceException("没有找到匹配的Embedding向量数据库");
@@ -97,8 +93,8 @@ public class EmbeddingProvider {
     public EmbeddingStore<TextSegment> getEmbeddingStore(List<String> knowledgeIds) {
         List<String> storeIds = new ArrayList<>();
         knowledgeIds.forEach(id -> {
-            if (context.containsBean(id)) {
-                AigcKnowledge data = (AigcKnowledge) context.getBean(id);
+            if (knowledgeStoreFactory.containsKnowledge(id)) {
+                AigcKnowledge data = knowledgeStoreFactory.getKnowledge(id);
                 if (data.getEmbedStoreId() != null) {
                     storeIds.add(data.getEmbedStoreId());
                 }
@@ -113,7 +109,7 @@ public class EmbeddingProvider {
             throw new ServiceException("存在多个不同Embedding Store数据源的知识库，请先检查配置");
         }
 
-        return (EmbeddingStore<TextSegment>) context.getBean(storeIds.get(0));
+        return embeddingStoreFactory.getEmbeddingStore(storeIds.get(0));
     }
 
 }

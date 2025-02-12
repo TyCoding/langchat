@@ -21,14 +21,14 @@ import cn.tycoding.langchat.ai.core.consts.ProviderEnum;
 import cn.tycoding.langchat.ai.core.properties.LangChatProps;
 import cn.tycoding.langchat.common.ai.enums.ChatErrorEnum;
 import cn.tycoding.langchat.common.core.exception.ServiceException;
+import dev.langchain4j.community.model.zhipu.ZhipuAiChatModel;
+import dev.langchain4j.community.model.zhipu.ZhipuAiEmbeddingModel;
+import dev.langchain4j.community.model.zhipu.ZhipuAiImageModel;
+import dev.langchain4j.community.model.zhipu.ZhipuAiStreamingChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
-import dev.langchain4j.model.zhipu.ZhipuAiChatModel;
-import dev.langchain4j.model.zhipu.ZhipuAiEmbeddingModel;
-import dev.langchain4j.model.zhipu.ZhipuAiImageModel;
-import dev.langchain4j.model.zhipu.ZhipuAiStreamingChatModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -80,10 +80,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
-                    .callTimeout(Duration.ofMinutes(2))
-                    .connectTimeout(Duration.ofMinutes(2))
-                    .writeTimeout(Duration.ofMinutes(2))
-                    .readTimeout(Duration.ofMinutes(2))
+                    .callTimeout(Duration.ofMinutes(10))
+                    .connectTimeout(Duration.ofMinutes(10))
+                    .writeTimeout(Duration.ofMinutes(10))
+                    .readTimeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -114,10 +114,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .topP(model.getTopP())
                     .logRequests(true)
                     .logResponses(true)
-                    .callTimeout(Duration.ofMinutes(2))
-                    .connectTimeout(Duration.ofMinutes(2))
-                    .writeTimeout(Duration.ofMinutes(2))
-                    .readTimeout(Duration.ofMinutes(2))
+                    .callTimeout(Duration.ofMinutes(10))
+                    .connectTimeout(Duration.ofMinutes(10))
+                    .writeTimeout(Duration.ofMinutes(10))
+                    .readTimeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());
@@ -145,10 +145,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .baseUrl(model.getBaseUrl())
                     .logRequests(true)
                     .logResponses(true)
-                    .callTimeout(Duration.ofMinutes(2))
-                    .connectTimeout(Duration.ofMinutes(2))
-                    .writeTimeout(Duration.ofMinutes(2))
-                    .readTimeout(Duration.ofMinutes(2))
+                    .callTimeout(Duration.ofMinutes(10))
+                    .connectTimeout(Duration.ofMinutes(10))
+                    .writeTimeout(Duration.ofMinutes(10))
+                    .readTimeout(Duration.ofMinutes(10))
                     .dimensions(1024)
                     .build();
         } catch (ServiceException e) {
@@ -176,10 +176,10 @@ public class ZhipuModelBuildHandler implements ModelBuildHandler {
                     .baseUrl(model.getBaseUrl())
                     .logRequests(true)
                     .logResponses(true)
-                    .callTimeout(Duration.ofMinutes(2))
-                    .connectTimeout(Duration.ofMinutes(2))
-                    .writeTimeout(Duration.ofMinutes(2))
-                    .readTimeout(Duration.ofMinutes(2))
+                    .callTimeout(Duration.ofMinutes(10))
+                    .connectTimeout(Duration.ofMinutes(10))
+                    .writeTimeout(Duration.ofMinutes(10))
+                    .readTimeout(Duration.ofMinutes(10))
                     .build();
         } catch (ServiceException e) {
             log.error(e.getMessage());

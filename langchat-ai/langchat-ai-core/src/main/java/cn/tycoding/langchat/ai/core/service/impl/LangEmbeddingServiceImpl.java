@@ -24,7 +24,6 @@ import cn.tycoding.langchat.common.ai.dto.EmbeddingR;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
 import dev.langchain4j.data.embedding.Embedding;
@@ -66,19 +65,13 @@ public class LangEmbeddingServiceImpl implements LangEmbeddingService {
 
     @Override
     public List<EmbeddingR> embeddingDocs(ChatReq req) {
-
         log.info(">>>>>>>>>>>>>> Docs文档向量解析开始，KnowledgeId={}, DocsName={}", req.getKnowledgeId(), req.getDocsName());
-        Document document;
-        if (req.getUrl().startsWith("http")) {
-            document = UrlDocumentLoader.load(req.getUrl(), new ApacheTikaDocumentParser());
-        } else {
-            document = FileSystemDocumentLoader.loadDocument(req.getUrl(), new ApacheTikaDocumentParser());
-        }
+        Document document = UrlDocumentLoader.load(req.getUrl(), new ApacheTikaDocumentParser());
         document.metadata().put(EmbedConst.KNOWLEDGE, req.getKnowledgeId()).put(EmbedConst.FILENAME, req.getDocsName());
 
         List<EmbeddingR> list = new ArrayList<>();
         try {
-            DocumentSplitter splitter = EmbeddingProvider.splitter(req.getModelName(), req.getModelProvider());
+            DocumentSplitter splitter = EmbeddingProvider.splitter();
             List<TextSegment> segments = splitter.split(document);
 
             EmbeddingModel embeddingModel = embeddingProvider.getEmbeddingModel(req.getKnowledgeId());

@@ -137,13 +137,6 @@
             <div class="pr-4 w-full">
               <div class="flex items-center justify-between">
                 <h1 class="text-lg font-semibold text-gray-700 capitalize"> {{ item.name }} </h1>
-                <div
-                  v-if="item.embedModel != null"
-                  class="absolute right-0 px-2 flex items-center gap-1 py-1 bg-gray-200 text-gray-500 rounded-l-md text-xs"
-                >
-                  <SvgIcon icon="octicon:ai-model-24" />
-                  {{ item.embedModel.model }}
-                </div>
               </div>
 
               <p class="mt-2 text-gray-500 capitalize text-xs">

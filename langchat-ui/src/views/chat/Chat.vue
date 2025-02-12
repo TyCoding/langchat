@@ -186,7 +186,7 @@
         <div
           ref="scrollRef"
           :class="[isMobile ? 'p-2' : 'p-5']"
-          class="w-full max-w-screen-3xl m-auto pl-8 pr-8"
+          class="w-full max-w-screen-3xl m-auto"
         >
           <Message
             v-for="(item, index) of dataSources"
@@ -204,13 +204,13 @@
     </main>
 
     <footer :class="footerClass">
-      <div class="w-full max-w-screen-3xl m-auto pl-8 pr-8 pb-6 relative">
+      <div class="w-full max-w-screen-3xl m-auto pb-6 relative">
         <div class="flex items-center justify-between space-x-2">
           <n-input
             ref="inputRef"
             v-model:value="message"
             :autosize="{ minRows: 1, maxRows: isMobile ? 1 : 4 }"
-            class="!rounded-full px-2 py-1 custom-input"
+            class="rounded-xl px-3 py-1 custom-input"
             placeholder="今天想聊些什么~"
             size="large"
             type="textarea"
@@ -222,6 +222,7 @@
                 class="!cursor-pointer"
                 size="large"
                 text
+                type="primary"
                 @click="handleSubmit"
               >
                 <template #icon>

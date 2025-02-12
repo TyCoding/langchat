@@ -63,12 +63,12 @@
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-qianfan</artifactId>
+            <artifactId>langchain4j-community-qianfan</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-dashscope</artifactId>
+            <artifactId>langchain4j-community-dashscope</artifactId>
             <version>${langchain4j.version}</version>
             <exclusions>
                 <exclusion>
@@ -79,7 +79,7 @@
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-zhipu-ai</artifactId>
+            <artifactId>langchain4j-community-zhipu-ai</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
         <dependency>
@@ -89,7 +89,7 @@
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-redis</artifactId>
+            <artifactId>langchain4j-community-redis</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
         <dependency>
@@ -100,11 +100,6 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-milvus</artifactId>
-            <version>${langchain4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-elasticsearch</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
         <dependency>

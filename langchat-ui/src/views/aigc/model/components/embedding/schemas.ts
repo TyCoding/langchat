@@ -54,7 +54,7 @@ const baseSchemas: FormSchema[] = [
     label: 'Api Key',
     labelMessage: '模型的ApiKey',
     component: 'NInput',
-    rules: [{ required: true, message: '请输入ApiKey', trigger: ['blur'] }],
+    // rules: [{ required: true, message: '请输入ApiKey', trigger: ['blur'] }],
     componentProps: {
       placeholder: '请输入ApiKey',
     },
@@ -68,6 +68,14 @@ const baseSchemas: FormSchema[] = [
     componentProps: {
       placeholder: '请输入向量纬度',
       options: [
+        {
+          label: '512',
+          value: 512,
+        },
+        {
+          label: '768',
+          value: 768,
+        },
         {
           label: '1024',
           value: 1024,

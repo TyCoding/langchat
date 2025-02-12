@@ -28,6 +28,5 @@ public enum EmbedStoreEnum {
     REDIS,
     PGVECTOR,
     MILVUS,
-    ELASTICSEARCH,
     ;
 }
