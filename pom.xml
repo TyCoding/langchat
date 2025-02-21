@@ -34,7 +34,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <revision>0.4.0</revision>
+        <revision>1.0.0</revision>
 
         <hutool.version>5.8.26</hutool.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
