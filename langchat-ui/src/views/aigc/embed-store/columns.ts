@@ -270,7 +270,7 @@ export function getSchemas(provider: string) {
       {
         field: 'databaseName',
         label: '数据库名',
-        component: 'NInputNumber',
+        component: 'NInput',
         componentProps: {
           placeholder: '请输入数据库名',
         },
@@ -283,7 +283,7 @@ export function getSchemas(provider: string) {
         componentProps: {
           placeholder: '请输入表名称',
         },
-        rules: [{ required: true, message: '请输入表名称', trigger: ['blur'] }],
+        // rules: [{ required: true, message: '请输入表名称', trigger: ['blur'] }],
       },
     ];
     schemas.push(...arr, dimension);
