@@ -21,6 +21,8 @@ LangChat是Java生态下企业级AIGC项目解决方案，集成RBAC和AIGC大�
 
 LangChat Pro商业版：[https://langchat.cn/introduce](https://langchat.cn/introduce)
 
+商务咨询：LangChainChat（备注公司名称）
+
 ## 赞助
 
 微信：LangChainChat（备注：赞助）
